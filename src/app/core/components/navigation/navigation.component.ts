@@ -24,4 +24,8 @@ export class NavigationComponent implements OnInit {
     this.children = this._route.snapshot.data["children"];
   }
 
+  isRouteActive(navigationName: string){
+    return this._router.url.includes(navigationName);
+  }
+
 }
