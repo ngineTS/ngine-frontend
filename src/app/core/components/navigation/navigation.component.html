@@ -1,0 +1,4 @@
+<ng-container *ngFor="let navigation of children">
+    <a [routerLink]="navigation.name">{{ navigation.displayLabel }}</a>
+</ng-container>
+<router-outlet />
