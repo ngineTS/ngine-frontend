@@ -11,10 +11,8 @@ import { Navigation } from './models/navigation.interface';
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent implements OnInit {
-
   
-  constructor(private _http: HttpClient,
-              public _router: Router,
+  constructor(public _router: Router,
               private _route: ActivatedRoute) {}
 
   children!: Navigation[];
@@ -26,6 +24,10 @@ export class NavigationComponent implements OnInit {
 
   isRouteActive(navigationName: string){
     return this._router.url.includes(navigationName);
+  }
+
+  ngOnDestroy(){
+    console.log('DESTROY', this.children);
   }
 
 }

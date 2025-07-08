@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
             path: navigation.name,
             component: NavigationComponent,
             data: { children: navigation.children },
-            children: this.generateNestedRoutes(navigation.children)
+            loadChildren: () => this.generateNestedRoutes(navigation.children)
           });
         }
         i = i + 1;

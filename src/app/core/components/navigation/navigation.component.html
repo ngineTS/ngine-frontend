@@ -1,5 +1,8 @@
 <div *ngFor="let navigation of children">
-    <a [routerLink]="navigation.name"
-       [class.active]="isRouteActive(navigation.name)">{{ navigation.displayLabel }}</a>
+    <ng-container *ngIf="navigation.navigationType.name === 'header'">
+        <a [routerLink]="navigation.name"
+        [class.active]="isRouteActive(navigation.name)">{{ navigation.displayLabel }}
+        </a>
+    </ng-container>
 </div>
 <router-outlet />
