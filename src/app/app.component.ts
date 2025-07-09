@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private _http: HttpClient,
               private _router: Router) {}
 
+  title = 'my-app-frontend';
   routes!: Routes;
 
   ngOnInit() {
@@ -57,6 +58,4 @@ export class AppComponent implements OnInit {
     }
     return routes;
   }
-
-  title = 'my-app-frontend';
 }
