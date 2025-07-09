@@ -23,14 +23,12 @@ export class AppComponent implements OnInit {
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
+        data: { children: navigations },
         loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
-        children: this.generateNestedRoutes(navigations),
-        data: { children: navigations }
+        loadChildren: () => this.generateNestedRoutes(navigations),
       }];
-      console.log(navigations);
-      console.log(this.routes);
       this._router.resetConfig([...this._router.config, ...this.routes]);
-      console.log(this._router);
+      console.log(navigations);
     });
   }
 
@@ -44,7 +42,7 @@ export class AppComponent implements OnInit {
             path: navigation.name,
             data: { children: navigation.children },
             loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
-            loadChildren: () => this.generateNestedRoutes(navigation.children)
+            loadChildren: () => this.generateNestedRoutes(navigation.children),
           });
         }
         i = i + 1;
