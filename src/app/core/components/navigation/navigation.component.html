@@ -1,15 +1,17 @@
-<div *ngFor="let navigation of children" class="nav-menu">
-    <ng-container [ngSwitch]="navigation.navigationType.name">
-        <a *ngSwitchCase="'header'"
-           [routerLink]="navigation.name" 
-           [class.active]="isRouteActive(navigation.name)"
-        >
-           {{ navigation.displayLabel }}
-        </a>
-        <app-test-text-component *ngSwitchCase="'text'"></app-test-text-component>
-    </ng-container>
-    <ng-template #other_content>
-    </ng-template>
+<div>
+    <div *ngFor="let navigation of children" class="d-inline-flex mx-2 my-1">
+        <ng-container [ngSwitch]="navigation.navigationType.name">
+            <a *ngSwitchCase="'header'"
+               [routerLink]="navigation.name" 
+               [class.active]="isRouteActive(navigation.name)"
+            >
+            {{ navigation.displayLabel }}
+            </a>
+            <app-test-text-component *ngSwitchCase="'text'"></app-test-text-component>
+        </ng-container>
+        <ng-template #other_content>
+        </ng-template>
+    </div>
 </div>
 <router-outlet />
 
