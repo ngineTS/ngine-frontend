@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
-        component: NavigationComponent, 
+        loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
         children: this.generateNestedRoutes(navigations),
         data: { children: navigations }
       }];
