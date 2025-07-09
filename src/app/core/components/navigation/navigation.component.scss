@@ -1,4 +1,10 @@
-.active{
+
+.nav-menu{
+    display: flex;
+    flex-direction: row;
+}
+
+.active {
     font-family: 'montserrat-bold';
     text-underline-offset: 3px;
     text-decoration: underline !important;

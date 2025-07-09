@@ -1,11 +1,14 @@
-<div *ngFor="let navigation of children">
-    <ng-container *ngIf="navigation.navigationType.name === 'header'; else other_content">
-        <a [routerLink]="navigation.name" [class.active]="isRouteActive(navigation.name)">
-            {{ navigation.displayLabel }}
+<div *ngFor="let navigation of children" class="nav-menu">
+    <ng-container [ngSwitch]="navigation.navigationType.name">
+        <a *ngSwitchCase="'header'"
+           [routerLink]="navigation.name" 
+           [class.active]="isRouteActive(navigation.name)"
+        >
+           {{ navigation.displayLabel }}
         </a>
+        <app-test-text-component *ngSwitchCase="'text'"></app-test-text-component>
     </ng-container>
     <ng-template #other_content>
-        <span>TESSSSST</span>
     </ng-template>
 </div>
 <router-outlet />

@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from './models/navigation.interface';
+import { TestTextComponentComponent } from '../test-text-component/test-text-component.component';
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterOutlet, RouterModule, CommonModule],
+  imports: [RouterOutlet, RouterModule, CommonModule, TestTextComponentComponent],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
