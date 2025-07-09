@@ -33,7 +33,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  generateNestedRoutes(navigations: Navigation[]): Routes {
+  /**
+   * Recursively create routes for given navigations and their children
+   * @param navigations The array of navigations
+   * @returns routes with path, component and data assigned 
+   */
+  generateNestedRoutes(navigations: Navigation[]) {
     const routes: Routes = [];
     let i = 0;
     if (navigations && navigations.length > 0) {
