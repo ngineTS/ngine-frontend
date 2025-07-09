@@ -1,12 +1,12 @@
 <div *ngFor="let navigation of children">
     <ng-container *ngIf="navigation.navigationType.name === 'header'; else other_content">
-        <a [routerLink]="navigation.name"
-        [class.active]="isRouteActive(navigation.name)">{{ navigation.displayLabel }}
+        <a [routerLink]="navigation.name" [class.active]="isRouteActive(navigation.name)">
+            {{ navigation.displayLabel }}
         </a>
     </ng-container>
     <ng-template #other_content>
-    <span>TESSSSST</span>
-</ng-template>
+        <span>TESSSSST</span>
+    </ng-template>
 </div>
 <router-outlet />
 

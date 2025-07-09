@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
         if (navigation.navigationType.name === 'header') {
           routes.push({
             path: navigation.name,
-            component: NavigationComponent,
             data: { children: navigation.children },
+            loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
             loadChildren: () => this.generateNestedRoutes(navigation.children)
           });
         }
