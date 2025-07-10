@@ -1,5 +1,5 @@
-<div>
-    <div *ngFor="let navigation of children" class="d-inline-flex mx-2 my-1">
+<div class="my-2">
+    <div *ngFor="let navigation of children" class="d-inline-flex mx-2">
         <ng-container [ngSwitch]="navigation.navigationType.name">
             <a *ngSwitchCase="'header'"
                [routerLink]="navigation.name" 
@@ -9,10 +9,8 @@
             </a>
             <app-test-text-component *ngSwitchCase="'text'"></app-test-text-component>
         </ng-container>
-        <button class="add-nav-button">+</button>
-        <ng-template #other_content>
-        </ng-template>
     </div>
+    <button class="add-nav-button">+</button>
 </div>
 <router-outlet />
 
