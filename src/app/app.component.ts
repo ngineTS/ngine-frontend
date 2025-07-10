@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
-        data: { children: navigations },
+        data: { navigations: navigations },
         loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
@@ -43,43 +43,39 @@ export class AppComponent implements OnInit {
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
         if (navigation.children && navigation.children.length > 0) {
+          //Case 1: children are headers (this is assuming children[0] sisters are only of type 'header')
           if (navigation.children[0].navigationType.name === 'header') {
             routes.push({
               path: navigation.name,
-              data: { children: navigation.children },
+              data: { navigations: navigation.children },
               loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
               loadChildren: () => this.generateNestedRoutes(navigation.children!),
             });
           }
+          //Case 2: children are components (this is assuming children[0] sisters are not of type 'header')
           else {
             routes.push({
               path: navigation.name,
-              data: { content: navigation.children[1].testText },
-              loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
+              data: { navigations: navigation.children },
+              loadComponent: () => import('./core/components/generic/generic.component').then(m => m.GenericComponent),
             });
           }
         }
-        else{
+        //Case 3: No children --> blank page with possibility to add header or component
+        else {
           routes.push({
             path: navigation.name,
             data: { 
               content: {
                 id: 'a',
                 name: `${navigation.name}`,
-                message: 'This is  a cool message!',
+                message: 'This is a cool message!',
                 navigationId: 'string' 
               }
             },
-            loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
-          })
-        }
-        /*if (navigation.navigationType.name === 'text') {
-          routes.push({
-            path: navigation.name,
-            data: { content: navigation.testText },
-            loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
+            loadComponent: () => import('./core/components/generic/generic.component').then(m => m.GenericComponent),
           });
-        }*/
+        }
         i = i + 1;
       }
       if (i > 0) {

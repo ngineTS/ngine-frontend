@@ -1,6 +1,7 @@
+<div>TITLE</div>
 <div class="test-text row" *ngIf="content">
     <p>{{ content.name}}</p>
-    <span>{{ content.message}}</span>
+    <span (click)="onSpanClick()">{{ content.message}}</span>
     <span>{{ content.navigationId}}</span>
 </div>
 

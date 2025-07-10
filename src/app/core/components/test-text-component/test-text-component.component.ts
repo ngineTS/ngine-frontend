@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TestText } from './models/test-text.interface';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -13,10 +13,21 @@ export class TestTextComponentComponent implements OnInit {
 
   constructor(private _route: ActivatedRoute) {}
 
-  content!: TestText;
+  @Input() content!: TestText;
 
-  ngOnInit(){
-    this.content = this._route.snapshot.data["content"];
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    console.log("CONTENT", this.content);
+  }
+
+  ngOnDestroy() {
+    console.log("AAAAAAAAA");
+  }
+
+  onSpanClick(){
+    this.content.message = 'agdd';
   }
 
 }

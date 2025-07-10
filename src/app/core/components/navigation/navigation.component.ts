@@ -21,10 +21,10 @@ export class NavigationComponent implements OnInit {
   constructor(public _router: Router,
               private _route: ActivatedRoute) {}
 
-  children!: Navigation[];
+  navigations!: Navigation[];
 
   ngOnInit(){
-    this.children = this._route.snapshot.data["children"];
+    this.navigations = this._route.snapshot.data["navigations"];
   }
 
   isRouteActive(navigationName: string){
@@ -32,7 +32,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    console.log('DESTROY', this.children);
+    console.log('DESTROY', this.navigations);
   }
 
 }
