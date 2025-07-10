@@ -1,16 +1,11 @@
 <div class="my-2">
     <div *ngFor="let navigation of children" class="d-inline-flex mx-2">
-        <ng-container [ngSwitch]="navigation.navigationType.name">
-            <a *ngSwitchCase="'header'"
-               [routerLink]="navigation.name" 
-               [class.active]="isRouteActive(navigation.name)"
-            >
-            {{ navigation.displayLabel }}
-            </a>
-            <app-test-text-component *ngSwitchCase="'text'"></app-test-text-component>
-        </ng-container>
+        <a [routerLink]="navigation.name" 
+           [class.active]="isRouteActive(navigation.name)">
+           {{ navigation.displayLabel }}
+        </a>
     </div>
-    <button class="add-nav-button">+</button>
+    <button class="add-nav-button" matTooltip="Add component or navigation">+</button>
 </div>
 <router-outlet />
 

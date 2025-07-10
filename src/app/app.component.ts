@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Routes, Router } from '@angular/router';
 import { environment } from "../environments/environment";
-import { NavigationComponent } from './core/components/navigation/navigation.component';
 import { Navigation } from './core/components/navigation/models/navigation.interface';
 
 
@@ -43,14 +42,44 @@ export class AppComponent implements OnInit {
     let i = 0;
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-        if (navigation.navigationType.name === 'header') {
+        if (navigation.children && navigation.children.length > 0) {
+          if (navigation.children[0].navigationType.name === 'header') {
+            routes.push({
+              path: navigation.name,
+              data: { children: navigation.children },
+              loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
+              loadChildren: () => this.generateNestedRoutes(navigation.children!),
+            });
+          }
+          else {
+            routes.push({
+              path: navigation.name,
+              data: { content: navigation.children[1].testText },
+              loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
+            });
+          }
+        }
+        else{
           routes.push({
             path: navigation.name,
-            data: { children: navigation.children },
-            loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
-            loadChildren: () => this.generateNestedRoutes(navigation.children),
-          });
+            data: { 
+              content: {
+                id: 'a',
+                name: `${navigation.name}`,
+                message: 'This is  a cool message!',
+                navigationId: 'string' 
+              }
+            },
+            loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
+          })
         }
+        /*if (navigation.navigationType.name === 'text') {
+          routes.push({
+            path: navigation.name,
+            data: { content: navigation.testText },
+            loadComponent: () => import('./core/components/test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent),
+          });
+        }*/
         i = i + 1;
       }
       if (i > 0) {

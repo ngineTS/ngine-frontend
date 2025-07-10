@@ -3,6 +3,7 @@
     text-underline-offset: 3px;
     text-decoration: underline !important;
     text-decoration-thickness: 2px !important;
+    color: green;
 }
 
 .add-nav-button{
@@ -12,4 +13,15 @@
     margin-left: 10px;
     margin-right: 10px;
     padding: 0px 8px 2px 8px;
+}
+
+
+::ng-deep .mat-mdc-tooltip{
+    .mat-mdc-tooltip-surface{
+        background-color: lightgray;
+        color: black;
+        text-align: center !important;
+        white-space: pre-line !important;
+        border: 1px solid darkgray;
+    }
 }

@@ -1,1 +1,6 @@
-<p>test-text-component works!</p>
+<div class="test-text row" *ngIf="content">
+    <p>{{ content.name}}</p>
+    <span>{{ content.message}}</span>
+    <span>{{ content.navigationId}}</span>
+</div>
+

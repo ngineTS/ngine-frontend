@@ -1,3 +1,4 @@
+import { TestText } from "../../test-text-component/models/test-text.interface";
 import { NavigationType } from "./navigation-type.interface";
 
 export interface Navigation {
@@ -8,5 +9,7 @@ export interface Navigation {
     order: number;
     navigationTypeId: string;
     navigationType: NavigationType;
-    children: Navigation[]
+    children?: Navigation[];
+    parent?: Navigation;
+    testText?: TestText;
 }
