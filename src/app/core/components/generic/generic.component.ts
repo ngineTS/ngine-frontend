@@ -3,6 +3,7 @@ import { TestTextComponentComponent } from '../test-text-component/test-text-com
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TestText } from '../test-text-component/models/test-text.interface';
+import { Navigation } from '../navigation/models/navigation.interface';
 
 @Component({
   selector: 'app-generic',
@@ -23,27 +24,34 @@ export class GenericComponent implements OnInit, AfterViewInit {
                 navigationId: 'string',
               }
 
+  componentStore: Record<string, () => Promise<any>> = {
+    text: () => import(`../test-text-component/test-text-component.component`)
+  }
+  //new Map<string, () => Promise<unknown>>();
+
   ngOnInit() {
     console.log("yeyeye");
     console.log(this._route.snapshot.data["navigations"]);
   }
 
   ngAfterViewInit() {
+    //this.componentStore.set('text', () => import(`../test-text-component/test-text-component.component`));
     this.loadComponents();
+
   }
 
   async loadComponents(){
-    console.log(this.content);
-    const imports = [];
-    for (const navigation of this._route.snapshot.data["navigations"]) {
-      imports.push(() => import('../test-text-component/test-text-component.component').then(m => m.TestTextComponentComponent));
-    }
-    for(const load of imports){
-      const component = await load();
+    console.log(this._route.snapshot.data["navigations"]);
+    for (const navigation of this._route.snapshot.data["navigations"] as Navigation[]) {
+      const component = await this.componentStore[navigation.navigationType.name]()
+                        .then(m => m["Test" + navigation.navigationType.name.charAt(0).toUpperCase() + navigation.navigationType.name.slice(1) + "ComponentComponent"]);
       const containerRef = this.container.createComponent(component, {
         injector: this.injector
       });
-      containerRef.setInput('content', this.content);
+      //in real condition:
+      //don't pass testText object but call API to get content on component init
+      // --> no inputs needed
+      containerRef.setInput('content', navigation.testText);
     }
   }
 
