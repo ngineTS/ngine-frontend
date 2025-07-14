@@ -3,8 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Routes, Router } from '@angular/router';
 import { environment } from "../environments/environment";
 import { Navigation } from './core/components/navigation/models/navigation.interface';
-import { NavigationType } from './core/components/navigation/models/navigation-type.interface';
-
 
 @Component({
   selector: 'app-root',
@@ -21,7 +19,6 @@ export class AppComponent implements OnInit {
   routes!: Routes;
 
   ngOnInit() {
-    this.createComponentStore();
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
@@ -30,7 +27,6 @@ export class AppComponent implements OnInit {
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
       this._router.resetConfig([...this._router.config, ...this.routes]);
-      console.log(navigations);
     });
   }
 
@@ -81,12 +77,6 @@ export class AppComponent implements OnInit {
       }
     }
     return routes;
-  }
-
-  createComponentStore(){
-    this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).subscribe(navigations => {
-      console.log(navigations);
-    });
   }
 
 }
