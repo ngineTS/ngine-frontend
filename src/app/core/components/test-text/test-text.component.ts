@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { TestText } from '../../models/test-text.interface';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
 
