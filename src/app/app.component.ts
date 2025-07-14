@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Routes, Router } from '@angular/router';
 import { environment } from "../environments/environment";
-import { Navigation } from './core/components/navigation/models/navigation.interface';
+import { Navigation } from './core/models/navigation.interface';
 
 @Component({
   selector: 'app-root',

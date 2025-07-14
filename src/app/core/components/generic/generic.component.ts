@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, inject, Injector, inputBinding, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Navigation } from '../navigation/models/navigation.interface';
-import { GenericService } from './generic.service';
+import { Navigation } from '../../models/navigation.interface';
+import { GenericService } from '../../services/generic.service';
 
 @Component({
   selector: 'app-generic',
@@ -28,7 +28,6 @@ export class GenericComponent implements OnInit, AfterViewInit {
   async loadComponents(){
     if (this._route.snapshot.data["navigations"]) {
       for (const navigation of this._route.snapshot.data["navigations"] as Navigation[]) {
-        console.log(this.genericService.componentStore);
         const component = await this.genericService.componentStore[navigation.navigationType.name]()
                           .then(m => m[this.kebabCasetoPascaleCase(navigation.navigationType.name) + 'Component']);
         const containerRef = this.container.createComponent(component, {

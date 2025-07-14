@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TestText } from './models/test-text.interface';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { TestText } from '../../models/test-text.interface';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Navigation } from '../navigation/models/navigation.interface';
+import { Navigation } from '../../models/navigation.interface';
 
 @Component({
   selector: 'app-test-text',
@@ -10,14 +9,11 @@ import { Navigation } from '../navigation/models/navigation.interface';
   templateUrl: './test-text.component.html',
   styleUrl: './test-text.component.scss'
 })
-export class TestTextComponent implements OnInit {
+export class TestTextComponent implements AfterViewInit, OnDestroy {
 
-  constructor(private _route: ActivatedRoute) {}
+  constructor() {}
 
   @Input() navigation!: Navigation;
-
-  ngOnInit() {
-  }
 
   ngAfterViewInit() {
     console.log("CONTENT", this.navigation);
@@ -27,7 +23,7 @@ export class TestTextComponent implements OnInit {
     console.log("AAAAAAAAA");
   }
 
-  onSpanClick(){
+  onSpanClick() {
   }
 
 }

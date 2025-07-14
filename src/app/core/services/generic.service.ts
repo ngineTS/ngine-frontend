@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class GenericService{
 
   componentStore: Record<string, () => Promise<any>> = {
-    "test-text":  () => import('../test-text/test-text.component')
+    "test-text":  () => import('../components/test-text/test-text.component')
   };
 
   /*createComponentsStore() {
