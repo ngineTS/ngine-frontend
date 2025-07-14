@@ -1,0 +1,6 @@
+<div class="test-text row" *ngIf="navigation">
+    <p>{{ navigation.id}}</p>
+    <span (click)="onSpanClick()">{{ navigation.name}}</span>
+    <span>{{ navigation.navigationType.name}}</span>
+</div>
+

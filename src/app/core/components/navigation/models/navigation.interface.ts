@@ -1,4 +1,4 @@
-import { TestText } from "../../test-text-component/models/test-text.interface";
+import { TestText } from "../../test-text/models/test-text.interface";
 import { NavigationType } from "./navigation-type.interface";
 
 export interface Navigation {

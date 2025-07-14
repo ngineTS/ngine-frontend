@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Routes, Router } from '@angular/router';
 import { environment } from "../environments/environment";
 import { Navigation } from './core/components/navigation/models/navigation.interface';
+import { NavigationType } from './core/components/navigation/models/navigation-type.interface';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   routes!: Routes;
 
   ngOnInit() {
+    this.createComponentStore();
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
@@ -65,14 +67,6 @@ export class AppComponent implements OnInit {
         else {
           routes.push({
             path: navigation.name,
-            data: { 
-              content: {
-                id: 'a',
-                name: `${navigation.name}`,
-                message: 'This is a cool message!',
-                navigationId: 'string' 
-              }
-            },
             loadComponent: () => import('./core/components/generic/generic.component').then(m => m.GenericComponent),
           });
         }
@@ -88,4 +82,11 @@ export class AppComponent implements OnInit {
     }
     return routes;
   }
+
+  createComponentStore(){
+    this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).subscribe(navigations => {
+      console.log(navigations);
+    });
+  }
+
 }

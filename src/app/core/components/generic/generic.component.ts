@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, inject, Injector, inputBinding, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { TestTextComponentComponent } from '../test-text-component/test-text-component.component';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TestText } from '../test-text-component/models/test-text.interface';
 import { Navigation } from '../navigation/models/navigation.interface';
 
 @Component({
@@ -17,15 +15,9 @@ export class GenericComponent implements OnInit, AfterViewInit {
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) container!: ViewContainerRef;
   injector = inject(Injector);
-  content: TestText = {
-                id: 'a',
-                name: `0`,
-                message: 'This is a cool message!',
-                navigationId: 'string',
-              }
 
   componentStore: Record<string, () => Promise<any>> = {
-    text: () => import(`../test-text-component/test-text-component.component`)
+    text: () => import(`../test-text/test-text.component`)
   }
   //new Map<string, () => Promise<unknown>>();
 
@@ -41,17 +33,15 @@ export class GenericComponent implements OnInit, AfterViewInit {
   }
 
   async loadComponents(){
-    console.log(this._route.snapshot.data["navigations"]);
-    for (const navigation of this._route.snapshot.data["navigations"] as Navigation[]) {
-      const component = await this.componentStore[navigation.navigationType.name]()
-                        .then(m => m["Test" + navigation.navigationType.name.charAt(0).toUpperCase() + navigation.navigationType.name.slice(1) + "ComponentComponent"]);
-      const containerRef = this.container.createComponent(component, {
-        injector: this.injector
-      });
-      //in real condition:
-      //don't pass testText object but call API to get content on component init
-      // --> no inputs needed
-      containerRef.setInput('content', navigation.testText);
+    if (this._route.snapshot.data["navigations"]) {
+      for (const navigation of this._route.snapshot.data["navigations"] as Navigation[]) {
+        const component = await this.componentStore[navigation.navigationType.name]()
+                          .then(m => m["Test" + navigation.navigationType.name.charAt(0).toUpperCase() + navigation.navigationType.name.slice(1) + "Component"]);
+        const containerRef = this.container.createComponent(component, {
+          injector: this.injector
+        });
+        containerRef.setInput('navigation', navigation);
+      }
     }
   }
 
