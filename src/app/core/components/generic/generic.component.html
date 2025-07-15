@@ -1,10 +1,12 @@
 <h2>Dynamic Lazy Component Loader</h2>
-<mat-spinner [diameter]="50" *ngIf="isSavingOrder"></mat-spinner>
+@if (isSavingOrder) {
+    <mat-spinner [diameter]="50"></mat-spinner>
+}
 <div cdkDropList 
      class="example-list" 
      (cdkDropListDropped)="drop($event)"
      [cdkDropListData]="navigations">
-    @for(navigation of navigations; track navigation) {
+    @for (navigation of navigations; track navigation) {
         <div class="example-box" cdkDrag>
             <ng-template #container></ng-template>
             <span>{{ navigation.displayLabel }}</span>
