@@ -28,7 +28,7 @@ export class NavigationComponent implements OnInit {
 
   navigations!: Navigation[];
 
-  ngOnInit(){
+  ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
   }
 
