@@ -2,15 +2,17 @@
 @if (isSavingOrder) {
     <mat-spinner [diameter]="50"></mat-spinner>
 }
-<div cdkDropList 
-     class="example-list" 
-     (cdkDropListDropped)="drop($event)"
-     [cdkDropListData]="navigations">
-    @for (navigation of navigations; track navigation) {
-        <div class="example-box" cdkDrag>
-            <ng-template #container></ng-template>
-            <span>{{ navigation.displayLabel }}</span>
-        </div>
-    }
-</div>
+@if (navigations && navigations.length > 0) {
+    <div cdkDropList 
+        class="example-list" 
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="navigations">
+        @for (navigation of navigations; track navigation) {
+            <div class="example-box" cdkDrag>
+                <ng-template #container></ng-template>
+                <span>{{ navigation.displayLabel }}</span>
+            </div>
+        }
+    </div>
+}
 <button class="add-nav-button" matTooltip="Add component">+</button>
