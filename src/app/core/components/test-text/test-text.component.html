@@ -1,6 +1,7 @@
-<div class="test-text row" *ngIf="navigation">
-    <p>{{ navigation.id}}</p>
-    <span (click)="onSpanClick()">{{ navigation.name}}</span>
-    <span>{{ navigation.navigationType.name}}</span>
+<div class="test-text row" *ngIf="content">
+    <p>{{ content.name }}</p>
+    <span (click)="onSpanClick()">{{ content.message }}</span>
+    <span>{{ content.navigationId}}</span>
+    <span>OOE</span>
 </div>
 

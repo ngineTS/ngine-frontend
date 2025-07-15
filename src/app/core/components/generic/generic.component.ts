@@ -15,7 +15,7 @@ export class GenericComponent implements OnInit, AfterViewInit {
   constructor(private _route: ActivatedRoute,
               private genericService: GenericService) {}
 
-  @ViewChild('container', { read: ViewContainerRef, static: true }) container!: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
   injector = inject(Injector);
 
   ngOnInit() {

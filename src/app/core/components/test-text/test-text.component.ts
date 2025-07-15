@@ -1,21 +1,35 @@
-import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit, signal, SimpleChanges } from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
+import { HttpClient } from '@angular/common/http';
+import { TestText } from '../../models/test-text.interface';
+import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-test-text',
   imports: [CommonModule],
   templateUrl: './test-text.component.html',
-  styleUrl: './test-text.component.scss'
+  styleUrl: './test-text.component.scss',
 })
-export class TestTextComponent implements AfterViewInit, OnDestroy {
+export class TestTextComponent implements OnInit {
 
-  constructor() {}
+  constructor(private _http: HttpClient) {}
 
   @Input() navigation!: Navigation;
+  content!: TestText;
 
-  ngAfterViewInit() {
-    console.log("CONTENT", this.navigation);
+  ngOnInit() {
+    console.log('content ON Init', this.content);
+    console.log("navigation", this.navigation);
+    this._http.get<TestText>(`${environment.APIURL}test-text/navigation/${this.navigation.id}`).subscribe(resp => {
+      this.content = resp;
+      console.log('content', this.content);
+    });
+  }
+
+  ngAfterViewInit(){
+  
   }
 
   ngOnDestroy() {
