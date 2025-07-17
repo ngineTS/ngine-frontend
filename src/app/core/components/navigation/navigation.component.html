@@ -5,11 +5,12 @@
          [cdkDropListData]="navigations"
          cdkDropListOrientation="horizontal">
         @for (navigation of navigations; track navigation) {
-            <div cdkDrag class="d-inline-flex mx-2 example-box">
+            <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
                 <a [routerLink]="navigation.name" 
                    [class.active]="isRouteActive(navigation.name)">
                     {{ navigation.displayLabel }}
                 </a>
+                <i class="bi bi-pen edit-icon"></i>
             </div>
         }
     </div>

@@ -9,8 +9,9 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations">
             @for (navigation of navigations; track navigation) {
-                <div class="example-box" cdkDrag>
+                <div class="example-box navigation-container" cdkDrag>
                     <ng-template #container></ng-template>
+                    <i class="bi bi-pen edit-icon"></i>
                     <span>{{ navigation.displayLabel }}</span>
                 </div>
             }
