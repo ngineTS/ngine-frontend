@@ -5,6 +5,8 @@ import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class NavigationComponent implements OnInit {
   
   constructor(public _router: Router,
               private _route: ActivatedRoute,
-              private _navigationService: NavigationService) {}
+              private _navigationService: NavigationService,
+              private _matDialog: MatDialog) {}
 
   navigations!: Navigation[];
 
@@ -44,6 +47,10 @@ export class NavigationComponent implements OnInit {
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigation.order = index);
     this._navigationService.saveNavigations(event.container.data).subscribe(resp => console.log(resp));
+  }
+
+  openNavigationManagementForm(){
+      this._matDialog.open(NavigationManagementComponent);
   }
 
 }

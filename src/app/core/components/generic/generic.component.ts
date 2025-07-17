@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
+
 
 @Component({
   selector: 'app-generic',
@@ -24,7 +27,8 @@ export class GenericComponent implements OnInit, AfterViewInit {
 
   constructor(private _route: ActivatedRoute,
               private _genericService: GenericService,
-              private _navigationService: NavigationService) {}
+              private _navigationService: NavigationService,
+              private _matDialog: MatDialog) {}
 
   @ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
   injector = inject(Injector);
@@ -64,6 +68,10 @@ export class GenericComponent implements OnInit, AfterViewInit {
     this._navigationService.saveNavigations(event.container.data).subscribe(resp => {
       //this.isSavingOrder = false;
     });
+  }
+
+  openNavigationManagementForm(){
+    this._matDialog.open(NavigationManagementComponent);
   }
 
 }

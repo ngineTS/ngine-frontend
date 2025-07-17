@@ -10,11 +10,15 @@
                    [class.active]="isRouteActive(navigation.name)">
                     {{ navigation.displayLabel }}
                 </a>
-                <i class="bi bi-pen edit-icon"></i>
+                <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm()"></i>
             </div>
         }
     </div>
-    <button class="add-nav-button" matTooltip="Add navigation">+</button>
+    <button class="add-nav-button" 
+            matTooltip="Add navigation" 
+            (click)="openNavigationManagementForm()">
+            +
+    </button>
 </div>
 <router-outlet />
 
