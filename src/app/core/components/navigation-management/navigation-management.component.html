@@ -1,5 +1,15 @@
 <div class="m-4">
     <form [formGroup]="navigationForm" class="row" (ngSubmit)="submitForm()">
+
+        <mat-form-field>
+            <mat-label>Navigation Type </mat-label>
+            <mat-select formControlName="navigationTypeId">
+                @for (navigationType of navigationTypes; track navigationType) {
+                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
         <mat-form-field>
             <mat-label>Parent </mat-label>
             <mat-select formControlName="navigationTypeId">
@@ -14,15 +24,6 @@
             <input matInput formControlName="displayLabel">
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Navigation Type </mat-label>
-            <mat-select formControlName="navigationTypeId">
-                @for (navigationType of navigationTypes; track navigationType) {
-                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-
         @if (data.type === 'header') {
             <mat-form-field>
                 <mat-label>Color</mat-label>
@@ -33,8 +34,8 @@
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
         <div class="row form-buttons">
-            <button class="col m-3 text-danger" matButton="outlined" type="submit">Delete</button>
-            <button class="col m-3" matButton="outlined" type="submit">Save</button>
+            <button class="col me-3 text-danger" matButton="outlined" type="submit">Delete</button>
+            <button class="col me-3" matButton="outlined" type="submit">Save</button>
         </div>
     </form>
 </div>
