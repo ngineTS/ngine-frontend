@@ -35,30 +35,44 @@ export class NavigationManagementComponent implements OnInit {
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
 
-  ngOnInit() {
+  ngOnInit() {   
+    this.createNavigationForm();
     //Get all navigation types for form dropdown
     this._navigationService.getNavigationTypes().subscribe(
-      navigationTypes => this.navigationTypes = navigationTypes
+      navigationTypes => {
+        this.navigationTypes = navigationTypes;
+        //if we work on header then fix navigation type and disable form control
+        if (this.data.type === 'header') {
+          this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
+          this.navigationForm.get('navigationTypeId')?.disable();
+        }
+      }
     );
-    //define navigation form
+    
+  }
+
+  submitForm() {
+    console.log(this.navigationForm.value);
+    console.log("ha");
+  }
+
+  /**
+   * Create Navigation Form
+   * If navigation is a header then add color form control
+   */
+  createNavigationForm() {
     this.navigationForm = this._fb.group({
       parentId: [this.data.navigation?.parentId ?? ''],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? ''],
       displayLabel: [this.data.navigation?.displayLabel ?? ''],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
-    //if we add/edit header then add color control
     if (this.data.type === 'header') {
       this.navigationForm.addControl(
         'color', 
         this._fb.control(this.data.navigation?.color ?? '')
       );
     }
-  }
-
-  submitForm() {
-    console.log(this.navigationForm.value);
-    console.log("ha");
   }
 
 }
