@@ -37,14 +37,16 @@ export class NavigationManagementComponent implements OnInit {
 
   ngOnInit() {   
     this.createNavigationForm();
-    //Get all navigation types for form dropdown
     this._navigationService.getNavigationTypes().subscribe(
       navigationTypes => {
         this.navigationTypes = navigationTypes;
-        //if we work on header then fix navigation type and disable form control
         if (this.data.type === 'header') {
+          this.navigationTypes = navigationTypes;
           this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
           this.navigationForm.get('navigationTypeId')?.disable();
+        }
+        else{
+          this.navigationTypes = navigationTypes.filter(obj => obj.name !== 'header');
         }
       }
     );
