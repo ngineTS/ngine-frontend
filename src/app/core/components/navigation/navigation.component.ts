@@ -55,7 +55,8 @@ export class NavigationComponent implements OnInit {
       data: {
         navigation: navigation,
         type: 'header',
-      }
+      },
+      width: 'fit-content'
     });
   }
 

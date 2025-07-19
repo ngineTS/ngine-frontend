@@ -1,28 +1,44 @@
-<div class="container m-4">
+<div class="m-4">
     <form [formGroup]="navigationForm" class="row" (ngSubmit)="submitForm()">
-        <label for="parent-id">Parent: </label>
-        <input id="parent-id" type="text" formControlName="parentId" />
-
-        <label for="display-label">Name: </label>
-        <input id="display-label" type="text" formControlName="displayLabel" />
 
         <mat-form-field>
-            <mat-label>Navigation Type: </mat-label>
+            <mat-label>Parent </mat-label>
             <mat-select formControlName="navigationTypeId">
                 @for (navigationType of navigationTypes; track navigationType) {
-                <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
 
-        <mat-checkbox id="disable-input" formControlName="isDisabled">Disable</mat-checkbox>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="displayLabel">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Navigation Type </mat-label>
+            <mat-select formControlName="navigationTypeId">
+                @for (navigationType of navigationTypes; track navigationType) {
+                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
 
         @if (data.type === 'header') {
-            <label for="color">Color: </label>
-            <input id="color" type="text" formControlName="color" />
+            <mat-form-field>
+                <mat-label>Color</mat-label>
+                <input matInput formControlName="color">
+            </mat-form-field>
         }
 
-        <button type="submit" class="float-right">Submit Form</button>
+        <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
+        
+        <div class="row form-buttons">
+            <button class="col m-3 text-danger" matButton="outlined" type="submit">Delete</button>
+            <button class="col m-3" matButton="outlined" type="submit">Save</button>
+        </div>
+
     </form>
+
 </div>
 

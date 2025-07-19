@@ -7,13 +7,21 @@ import { NavigationType } from '../../models/navigation-type.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
 @Component({
   selector: 'app-navigation-management',
-  imports: [ReactiveFormsModule, MatCheckboxModule, MatFormFieldModule, MatSelectModule],
+  imports: [
+    ReactiveFormsModule, 
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule
+  ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
 })
