@@ -1,14 +1,15 @@
-import { Component, Inject, inject, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationService } from '../../services/navigation.service';
 import { NavigationType } from '../../models/navigation-type.interface';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @Component({
   selector: 'app-navigation-management',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatCheckboxModule],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
 })
@@ -44,6 +45,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.navigationForm.value);
     console.log("ha");
   }
 

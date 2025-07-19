@@ -9,8 +9,7 @@
         <label for="navigation-type">Navigation Type: </label>
         <input id="navigation-type" type="text" formControlName="navigationTypeId" />
 
-        <label for="disable-input">Disable: </label>
-        <input id="disable-input" formControlName="isDisabled" />
+        <mat-checkbox id="disable-input" formControlName="isDisabled">Disable</mat-checkbox>
 
         @if (data.type === 'header') {
             <label for="color">Color: </label>
