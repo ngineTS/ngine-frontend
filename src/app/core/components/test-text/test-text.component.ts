@@ -1,10 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
 import { TestText } from '../../models/test-text.interface';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-test-text',
