@@ -5,11 +5,15 @@ import { Navigation } from '../../models/navigation.interface';
 import { NavigationService } from '../../services/navigation.service';
 import { NavigationType } from '../../models/navigation-type.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 
 @Component({
   selector: 'app-navigation-management',
-  imports: [ReactiveFormsModule, MatCheckboxModule],
+  imports: [ReactiveFormsModule, MatCheckboxModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
 })
@@ -21,7 +25,7 @@ export class NavigationManagementComponent implements OnInit {
               private _navigationService: NavigationService) {}
 
   navigationForm!: FormGroup;
-  navigationTypes!: NavigationType[];
+  navigationTypes: NavigationType[] = [];
 
   ngOnInit() {
     //Get all navigation types for form dropdown

@@ -6,8 +6,14 @@
         <label for="display-label">Name: </label>
         <input id="display-label" type="text" formControlName="displayLabel" />
 
-        <label for="navigation-type">Navigation Type: </label>
-        <input id="navigation-type" type="text" formControlName="navigationTypeId" />
+        <mat-form-field>
+            <mat-label>Navigation Type: </mat-label>
+            <mat-select formControlName="navigationTypeId">
+                @for (navigationType of navigationTypes; track navigationType) {
+                <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
 
         <mat-checkbox id="disable-input" formControlName="isDisabled">Disable</mat-checkbox>
 
