@@ -7,6 +7,14 @@ export interface Navigation {
     name: string;
     displayLabel: string;
     order: number;
+    color: string;
+    isDisabled: string;
+    createdDate: Date;
+    createdBy: string;
+    updatedDate: Date;
+    updatedBy: string;
+    deletedDate: Date;
+    deletedBy: string;
     navigationTypeId: string;
     navigationType: NavigationType;
     children?: Navigation[];

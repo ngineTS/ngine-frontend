@@ -11,7 +11,7 @@
             @for (navigation of navigations; track navigation) {
                 <div class="example-box navigation-container" cdkDrag>
                     <ng-template #container></ng-template>
-                    <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm()"></i>
+                    <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm(navigation)"></i>
                     <span>{{ navigation.displayLabel }}</span>
                 </div>
             }

@@ -1,1 +1,23 @@
-<p>navigation-management works!</p>
+<div class="container m-4">
+    <form [formGroup]="navigationForm" class="row" (ngSubmit)="submitForm()">
+        <label for="parent-id">Parent: </label>
+        <input id="parent-id" type="text" formControlName="parentId" />
+
+        <label for="display-label">Name: </label>
+        <input id="display-label" type="text" formControlName="displayLabel" />
+
+        <label for="navigation-type">Navigation Type: </label>
+        <input id="navigation-type" type="text" formControlName="navigationTypeId" />
+
+        <label for="disable-input">Disable: </label>
+        <input id="disable-input" formControlName="isDisabled" />
+
+        @if (data.type === 'header') {
+            <label for="color">Color: </label>
+            <input id="color" type="text" formControlName="color" />
+        }
+
+        <button type="submit" class="float-right">Submit Form</button>
+    </form>
+</div>
+

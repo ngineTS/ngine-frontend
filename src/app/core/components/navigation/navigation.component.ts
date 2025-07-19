@@ -49,8 +49,14 @@ export class NavigationComponent implements OnInit {
     this._navigationService.saveNavigations(event.container.data).subscribe(resp => console.log(resp));
   }
 
-  openNavigationManagementForm(){
-      this._matDialog.open(NavigationManagementComponent);
+  openNavigationManagementForm(navigation?: Navigation) {
+    console.log('navigation component', navigation);
+    this._matDialog.open(NavigationManagementComponent, {
+      data: {
+        navigation: navigation,
+        type: 'header',
+      }
+    });
   }
 
 }

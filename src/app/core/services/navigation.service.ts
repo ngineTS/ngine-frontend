@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
+import { NavigationType } from "../models/navigation-type.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class NavigationService {
     /**
      * Save navigations
      * @param navigations to be saved
-     * @returns navigations saved
+     * @returns an observable of navigations saved
      */
     saveNavigations(navigations: Navigation[]) {
         return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations);
@@ -26,5 +27,13 @@ export class NavigationService {
      */
     updateNavigation(navigationProps: Partial<Navigation>) {
         return this._http.put(`${environment.APIURL}navigation`, navigationProps);
+    }
+
+    /**
+     * Get all navigation types
+     * @returns an observable of navigation types
+     */
+    getNavigationTypes() {
+        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`);
     }
 }

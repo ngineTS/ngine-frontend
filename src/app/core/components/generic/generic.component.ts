@@ -70,8 +70,14 @@ export class GenericComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openNavigationManagementForm(){
-    this._matDialog.open(NavigationManagementComponent);
+  openNavigationManagementForm(navigation?: Navigation) {
+    console.log('generic component', navigation);
+    this._matDialog.open(NavigationManagementComponent, {
+      data: {
+        navigation: navigation,
+        type: 'component',
+      }
+    });
   }
 
 }

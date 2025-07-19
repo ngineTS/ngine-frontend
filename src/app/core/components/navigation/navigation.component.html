@@ -10,7 +10,7 @@
                    [class.active]="isRouteActive(navigation.name)">
                     {{ navigation.displayLabel }}
                 </a>
-                <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm()"></i>
+                <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm(navigation)"></i>
             </div>
         }
     </div>

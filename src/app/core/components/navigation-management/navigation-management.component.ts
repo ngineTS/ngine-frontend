@@ -1,11 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Navigation } from '../../models/navigation.interface';
+import { NavigationService } from '../../services/navigation.service';
+import { NavigationType } from '../../models/navigation-type.interface';
+
 
 @Component({
   selector: 'app-navigation-management',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
 })
-export class NavigationManagementComponent {
+export class NavigationManagementComponent implements OnInit {
+
+  constructor(@Inject(MAT_DIALOG_DATA) 
+              public data: {navigation: Navigation, type: 'header' | 'component' },
+              private _fb: FormBuilder,
+              private _navigationService: NavigationService) {}
+
+  navigationForm!: FormGroup;
+  navigationTypes!: NavigationType[];
+
+  ngOnInit() {
+    //Get all navigation types for form dropdown
+    this._navigationService.getNavigationTypes().subscribe(
+      navigationTypes => this.navigationTypes = navigationTypes
+    );
+    //define navigation form
+    this.navigationForm = this._fb.group({
+      parentId: [this.data.navigation?.parentId ?? ''],
+      navigationTypeId: [this.data.navigation?.navigationTypeId ?? ''],
+      displayLabel: [this.data.navigation?.displayLabel ?? ''],
+      isDisabled: [this.data.navigation?.isDisabled ?? false],
+    });
+    //if we add/edit header then add color control
+    if (this.data.type === 'header') {
+      this.navigationForm.addControl(
+        'color', 
+        this._fb.control(this.data.navigation?.color ?? '')
+      );
+    }
+  }
+
+  submitForm() {
+    console.log("ha");
+  }
 
 }
