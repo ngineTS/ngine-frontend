@@ -30,7 +30,7 @@ export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { navigation: Navigation, type: 'header' | 'component' },
-              private _fb: FormBuilder,
+              private _formBuilder: FormBuilder,
               private _navigationService: NavigationService) {}
 
   navigationForm!: FormGroup;
@@ -55,7 +55,7 @@ export class NavigationManagementComponent implements OnInit {
    * If navigation is a header then add color form control.
    */
   createNavigationForm() {
-    this.navigationForm = this._fb.group({
+    this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? null, Validators.required],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
@@ -64,7 +64,7 @@ export class NavigationManagementComponent implements OnInit {
     if (this.data.type === 'header') {
       this.navigationForm.addControl(
         'color', 
-        this._fb.control(this.data.navigation?.color ?? null, Validators.required)
+        this._formBuilder.control(this.data.navigation?.color ?? null, Validators.required)
       );
     }
   }
