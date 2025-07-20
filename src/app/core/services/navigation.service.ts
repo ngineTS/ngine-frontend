@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
 import { NavigationType } from "../models/navigation-type.interface";
+import { take } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class NavigationService {
      * @returns an observable of navigations saved
      */
     saveNavigations(navigations: Navigation[]) {
-        return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations);
+        return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
     }
 
     /**
@@ -26,7 +27,7 @@ export class NavigationService {
      * @returns something to define
      */
     updateNavigation(navigationProps: Partial<Navigation>) {
-        return this._http.put(`${environment.APIURL}navigation`, navigationProps);
+        return this._http.put(`${environment.APIURL}navigation`, navigationProps).pipe(take(1));
     }
 
     /**
@@ -34,6 +35,6 @@ export class NavigationService {
      * @returns an observable of navigation types
      */
     getNavigationTypes() {
-        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`);
+        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).pipe(take(1));
     }
 }
