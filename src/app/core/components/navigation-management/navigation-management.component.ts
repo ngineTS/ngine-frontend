@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { map, Observable, take } from 'rxjs';
 
 
 
@@ -37,7 +38,7 @@ export class NavigationManagementComponent implements OnInit {
   parentNavigations: Navigation[] = [];
 
   ngOnInit() {   
-    this.getParentMenuValues();
+    this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.createNavigationForm();
     this._navigationService.getNavigationTypes().subscribe(
       navigationTypes => {
@@ -84,34 +85,35 @@ export class NavigationManagementComponent implements OnInit {
    * Parents can only be headers
    * If we are at header level, the parents can only be headers without component children.
    * If we are at component level, the parents can only be headers without header children.
+   * @returns An observable of navigations that can be used as parents.
    */
-  getParentMenuValues() {
-    this._navigationService.getFlatNavigations().subscribe(flatNavigations => {
-      console.log('flatten navs', flatNavigations);
-      console.log('data type', this.data.type);
-      this.parentNavigations = flatNavigations.filter(obj => {
-        if (obj.name === this.data.navigation?.name) {
-          return false;
-        }
-        if(obj.navigationType.name !== 'header') {
-          return false;
-        }
-        if(obj.children && obj.children.length > 0) {
-          if (this.data.type === 'header') {
-            if (obj.children[0].navigationType.name !== 'header') {
-              return false;
+  getParentMenuValues(): Observable<Navigation[]> {
+    return this._navigationService.getFlatNavigations().pipe(
+      take(1),
+      map(flatNavigations => {
+        return flatNavigations.filter(obj => {
+          if (obj.name === this.data.navigation?.name) {
+            return false;
+          }
+          if(obj.navigationType.name !== 'header') {
+            return false;
+          }
+          if(obj.children && obj.children.length > 0) {
+            if (this.data.type === 'header') {
+              if (obj.children[0].navigationType.name !== 'header') {
+                return false;
+              }
+            }
+            else {
+              if (obj.children[0].navigationType.name === 'header') {
+                return false;
+              }
             }
           }
-          else {
-            if (obj.children[0].navigationType.name === 'header') {
-              return false;
-            }
-          }
-        }
-        return true;
-      });
-      console.log(this.parentNavigations);
-    });
+          return true;
+        });
+      }
+    ));
   }
   
 

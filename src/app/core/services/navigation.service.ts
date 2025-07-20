@@ -43,6 +43,6 @@ export class NavigationService {
      * @returns an observable of all navigations
      */
     getFlatNavigations() {
-        return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`).pipe(take(1));
+        return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`);
     }
 }
