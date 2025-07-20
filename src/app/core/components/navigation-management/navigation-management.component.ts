@@ -28,14 +28,16 @@ import { MatButtonModule } from '@angular/material/button';
 export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
-              public data: {navigation: Navigation, type: 'header' | 'component' },
+              public data: { navigation: Navigation, type: 'header' | 'component' },
               private _fb: FormBuilder,
               private _navigationService: NavigationService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
+  parentNavigations: Navigation[] = [];
 
   ngOnInit() {   
+    this.getParentMenuValues();
     this.createNavigationForm();
     this._navigationService.getNavigationTypes().subscribe(
       navigationTypes => {
@@ -59,7 +61,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Create Navigation Form
+   * Create Navigation Form.
    * If navigation is a header then add color form control
    */
   createNavigationForm() {
@@ -76,5 +78,41 @@ export class NavigationManagementComponent implements OnInit {
       );
     }
   }
+
+  /**
+   * Get list of possible parents assignement.
+   * Parents can only be headers
+   * If we are at header level, the parents can only be headers without component children.
+   * If we are at component level, the parents can only be headers without header children.
+   */
+  getParentMenuValues() {
+    this._navigationService.getFlatNavigations().subscribe(flatNavigations => {
+      console.log('flatten navs', flatNavigations);
+      console.log('data type', this.data.type);
+      this.parentNavigations = flatNavigations.filter(obj => {
+        if (obj.name === this.data.navigation?.name) {
+          return false;
+        }
+        if(obj.navigationType.name !== 'header') {
+          return false;
+        }
+        if(obj.children && obj.children.length > 0) {
+          if (this.data.type === 'header') {
+            if (obj.children[0].navigationType.name !== 'header') {
+              return false;
+            }
+          }
+          else {
+            if (obj.children[0].navigationType.name === 'header') {
+              return false;
+            }
+          }
+        }
+        return true;
+      });
+      console.log(this.parentNavigations);
+    });
+  }
+  
 
 }

@@ -13,8 +13,8 @@
         <mat-form-field>
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
-                @for (navigationType of navigationTypes; track navigationType) {
-                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                @for (parent of parentNavigations; track parent) {
+                    <mat-option [value]="parent.id">{{ parent.displayLabel }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>

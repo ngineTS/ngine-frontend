@@ -37,4 +37,12 @@ export class NavigationService {
     getNavigationTypes() {
         return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).pipe(take(1));
     }
+
+    /**
+     * Get flatten navigations
+     * @returns an observable of all navigations
+     */
+    getFlatNavigations() {
+        return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`).pipe(take(1));
+    }
 }
