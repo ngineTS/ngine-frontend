@@ -35,7 +35,7 @@ export class NavigationService {
      * @returns an observable of navigation types
      */
     getNavigationTypes() {
-        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).pipe(take(1));
+        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`);
     }
 
     /**

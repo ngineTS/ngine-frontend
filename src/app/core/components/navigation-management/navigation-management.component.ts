@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, retry, take } from 'rxjs';
 
 
 
@@ -39,21 +39,8 @@ export class NavigationManagementComponent implements OnInit {
 
   ngOnInit() {   
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
+    this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
-    this._navigationService.getNavigationTypes().subscribe(
-      navigationTypes => {
-        this.navigationTypes = navigationTypes;
-        if (this.data.type === 'header') {
-          this.navigationTypes = navigationTypes;
-          this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
-          this.navigationForm.get('navigationTypeId')?.disable();
-        }
-        if (this.data.type === 'component') {
-          this.navigationTypes = navigationTypes.filter(obj => obj.name !== 'header');
-        }
-      }
-    );
-    
   }
 
   submitForm() {
@@ -62,7 +49,8 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Create Navigation Form.
+   * Create Navigation form.
+   * 
    * If navigation is a header then add color form control
    */
   createNavigationForm() {
@@ -81,14 +69,16 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Get list of possible parents assignement.
-   * Parents can only be headers
-   * If we are at header level, the parents can only be headers without component children.
-   * If we are at component level, the parents can only be headers without header children.
-   * @returns An observable of navigations that can be used as parents.
+   * Set the parent menu values of this form.
+   * 
+   * If form is a header: the parents can only be headers without component children.
+   * 
+   * If form is a component: the parents can only be headers without header children.
+   * @returns An observable of parent navigations.
    */
   getParentMenuValues(): Observable<Navigation[]> {
     return this._navigationService.getFlatNavigations().pipe(
+      retry(2),
       take(1),
       map(flatNavigations => {
         return flatNavigations.filter(obj => {
@@ -115,6 +105,32 @@ export class NavigationManagementComponent implements OnInit {
       }
     ));
   }
-  
+
+  /**
+   * Set the Navigation Type menu values.
+   * 
+   * If form is a component: exclude "header" values.
+   * 
+   * If form is a header: fix navigation type input value to "header" and disable it. 
+   * @returns An observable of navigation types
+   */
+  getNavigationTypeMenuValues(): Observable<NavigationType[]> {
+    return this._navigationService.getNavigationTypes().pipe(
+      retry(2),
+      take(1),
+      map(
+        navigationTypes => {
+          if (this.data.type === 'header') {
+            this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
+            this.navigationForm.get('navigationTypeId')?.disable();
+            return navigationTypes;
+          }
+          else {
+            return navigationTypes.filter(obj => obj.name !== 'header');
+          }
+        }
+      )
+    );
+  }
 
 }
