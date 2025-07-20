@@ -75,7 +75,7 @@ export class GenericComponent implements OnInit, AfterViewInit {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: 'component',
+        type: this.navigations?.length > 0 ? 'component' : undefined,
       }
     });
   }

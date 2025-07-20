@@ -16,11 +16,18 @@
                 </div>
             }
         </div>
+        <button class="add-nav-button" 
+                matTooltip="Add component" 
+                (click)="openNavigationManagementForm()">
+                +
+        </button>
     }
-    <button class="add-nav-button" 
-            matTooltip="Add component" 
-            (click)="openNavigationManagementForm()">
-            +
-    </button>
+    @else {
+         <button class="add-nav-button" 
+                matTooltip="Add navigation or component" 
+                (click)="openNavigationManagementForm()">
+                +
+        </button>
+    }
 </div>
 

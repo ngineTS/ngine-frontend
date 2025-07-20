@@ -45,7 +45,7 @@ export class NavigationManagementComponent implements OnInit {
           this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
           this.navigationForm.get('navigationTypeId')?.disable();
         }
-        else{
+        if (this.data.type === 'component') {
           this.navigationTypes = navigationTypes.filter(obj => obj.name !== 'header');
         }
       }
