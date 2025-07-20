@@ -34,7 +34,9 @@
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
         <div class="row form-buttons">
-            <button class="col me-3 text-danger" matButton="outlined" type="submit">Delete</button>
+            @if (data.navigation) {
+                <button class="col me-3 text-danger" matButton="outlined" type="submit">Delete</button>
+            }
             <button class="col me-3" matButton="outlined" type="submit">Save</button>
         </div>
     </form>
