@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationService } from '../../services/navigation.service';
@@ -46,7 +46,7 @@ export class NavigationManagementComponent implements OnInit {
   submitForm() {
     console.log(this.navigationForm.value);
     console.log("ha");
-    //this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => console.log(resp));
+    this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => console.log(resp));
   }
 
   /**
@@ -56,15 +56,15 @@ export class NavigationManagementComponent implements OnInit {
    */
   createNavigationForm() {
     this.navigationForm = this._fb.group({
-      parentId: [this.data.navigation?.parentId ?? null],
-      navigationTypeId: [this.data.navigation?.navigationTypeId ?? null],
-      displayLabel: [this.data.navigation?.displayLabel ?? null],
+      parentId: [this.data.navigation?.parentId ?? null, Validators.required],
+      navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
+      displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
     if (this.data.type === 'header') {
       this.navigationForm.addControl(
         'color', 
-        this._fb.control(this.data.navigation?.color ?? null)
+        this._fb.control(this.data.navigation?.color ?? null, Validators.required)
       );
     }
   }

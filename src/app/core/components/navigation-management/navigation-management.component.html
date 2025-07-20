@@ -38,7 +38,12 @@
             @if (data.navigation) {
                 <button class="col me-3 text-danger" matButton="outlined" type="submit">Delete</button>
             }
-            <button class="col me-3" matButton="outlined" type="submit">Save</button>
+            <button class="col me-3" 
+                    matButton="outlined" 
+                    type="submit"
+                    [disabled]="!navigationForm.valid">
+                Save
+            </button>
         </div>
     </form>
 </div>
