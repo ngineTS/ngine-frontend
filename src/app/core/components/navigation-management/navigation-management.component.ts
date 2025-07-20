@@ -55,15 +55,15 @@ export class NavigationManagementComponent implements OnInit {
    */
   createNavigationForm() {
     this.navigationForm = this._fb.group({
-      parentId: [this.data.navigation?.parentId ?? ''],
-      navigationTypeId: [this.data.navigation?.navigationTypeId ?? ''],
-      displayLabel: [this.data.navigation?.displayLabel ?? ''],
+      parentId: [this.data.navigation?.parentId ?? null],
+      navigationTypeId: [this.data.navigation?.navigationTypeId ?? null],
+      displayLabel: [this.data.navigation?.displayLabel ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
     if (this.data.type === 'header') {
       this.navigationForm.addControl(
         'color', 
-        this._fb.control(this.data.navigation?.color ?? '')
+        this._fb.control(this.data.navigation?.color ?? null)
       );
     }
   }
