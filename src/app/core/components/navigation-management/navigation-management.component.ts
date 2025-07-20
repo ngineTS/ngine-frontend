@@ -46,12 +46,13 @@ export class NavigationManagementComponent implements OnInit {
   submitForm() {
     console.log(this.navigationForm.value);
     console.log("ha");
+    //this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => console.log(resp));
   }
 
   /**
    * Create Navigation form.
    * 
-   * If navigation is a header then add color form control
+   * If navigation is a header then add color form control.
    */
   createNavigationForm() {
     this.navigationForm = this._fb.group({
@@ -111,7 +112,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * If form is a component: exclude "header" values.
    * 
-   * If form is a header: fix navigation type input value to "header" and disable it. 
+   * If form is a header: fix navigation type input value to "header". 
    * @returns An observable of navigation types
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
@@ -122,8 +123,7 @@ export class NavigationManagementComponent implements OnInit {
         navigationTypes => {
           if (this.data.type === 'header') {
             this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
-            this.navigationForm.get('navigationTypeId')?.disable({ onlySelf: true });
-            return navigationTypes;
+            return navigationTypes.filter(obj => obj.name === 'header');;
           }
           else {
             return navigationTypes.filter(obj => obj.name !== 'header');
