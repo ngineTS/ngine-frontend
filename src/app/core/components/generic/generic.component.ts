@@ -8,6 +8,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 
 
@@ -19,6 +20,7 @@ import { NavigationManagementComponent } from '../navigation-management/navigati
     CdkDropList, 
     CdkDrag,
     MatProgressSpinnerModule,
+    MatMenuModule,
   ],
   templateUrl: './generic.component.html',
   styleUrl: './generic.component.scss'
@@ -70,12 +72,12 @@ export class GenericComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openNavigationManagementForm(navigation?: Navigation) {
+  openNavigationManagementForm(type: 'header' | 'component', navigation?: Navigation) {
     console.log('generic component', navigation);
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: this.navigations?.length > 0 ? 'component' : undefined,
+        type: type,
       }
     });
   }

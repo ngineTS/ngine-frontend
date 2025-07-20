@@ -11,23 +11,27 @@
             @for (navigation of navigations; track navigation) {
                 <div class="example-box navigation-container" cdkDrag>
                     <ng-template #container></ng-template>
-                    <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm(navigation)"></i>
+                    <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm('component', navigation)"></i>
                     <span>{{ navigation.displayLabel }}</span>
                 </div>
             }
         </div>
         <button class="add-nav-button" 
                 matTooltip="Add component" 
-                (click)="openNavigationManagementForm()">
+                (click)="openNavigationManagementForm('component')">
                 +
         </button>
     }
     @else {
-         <button class="add-nav-button" 
-                matTooltip="Add navigation or component" 
-                (click)="openNavigationManagementForm()">
+        <button matButton 
+                [matMenuTriggerFor]="menu" 
+                class="add-nav-button">
                 +
         </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openNavigationManagementForm('header')">Add navigation</button>
+            <button mat-menu-item (click)="openNavigationManagementForm('component')">Add component</button>
+        </mat-menu>
     }
 </div>
 
