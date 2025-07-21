@@ -153,4 +153,10 @@ export class NavigationManagementComponent implements OnInit {
     );
   }
 
+  deleteNavigation() {
+    if (this.data.navigation?.id) {
+      this._navigationService.deleteNavigation(this.data.navigation.id).subscribe(resp => console.log(resp));
+    }
+  }
+
 }

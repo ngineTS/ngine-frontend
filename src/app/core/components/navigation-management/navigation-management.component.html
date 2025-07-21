@@ -36,7 +36,12 @@
         
         <div class="row form-buttons">
             @if (data.navigation) {
-                <button class="col me-3 text-danger" matButton="outlined" type="submit">Delete</button>
+                <button class="col me-3 text-danger" 
+                        matButton="outlined" 
+                        type="submit"
+                        (click)="deleteNavigation()">
+                        Delete
+                </button>
             }
             <button class="col me-3" 
                     matButton="outlined" 

@@ -5,6 +5,12 @@ import { environment } from "../../../environments/environment";
 import { NavigationType } from "../models/navigation-type.interface";
 import { take } from "rxjs";
 
+export type UpdateReturnType = {
+    affected: number;
+    generatedMaps: Array<unknown>;
+    raw: Array<unknown>;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,7 +33,7 @@ export class NavigationService {
      * @returns something to define
      */
     updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
-        return this._http.patch(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
+        return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
     }
 
     /**
@@ -44,5 +50,9 @@ export class NavigationService {
      */
     getFlatNavigations() {
         return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`);
+    }
+
+    deleteNavigation(navigationId: string) {
+        return this._http.delete<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`).pipe(take(1));
     }
 }
