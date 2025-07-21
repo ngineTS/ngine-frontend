@@ -3,7 +3,11 @@
     text-underline-offset: 3px;
     text-decoration: underline !important;
     text-decoration-thickness: 2px !important;
-    color: green;
+    color: green !important;
+}
+
+.disabled {
+  color: #ccc;
 }
 
 .add-nav-button {
