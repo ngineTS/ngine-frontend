@@ -54,6 +54,7 @@ export class NavigationManagementComponent implements OnInit {
         .subscribe(resp => console.log(resp));
     }
     else {
+      //for a new nav: setup order as last of navigation sisters realted to parent selected
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
       console.log(this.navigationForm.value);
@@ -63,7 +64,7 @@ export class NavigationManagementComponent implements OnInit {
    }
 
   /**
-   * Create Navigation form.
+   * Create Navigation form based on navigation passed in this component.
    * 
    * If navigation is a header then add color form control.
    * 
@@ -129,9 +130,9 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Set the Navigation Type menu values.
    * 
-   * If form is a component: exclude "header" values.
+   * If form is a component: exclude "header" type.
    * 
-   * If form is a header: fix navigation type input value to "header". 
+   * If form is a header: keep only "header" type. 
    * @returns An observable of navigation types
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
