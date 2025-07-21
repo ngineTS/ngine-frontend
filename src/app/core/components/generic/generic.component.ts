@@ -73,11 +73,11 @@ export class GenericComponent implements OnInit, AfterViewInit {
   }
 
   openNavigationManagementForm(type: 'header' | 'component', navigation?: Navigation) {
-    console.log('generic component', navigation);
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
         type: type,
+        parentId: this._route.snapshot.data["parentId"]
       }
     });
   }

@@ -29,23 +29,27 @@ import { map, Observable, retry, take } from 'rxjs';
 export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
-              public data: { navigation: Navigation, type: 'header' | 'component' },
+              public data: { 
+                navigation?: Navigation, 
+                type: 'header' | 'component',
+                parentId: string,
+              },
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
   parentNavigations: Navigation[] = [];
+  navigationSisters: Navigation[] = [];
 
-  ngOnInit() {   
+  ngOnInit() {
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
   }
 
   submitForm() {
-    console.log(this.navigationForm.value);
-    console.log("ha");
+    this.navigationForm.value["order"] = this.navigationSisters.length;
     this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => console.log(resp));
   }
 
@@ -53,10 +57,12 @@ export class NavigationManagementComponent implements OnInit {
    * Create Navigation form.
    * 
    * If navigation is a header then add color form control.
+   * 
+   * If navigation is a component then make parent as mandatory
    */
   createNavigationForm() {
     this.navigationForm = this._formBuilder.group({
-      parentId: [this.data.navigation?.parentId ?? null, Validators.required],
+      parentId: [this.data.navigation?.parentId ?? this.data.parentId],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
@@ -67,10 +73,13 @@ export class NavigationManagementComponent implements OnInit {
         this._formBuilder.control(this.data.navigation?.color ?? null, Validators.required)
       );
     }
+    if (this.data.type === 'component') {
+      this.navigationForm.get('parentId')?.addValidators([Validators.required]);
+    }
   }
 
   /**
-   * Set the parent menu values of this form.
+   * Set the parent menu values of this form and retrieve sister navigations.
    * 
    * If form is a header: the parents can only be headers without component children.
    * 
@@ -82,6 +91,7 @@ export class NavigationManagementComponent implements OnInit {
       retry(2),
       take(1),
       map(flatNavigations => {
+        this.navigationSisters = flatNavigations.filter(obj => obj.parentId === this.data.parentId);
         return flatNavigations.filter(obj => {
           if (obj.name === this.data.navigation?.name) {
             return false;

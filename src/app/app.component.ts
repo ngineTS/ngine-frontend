@@ -22,7 +22,10 @@ export class AppComponent implements OnInit {
     this._http.get<Navigation[]>(`${environment.APIURL}navigation`).subscribe(navigations => {
       this.routes = [{ 
         path: '', 
-        data: { navigations: navigations },
+        data: { 
+          navigations: navigations,
+          parentId: null 
+        },
         loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
@@ -45,7 +48,10 @@ export class AppComponent implements OnInit {
           if (navigation.children[0].navigationType.name === 'header') {
             routes.push({
               path: navigation.name,
-              data: { navigations: navigation.children },
+              data: { 
+                navigations: navigation.children,
+                parentId: navigation.id
+              },
               loadComponent: () => import('./core/components/navigation/navigation.component').then(m => m.NavigationComponent),
               loadChildren: () => this.generateNestedRoutes(navigation.children!),
             });
@@ -54,7 +60,10 @@ export class AppComponent implements OnInit {
           else {
             routes.push({
               path: navigation.name,
-              data: { navigations: navigation.children },
+              data: { 
+                navigations: navigation.children,
+                parentId: navigation.id,
+              },
               loadComponent: () => import('./core/components/generic/generic.component').then(m => m.GenericComponent),
             });
           }
@@ -63,6 +72,10 @@ export class AppComponent implements OnInit {
         else {
           routes.push({
             path: navigation.name,
+            data: {
+              navigations: null,
+              parentId: navigation.id
+            },
             loadComponent: () => import('./core/components/generic/generic.component').then(m => m.GenericComponent),
           });
         }

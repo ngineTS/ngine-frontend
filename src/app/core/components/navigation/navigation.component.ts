@@ -50,13 +50,12 @@ export class NavigationComponent implements OnInit {
   }
 
   openNavigationManagementForm(navigation?: Navigation) {
-    console.log('navigation component', navigation);
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
         type: 'header',
+        parentId: this._route.snapshot.data["parentId"]
       },
-      width: 'fit-content'
     });
   }
 
