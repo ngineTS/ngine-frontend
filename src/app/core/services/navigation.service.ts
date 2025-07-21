@@ -26,8 +26,8 @@ export class NavigationService {
      * @param navigationProps An array of navigation properties to update
      * @returns something to define
      */
-    updateNavigation(navigationProps: Partial<Navigation>) {
-        return this._http.put(`${environment.APIURL}navigation`, navigationProps).pipe(take(1));
+    updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
+        return this._http.patch(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
     }
 
     /**

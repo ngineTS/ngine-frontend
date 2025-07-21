@@ -39,8 +39,8 @@ export class NavigationManagementComponent implements OnInit {
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
+  flatNavigations: Navigation[] = [];
   parentNavigations: Navigation[] = [];
-  navigationSisters: Navigation[] = [];
 
   ngOnInit() {
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
@@ -49,9 +49,18 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   submitForm() {
-    this.navigationForm.value["order"] = this.navigationSisters.length;
-    this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => console.log(resp));
-  }
+    if(this.data.navigation?.id) {
+      this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
+        .subscribe(resp => console.log(resp));
+    }
+    else {
+      this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
+        obj.parentId === this.navigationForm.get('parentId')?.value).length;
+      console.log(this.navigationForm.value);
+      this._navigationService.saveNavigations(this.navigationForm.value)
+        .subscribe(resp => console.log(resp));
+    }
+   }
 
   /**
    * Create Navigation form.
@@ -91,7 +100,7 @@ export class NavigationManagementComponent implements OnInit {
       retry(2),
       take(1),
       map(flatNavigations => {
-        this.navigationSisters = flatNavigations.filter(obj => obj.parentId === this.data.parentId);
+        this.flatNavigations = flatNavigations;
         return flatNavigations.filter(obj => {
           if (obj.name === this.data.navigation?.name) {
             return false;
