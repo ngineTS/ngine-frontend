@@ -19,26 +19,16 @@ export class NavigationService {
     constructor(private _http: HttpClient) {}
 
     /**
-     * Save navigations
-     * @param navigations to be saved
-     * @returns an observable of navigations saved
+     * Get navigations and their children
+     * @returns An observable of navigations
      */
-    saveNavigations(navigations: Navigation[]) {
-        return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
-    }
-
-    /**
-     * Update given navigation properties
-     * @param navigationProps An array of navigation properties to update
-     * @returns something to define
-     */
-    updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
-        return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
+    getNestedNavigations() {
+        return this._http.get<Navigation[]>(`${environment.APIURL}navigation`).pipe(take(1));
     }
 
     /**
      * Get all navigation types
-     * @returns an observable of navigation types
+     * @returns An observable of navigation types
      */
     getNavigationTypes() {
         return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`);
@@ -46,12 +36,36 @@ export class NavigationService {
 
     /**
      * Get flatten navigations
-     * @returns an observable of all navigations
+     * @returns An observable of all navigations
      */
     getFlatNavigations() {
         return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`);
     }
 
+    /**
+     * Save navigations
+     * @param navigations to be saved
+     * @returns An observable of navigations saved
+     */
+    saveNavigations(navigations: Navigation[]) {
+        return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
+    }
+
+    /**
+     * Update given navigation properties
+     * @param navigationId The navigation id
+     * @param navigationProps An array of navigation properties to update
+     * @returns An observable of UpdateReturnType object
+     */
+    updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
+        return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
+    }
+
+    /**
+     * Delete navigation
+     * @param navigationId The navigation id
+     * @returns An observable of UpdateReturnType object
+     */
     deleteNavigation(navigationId: string) {
         return this._http.delete<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`).pipe(take(1));
     }

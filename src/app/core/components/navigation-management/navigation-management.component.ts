@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationService } from '../../services/navigation.service';
 import { NavigationType } from '../../models/navigation-type.interface';
@@ -10,6 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, take } from 'rxjs';
+import { AppService } from '../../services/app.service';
+import { Router } from '@angular/router';
 
 
 
@@ -21,7 +23,7 @@ import { map, Observable, retry, take } from 'rxjs';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
@@ -35,7 +37,9 @@ export class NavigationManagementComponent implements OnInit {
                 parentId: string,
               },
               private _formBuilder: FormBuilder,
-              private _navigationService: NavigationService) {}
+              private _navigationService: NavigationService,
+              private dialogRef: MatDialogRef<NavigationManagementComponent>,
+              private _appService: AppService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -47,21 +51,6 @@ export class NavigationManagementComponent implements OnInit {
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
   }
-
-  submitForm() {
-    if(this.data.navigation?.id) {
-      this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
-        .subscribe(resp => console.log(resp));
-    }
-    else {
-      //for a new nav: setup order as last of navigation sisters realted to parent selected
-      this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
-        obj.parentId === this.navigationForm.get('parentId')?.value).length;
-      console.log(this.navigationForm.value);
-      this._navigationService.saveNavigations(this.navigationForm.value)
-        .subscribe(resp => console.log(resp));
-    }
-   }
 
   /**
    * Create Navigation form based on navigation passed in this component.
@@ -156,6 +145,24 @@ export class NavigationManagementComponent implements OnInit {
   deleteNavigation() {
     if (this.data.navigation?.id) {
       this._navigationService.deleteNavigation(this.data.navigation.id).subscribe(resp => console.log(resp));
+    }
+  }
+
+  submitForm() {
+    if (this.data.navigation?.id) {
+      this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value).subscribe(resp => {
+        this.dialogRef.close();
+        this._appService.createRouting(true);
+      });
+    }
+    else {
+      //for a new nav: setup order as last of navigation sisters realted to parent selected
+      this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
+        obj.parentId === this.navigationForm.get('parentId')?.value).length;
+      this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => {
+        this.dialogRef.close();
+        this._appService.createRouting(true);
+      });
     }
   }
 
