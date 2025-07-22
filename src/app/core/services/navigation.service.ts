@@ -67,7 +67,7 @@ export class NavigationService {
      * @returns An observable of UpdateReturnType object
      */
     deleteNavigation(navigationId: string) {
-        return this._http.delete<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`).pipe(take(1));
+        return this._http.delete<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`);
     }
 
     /**

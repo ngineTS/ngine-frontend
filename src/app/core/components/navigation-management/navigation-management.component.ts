@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { map, Observable, retry, take } from 'rxjs';
+import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
 
@@ -79,7 +79,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Set the parent menu values of this form and retrieve sister navigations.
+   * Set the parent menu values and retrieve sister navigations.
    * 
    * If form is a header: the parents can only be headers without component children.
    * 
@@ -143,10 +143,26 @@ export class NavigationManagementComponent implements OnInit {
     );
   }
 
+  /**
+   * Delete navigation, update big sisters order and create new routing.
+   */
   deleteNavigation() {
     if (confirm("Are you sure to delete this navigation?")) {
       if (this.data.navigation?.id) {
-        this._navigationService.deleteNavigation(this.data.navigation.id).subscribe(resp => {
+        this._navigationService.deleteNavigation(this.data.navigation.id).pipe(
+          take(1),
+          switchMap(() => {
+            const navigationOrdersToUpdate: Pick<Navigation, "id" | "order">[] = []
+            let bigSisterNavigations = this.flatNavigations.filter(obj => 
+              obj.parentId === this.data.navigation?.parentId && obj.order > this.data.navigation.order
+            );
+            bigSisterNavigations.forEach(obj => navigationOrdersToUpdate.push({
+              id: obj.id,
+              order: obj.order - 1
+            }));
+            return this._navigationService.bulkUpdateNavigationOrders(navigationOrdersToUpdate);
+          })
+        ).subscribe(resp => {
           const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
           this.dialogRef.close();
           this._appService.createRouting(redirectName);
@@ -167,7 +183,7 @@ export class NavigationManagementComponent implements OnInit {
       });
     }
     else {
-      //for a new nav: setup order as last of navigation sisters realted to parent selected
+      //for a new nav: setup order as last of navigation sisters related to parent selected
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
       this._navigationService.saveNavigation(this.navigationForm.value).subscribe(resp => {
