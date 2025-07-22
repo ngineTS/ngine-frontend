@@ -144,8 +144,14 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   deleteNavigation() {
-    if (this.data.navigation?.id) {
-      this._navigationService.deleteNavigation(this.data.navigation.id).subscribe(resp => console.log(resp));
+    if (confirm("Are you sure to delete this navigation?")) {
+      if (this.data.navigation?.id) {
+        this._navigationService.deleteNavigation(this.data.navigation.id).subscribe(resp => {
+          const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
+          this.dialogRef.close();
+          this._appService.createRouting(redirectName);
+        });
+      }
     }
   }
 
