@@ -1,10 +1,7 @@
-import { effect, Injectable, signal } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { Router, Routes } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
 import { NavigationService } from "./navigation.service";
-import { config } from "process";
 
 @Injectable({
   providedIn: 'root',
@@ -74,7 +71,7 @@ export class AppService {
     return routes;
   }
 
-  createRouting(afterChange = false) {
+  createRouting(redirectRouteName?: string) {
     this._navigationService.getNestedNavigations().subscribe(navigations => {
       const routes: Routes = [{ 
         path: '', 
@@ -86,8 +83,8 @@ export class AppService {
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
       this._router.resetConfig(routes);
-      if(afterChange){
-        this._router.navigateByUrl('/');
+      if(redirectRouteName){
+        this._router.navigateByUrl(redirectRouteName);
       }
     });
   }

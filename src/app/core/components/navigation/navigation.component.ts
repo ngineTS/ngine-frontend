@@ -46,7 +46,7 @@ export class NavigationComponent implements OnInit {
   drop(event: CdkDragDrop<Navigation[]>) {
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigation.order = index);
-    this._navigationService.saveNavigations(event.container.data).subscribe(resp => console.log(resp));
+    //this._navigationService.saveNavigations(event.container.data).subscribe(resp => console.log(resp));
   }
 
   openNavigationManagementForm(navigation?: Navigation) {

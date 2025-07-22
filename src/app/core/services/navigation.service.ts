@@ -45,10 +45,10 @@ export class NavigationService {
     /**
      * Save navigations
      * @param navigations to be saved
-     * @returns An observable of navigations saved
+     * @returns An observable of the navigation saved
      */
-    saveNavigations(navigations: Navigation[]) {
-        return this._http.post<Navigation[]>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
+    saveNavigation(navigations: Navigation) {
+        return this._http.post<Navigation>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
     }
 
     /**

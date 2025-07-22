@@ -64,12 +64,9 @@ export class GenericComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<Navigation[]>) {
-    //this.isSavingOrder = true;
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigation.order = index);
-    this._navigationService.saveNavigations(event.container.data).subscribe(resp => {
-      //this.isSavingOrder = false;
-    });
+    //this._navigationService.saveNavigations(event.container.data).subscribe(resp => {});
   }
 
   openNavigationManagementForm(type: 'header' | 'component', navigation?: Navigation) {

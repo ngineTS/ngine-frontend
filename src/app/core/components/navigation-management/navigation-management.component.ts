@@ -39,7 +39,8 @@ export class NavigationManagementComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
               private dialogRef: MatDialogRef<NavigationManagementComponent>,
-              private _appService: AppService) {}
+              private _appService: AppService,
+              private _router: Router) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -148,22 +149,44 @@ export class NavigationManagementComponent implements OnInit {
     }
   }
 
+  /**
+   * Save navigation, create new routing and redirect user to newly created navigation.
+   */
   submitForm() {
     if (this.data.navigation?.id) {
       this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value).subscribe(resp => {
+        const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
         this.dialogRef.close();
-        this._appService.createRouting(true);
+        this._appService.createRouting(redirectName);
       });
     }
     else {
       //for a new nav: setup order as last of navigation sisters realted to parent selected
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
-      this._navigationService.saveNavigations(this.navigationForm.value).subscribe(resp => {
+      this._navigationService.saveNavigation(this.navigationForm.value).subscribe(resp => {
+        const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
         this.dialogRef.close();
-        this._appService.createRouting(true);
+        this._appService.createRouting(redirectName);
       });
     }
+  }
+
+  /**
+   * Recursively retrieve parent name until the last parent
+   * @param navigationId 
+   * @returns Navigation parent name with "/" prefix
+   */
+  getParentName(navigationId: string): string {
+    let name = '/';
+    const parent = this.flatNavigations.find(obj => obj.id === navigationId);
+    if (parent) {
+      name = parent.name;
+      if (parent?.parentId) {
+        name = this.getParentName(parent.parentId) + '/' + name;
+      }
+    }
+    return name;
   }
 
 }
