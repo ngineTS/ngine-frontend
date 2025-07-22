@@ -40,13 +40,13 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    console.log('DESTROY', this.navigations);
   }
 
   drop(event: CdkDragDrop<Navigation[]>) {
+    const navigationOrders: Pick<Navigation, "id" | "order">[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => navigation.order = index);
-    //this._navigationService.saveNavigations(event.container.data).subscribe(resp => console.log(resp));
+    event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index })); 
+    this._navigationService.bulkUpdateNavigationOrders(navigationOrders).subscribe(resp => { });
   }
 
   openNavigationManagementForm(navigation?: Navigation) {

@@ -69,4 +69,14 @@ export class NavigationService {
     deleteNavigation(navigationId: string) {
         return this._http.delete<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`).pipe(take(1));
     }
+
+    /**
+     * Update navigation orders of given array
+     * @param navigationsOrders Array of navigation ids and their order
+     * @returns An array of navigation ids and their order
+     */
+    bulkUpdateNavigationOrders(navigationsOrders: Pick<Navigation, "id" | "order">[]) {
+        console.log(navigationsOrders);
+        return this._http.post<Pick<Navigation, "id" | "order">[]>(`${environment.APIURL}navigation/order`, navigationsOrders).pipe(take(1));
+    }
 }

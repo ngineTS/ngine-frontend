@@ -19,11 +19,8 @@ export class TestTextComponent implements OnInit {
   content!: TestText;
 
   ngOnInit() {
-    console.log('content ON Init', this.content);
-    console.log("navigation", this.navigation);
     this._http.get<TestText>(`${environment.APIURL}test-text/navigation/${this.navigation.id}`).subscribe(resp => {
       this.content = resp;
-      console.log('content', this.content);
     });
   }
 
@@ -32,7 +29,6 @@ export class TestTextComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log("AAAAAAAAA");
   }
 
   onSpanClick() {
