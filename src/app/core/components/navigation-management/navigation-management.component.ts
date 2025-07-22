@@ -240,7 +240,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Close popup, refresh routing and redirect to defined url.
+   * Close popup, refresh routing and redirect to parent navigation.
    * @param parentId Navigation parent id
    */
   refreshRoutingAndRedirect(parentId: string){
