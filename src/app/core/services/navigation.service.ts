@@ -36,7 +36,7 @@ export class NavigationService {
 
     /**
      * Get flatten navigations
-     * @returns An observable of all navigations
+     * @returns An observable of all navigations and their children
      */
     getFlatNavigations() {
         return this._http.get<Navigation[]>(`${environment.APIURL}navigation/flat`);

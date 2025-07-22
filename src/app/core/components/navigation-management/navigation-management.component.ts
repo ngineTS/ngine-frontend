@@ -83,34 +83,35 @@ export class NavigationManagementComponent implements OnInit {
    * @returns An observable of parent navigations.
    */
   getParentMenuValues(): Observable<Navigation[]> {
-    return this._navigationService.getFlatNavigations().pipe(
-      retry(2),
-      take(1),
-      map(flatNavigations => {
-        this.flatNavigations = flatNavigations;
-        return flatNavigations.filter(obj => {
-          if (obj.name === this.data.navigation?.name) {
-            return false;
-          }
-          if(obj.navigationType.name !== 'header') {
-            return false;
-          }
-          if(obj.children && obj.children.length > 0) {
-            if (this.data.type === 'header') {
-              if (obj.children[0].navigationType.name !== 'header') {
-                return false;
+    return this._navigationService.getFlatNavigations()
+      .pipe(
+        retry(2),
+        take(1),
+        map(flatNavigations => {
+          this.flatNavigations = flatNavigations;
+          return flatNavigations.filter(obj => {
+            if (obj.name === this.data.navigation?.name) {
+              return false;
+            }
+            if(obj.navigationType.name !== 'header') {
+              return false;
+            }
+            if(obj.children && obj.children.length > 0) {
+              if (this.data.type === 'header') {
+                if (obj.children[0].navigationType.name !== 'header') {
+                  return false;
+                }
+              }
+              else {
+                if (obj.children[0].navigationType.name === 'header') {
+                  return false;
+                }
               }
             }
-            else {
-              if (obj.children[0].navigationType.name === 'header') {
-                return false;
-              }
-            }
-          }
-          return true;
-        });
-      }
-    ));
+            return true;
+          });
+        })
+      );
   }
 
   /**
@@ -122,21 +123,22 @@ export class NavigationManagementComponent implements OnInit {
    * @returns An observable of navigation types
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
-    return this._navigationService.getNavigationTypes().pipe(
-      retry(2),
-      take(1),
-      map(
-        navigationTypes => {
-          if (this.data.type === 'header') {
-            this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
-            return navigationTypes.filter(obj => obj.name === 'header');;
+    return this._navigationService.getNavigationTypes()
+      .pipe(
+        retry(2),
+        take(1),
+        map(
+          navigationTypes => {
+            if (this.data.type === 'header') {
+              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
+              return navigationTypes.filter(obj => obj.name === 'header');;
+            }
+            else {
+              return navigationTypes.filter(obj => obj.name !== 'header');
+            }
           }
-          else {
-            return navigationTypes.filter(obj => obj.name !== 'header');
-          }
-        }
-      )
-    );
+        )
+      );
   }
 
   /**
