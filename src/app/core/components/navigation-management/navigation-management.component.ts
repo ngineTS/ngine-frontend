@@ -176,6 +176,12 @@ export class NavigationManagementComponent implements OnInit {
    */
   submitForm() {
     if (this.data.navigation?.id) {
+      //if parent has changed
+      if(this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value){
+        // setup navigation order as last of sisters related to parent selected 
+        this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
+          obj.parentId === this.navigationForm.get('parentId')?.value).length;
+      }
       this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value).subscribe(resp => {
         const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
         this.dialogRef.close();
@@ -183,7 +189,7 @@ export class NavigationManagementComponent implements OnInit {
       });
     }
     else {
-      //for a new nav: setup order as last of navigation sisters related to parent selected
+      //for a new nav: setup navigatio order as last of sisters related to parent selected
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
       this._navigationService.saveNavigation(this.navigationForm.value).subscribe(resp => {
