@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-management',
@@ -37,8 +36,7 @@ export class NavigationManagementComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
               private dialogRef: MatDialogRef<NavigationManagementComponent>,
-              private _appService: AppService,
-              private _router: Router) {}
+              private _appService: AppService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -142,59 +140,70 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Delete navigation, update big sisters order and create new routing.
+   * Delete navigation, update old sisters order and refresh routing.
    */
   deleteNavigation() {
     if (confirm("Are you sure to delete this navigation?")) {
       if (this.data.navigation?.id) {
-        this._navigationService.deleteNavigation(this.data.navigation.id).pipe(
-          take(1),
-          switchMap(() => this.updateOldBigSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
-        )
-        .subscribe(resp => {
-          const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
-          this.dialogRef.close();
-          this._appService.createRouting(redirectName);
-        });
+        this._navigationService.deleteNavigation(this.data.navigation.id)
+          .pipe(
+            retry(2),
+            take(1),
+            switchMap(() => this.updateOldSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
+          )
+          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
     }
   }
 
   /**
-   * Save navigation, create new routing and redirect user to newly created navigation.
+   * Save or update navigation and refresh routing.
+   * 
+   * In case of update, if parentId has changed then update old sisters order
    */
   submitForm() {
+    //EDIT
     if (this.data.navigation?.id) {
-      //if parent has changed
+      //Parent has changed
       if(this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value){
-        // setup navigation order as last of sisters related to parent selected 
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
           obj.parentId === this.navigationForm.get('parentId')?.value).length;
-        console.log("fdfd");
-        //align old big sisters order
-
+        this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
+          .pipe(
+            retry(2),
+            take(1),
+            switchMap(() => this.updateOldSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
+          )
+          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
-      this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value).subscribe(resp => {
-        const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
-        this.dialogRef.close();
-        this._appService.createRouting(redirectName);
-      });
+      //Parent has not changed
+      else {
+        this._navigationService
+          .updateNavigation(this.data.navigation.id, this.navigationForm.value)
+          .pipe(
+            retry(2),
+            take(1)
+          )
+          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+      }
     }
+    //ADD
     else {
-      //for a new nav: setup navigatio order as last of sisters related to parent selected
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
-      this._navigationService.saveNavigation(this.navigationForm.value).subscribe(resp => {
-        const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
-        this.dialogRef.close();
-        this._appService.createRouting(redirectName);
-      });
+      this._navigationService
+        .saveNavigation(this.navigationForm.value)
+        .pipe(
+          retry(2),
+          take(1)
+        )
+        .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
     }
   }
 
   /**
    * Recursively retrieve parent name until the last parent
-   * @param navigationId 
+   * @param navigationId Navigation id of the wished navigation name
    * @returns Navigation parent name with "/" prefix
    */
   getParentName(navigationId: string): string {
@@ -209,8 +218,13 @@ export class NavigationManagementComponent implements OnInit {
     return name;
   }
 
-
-  updateOldBigSisterNavigationsOrder(
+  /**
+   * Update in database order of old navigation sisters by decreasing by 1 the navigation with bigger order.
+   * @param oldParentId Old navigation parentId
+   * @param oldOrder Old navigation order
+   * @returns An array of navigation ids and orders with position setup
+   */
+  updateOldSisterNavigationsOrder(
     oldParentId: string, 
     oldOrder: number
   ): Observable<Pick<Navigation, "id" | "order">[]> {
@@ -223,6 +237,16 @@ export class NavigationManagementComponent implements OnInit {
       order: obj.order - 1
     }));
     return this._navigationService.bulkUpdateNavigationOrders(navigationOrdersToUpdate);
+  }
+
+  /**
+   * Close popup, refresh routing and redirect to defined url.
+   * @param parentId Navigation parent id
+   */
+  refreshRoutingAndRedirect(parentId: string){
+    const redirectName = this.getParentName(parentId);
+    this.dialogRef.close();
+    this._appService.createRouting(redirectName);
   }
 
 }

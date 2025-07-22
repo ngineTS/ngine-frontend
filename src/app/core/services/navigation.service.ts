@@ -48,7 +48,7 @@ export class NavigationService {
      * @returns An observable of the navigation saved
      */
     saveNavigation(navigations: Navigation) {
-        return this._http.post<Navigation>(`${environment.APIURL}navigation`, navigations).pipe(take(1));
+        return this._http.post<Navigation>(`${environment.APIURL}navigation`, navigations);
     }
 
     /**
@@ -58,7 +58,7 @@ export class NavigationService {
      * @returns An observable of UpdateReturnType object
      */
     updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
-        return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps).pipe(take(1));
+        return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps);
     }
 
     /**
@@ -76,7 +76,6 @@ export class NavigationService {
      * @returns An array of navigation ids and their order
      */
     bulkUpdateNavigationOrders(navigationsOrders: Pick<Navigation, "id" | "order">[]) {
-        console.log(navigationsOrders);
         return this._http.post<Pick<Navigation, "id" | "order">[]>(`${environment.APIURL}navigation/order`, navigationsOrders).pipe(take(1));
     }
 }
