@@ -44,6 +44,7 @@ export class NavigationManagementComponent implements OnInit {
   parentNavigations: Navigation[] = [];
 
   ngOnInit() {
+    console.log(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
@@ -75,7 +76,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Set the parent menu values and retrieve sister navigations.
+   * Set the parent menu values and retrieve flat navigations.
    * 
    * If form is a header: the parents can only be headers without component children.
    * 
