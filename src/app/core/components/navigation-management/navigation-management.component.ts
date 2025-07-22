@@ -13,8 +13,6 @@ import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-navigation-management',
   imports: [
@@ -32,7 +30,7 @@ export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
-                navigation?: Navigation, 
+                navigation: Navigation, 
                 type: 'header' | 'component',
                 parentId: string,
               },
@@ -151,18 +149,9 @@ export class NavigationManagementComponent implements OnInit {
       if (this.data.navigation?.id) {
         this._navigationService.deleteNavigation(this.data.navigation.id).pipe(
           take(1),
-          switchMap(() => {
-            const navigationOrdersToUpdate: Pick<Navigation, "id" | "order">[] = []
-            let bigSisterNavigations = this.flatNavigations.filter(obj => 
-              obj.parentId === this.data.navigation?.parentId && obj.order > this.data.navigation.order
-            );
-            bigSisterNavigations.forEach(obj => navigationOrdersToUpdate.push({
-              id: obj.id,
-              order: obj.order - 1
-            }));
-            return this._navigationService.bulkUpdateNavigationOrders(navigationOrdersToUpdate);
-          })
-        ).subscribe(resp => {
+          switchMap(() => this.updateOldBigSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
+        )
+        .subscribe(resp => {
           const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
           this.dialogRef.close();
           this._appService.createRouting(redirectName);
@@ -181,6 +170,9 @@ export class NavigationManagementComponent implements OnInit {
         // setup navigation order as last of sisters related to parent selected 
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
           obj.parentId === this.navigationForm.get('parentId')?.value).length;
+        console.log("fdfd");
+        //align old big sisters order
+
       }
       this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value).subscribe(resp => {
         const redirectName = this.getParentName(this.navigationForm.get('parentId')?.value);
@@ -215,6 +207,22 @@ export class NavigationManagementComponent implements OnInit {
       }
     }
     return name;
+  }
+
+
+  updateOldBigSisterNavigationsOrder(
+    oldParentId: string, 
+    oldOrder: number
+  ): Observable<Pick<Navigation, "id" | "order">[]> {
+    const navigationOrdersToUpdate: Pick<Navigation, "id" | "order">[] = [];
+    let bigSisterNavigations = this.flatNavigations.filter(obj => 
+      obj.parentId === oldParentId && obj.order > oldOrder
+    );
+    bigSisterNavigations.forEach(obj => navigationOrdersToUpdate.push({
+      id: obj.id,
+      order: obj.order - 1
+    }));
+    return this._navigationService.bulkUpdateNavigationOrders(navigationOrdersToUpdate);
   }
 
 }
