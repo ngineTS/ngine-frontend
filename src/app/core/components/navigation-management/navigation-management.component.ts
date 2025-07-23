@@ -45,7 +45,7 @@ export class NavigationManagementComponent implements OnInit {
   navigationChildrenAndGrandChildren : Navigation[] = [];
 
   ngOnInit() {
-    this.retrieveNavigationChildrenAndOldChildren(this.data.navigation);
+    this.getNavigationChildrenAndOldChildren(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
@@ -156,7 +156,7 @@ export class NavigationManagementComponent implements OnInit {
   deleteNavigation() {
     if (confirm("Are you sure to delete this navigation?")) {
       if (this.data.navigation?.id) {
-        this._navigationService.deleteNavigation(this.data.navigation.id)
+        this._navigationService.deleteNavigationAndChildren(this.data.navigation)
           .pipe(
             retry(2),
             take(1),
@@ -232,7 +232,7 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Update in database order of old navigation sisters by decreasing by 1 the navigation with bigger order.
    * @param oldParentId Old navigation parentId
-   * @param oldOrder Old navigation order
+   * @param oldOrder Old navigation order to compare with sister ones
    * @returns An array of navigation ids and orders with position setup
    */
   updateOldSisterNavigationsOrder(
@@ -252,7 +252,7 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Close popup, refresh routing and redirect to parent navigation.
-   * @param parentId Navigation parent id
+   * @param parentId Navigation parent id we want to redirect on
    */
   refreshRoutingAndRedirect(parentId: string){
     const redirectName = this.getParentName(parentId);
@@ -264,11 +264,11 @@ export class NavigationManagementComponent implements OnInit {
    * Store all children and grandchildren for a given navigation
    * @param navigation The navigation we want to know the children
    */
-  retrieveNavigationChildrenAndOldChildren(navigation: Navigation) {
+  getNavigationChildrenAndOldChildren(navigation: Navigation) {
     if(navigation?.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
       for(const child of navigation.children) {
-        this.retrieveNavigationChildrenAndOldChildren(child);
+        this.getNavigationChildrenAndOldChildren(child);
       }
     }
   }
