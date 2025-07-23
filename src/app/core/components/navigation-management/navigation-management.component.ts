@@ -129,7 +129,7 @@ export class NavigationManagementComponent implements OnInit {
    * If form is a component: exclude "header" type.
    * 
    * If form is a header: keep only "header" type. 
-   * @returns An observable of navigation types.
+   * @returns An observable of assignable navigation types.
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
     return this._navigationService.getNavigationTypes()
@@ -170,7 +170,7 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Save or update navigation and refresh routing.
    * 
-   * In case of update, if parentId has changed then update old sisters order.
+   * In case of update, if parentId has changed then update old big sisters order.
    */
   submitForm() {
     //EDIT
