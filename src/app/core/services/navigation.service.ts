@@ -52,13 +52,22 @@ export class NavigationService {
     }
 
     /**
-     * Update given navigation properties
-     * @param navigationId The navigation id
-     * @param navigationProps An array of navigation properties to update
+     * Update navigation properties
+     * @param navigationId Navigation id to update
+     * @param navigationProps Navigation properties to update
      * @returns An observable of UpdateReturnType object
      */
     updateNavigation(navigationId: string, navigationProps: Partial<Navigation>) {
         return this._http.patch<UpdateReturnType>(`${environment.APIURL}navigation/${navigationId}`, navigationProps);
+    }
+
+    /**
+     * Update array of navigation properties
+     * @param navigationsProps Array of navigation properties to update
+     * @returns Array of navigation properties updated
+     */
+    bulkUpdateNavigations(navigationsProps: Partial<Navigation>[]) {
+        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps).pipe(take(1));
     }
 
     /**
@@ -81,12 +90,4 @@ export class NavigationService {
         return this._http.post(`${environment.APIURL}navigation/bulk-delete`, ids);
     }
 
-    /**
-     * Update navigation orders of given array
-     * @param navigationsOrders Array of navigation ids and their order
-     * @returns An array of navigation ids and their order
-     */
-    bulkUpdateNavigations(navigationsProps: Partial<Navigation>[]) {
-        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps).pipe(take(1));
-    }
 }
