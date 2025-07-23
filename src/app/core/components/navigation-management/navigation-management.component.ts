@@ -42,9 +42,10 @@ export class NavigationManagementComponent implements OnInit {
   navigationTypes: NavigationType[] = [];
   flatNavigations: Navigation[] = [];
   parentNavigations: Navigation[] = [];
+  navigationChildrenAndGrandChildren : Navigation[] = [];
 
   ngOnInit() {
-    console.log(this.data.navigation);
+    this.retrieveNavigationChildrenAndOldChildren(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
@@ -76,12 +77,16 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Set the parent menu values and retrieve flat navigations.
+   * Define and return Parent menu values and store flat navigations.
    * 
-   * If form is a header: the parents can only be headers without component children.
+   * Rules:
    * 
-   * If form is a component: the parents can only be headers without header children.
-   * @returns An observable of parent navigations.
+   * * Parent can only be header
+   * * Parent can't be current navigation
+   * * Parent can't be one of the children or grandchildren of current navigation
+   * * If form is a header: parent can't have component children.
+   * * If form is a component: parent can't have header children.
+   * @returns An observable of assignable parent navigations.
    */
   getParentMenuValues(): Observable<Navigation[]> {
     return this._navigationService.getFlatNavigations()
@@ -90,21 +95,24 @@ export class NavigationManagementComponent implements OnInit {
         take(1),
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
-          return flatNavigations.filter(obj => {
-            if (obj.name === this.data.navigation?.name) {
+          return flatNavigations.filter(flatNav => {
+            if (flatNav.name === this.data.navigation?.name) {
               return false;
             }
-            if(obj.navigationType.name !== 'header') {
+            if (flatNav.navigationType.name !== 'header') {
               return false;
             }
-            if(obj.children && obj.children.length > 0) {
+            if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
+              return false;
+            }
+            if (flatNav.children && flatNav.children.length > 0) {
               if (this.data.type === 'header') {
-                if (obj.children[0].navigationType.name !== 'header') {
+                if (flatNav.children[0].navigationType.name !== 'header') {
                   return false;
                 }
               }
               else {
-                if (obj.children[0].navigationType.name === 'header') {
+                if (flatNav.children[0].navigationType.name === 'header') {
                   return false;
                 }
               }
@@ -116,7 +124,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Set the Navigation Type menu values.
+   * Define and return Navigation Type menu values.
    * 
    * If form is a component: exclude "header" type.
    * 
@@ -132,7 +140,7 @@ export class NavigationManagementComponent implements OnInit {
           navigationTypes => {
             if (this.data.type === 'header') {
               this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
-              return navigationTypes.filter(obj => obj.name === 'header');;
+              return navigationTypes.filter(obj => obj.name === 'header');
             }
             else {
               return navigationTypes.filter(obj => obj.name !== 'header');
@@ -250,6 +258,19 @@ export class NavigationManagementComponent implements OnInit {
     const redirectName = this.getParentName(parentId);
     this.dialogRef.close();
     this._appService.createRouting(redirectName);
+  }
+
+  /**
+   * Store all children and grandchildren for a given navigation
+   * @param navigation The navigation we want to know the children
+   */
+  retrieveNavigationChildrenAndOldChildren(navigation: Navigation) {
+    if(navigation?.children) {
+      this.navigationChildrenAndGrandChildren.push(...navigation.children);
+      for(const child of navigation.children) {
+        this.retrieveNavigationChildrenAndOldChildren(child);
+      }
+    }
   }
 
 }
