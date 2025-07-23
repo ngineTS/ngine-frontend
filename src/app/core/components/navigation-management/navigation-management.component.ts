@@ -238,8 +238,8 @@ export class NavigationManagementComponent implements OnInit {
   updateOldSisterNavigationsOrder(
     oldParentId: string, 
     oldOrder: number
-  ): Observable<Pick<Navigation, "id" | "order">[]> {
-    const navigationOrdersToUpdate: Pick<Navigation, "id" | "order">[] = [];
+  ): Observable<Partial<Navigation>[]> {
+    const navigationOrdersToUpdate: Partial<Navigation>[] = [];
     let bigSisterNavigations = this.flatNavigations.filter(obj => 
       obj.parentId === oldParentId && obj.order > oldOrder
     );
@@ -247,7 +247,7 @@ export class NavigationManagementComponent implements OnInit {
       id: obj.id,
       order: obj.order - 1
     }));
-    return this._navigationService.bulkUpdateNavigationOrders(navigationOrdersToUpdate);
+    return this._navigationService.bulkUpdateNavigations(navigationOrdersToUpdate);
   }
 
   /**

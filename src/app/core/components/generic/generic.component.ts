@@ -64,10 +64,10 @@ export class GenericComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<Navigation[]>) {
-    const navigationOrders: Pick<Navigation, "id" | "order">[] = [];
+    const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index }));
-    this._navigationService.bulkUpdateNavigationOrders(navigationOrders).subscribe(resp => { });
+    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
   openNavigationManagementForm(type: 'header' | 'component', navigation?: Navigation) {
