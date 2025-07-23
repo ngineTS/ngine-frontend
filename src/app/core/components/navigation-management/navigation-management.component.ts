@@ -42,10 +42,10 @@ export class NavigationManagementComponent implements OnInit {
   navigationTypes: NavigationType[] = [];
   flatNavigations: Navigation[] = [];
   parentNavigations: Navigation[] = [];
-  navigationChildrenAndGrandChildren : Navigation[] = [];
+  navigationChildrenAndGrandChildren: Navigation[] = [];
 
   ngOnInit() {
-    this.getNavigationChildrenAndOldChildren(this.data.navigation);
+    this.getNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
@@ -56,7 +56,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * If navigation is a header then add color form control.
    * 
-   * If navigation is a component then make parent as mandatory
+   * If navigation is a component then make parent as mandatory.
    */
   createNavigationForm() {
     this.navigationForm = this._formBuilder.group({
@@ -81,9 +81,9 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * Rules:
    * 
-   * * Parent can only be header
-   * * Parent can't be current navigation
-   * * Parent can't be one of the children or grandchildren of current navigation
+   * * Parent can only be header.
+   * * Parent can't be current navigation.
+   * * Parent can't be one of the children or grandchildren of current navigation.
    * * If form is a header: parent can't have component children.
    * * If form is a component: parent can't have header children.
    * @returns An observable of assignable parent navigations.
@@ -129,7 +129,7 @@ export class NavigationManagementComponent implements OnInit {
    * If form is a component: exclude "header" type.
    * 
    * If form is a header: keep only "header" type. 
-   * @returns An observable of navigation types
+   * @returns An observable of navigation types.
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
     return this._navigationService.getNavigationTypes()
@@ -151,7 +151,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Delete navigation, update old sisters order and refresh routing.
+   * Delete navigation, update old big sisters order and refresh routing.
    */
   deleteNavigation() {
     if (confirm("Are you sure to delete this navigation?")) {
@@ -160,7 +160,7 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(
             retry(2),
             take(1),
-            switchMap(() => this.updateOldSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation.parentId, this.data.navigation?.order))
           )
           .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
@@ -170,7 +170,7 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Save or update navigation and refresh routing.
    * 
-   * In case of update, if parentId has changed then update old sisters order
+   * In case of update, if parentId has changed then update old sisters order.
    */
   submitForm() {
     //EDIT
@@ -183,7 +183,7 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(
             retry(2),
             take(1),
-            switchMap(() => this.updateOldSisterNavigationsOrder(this.data.navigation.parentId, this.data.navigation?.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation.parentId, this.data.navigation?.order))
           )
           .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
@@ -214,8 +214,8 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Recursively retrieve parent name until the last parent
-   * @param navigationId Navigation id of the wished navigation name
-   * @returns Navigation parent name with "/" prefix
+   * @param navigationId The navigation id of the wished navigation name.
+   * @returns The navigation parent name with "/" prefix.
    */
   getParentName(navigationId: string): string {
     let name = '/';
@@ -230,29 +230,29 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Update in database order of old navigation sisters by decreasing by 1 the navigation with bigger order.
-   * @param oldParentId Old navigation parentId
-   * @param oldOrder Old navigation order to compare with sister ones
-   * @returns An array of navigation ids and orders with position setup
+   * Update navigation big sisters order by decreasing it by 1.
+   * @param parentId The navigation parentId used to find sisters.
+   * @param order The navigation order used to compare with sisters one.
+   * @returns An array of navigation ids and orders setup.
    */
-  updateOldSisterNavigationsOrder(
-    oldParentId: string, 
-    oldOrder: number
+  updateNavigationBigSistersOrder(
+    parentId: string, 
+    order: number
   ): Observable<Partial<Navigation>[]> {
     const navigationOrdersToUpdate: Partial<Navigation>[] = [];
     let bigSisterNavigations = this.flatNavigations.filter(obj => 
-      obj.parentId === oldParentId && obj.order > oldOrder
+      obj.parentId === parentId && obj.order > order
     );
-    bigSisterNavigations.forEach(obj => navigationOrdersToUpdate.push({
-      id: obj.id,
-      order: obj.order - 1
+    bigSisterNavigations.forEach(sister => navigationOrdersToUpdate.push({
+      id: sister.id,
+      order: sister.order - 1
     }));
     return this._navigationService.bulkUpdateNavigations(navigationOrdersToUpdate);
   }
 
   /**
    * Close popup, refresh routing and redirect to parent navigation.
-   * @param parentId Navigation parent id we want to redirect on
+   * @param parentId The navigation parent id we want to redirect on.
    */
   refreshRoutingAndRedirect(parentId: string){
     const redirectName = this.getParentName(parentId);
@@ -261,14 +261,14 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Store all children and grandchildren for a given navigation
-   * @param navigation The navigation we want to know the children
+   * Store navigation children and grandchildren inside `this.navigationChildrenAndGrandChildren` array.
+   * @param navigation The navigation we want to know the children.
    */
-  getNavigationChildrenAndOldChildren(navigation: Navigation) {
+  getNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
     if(navigation?.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
       for(const child of navigation.children) {
-        this.getNavigationChildrenAndOldChildren(child);
+        this.getNavigationChildrenAndOldChildrenAsArray(child);
       }
     }
   }
