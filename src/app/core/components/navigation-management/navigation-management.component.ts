@@ -45,7 +45,7 @@ export class NavigationManagementComponent implements OnInit {
   navigationChildrenAndGrandChildren: Navigation[] = [];
 
   ngOnInit() {
-    this.getNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
+    this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createNavigationForm();
@@ -264,11 +264,11 @@ export class NavigationManagementComponent implements OnInit {
    * Store navigation children and grandchildren inside `this.navigationChildrenAndGrandChildren` array.
    * @param navigation The navigation we want to know the children.
    */
-  getNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
+  storeNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
     if(navigation?.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
       for(const child of navigation.children) {
-        this.getNavigationChildrenAndOldChildrenAsArray(child);
+        this.storeNavigationChildrenAndOldChildrenAsArray(child);
       }
     }
   }
