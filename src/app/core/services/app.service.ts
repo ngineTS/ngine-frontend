@@ -15,7 +15,7 @@ export class AppService {
   /**
    * Recursively create routes for given navigations and their children
    * @param navigations The array of navigations
-   * @returns routes with path, component and data assigned 
+   * @returns The routes with path, component and data setup 
    */
   generateNestedRoutes(navigations: Navigation[]) {
     const routes: Routes = [];
