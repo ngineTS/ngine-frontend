@@ -87,6 +87,6 @@ export class NavigationService {
      * @returns An array of navigation ids and their order
      */
     bulkUpdateNavigations(navigationsOrders: Partial<Navigation>[]) {
-        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/order`, navigationsOrders).pipe(take(1));
+        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsOrders).pipe(take(1));
     }
 }
