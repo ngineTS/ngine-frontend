@@ -31,7 +31,7 @@ export class NavigationManagementComponent implements OnInit {
               public data: { 
                 navigation: Navigation, 
                 type: 'header' | 'component',
-                parentId: string,
+                parentId: Navigation["parentId"],
               },
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
