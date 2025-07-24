@@ -236,8 +236,8 @@ export class NavigationManagementComponent implements OnInit {
    * @returns An array of navigation ids and orders setup.
    */
   updateNavigationBigSistersOrder(
-    parentId: string, 
-    order: number
+    parentId: Navigation["parentId"], 
+    order: Navigation["order"]
   ): Observable<Partial<Navigation>[]> {
     const navigationOrdersToUpdate: Partial<Navigation>[] = [];
     let bigSisterNavigations = this.flatNavigations.filter(obj => 
@@ -254,7 +254,7 @@ export class NavigationManagementComponent implements OnInit {
    * Close popup, refresh routing and redirect to parent navigation.
    * @param parentId The navigation parent id we want to redirect on.
    */
-  refreshRoutingAndRedirect(parentId: string){
+  refreshRoutingAndRedirect(parentId: Navigation["parentId"]){
     const redirectName = this.getParentName(parentId);
     this.dialogRef.close();
     this._appService.createRouting(redirectName);
