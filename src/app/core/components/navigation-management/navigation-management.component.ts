@@ -35,7 +35,7 @@ export class NavigationManagementComponent implements OnInit {
               },
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
-              private dialogRef: MatDialogRef<NavigationManagementComponent>,
+              private _dialogRef: MatDialogRef<NavigationManagementComponent>,
               private _appService: AppService) {}
 
   navigationForm!: FormGroup;
@@ -256,7 +256,7 @@ export class NavigationManagementComponent implements OnInit {
    */
   refreshRoutingAndRedirect(parentId: Navigation["parentId"]){
     const redirectName = this.getParentName(parentId);
-    this.dialogRef.close();
+    this._dialogRef.close();
     this._appService.createRouting(redirectName);
   }
 
