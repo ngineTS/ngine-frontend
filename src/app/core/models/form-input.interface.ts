@@ -1,4 +1,10 @@
-import { ValidatorFn, Validators } from "@angular/forms";
+import { ValidatorFn } from "@angular/forms";
+
+export type InputsArray<T> = Array<
+    StandardInputConfig<T> |
+    DropdownInputConfig<T, any> |
+    { [K in keyof T]?: InputsArray<T[K]> }
+>
 
 export interface InputConfig<T> {
     name: keyof T & string;
