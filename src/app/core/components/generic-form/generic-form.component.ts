@@ -21,34 +21,33 @@ import { DropdownInputConfig, StandardInputConfig } from '../../models/form-inpu
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
 })
-export class GenericFormComponent {
+export class GenericFormComponent<T> {
 
-constructor(@Inject(MAT_DIALOG_DATA) 
-            public data: any[],
-            private _formBuilder: FormBuilder,
-            private _dialogRef: MatDialogRef<GenericFormComponent>){}
+  constructor(@Inject(MAT_DIALOG_DATA) 
+              public _data: Array<StandardInputConfig<T> | DropdownInputConfig<T, any>>,
+              private _formBuilder: FormBuilder,
+              private _dialogRef: MatDialogRef<GenericFormComponent<T>>){}
           
-  formContent!: FormGroup
+  formContent!: FormGroup;
     
   ngOnInit() {
-    console.log(this.data);
-    console.log(typeof this.data);
+    console.log(this._data);
+    console.log(typeof this._data);
     this.createForm();
   }
 
-
   createForm() {
     let formControls = {} as Record<string, FormControl>;
-    this.data.forEach(input => {
+    this._data.forEach(input => {
       formControls[input.name] = new FormControl(input.value ?? null, input.validators);
     });
     this.formContent = this._formBuilder.group(formControls);
     console.log(this.formContent);
   }
 
-  submitForm(){
+  submitForm() {
     console.log(this.formContent.value);
   }
-    
+   
 
 }

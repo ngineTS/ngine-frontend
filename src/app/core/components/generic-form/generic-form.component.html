@@ -1,31 +1,26 @@
 <div class="m-4">
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
-        @for (input of data; track input) {
+        @for (input of _data; track input) {
             @if (input.type === 'text' || input.type === 'number') {
                 <span>{{ input.name }}</span>
                 <input type="text" [formControlName]="input.name"/>
             }
             @if (input.type === 'dropdown') {
-                @if (input.dropdownConfig.bindValue) {
-                    <mat-form-field>
-                        <mat-label>{{ input.name }}</mat-label>
-                        <mat-select [formControlName]="input.name">
-                            @for (item of input.dropdownConfig.items; track item) {
-                                <mat-option [value]="item[input.dropdownConfig.bindValue]">{{ item[input.dropdownConfig.bindLabel] }}</mat-option>
+                <mat-form-field>
+                    <mat-label>{{ input.name }}</mat-label>
+                    <mat-select [formControlName]="input.name">
+                        @for (item of input.dropdownConfig.items; track item) {
+                            @if (!input.dropdownConfig.isPrimitive) {
+                                <mat-option [value]="item[input.dropdownConfig.bindValue]">
+                                    {{ item[input.dropdownConfig.bindLabel] }}
+                                </mat-option>
                             }
-                        </mat-select>
-                    </mat-form-field>    
-                }
-                @else {
-                    <mat-form-field>
-                        <mat-label>{{ input.name }}</mat-label>
-                        <mat-select [formControlName]="input.name">
-                            @for (item of input.dropdownConfig.items; track item) {
+                            @else {
                                 <mat-option [value]="item">{{ item }}</mat-option>
                             }
-                        </mat-select>
-                    </mat-form-field>    
-                }                
+                        }
+                    </mat-select>
+                </mat-form-field>     
             }
         }
         <button matButton type="submit">Submit</button>

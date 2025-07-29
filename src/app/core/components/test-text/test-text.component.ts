@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
 import { TestText } from '../../models/test-text.interface';
 import { environment } from '../../../../environments/environment';
-import { DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { GenericFormService, Person } from '../../services/generic-form.service';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -56,6 +55,7 @@ export class TestTextComponent implements OnInit {
         [Validators.required], 
         'dropdown',
         {
+          isPrimitive: true,
           items: items
         }
       ),
@@ -65,6 +65,7 @@ export class TestTextComponent implements OnInit {
         [Validators.required], 
         'dropdown',
         {
+          isPrimitive: false,
           bindLabel: 'b',
           bindValue: 'a',
           items: [{a: 'a', b: 'b'}, {a: 'a2', b: 'b2'}, {a: 'a3', b: 'b3'}]
@@ -72,7 +73,7 @@ export class TestTextComponent implements OnInit {
       ),
     ];
     console.log("Inputs", inputs);
-    this._matDialog.open<GenericFormComponent, typeof inputs>(
+    this._matDialog.open<GenericFormComponent<Person>, typeof inputs>(
       GenericFormComponent,
       { data: inputs }
     );

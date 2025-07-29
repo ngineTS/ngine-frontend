@@ -1,7 +1,7 @@
 import { ValidatorFn, Validators } from "@angular/forms";
 
 export interface InputConfig<T> {
-    name: keyof T;
+    name: keyof T & string;
     value: T[keyof T];
     validators: Array<ValidatorFn>;
 }
@@ -15,9 +15,13 @@ export interface DropdownInputConfig<T, U> extends InputConfig<T> {
     dropdownConfig: DropdownConfig<U>
 }
 
-export type DropdownConfig<T> = T extends string | number | Date
-  ? { items: Array<T>; }
+export type DropdownConfig<T> = T extends string | number
+  ? { 
+      items: Array<T>;
+      isPrimitive: true;
+    }
   : { 
+      isPrimitive: false;
       bindValue: keyof T;
       bindLabel: keyof T;
       items: Array<T>;
