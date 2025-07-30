@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { FormConfig, InputConfig } from '../../models/form-input.interface';
 
 @Component({
   selector: 'app-generic-form',
@@ -24,7 +24,7 @@ import { DropdownInputConfig, StandardInputConfig } from '../../models/form-inpu
 export class GenericFormComponent<T> {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
-              public _data: Array<StandardInputConfig<T> | DropdownInputConfig<T, any>>,
+              public _data: FormConfig<T>,
               private _formBuilder: FormBuilder,
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>){}
           
@@ -37,17 +37,67 @@ export class GenericFormComponent<T> {
   }
 
   createForm() {
-    let formControls = {} as Record<string, FormControl>;
-    this._data.forEach(input => {
-      formControls[input.name] = new FormControl(input.value ?? null, input.validators);
-    });
-    this.formContent = this._formBuilder.group(formControls);
+    this.formContent = this._formBuilder.group({});
+    this.generateFormControls(this._data, this.formContent);
     console.log(this.formContent);
   }
 
   submitForm() {
     console.log(this.formContent.value);
   }
-   
+
+  /*isInput(obj: any): obj is DropdownInputConfig<Record<string, any>, any> | StandardInputConfig<Record<string, any>> {
+    return (
+      typeof obj === "object" &&
+      obj !== null &&
+      typeof obj.name === "string" &&
+      Array.isArray(obj.validators)
+    );
+  }
+
+  generateFormGroupControls(
+    data: InputsArray<Record<string, any>>,
+    form: FormGroup
+  ) {
+    data.forEach(input => {
+      if (this.isInput(input)) {
+        form.addControl(
+          input.name, 
+          this._formBuilder.control(input.value ?? null, input.validators)
+        );
+      }
+      else {
+        for (let key in input) {
+          if (input[key]) {
+            form.addControl(key, new FormGroup({}));
+            this.generateFormGroupControls(input[key], form.get(key) as FormGroup);
+          }
+        }
+      }
+    });
+  }*/
+
+  generateFormControls(data: Record<string, any>, form: FormGroup){
+    for(let key in data) {
+      if(this.isInput(data[key])) {
+        form.addControl(
+          key, 
+          this._formBuilder.control(data[key].value ?? null, data[key].validators)
+        )
+      }
+      else {
+        form.addControl(key, new FormGroup({}));
+        this.generateFormControls(data[key], form.get(key) as FormGroup);
+      }
+    }
+  }
+
+  isInput(obj: any): obj is InputConfig<any> {
+    return (
+      typeof obj === "object" &&
+      obj !== null &&
+      Array.isArray(obj.validators)
+      );
+  }
 
 }

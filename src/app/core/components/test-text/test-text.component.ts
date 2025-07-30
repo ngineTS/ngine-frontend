@@ -8,6 +8,8 @@ import { GenericFormService, Person } from '../../services/generic-form.service'
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { DropdownConfig, FormConfig } from '../../models/form-input.interface';
+import { isPrimitive } from 'util';
 
 @Component({
   selector: 'app-test-text',
@@ -31,7 +33,6 @@ export class TestTextComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-  
   }
 
   ngOnDestroy() {
@@ -41,14 +42,62 @@ export class TestTextComponent implements OnInit {
   }
 
   openGenericForm(){
-    const items = ["oooo", "eeee", "fffff"];
-    const inputs = [
-      this._genericFormService.defineInputFormat(
+    const items: string[] = ["a", "a", "c"];
+    const personInputs: FormConfig<Person> = {
+      numberArray: {
+        value: null,
+        validators: [],
+        type: 'dropdown',
+        dropdownConfig: {
+          isPrimitive: true,
+          items: items
+        }
+      }
+      /*this._genericFormService.defineInputFormat(
         this._genericFormService.lucas, 
-        'age', 
+        "numberArray",
+        [],
+        "dropdown",
+        {
+          isPrimitive: true,
+          items: items
+        }
+      )*/,
+      job: this._genericFormService.defineInputFormat(
+        this._genericFormService.lucas, 
+        'job', 
         [Validators.required], 
-        'number',
+        'dropdown',
+        {
+          isPrimitive: false,
+          bindLabel: 'a',
+          bindValue: 'b',
+          items: [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
+        }
       ),
+      child: {
+        a: {
+          value: this._genericFormService.lucas.child["a"],
+          validators: [],
+          type: 'dropdown',
+          dropdownConfig: {
+            isPrimitive: true,
+            items: items
+          }
+        },
+        b: {
+          value: this._genericFormService.lucas.child["b"],
+          validators: [],
+          type: 'text'
+        }
+      }
+    }
+
+    this._matDialog.open<GenericFormComponent<Person>, FormConfig<Person>>(
+      GenericFormComponent,
+      { data: personInputs }
+    );
+    /*const inputs: InputsArray<Person> = [
       this._genericFormService.defineInputFormat(
         this._genericFormService.lucas, 
         'book', 
@@ -71,12 +120,30 @@ export class TestTextComponent implements OnInit {
           items: [{a: 'a', b: 'b'}, {a: 'a2', b: 'b2'}, {a: 'a3', b: 'b3'}]
         }
       ),
+      { child: [
+          this._genericFormService.defineInputFormat(
+            this._genericFormService.lucas.child, 
+            'message', 
+            [Validators.required], 
+            'dropdown',
+            {isPrimitive: true, items: items}
+          ),
+          this._genericFormService.defineInputFormat(
+            this._genericFormService.lucas.child, 
+            'name', 
+            [Validators.required], 
+            'dropdown',
+            {
+              isPrimitive: false, 
+              items: [{azerty: 'azertyValue', qwerty: 'qwertyValue'}],
+              bindLabel: 'azerty',
+              bindValue: 'qwerty'}
+          ),
+        ],
+      } 
     ];
     console.log("Inputs", inputs);
-    this._matDialog.open<GenericFormComponent<Person>, typeof inputs>(
-      GenericFormComponent,
-      { data: inputs }
-    );
+    */
   }
 
 }
