@@ -17,22 +17,10 @@ export interface StandardInputConfig<T> extends InputConfig<T> {
 
 export interface DropdownInputConfig<T, U> extends InputConfig<T> {
     type: 'dropdown',
-    dropdownConfig: DropdownConfig2<T, U>
+    dropdownConfig: DropdownConfig<T, U>
 }
 
-export type DropdownConfig<T> = T extends string | number
-  ? { 
-      items: Array<T>;
-      isPrimitive: true;
-    }
-  : { 
-      isPrimitive: false;
-      bindValue: keyof T;
-      bindLabel: keyof T;
-      items: Array<T>;
-    }
-
-export type DropdownConfig2<T, U> = U extends string | number
+export type DropdownConfig<T, U> = U extends string | number
   ? { 
       items: T extends Array<any> ? T : Array<T>;
       isPrimitive: true;
@@ -40,29 +28,10 @@ export type DropdownConfig2<T, U> = U extends string | number
   : { 
       isPrimitive: false;
       bindValue: T extends Array<infer V>
-       ? {
-          [K in keyof U]: U[K] extends V ? K : never
-         }[keyof U]
-       : {
-          [K in keyof U]: U[K] extends T ? K : never
-         }[keyof U];
-//T extends Array<infer V> ? V & keyof U : T & keyof U;
+       ? { [K in keyof U]: U[K] extends V ? K : never }[keyof U]
+       : { [K in keyof U]: U[K] extends T ? K : never }[keyof U];
       bindLabel: keyof U;
       items: Array<U>;
     }
 
 export type InputType = 'date' | 'email' | 'url' | 'text' | 'password' | 'dropdown' | 'number' | 'range' | 'checkbox' | 'file';
-
-/*
-export type OldInputsArray<T> = Array<
-    StandardInputConfig<T> |
-    DropdownInputConfig<T, any> |
-    { [K in keyof T]?: OldInputsArray<T[K]> }
->
-
-export interface OldInputConfig<T> {
-    name: keyof T & string;
-    value: T[keyof T];
-    validators: Array<ValidatorFn>;
-}
-    */
