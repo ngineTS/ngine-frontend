@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormConfig, InputConfig } from '../../models/form-input.interface';
+import { DeepFormConfig, InputConfig } from '../../models/form-input.interface';
 
 @Component({
   selector: 'app-generic-form',
@@ -24,7 +24,7 @@ import { FormConfig, InputConfig } from '../../models/form-input.interface';
 export class GenericFormComponent<T> {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
-              public _data: FormConfig<T>,
+              public _data: DeepFormConfig<T>,
               private _formBuilder: FormBuilder,
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>){}
           
