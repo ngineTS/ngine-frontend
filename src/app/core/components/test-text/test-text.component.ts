@@ -108,53 +108,6 @@ export class TestTextComponent implements OnInit {
       GenericFormComponent,
       { data: personInputs }
     );
-    /*const inputs: InputsArray<Person> = [
-      this._genericFormService.defineInputFormat(
-        this._genericFormService.lucas, 
-        'book', 
-        [Validators.required], 
-        'dropdown',
-        {
-          isPrimitive: true,
-          items: items
-        }
-      ),
-      this._genericFormService.defineInputFormat(
-        this._genericFormService.lucas, 
-        'job', 
-        [Validators.required], 
-        'dropdown',
-        {
-          isPrimitive: false,
-          bindLabel: 'b',
-          bindValue: 'a',
-          items: [{a: 'a', b: 'b'}, {a: 'a2', b: 'b2'}, {a: 'a3', b: 'b3'}]
-        }
-      ),
-      { child: [
-          this._genericFormService.defineInputFormat(
-            this._genericFormService.lucas.child, 
-            'message', 
-            [Validators.required], 
-            'dropdown',
-            {isPrimitive: true, items: items}
-          ),
-          this._genericFormService.defineInputFormat(
-            this._genericFormService.lucas.child, 
-            'name', 
-            [Validators.required], 
-            'dropdown',
-            {
-              isPrimitive: false, 
-              items: [{azerty: 'azertyValue', qwerty: 'qwertyValue'}],
-              bindLabel: 'azerty',
-              bindValue: 'qwerty'}
-          ),
-        ],
-      } 
-    ];
-    console.log("Inputs", inputs);
-    */
   }
 
 }

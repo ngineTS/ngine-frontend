@@ -46,37 +46,6 @@ export class GenericFormComponent<T> {
     console.log(this.formContent.value);
   }
 
-  /*isInput(obj: any): obj is DropdownInputConfig<Record<string, any>, any> | StandardInputConfig<Record<string, any>> {
-    return (
-      typeof obj === "object" &&
-      obj !== null &&
-      typeof obj.name === "string" &&
-      Array.isArray(obj.validators)
-    );
-  }
-
-  generateFormGroupControls(
-    data: InputsArray<Record<string, any>>,
-    form: FormGroup
-  ) {
-    data.forEach(input => {
-      if (this.isInput(input)) {
-        form.addControl(
-          input.name, 
-          this._formBuilder.control(input.value ?? null, input.validators)
-        );
-      }
-      else {
-        for (let key in input) {
-          if (input[key]) {
-            form.addControl(key, new FormGroup({}));
-            this.generateFormGroupControls(input[key], form.get(key) as FormGroup);
-          }
-        }
-      }
-    });
-  }*/
-
   generateFormControls(data: Record<string, any>, form: FormGroup){
     for(let key in data) {
       if(this.isInput(data[key])) {
