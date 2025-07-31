@@ -39,8 +39,15 @@ export type DropdownConfig2<T, U> = U extends string | number
     }
   : { 
       isPrimitive: false;
-      bindValue: T extends Array<infer V> ? V & keyof U : T & keyof U;
-      bindLabel: T extends Array<infer V> ? V & keyof U : T & keyof U;
+      bindValue: T extends Array<infer V>
+       ? {
+          [K in keyof U]: U[K] extends V ? K : never
+         }[keyof U]
+       : {
+          [K in keyof U]: U[K] extends T ? K : never
+         }[keyof U];
+//T extends Array<infer V> ? V & keyof U : T & keyof U;
+      bindLabel: keyof U;
       items: Array<U>;
     }
 

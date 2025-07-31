@@ -97,7 +97,7 @@ export class GenericFormComponent<T> {
       typeof obj === "object" &&
       obj !== null &&
       Array.isArray(obj.validators)
-      );
+    );
   }
 
 }

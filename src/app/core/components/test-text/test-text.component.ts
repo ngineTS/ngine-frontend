@@ -42,7 +42,7 @@ export class TestTextComponent implements OnInit {
   }
 
   openGenericForm(){
-    const items: string[] = ["a", "a", "c"];
+    const items: number[] = [1, 2, 3];
     const personInputs: FormConfig<Person> = {
       numberArray: {
         value: null,
@@ -64,17 +64,28 @@ export class TestTextComponent implements OnInit {
         }
       )*/,
       job: this._genericFormService.defineInputFormat(
-        this._genericFormService.lucas, 
-        'job', 
-        [Validators.required], 
+        this._genericFormService.lucas,
+        "job",
+        [],
         'dropdown',
         {
           isPrimitive: false,
           bindLabel: 'a',
-          bindValue: 'b',
-          items: [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
+          bindValue: 'a',
+          items: [{a: 'a', b: 1, c: 'c'}, {a: 'a2', b: 2, c: 'c'}, {a: 'a3', b: 3, c: 'c'}]
         }
       ),
+      /*{
+        value: null,
+        validators: [Validators.required], 
+        type: 'dropdown',
+        dropdownConfig: {
+          isPrimitive: false,
+          bindLabel: "a",
+          bindValue: "c",
+          items: [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
+        }
+      }*/
       child: {
         a: {
           value: this._genericFormService.lucas.child["a"],

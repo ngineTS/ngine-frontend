@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { DropdownConfig, DropdownInputConfig, InputType, StandardInputConfig } from "../models/form-input.interface";
+import { DropdownConfig2, DropdownInputConfig, InputType, StandardInputConfig } from "../models/form-input.interface";
 import { ValidatorFn } from "@angular/forms";
 
 export interface Person {
@@ -20,7 +20,7 @@ export interface Person {
 export class GenericFormService { 
 
   lucas: Person = {
-      job: 'a',
+      job: 'jgjg',
       //age: 19,
       //book: 'oooo',
       child: {
@@ -48,14 +48,14 @@ export class GenericFormService {
     key: K,
     validators: Array<ValidatorFn>,
     type: "dropdown",
-    dropdownConfig: DropdownConfig<U>
+    dropdownConfig: DropdownConfig2<T[K], U>
   ): DropdownInputConfig<T[K], U>;
   defineInputFormat<T, K extends keyof T, U>(
     obj: T,
     key: K,
     validators: Array<ValidatorFn>,
     type: InputType,
-    dropdownConfig?: DropdownConfig<U>
+    dropdownConfig?: DropdownConfig2<T[K], U>
   ): DropdownInputConfig<T[K], U> | StandardInputConfig<T[K]> {
     if (type === "dropdown") {
       return {
