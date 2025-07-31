@@ -11,10 +11,19 @@ export type InputConfig<T> = {
     validators: Array<ValidatorFn>;
 }
 
+/**
+ * Type of standard input config
+ * T is the type of the input value
+ */
 export interface StandardInputConfig<T> extends InputConfig<T> {
     type: Exclude<InputType, "dropdown">;
 }
 
+/**
+ * Type of dropdown input config
+ * T is the type of the input value
+ * U is the type of the dropdown items
+ */
 export interface DropdownInputConfig<T, U> extends InputConfig<T> {
     type: 'dropdown',
     dropdownConfig: DropdownConfig<T, U>

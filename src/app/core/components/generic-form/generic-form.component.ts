@@ -1,12 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DeepFormConfig, InputConfig } from '../../models/form-input.interface';
+import { DeepFormConfig, DropdownInputConfig, InputConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-generic-form',
@@ -17,11 +18,13 @@ import { DeepFormConfig, InputConfig } from '../../models/form-input.interface';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    KeyValuePipe
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
 })
-export class GenericFormComponent<T> {
+//T extends Record<string, any> & { length?: never } constraints the type to be an object and not an array
+export class GenericFormComponent<T extends Record<string, any> & { length?: never }> {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public _data: DeepFormConfig<T>,
@@ -47,8 +50,8 @@ export class GenericFormComponent<T> {
   }
 
   generateFormControls(data: Record<string, any>, form: FormGroup){
-    for(let key in data) {
-      if(this.isInput(data[key])) {
+    for (let key in data) {
+      if (this.isInput(data[key])) {
         form.addControl(
           key, 
           this._formBuilder.control(data[key].value ?? null, data[key].validators)
@@ -67,6 +70,10 @@ export class GenericFormComponent<T> {
       obj !== null &&
       Array.isArray(obj.validators)
     );
+  }
+
+  isDropdownInput(input: any): input is DropdownInputConfig<unknown, unknown> {
+    return input.type === 'dropdown'
   }
 
 }

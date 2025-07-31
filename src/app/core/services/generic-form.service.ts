@@ -5,13 +5,13 @@ import { ValidatorFn } from "@angular/forms";
 export interface Person {
     job: string;
     //age: number;
-    //book: string;
+    book: string;
     numberArray: Array<number>;
     //objectArray: Array<{om: string, nad: number}>;
-    child: {
+    /*child: {
       a: number, 
       b: string, 
-    };
+    };*/
 }
 
 @Injectable({
@@ -22,11 +22,11 @@ export class GenericFormService {
   lucas: Person = {
       job: 'jgjg',
       //age: 19,
-      //book: 'oooo',
-      child: {
+      book: 'a2',
+      /*child: {
         a: 1, 
         b: 'b', 
-      },
+      },*/
       numberArray: [1, 1, 2]
       //objectArray: [{om: 'allez', nad: 38}, {om: 'yoooo', nad: 14}],
       /*child: { 

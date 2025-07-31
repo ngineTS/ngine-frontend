@@ -5,10 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { TestText } from '../../models/test-text.interface';
 import { environment } from '../../../../environments/environment';
 import { GenericFormService, Person } from '../../services/generic-form.service';
-import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig } from '../../models/form-input.interface';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-test-text',
@@ -45,13 +45,25 @@ export class TestTextComponent implements OnInit {
     const personInputs: DeepFormConfig<Person> = {
       numberArray: {
         value: null,
-        validators: [],
+        validators: [Validators.required],
         type: 'dropdown',
         dropdownConfig: {
           isPrimitive: true,
           items: items
         }
       },
+      book: this._genericFormService.defineInputFormat(
+        this._genericFormService.lucas,
+        'book',
+        [],
+        'dropdown',
+        {
+          isPrimitive: false,
+          bindLabel: 'b',
+          bindValue: 'a',
+          items:  [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
+        }
+      ),
       /*this._genericFormService.defineInputFormat(
         this._genericFormService.lucas, 
         "numberArray",
@@ -66,13 +78,7 @@ export class TestTextComponent implements OnInit {
         this._genericFormService.lucas,
         "job",
         [],
-        'dropdown',
-        {
-          isPrimitive: false,
-          bindLabel: 'a',
-          bindValue: 'a',
-          items: [{a: 'a', b: 1, c: 'c'}, {a: 'a2', b: 2, c: 'c'}, {a: 'a3', b: 3, c: 'c'}]
-        }
+        'text'
       ),
       /*{
         value: null,
@@ -85,7 +91,7 @@ export class TestTextComponent implements OnInit {
           items: [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
         }
       }*/
-      child: {
+      /*child: {
         a: {
           value: this._genericFormService.lucas.child["a"],
           validators: [],
@@ -100,11 +106,11 @@ export class TestTextComponent implements OnInit {
           validators: [],
           type: 'text'
         }
-      }
+      }*/
     }
 
-    this._matDialog.open<GenericFormComponent<Person>, DeepFormConfig<Person>>(
-      GenericFormComponent,
+    this._matDialog.open(
+      GenericFormComponent<Person>,
       { data: personInputs }
     );
   }

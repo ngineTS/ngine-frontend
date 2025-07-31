@@ -1,28 +1,28 @@
-<!--<div class="m-4">
+<div class="m-4">
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
-        @for (input of _data; track input) {
-            @if (input.type === 'text' || input.type === 'number') {
-                <span>{{ input.name }}</span>
-                <input type="text" [formControlName]="input.name"/>
-            }
-            @if (input.type === 'dropdown') {
+        @for (input of _data | keyvalue; track input) {
+            @if (isDropdownInput(input.value)) {
                 <mat-form-field>
-                    <mat-label>{{ input.name }}</mat-label>
-                    <mat-select [formControlName]="input.name">
-                        @for (item of input.dropdownConfig.items; track item) {
-                            @if (!input.dropdownConfig.isPrimitive) {
-                                <mat-option [value]="item[input.dropdownConfig.bindValue]">
-                                    {{ item[input.dropdownConfig.bindLabel] }}
-                                </mat-option>
+                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-select [formControlName]="input.key">
+                        @for (item of input.value.dropdownConfig.items; track item) {
+                            @if (input.value.dropdownConfig.isPrimitive) {
+                                <mat-option [value]="item">{{ item }}</mat-option>
                             }
                             @else {
-                                <mat-option [value]="item">{{ item }}</mat-option>
+                                <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                    {{ item[input.value.dropdownConfig.bindLabel] }}
+                                </mat-option>
                             }
                         }
                     </mat-select>
-                </mat-form-field>     
+                </mat-form-field>    
+            }
+            @else {
+                <span>{{ input.key }}</span>
+                <input type="text" [formControlName]="input.key"/>
             }
         }
         <button matButton type="submit">Submit</button>
     </form>
-</div>-->
+</div>
