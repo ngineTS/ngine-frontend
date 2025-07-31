@@ -51,7 +51,7 @@ export class TestTextComponent implements OnInit {
           isPrimitive: true,
           items: items
         }
-      }
+      },
       /*this._genericFormService.defineInputFormat(
         this._genericFormService.lucas, 
         "numberArray",
@@ -61,7 +61,7 @@ export class TestTextComponent implements OnInit {
           isPrimitive: true,
           items: items
         }
-      )*/,
+      )*/
       job: this._genericFormService.defineInputFormat(
         this._genericFormService.lucas,
         "job",

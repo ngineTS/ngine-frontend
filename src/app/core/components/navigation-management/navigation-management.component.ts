@@ -48,7 +48,7 @@ export class NavigationManagementComponent implements OnInit {
     this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
-    this.createNavigationForm();
+    this.createForm();
   }
 
   /**
@@ -58,7 +58,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * If navigation is a component then make parent as mandatory.
    */
-  createNavigationForm() {
+  createForm() {
     this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? this.data.parentId],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
