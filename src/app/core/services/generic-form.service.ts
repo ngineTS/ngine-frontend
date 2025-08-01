@@ -4,14 +4,12 @@ import { ValidatorFn } from "@angular/forms";
 
 export interface Person {
     job: string;
-    //age: number;
     book: string;
     numberArray: Array<number>;
-    //objectArray: Array<{om: string, nad: number}>;
-    /*child: {
+    child: {
       a: number, 
       b: string, 
-    };*/
+    };
 }
 
 @Injectable({
@@ -23,18 +21,12 @@ export class GenericFormService {
       job: 'jgjg',
       //age: 19,
       book: 'a2',
-      /*child: {
+      child: {
         a: 1, 
         b: 'b', 
-      },*/
+      },
       numberArray: [1, 1, 2]
       //objectArray: [{om: 'allez', nad: 38}, {om: 'yoooo', nad: 14}],
-      /*child: { 
-        id: 'a',
-        name: 'TEXXXXXXXT',
-        message: 'this is a test text or generic form',
-        navigationId: 'abcdefg'
-      }*/
   }
 
   defineInputFormat<T, K extends keyof T>(

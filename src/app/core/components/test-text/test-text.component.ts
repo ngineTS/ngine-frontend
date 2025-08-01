@@ -42,6 +42,8 @@ export class TestTextComponent implements OnInit {
 
   openGenericForm(){
     const items: number[] = [1, 2, 3];
+    const a = 'a';
+    const items2: number[] = [10, 20, 30, 40];
     const personInputs: DeepFormConfig<Person> = {
       numberArray: {
         value: null,
@@ -64,41 +66,20 @@ export class TestTextComponent implements OnInit {
           items:  [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
         }
       ),
-      /*this._genericFormService.defineInputFormat(
-        this._genericFormService.lucas, 
-        "numberArray",
-        [],
-        "dropdown",
-        {
-          isPrimitive: true,
-          items: items
-        }
-      )*/
       job: this._genericFormService.defineInputFormat(
         this._genericFormService.lucas,
         "job",
         [],
         'text'
       ),
-      /*{
-        value: null,
-        validators: [Validators.required], 
-        type: 'dropdown',
-        dropdownConfig: {
-          isPrimitive: false,
-          bindLabel: "a",
-          bindValue: "c",
-          items: [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
-        }
-      }*/
-      /*child: {
+      child: {
         a: {
           value: this._genericFormService.lucas.child["a"],
           validators: [],
           type: 'dropdown',
           dropdownConfig: {
             isPrimitive: true,
-            items: items
+            items: items2
           }
         },
         b: {
@@ -106,7 +87,7 @@ export class TestTextComponent implements OnInit {
           validators: [],
           type: 'text'
         }
-      }*/
+      }
     }
 
     this._matDialog.open(
