@@ -86,6 +86,22 @@ export class TestTextComponent implements OnInit {
           value: this._genericFormService.lucas.child["b"],
           validators: [],
           type: 'text'
+        },
+        grandChild: {
+          c: {
+            value: this._genericFormService.lucas.child.grandChild["c"],
+            validators: [],
+            type: 'dropdown',
+            dropdownConfig: {
+              isPrimitive: true,
+              items: items2
+            }
+          },
+          d: {
+            value: this._genericFormService.lucas.child.grandChild["d"],
+            validators: [],
+            type: 'text'
+          }
         }
       }
     }

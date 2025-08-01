@@ -9,6 +9,10 @@ export interface Person {
     child: {
       a: number, 
       b: string, 
+      grandChild: {
+        c: number,
+        d: string,
+      }
     };
 }
 
@@ -24,6 +28,10 @@ export class GenericFormService {
       child: {
         a: 1, 
         b: 'b', 
+        grandChild: {
+          c: 1, 
+          d: 'd', 
+      },
       },
       numberArray: [1, 1, 2]
       //objectArray: [{om: 'allez', nad: 38}, {om: 'yoooo', nad: 14}],
