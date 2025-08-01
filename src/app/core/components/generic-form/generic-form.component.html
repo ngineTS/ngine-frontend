@@ -1,10 +1,15 @@
 <div class="m-4">
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
+        
         @for (input of _data | keyvalue; track input) {
-            @if (isDropdownInput(input.value)) {
+            @if (isStandardInput(input.value)) {
+                <span>{{ input.key }}</span>
+                <input type="text" formControlName="{{ input.key }}"/>
+            }
+            @else if (isDropdownInput(input.value)) {
                 <mat-form-field>
                     <mat-label>{{ input.key }}</mat-label>
-                    <mat-select [formControlName]="input.key">
+                    <mat-select formControlName="{{ input.key }}">
                         @for (item of input.value.dropdownConfig.items; track item) {
                             @if (input.value.dropdownConfig.isPrimitive) {
                                 <mat-option [value]="item">{{ item }}</mat-option>
@@ -16,13 +21,45 @@
                             }
                         }
                     </mat-select>
-                </mat-form-field>    
+                </mat-form-field>
             }
             @else {
-                <span>{{ input.key }}</span>
-                <input type="text" [formControlName]="input.key"/>
-            }
+                <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input }"></ng-container>
+            }        
         }
+
+        <ng-template #deepForm let-data>
+            <div formGroupName="{{ data.key }}">
+                @for (input of data.value | keyvalue; track input) {
+                    @if (isStandardInput(input.value)) {
+                        <span>{{ input.key }}</span>
+                        <input type="text" formControlName="{{ input.key }}"/>
+                    }
+                    @else if (isDropdownInput(input.value)) {
+                        <mat-form-field>
+                            <mat-label>{{ input.key }}</mat-label>
+                            <mat-select formControlName="{{ input.key }}">
+                                @for (item of input.value.dropdownConfig.items; track item) {
+                                    @if (input.value.dropdownConfig.isPrimitive) {
+                                        <mat-option [value]="item">{{ item }}</mat-option>
+                                    }
+                                    @else {
+                                        <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                            {{ item[input.value.dropdownConfig.bindLabel] }}
+                                        </mat-option>
+                                    }
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    }
+                    @else {
+                        <span> + {{ input.key }} + </span>
+                        <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input.value }"></ng-container>
+                    }        
+                }
+            </div>
+        </ng-template>
+        
         <button matButton type="submit">Submit</button>
     </form>
 </div>
