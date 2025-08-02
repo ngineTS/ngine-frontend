@@ -90,7 +90,7 @@ export class TestTextComponent implements OnInit {
         grCh: {
           c: {
             value: this._genericFormService.lucas.child.grCh["c"],
-            validators: [],
+            validators: [Validators.required, Validators.max(22)],
             type: 'dropdown',
             dropdownConfig: {
               isPrimitive: true,
