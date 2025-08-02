@@ -53,7 +53,7 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
 
     for (const [key, value] of Object.entries(data)) {
       if (this.isStandardInput(value) || this.isDropdownInput(value)) {
-        // It's a form control configuration - create FormControl with the value
+        // It's an input configuration - create FormControl with the value
         group[key] = new FormControl(value.value, value.validators ?? []);
       } else {
         // It's an object - create FormGroup
@@ -74,6 +74,10 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
 
   getFormGroup(formGroup: FormGroup, name: string) {
     return formGroup.get(name) as FormGroup;
+  }
+
+  getFormControl(formGroup: FormGroup, name: string) {
+    return formGroup.get(name) as FormControl;
   }
 
 }
