@@ -59,7 +59,7 @@
                 }
             </div>
         </ng-template>
-
-        <button matButton type="submit">Submit</button>
+        
+        <button matButton type="submit" [disabled]="!formContent.valid">Submit</button>
     </form>
 </div>
