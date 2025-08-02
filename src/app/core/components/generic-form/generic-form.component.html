@@ -24,13 +24,13 @@
                 </mat-form-field>
             }
             @else {
-                <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input }"></ng-container>
+                <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, parent: formContent }"></ng-container>
             }        
         }
 
-        <ng-template #deepForm let-data>
+        <ng-template #deepForm let-data let-parent="parent">
             <span> + {{ data.key }} + </span>
-            <div formGroupName="{{ data.key }}">
+            <div [formGroup]="getFormGroup(parent, data.key)">
                 @for (input of data.value | keyvalue; track input) {
                     @if (isStandardInput(input.value)) {
                         <span>{{ input.key }}</span>
@@ -54,7 +54,7 @@
                         </mat-form-field>
                     }
                     @else {
-                        <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input }"></ng-container>
+                        <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, parent: getFormGroup(parent, data.key) }"></ng-container>
                     }        
                 }
             </div>

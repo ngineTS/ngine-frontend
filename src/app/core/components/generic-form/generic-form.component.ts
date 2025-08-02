@@ -36,7 +36,6 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
     
   ngOnInit() {
     console.log(this._data);
-    console.log(typeof this._data);
     this.createForm();
   }
 
@@ -71,6 +70,10 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
 
   isStandardInput(input: any): input is StandardInputConfig<any> {
     return input.type === 'text'
+  }
+
+  getFormGroup(formGroup: FormGroup, name: string) {
+    return formGroup.get(name) as FormGroup;
   }
 
 }
