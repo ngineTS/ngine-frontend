@@ -1,7 +1,7 @@
 <!-- Main level form template-->
-<div class="m-4">
+<div class="main-container">
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
-        
+       
         @for (input of _data | keyvalue; track input) {
             @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                 <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, parent: formContent }"></ng-container>
@@ -17,42 +17,53 @@
 
 <!-- Recursive form template -->
 <ng-template #deepForm let-data let-parent="parent">
-    <span> + {{ data.key }} + </span>
-    <div [formGroup]="getFormGroup(parent, data.key)">
-        @for (input of data.value | keyvalue; track input) {
-            @if(isStandardInput(input.value) || isDropdownInput(input.value)) {
-                <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, parent: getFormGroup(parent, data.key) }"></ng-container>
+    <div class="form-group-box">
+        <div class="form-group-name">{{ data.key }}</div>
+        <div [formGroup]="getFormGroup(parent, data.key)" class="row">
+            @for (input of data.value | keyvalue; track input) {
+                @if(isStandardInput(input.value) || isDropdownInput(input.value)) {
+                    <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, parent: getFormGroup(parent, data.key) }"></ng-container>
+                }
+                @else {
+                    <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, parent: getFormGroup(parent, data.key) }"></ng-container>
+                }        
             }
-            @else {
-                <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, parent: getFormGroup(parent, data.key) }"></ng-container>
-            }        
-        }
+        </div>
     </div>
 </ng-template>
 
 <!-- Form controls template -->
 <ng-template #formControls let-input let-parent="parent">
-    @if (isStandardInput(input.value)) {
-        <span>{{ input.key }}</span>
-        <input type="text" [formControl]="getFormControl(parent, input.key)"/>
-    }
-    @else if (isDropdownInput(input.value)) {
-        <mat-form-field>
-            <mat-label>{{ input.key }}</mat-label>
-            <mat-select [formControl]="getFormControl(parent, input.key)">
-                @for (item of input.value.dropdownConfig.items; track item) {
-                    @if (input.value.dropdownConfig.isPrimitive) {
-                        <mat-option [value]="item">{{ item }}</mat-option>
+    <div class="col">
+
+        @if (isStandardInput(input.value)) {
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ input.key }}</mat-label>
+                <input type="text" 
+                    [formControl]="getFormControl(parent, input.key)" 
+                    matInput
+                />
+            </mat-form-field>
+        }
+        @else if (isDropdownInput(input.value)) {
+            <mat-form-field appearance="outline" class="w-100" >
+                <mat-label>{{ input.key }}</mat-label>
+                <mat-select [formControl]="getFormControl(parent, input.key)">
+                    @for (item of input.value.dropdownConfig.items; track item) {
+                        @if (input.value.dropdownConfig.isPrimitive) {
+                            <mat-option [value]="item">{{ item }}</mat-option>
+                        }
+                        @else {
+                            <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                {{ item[input.value.dropdownConfig.bindLabel] }}
+                            </mat-option>
+                        }
                     }
-                    @else {
-                        <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
-                            {{ item[input.value.dropdownConfig.bindLabel] }}
-                        </mat-option>
-                    }
-                }
-            </mat-select>
-        </mat-form-field>
-    }
+                </mat-select>
+            </mat-form-field>
+        }
+    
+    </div>
 </ng-template>
 
 

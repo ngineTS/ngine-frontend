@@ -9,7 +9,7 @@ export interface Person {
     child: {
       a: number | null, 
       b: string, 
-      grandChild: {
+      grCh: {
         c: number,
         d: string,
       }
@@ -28,7 +28,7 @@ export class GenericFormService {
       child: {
         a: null, 
         b: 'b', 
-        grandChild: {
+        grCh: {
           c: 1, 
           d: 'd', 
       },

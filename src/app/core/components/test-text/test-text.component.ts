@@ -87,9 +87,9 @@ export class TestTextComponent implements OnInit {
           validators: [],
           type: 'text'
         },
-        grandChild: {
+        grCh: {
           c: {
-            value: this._genericFormService.lucas.child.grandChild["c"],
+            value: this._genericFormService.lucas.child.grCh["c"],
             validators: [],
             type: 'dropdown',
             dropdownConfig: {
@@ -98,7 +98,7 @@ export class TestTextComponent implements OnInit {
             }
           },
           d: {
-            value: this._genericFormService.lucas.child.grandChild["d"],
+            value: this._genericFormService.lucas.child.grCh["d"],
             validators: [],
             type: 'text'
           }
@@ -108,7 +108,8 @@ export class TestTextComponent implements OnInit {
 
     this._matDialog.open(
       GenericFormComponent<Person>,
-      { data: personInputs }
+      { 
+        data: personInputs }
     );
   }
 
