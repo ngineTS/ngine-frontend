@@ -97,6 +97,13 @@
                 </mat-form-field>
             }
 
+            @case ('textarea') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{ input.key }}</mat-label>
+                    <textarea matInput [formControl]="control"></textarea>
+                </mat-form-field>
+            }
+
             @case ('checkbox') {
                 <mat-checkbox [formControl]="control" class="mt-2">{{ input.key }}</mat-checkbox>
             }

@@ -85,7 +85,7 @@ export class TestTextComponent implements OnInit {
         b: {
           value: this._genericFormService.lucas.child["b"],
           validators: [],
-          type: 'email'
+          type: 'textarea'
         },
         grCh: {
           c: {
