@@ -64,6 +64,7 @@
                     <input type="email" 
                         [formControl]="control" 
                         matInput
+                        placeholder="Ex. pat@example.com"
                     />
                 </mat-form-field>
             }
@@ -88,9 +89,10 @@
             @case ('url') {
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{ input.key }}</mat-label>
-                    <input type="url" 
-                        [formControl]="control" 
-                        matInput
+                    <input 
+                       type="url" 
+                       [formControl]="control" 
+                       matInput
                     />
                 </mat-form-field>
             }
