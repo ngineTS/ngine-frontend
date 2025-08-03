@@ -11,6 +11,8 @@ import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+
 
 
 
@@ -26,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
+    MatTimepickerModule,
     MatIconModule,
     KeyValuePipe,
     NgTemplateOutlet,

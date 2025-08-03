@@ -103,11 +103,20 @@
 
             @case ('date') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker" [formControl]="control" >
+                    <mat-label>{{ input.key }}</mat-label>
+                    <input matInput [matDatepicker]="datePicker" [formControl]="control" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+            }
+
+            @case ('time') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{ input.key }}</mat-label>
+                    <input matInput [matTimepicker]="timePicker">
+                    <mat-timepicker-toggle matIconSuffix [for]="timePicker"/>
+                    <mat-timepicker #timePicker/>
                 </mat-form-field>
             }
             
