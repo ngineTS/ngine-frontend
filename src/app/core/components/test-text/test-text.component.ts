@@ -99,8 +99,8 @@ export class TestTextComponent implements OnInit {
           },
           d: {
             value: this._genericFormService.lucas.child.grCh["d"],
-            validators: [],
-            type: 'text'
+            validators: [Validators.required],
+            type: 'date'
           }
         }
       }

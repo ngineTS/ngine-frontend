@@ -11,7 +11,7 @@ export interface Person {
       b: string, 
       grCh: {
         c: number,
-        d: string,
+        d: Date,
       }
     };
 }
@@ -30,7 +30,7 @@ export class GenericFormService {
         b: 'b', 
         grCh: {
           c: 1, 
-          d: 'd', 
+          d: new Date(), 
       },
       },
       numberArray: [1, 1, 2]

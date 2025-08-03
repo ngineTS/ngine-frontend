@@ -1,7 +1,7 @@
 import { ValidatorFn } from "@angular/forms";
 
 export type DeepFormConfig<T> = T extends Record<string, any> 
-  ? T extends Array<any>
+  ? T extends Array<any> | Date
     ? StandardInputConfig<T> | DropdownInputConfig<T, any>
     : { [K in keyof T]: DeepFormConfig<T[K]> }
   : StandardInputConfig<T> | DropdownInputConfig<T, any>

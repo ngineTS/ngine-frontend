@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+
 
 
 
@@ -25,11 +27,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     KeyValuePipe,
     NgTemplateOutlet,
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
 })
 //"T extends Record<string, any> & { length?: never }"" constraints the type to be an object and not an array
-export class GenericFormComponent<T extends Record<string, any> & { length?: never }> {
+export class GenericFormComponent<
+                                  T extends Record<string, any> 
+                                    & { length?: never } 
+                                    & { getTime?: never }
+                                 > {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public _data: DeepFormConfig<T>,
@@ -73,7 +80,7 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
   }
 
   isStandardInput(input: any): input is StandardInputConfig<any> {
-    return input.type === 'text'
+    return input.type === 'text' || input.type === 'date'
   }
 
   getFormGroup(formGroup: FormGroup, name: any) {
