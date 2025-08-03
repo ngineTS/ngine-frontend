@@ -66,12 +66,12 @@ export class TestTextComponent implements OnInit {
           items:  [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
         }
       ),
-      job: this._genericFormService.defineInputFormat(
-        this._genericFormService.lucas,
-        "job",
-        [],
-        'text'
-      ),
+      job: {
+        value: true,
+        validators: [],
+        type: 'checkbox'
+      }
+      ,
       child: {
         a: {
           value: this._genericFormService.lucas.child["a"],

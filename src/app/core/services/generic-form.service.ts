@@ -3,7 +3,7 @@ import { DropdownConfig, DropdownInputConfig, InputType, StandardInputConfig } f
 import { ValidatorFn } from "@angular/forms";
 
 export interface Person {
-    job: string;
+    job: boolean;
     book: string;
     numberArray: Array<number>;
     child: {
@@ -22,7 +22,7 @@ export interface Person {
 export class GenericFormService { 
 
   lucas: Person = {
-      job: 'jgjg',
+      job: true,
       //age: 19,
       book: 'a2',
       child: {

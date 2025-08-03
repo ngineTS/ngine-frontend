@@ -95,6 +95,10 @@
                 </mat-form-field>
             }
 
+            @case ('checkbox') {
+                <mat-checkbox [formControl]="control" class="mt-2">{{ input.key }}</mat-checkbox>
+            }
+
             @case ('date') {
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Choose a date</mat-label>
