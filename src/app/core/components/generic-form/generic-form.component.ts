@@ -8,6 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
+
 
 @Component({
   selector: 'app-generic-form',
@@ -18,8 +21,9 @@ import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatDatepickerModule,
     KeyValuePipe,
-    NgTemplateOutlet
+    NgTemplateOutlet,
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
