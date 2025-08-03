@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,6 +10,8 @@ import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+
 
 
 
@@ -24,6 +26,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
+    MatIconModule,
     KeyValuePipe,
     NgTemplateOutlet,
   ],
@@ -44,6 +47,7 @@ export class GenericFormComponent<
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>){}
           
   formContent!: FormGroup;
+  hidePassword = signal(true);
     
   ngOnInit() {
     console.log(this._data);
@@ -80,7 +84,7 @@ export class GenericFormComponent<
   }
 
   isStandardInput(input: any): input is StandardInputConfig<any> {
-    return input.type === 'text' || input.type === 'date'
+    return input.type && input.type !== 'dropdown'
   }
 
   getFormGroup(formGroup: FormGroup, name: any) {
@@ -89,6 +93,11 @@ export class GenericFormComponent<
 
   getFormControl(formGroup: FormGroup, name: any) {
     return formGroup.get(name) as FormControl;
+  }
+
+  passwordEyeclickEvent(event: MouseEvent) {
+      this.hidePassword.set(!this.hidePassword());
+      event.stopPropagation();
   }
 
 }

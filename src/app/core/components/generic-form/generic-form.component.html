@@ -71,10 +71,17 @@
             @case ('password') {
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{ input.key }}</mat-label>
-                    <input type="password" 
-                        [formControl]="control" 
-                        matInput
-                    />
+                    <input matInput [type]="hidePassword() ? 'password' : 'text'" [formControl]="control" />
+                    <button
+                        type="button"
+                        matIconButton
+                        matSuffix
+                        (click)="passwordEyeclickEvent($event)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hidePassword()"
+                    >
+                    <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
+                    </button>
                 </mat-form-field>
             }
 
