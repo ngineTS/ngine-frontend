@@ -72,11 +72,11 @@ export class GenericFormComponent<T extends Record<string, any> & { length?: nev
     return input.type === 'text'
   }
 
-  getFormGroup(formGroup: FormGroup, name: string) {
+  getFormGroup(formGroup: FormGroup, name: any) {
     return formGroup.get(name) as FormGroup;
   }
 
-  getFormControl(formGroup: FormGroup, name: string) {
+  getFormControl(formGroup: FormGroup, name: any) {
     return formGroup.get(name) as FormControl;
   }
 
