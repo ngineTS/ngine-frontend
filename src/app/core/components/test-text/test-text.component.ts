@@ -84,14 +84,14 @@ export class TestTextComponent implements OnInit {
           validators: [],
           type: 'textarea'
         },
-        grCh: {
+        grandChild: {
           c: {
-            value: this._genericFormService.lucas.child.grCh["c"],
+            value: this._genericFormService.lucas.child.grandChild["c"],
             validators: [Validators.required, Validators.max(22)],
             type: 'number'
           },
           d: {
-            value: this._genericFormService.lucas.child.grCh["d"],
+            value: this._genericFormService.lucas.child.grandChild["d"],
             validators: [Validators.required],
             type: 'date-and-time'
           }
