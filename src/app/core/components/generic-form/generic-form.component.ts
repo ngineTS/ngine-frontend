@@ -71,6 +71,14 @@ export class GenericFormComponent<
     }
   }
 
+  deleteObject(){
+    if (confirm("Are you sure to delete this element?")) { 
+      this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
+                .subscribe(resp => console.log(resp));
+    }
+
+  }
+
   buildFormGroup(data: any): FormGroup {
     const group: any = {};
 

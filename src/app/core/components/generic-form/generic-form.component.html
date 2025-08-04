@@ -11,7 +11,24 @@
             }        
         }
 
-        <button matButton type="submit" [disabled]="!formContent.valid">Submit</button>
+        <div class="row">
+            <button 
+                class="form-button text-danger col ms-auto"
+                matButton="outlined"
+                type="button" 
+                (click)="deleteObject()"
+            >
+                Delete
+            </button>
+            <button 
+                class="form-button col"
+                matButton="outlined" 
+                type="submit" 
+                [disabled]="!formContent.valid"
+            >
+                Submit
+            </button>
+        </div>
     </form>
 </div>
 
