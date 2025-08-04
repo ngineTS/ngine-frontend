@@ -51,12 +51,7 @@ export class GenericFormComponent<
     
   ngOnInit() {
     console.log(this._data);
-    this.createForm();
-  }
-
-  createForm() {
     this.formContent = this.buildFormGroup(this._data);
-    console.log(this.formContent);
   }
 
   submitForm() {
