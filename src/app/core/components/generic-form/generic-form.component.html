@@ -2,7 +2,7 @@
 <div class="main-container">
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
-        @for (input of _data | keyvalue; track input) {
+        @for (input of _data.formConfig | keyvalue; track input) {
             @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                 <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(formContent, input.key) }"></ng-container>
             }

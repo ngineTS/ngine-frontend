@@ -6,12 +6,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { DropdownInputConfig, GenericFormDialogData, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-generic-form',
@@ -41,9 +43,10 @@ export class GenericFormComponent<
                                  > {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
-              public _data: DeepFormConfig<T>,
+              public _data: GenericFormDialogData<T>,
               private _formBuilder: FormBuilder,
-              private _dialogRef: MatDialogRef<GenericFormComponent<T>>){}
+              private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
+              private _http: HttpClient){}
           
   formContent!: FormGroup;
   hidePassword = signal(true);
@@ -51,11 +54,21 @@ export class GenericFormComponent<
     
   ngOnInit() {
     console.log(this._data);
-    this.formContent = this.buildFormGroup(this._data);
+    this.formContent = this.buildFormGroup(this._data.formConfig);
   }
 
   submitForm() {
     console.log(this.formContent.value);
+    //edit
+    if(this._data.id) {
+      this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
+                .subscribe(resp => console.log(resp));
+    }
+    //add
+    else {
+      this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
+                .subscribe(resp => console.log(resp));
+    }
   }
 
   buildFormGroup(data: any): FormGroup {

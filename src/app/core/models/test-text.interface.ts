@@ -4,3 +4,8 @@ export interface TestText {
     message: string;
     navigationId: string;
 }
+
+export interface TestTextPayload {
+    name: string;
+    message: string;
+}
