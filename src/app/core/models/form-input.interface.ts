@@ -43,4 +43,4 @@ export type DropdownConfig<T, U> = U extends string | number
       items: Array<U>;
     }
 
-export type InputType = 'email' | 'url' | 'text' | 'password' | 'number' | 'date' | 'time' | 'dropdown' | 'range' | 'checkbox' | 'file' | 'textarea';
+export type InputType = 'email' | 'url' | 'text' | 'password' | 'number' | 'date' | 'date-and-time' | 'dropdown' | 'range' | 'checkbox' | 'file' | 'textarea';

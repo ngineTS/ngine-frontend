@@ -118,10 +118,27 @@
                 </mat-form-field>
             }
 
-            @case ('time') {
+            @case ('date-and-time') {
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{ input.key }}</mat-label>
-                    <input matInput [matTimepicker]="timePicker">
+                    <input 
+                        matInput 
+                        [matDatepicker]="datePicker" 
+                        [(ngModel)]="dateTimeValue" 
+                        (valueChange)="onDateAndTimeChange(control)"
+                    >
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <input 
+                        matInput 
+                        [matTimepicker]="timePicker"
+                        [(ngModel)]="dateTimeValue" 
+                        (valueChange)="onDateAndTimeChange(control)"
+                    >
                     <mat-timepicker-toggle matIconSuffix [for]="timePicker"/>
                     <mat-timepicker #timePicker/>
                 </mat-form-field>

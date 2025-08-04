@@ -96,7 +96,7 @@ export class TestTextComponent implements OnInit {
           d: {
             value: this._genericFormService.lucas.child.grCh["d"],
             validators: [Validators.required],
-            type: 'time'
+            type: 'date-and-time'
           }
         }
       }

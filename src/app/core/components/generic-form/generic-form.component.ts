@@ -1,5 +1,5 @@
 import { Component, Inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,11 +12,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
-
-
-
-
-
 
 @Component({
   selector: 'app-generic-form',
@@ -32,6 +27,7 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
     MatIconModule,
     KeyValuePipe,
     NgTemplateOutlet,
+    FormsModule
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './generic-form.component.html',
@@ -51,6 +47,7 @@ export class GenericFormComponent<
           
   formContent!: FormGroup;
   hidePassword = signal(true);
+  dateTimeValue!: Date;
     
   ngOnInit() {
     console.log(this._data);
@@ -102,5 +99,10 @@ export class GenericFormComponent<
       this.hidePassword.set(!this.hidePassword());
       event.stopPropagation();
   }
+
+  onDateAndTimeChange(control: FormControl) {
+    setTimeout(() => control.setValue(new Date(this.dateTimeValue)), 250);
+  }
+
 
 }
