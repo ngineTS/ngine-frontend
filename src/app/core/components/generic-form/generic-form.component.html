@@ -149,7 +149,7 @@
                     <mat-label>{{ input.key }}</mat-label>
                     <mat-select [formControl]="control">
                         @for (item of input.value.dropdownConfig.items; track item) {
-                            @if (input.value.dropdownConfig.isPrimitive) {
+                            @if (!input.value.dropdownConfig.bindLabel) {
                                 <mat-option [value]="item">{{ item }}</mat-option>
                             }
                             @else {

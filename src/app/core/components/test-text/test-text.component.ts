@@ -50,7 +50,6 @@ export class TestTextComponent implements OnInit {
         validators: [Validators.required],
         type: 'dropdown',
         dropdownConfig: {
-          isPrimitive: true,
           items: items
         }
       },
@@ -60,7 +59,6 @@ export class TestTextComponent implements OnInit {
         [],
         'dropdown',
         {
-          isPrimitive: false,
           bindLabel: 'b',
           bindValue: 'a',
           items:  [{a: 'a', b: 1}, {a: 'a2', b: 2}, {a: 'a3', b: 3}]
@@ -78,7 +76,6 @@ export class TestTextComponent implements OnInit {
           validators: [Validators.required],
           type: 'dropdown',
           dropdownConfig: {
-            isPrimitive: true,
             items: items2
           }
         },

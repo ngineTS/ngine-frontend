@@ -32,10 +32,8 @@ export interface DropdownInputConfig<T, U> extends InputConfig<T> {
 export type DropdownConfig<T, U> = U extends string | number
   ? { 
       items: T extends Array<any> ? T : Array<T>;
-      isPrimitive: true;
     }
   : { 
-      isPrimitive: false;
       bindValue: T extends Array<infer V>
        ? { [K in keyof U]: U[K] extends V ? K : never }[keyof U]
        : { [K in keyof U]: U[K] extends T ? K : never }[keyof U];
