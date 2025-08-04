@@ -102,7 +102,9 @@ export class TestTextComponent implements OnInit {
     this._matDialog.open(
       GenericFormComponent<Person>,
       { 
-        data: personInputs }
+        maxWidth: '700px',
+        data: personInputs
+      }
     );
   }
 
