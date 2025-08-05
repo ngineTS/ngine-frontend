@@ -2,7 +2,7 @@
     <h4>Navigation Management</h4>
     <form [formGroup]="navigationForm" class="row" (ngSubmit)="submitForm()">
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Navigation Type </mat-label>
             <mat-select formControlName="navigationTypeId">
                 @for (navigationType of navigationTypes; track navigationType) {
@@ -11,7 +11,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
                     <mat-option [value]="null" style="color: #b3b3b3">None</mat-option>
@@ -21,13 +21,13 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput formControlName="displayLabel">
         </mat-form-field>
 
         @if (data.type === 'header') {
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Color</mat-label>
                 <input matInput type="color" formControlName="color">
             </mat-form-field>
