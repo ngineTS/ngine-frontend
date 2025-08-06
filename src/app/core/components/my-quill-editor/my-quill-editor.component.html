@@ -1,4 +1,5 @@
 <div>
-    <quill-editor class="w-100" [modules]="quillConfig">
+    <quill-editor class="w-100" [(ngModel)]="content">
     </quill-editor>
+    <button (click)="onSaveClick()">Save</button>
 </div>

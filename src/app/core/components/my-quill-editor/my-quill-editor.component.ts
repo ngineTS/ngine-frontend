@@ -3,18 +3,23 @@ import Quill from 'quill';
 import { QuillModule, QuillConfigModule } from 'ngx-quill'
 import "quill/dist/quill.core.css";
 import { Navigation } from '../../models/navigation.interface';
+import { FormsModule } from '@angular/forms';
 
 
 
 @Component({
   selector: 'app-my-quill-editor',
-  imports: [QuillModule],
+  imports: [
+    QuillModule,
+    FormsModule
+  ],
   templateUrl: './my-quill-editor.component.html',
   styleUrl: './my-quill-editor.component.scss'
 })
 export class MyQuillEditorComponent {
 
   @Input() navigation!: Navigation;
+  content: any;
 
   quillConfig = {
     toolbar: [
@@ -27,7 +32,6 @@ export class MyQuillEditorComponent {
       ['link', 'image', 'video', 'formula'],
       ['clean'],
     ],
-    
   }
 
   
@@ -45,6 +49,10 @@ export class MyQuillEditorComponent {
         theme: 'snow'
     });
     }, 1000)*/
+  }
+
+  onSaveClick() {
+    console.log(this.content);
   }
 
 }
