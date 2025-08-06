@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
@@ -23,6 +23,14 @@ export class TestTextComponent implements OnInit {
 
   @Input() navigation!: Navigation;
   content!: TestText;
+
+  /*currentWidth = 300;
+  currentHeight = 200;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    // Update dimensions if needed
+  }*/
 
   ngOnInit() {
     this._http.get<TestText>(`${environment.APIURL}test-text/navigation/${this.navigation.id}`).subscribe(resp => {
