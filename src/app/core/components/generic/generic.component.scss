@@ -34,6 +34,9 @@
   color: rgba(0, 0, 0, 0.87);
   background: white;
   font-size: 14px;
+  resize: both;
+  overflow: auto;
+  position: relative;
 }
 
 .cdk-drag-preview {
@@ -59,10 +62,6 @@
 
 ::ng-deep .mat-mdc-progress-spinner circle{
     stroke: blue !important;
-}
-
-.navigation-container {
-  position: relative;
 }
 
 .drag-icon {
@@ -95,10 +94,10 @@
   cursor: pointer;
 }
 
-.navigation-container:hover .edit-icon {
+.example-box:hover .edit-icon {
   display: block;
 }
 
-.navigation-container:hover .drag-icon {
+.example-box:hover:hover .drag-icon {
   display: block;
 }

@@ -30,6 +30,7 @@ export class TestTextComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     // Update dimensions if needed
+    console.log(event);
   }*/
 
   ngOnInit() {
