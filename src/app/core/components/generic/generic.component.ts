@@ -4,7 +4,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { GenericService } from '../../services/generic.service';
 import { CommonModule } from '@angular/common';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +19,7 @@ import { NavigationManagementComponent } from '../navigation-management/navigati
     CommonModule, 
     CdkDropList, 
     CdkDrag,
+    CdkDragHandle,
     MatProgressSpinnerModule,
     MatMenuModule,
   ],
