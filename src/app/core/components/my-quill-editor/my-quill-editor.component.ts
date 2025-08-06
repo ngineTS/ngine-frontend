@@ -4,6 +4,10 @@ import { QuillModule, QuillConfigModule } from 'ngx-quill'
 import "quill/dist/quill.core.css";
 import { Navigation } from '../../models/navigation.interface';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { take } from 'rxjs';
+import { QuillEditorContent } from '../../models/quill-editor.interface';
 
 
 
@@ -18,8 +22,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class MyQuillEditorComponent {
 
+  constructor(private _http: HttpClient) {}
+
   @Input() navigation!: Navigation;
-  content: any;
+  content!: string;
+  myQuillEditor!: QuillEditorContent;
 
   quillConfig = {
     toolbar: [
@@ -36,23 +43,31 @@ export class MyQuillEditorComponent {
 
   
   ngOnInit() {
+    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this.navigation.id}`).pipe(take(1)).subscribe(resp => {
+      this.myQuillEditor = resp;
+      this.content = resp.content;
+      console.log(this.myQuillEditor);
+    });
     
   }
 
-  ngAfterViewInit() {
-    /*setTimeout(() => {
-      const quill = new Quill(`#${this.navigation.id}`, {
-        modules: {
-          //toolbar: true,
-        },
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
-    });
-    }, 1000)*/
-  }
-
   onSaveClick() {
+    console.log(this.myQuillEditor);
     console.log(this.content);
+    //edit
+    if (this.myQuillEditor?.id) {
+      this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
+        navigationId: this.navigation.id,
+        content: this.content
+      }).subscribe(resp => console.log(resp));
+    }
+    //add
+    else {
+      this._http.post(`${environment.APIURL}quill-editor`, {
+        navigationId: this.navigation.id,
+        content: this.content
+      }).subscribe(resp => console.log(resp));
+    }
   }
 
 }
