@@ -11,8 +11,8 @@
             @for (navigation of navigations; track navigation) {
                 <div class="example-box navigation-container" cdkDrag>
                     <ng-template #container></ng-template>
-                    <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
                     <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm('component', navigation)"></i>
+                    <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
                     <span>{{ navigation.displayLabel }}</span>
                 </div>
             }

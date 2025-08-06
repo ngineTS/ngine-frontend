@@ -75,7 +75,7 @@
   position: relative;
 }
 
-.edit-icon {
+.drag-icon {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -88,10 +88,10 @@
   padding: 2px 6px;
   color: #636363;
   display: none;
-  cursor: pointer;
+  cursor: move;
 }
 
-.drag-icon {
+.edit-icon {
   position: absolute;
   top: 0px;
   right: 28px;
@@ -102,7 +102,7 @@
   padding: 2px 6px;
   color: #636363;
   display: none;
-  cursor: move;
+  cursor: pointer;
 }
 
 .navigation-container:hover .edit-icon {
