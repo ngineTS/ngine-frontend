@@ -1,5 +1,4 @@
 <div class="m-2">
-    <h2 class="ms-2">Dynamic Lazy Component Loader</h2>
     @if (isSavingOrder) {
         <mat-spinner [diameter]="50"></mat-spinner>
     }
@@ -13,7 +12,6 @@
                     <ng-template #container></ng-template>
                     <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm('component', navigation)"></i>
                     <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
-                    <span>{{ navigation.displayLabel }}</span>
                 </div>
             }
         </div>
