@@ -34,6 +34,10 @@ export class CalendarComponent {
     ]
   };
 
+  getCalendarEvent() {
+    
+  }
+
   handleDateClick(arg: any) {
     const calendarForm: DeepFormConfig<CalendarPayload> = {
       startDate: {

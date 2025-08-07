@@ -66,6 +66,11 @@ export class GenericFormComponent<
     }
     //add
     else {
+      //if navigationId is passed then save it in the db;
+      this.formContent.addControl(
+        'navigationId', 
+        this._formBuilder.control(this._data.navigationId ?? null)
+      );
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
                 .subscribe(resp => console.log(resp));
     }
