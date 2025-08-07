@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
-import Quill from 'quill';
-import { QuillModule, QuillConfigModule } from 'ngx-quill'
-import "quill/dist/quill.core.css";
+import { QuillModule } from 'ngx-quill'
 import { Navigation } from '../../models/navigation.interface';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { take } from 'rxjs';
 import { QuillEditorContent } from '../../models/quill-editor.interface';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { MatButton } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -15,18 +16,21 @@ import { QuillEditorContent } from '../../models/quill-editor.interface';
   selector: 'app-my-quill-editor',
   imports: [
     QuillModule,
-    FormsModule
+    FormsModule,
+    SafeHtmlPipe,
+    MatButton
   ],
   templateUrl: './my-quill-editor.component.html',
   styleUrl: './my-quill-editor.component.scss'
 })
 export class MyQuillEditorComponent {
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private _snackBar: MatSnackBar) {}
 
   @Input() navigation!: Navigation;
   content!: string;
   myQuillEditor!: QuillEditorContent;
+  canEdit = false;
 
   quillConfig = {
     toolbar: [
@@ -45,29 +49,40 @@ export class MyQuillEditorComponent {
   ngOnInit() {
     this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this.navigation.id}`).pipe(take(1)).subscribe(resp => {
       this.myQuillEditor = resp;
-      this.content = resp.content;
+      this.content = resp?.content;
       console.log(this.myQuillEditor);
     });
     
   }
 
   onSaveClick() {
-    console.log(this.myQuillEditor);
-    console.log(this.content);
     //edit
     if (this.myQuillEditor?.id) {
       this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
         navigationId: this.navigation.id,
         content: this.content
-      }).subscribe(resp => console.log(resp));
+      }).subscribe(resp => {
+        console.log(resp);
+        this.showSuccessSnackBar('updated');
+      });
     }
     //add
     else {
       this._http.post(`${environment.APIURL}quill-editor`, {
         navigationId: this.navigation.id,
         content: this.content
-      }).subscribe(resp => console.log(resp));
+      }).subscribe(resp => {
+        console.log(resp);
+        this.showSuccessSnackBar('saved');
+      });
     }
+  }
+
+  showSuccessSnackBar(action: string) {
+    this._snackBar.open(`Blog ${action} successfully`, 'Close', {
+      verticalPosition: 'top',
+      duration: 10000
+    });
   }
 
 }

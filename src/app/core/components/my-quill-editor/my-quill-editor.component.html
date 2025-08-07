@@ -1,5 +1,17 @@
-<div>
-    <quill-editor class="w-100" [(ngModel)]="content">
-    </quill-editor>
-    <button (click)="onSaveClick()">Save</button>
-</div>
+
+@if (!canEdit) {
+    <div>
+        <quill-editor class="w-100" [(ngModel)]="content">
+        </quill-editor>
+        <button 
+            matButton="outlined" 
+            class="save-button"
+            type="button" 
+            (click)="onSaveClick()"
+        >   Save
+        </button>
+    </div>
+}
+@else {
+    <div [innerHtml]="content | safeHtml"></div>
+}
