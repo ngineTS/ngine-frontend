@@ -17,7 +17,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     QuillModule,
     FormsModule,
-    SafeHtmlPipe,
     MatButton
   ],
   templateUrl: './my-quill-editor.component.html',

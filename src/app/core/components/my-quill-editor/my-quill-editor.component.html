@@ -13,6 +13,6 @@
 }
 @else {
     @if (content) {
-        <div [innerHtml]="content | safeHtml"></div>
+        <quill-view [content]="content"></quill-view>
     }
 }
