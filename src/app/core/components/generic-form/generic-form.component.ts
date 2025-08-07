@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-generic-form',
@@ -46,7 +47,8 @@ export class GenericFormComponent<
               public _data: GenericFormDialogData<T>,
               private _formBuilder: FormBuilder,
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
-              private _http: HttpClient){}
+              private _http: HttpClient,
+              private _snackBar: MatSnackBar){}
           
   formContent!: FormGroup;
   hidePassword = signal(true);
@@ -62,7 +64,11 @@ export class GenericFormComponent<
     //edit
     if(this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
-                .subscribe(resp => console.log(resp));
+                .subscribe(resp => {
+                  console.log(resp);
+                  this.showSuccessSnackBar('edited');
+                  this._dialogRef.close();
+                });
     }
     //add
     else {
@@ -72,14 +78,22 @@ export class GenericFormComponent<
         this._formBuilder.control(this._data.navigationId ?? null)
       );
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
-                .subscribe(resp => console.log(resp));
+                .subscribe(resp => {
+                  console.log(resp);
+                  this.showSuccessSnackBar('added');
+                  this._dialogRef.close();
+                });
     }
   }
 
   deleteObject(){
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
-                .subscribe(resp => console.log(resp));
+                .subscribe(resp => {
+                  console.log(resp);
+                  this.showSuccessSnackBar('deleted');
+                  this._dialogRef.close();
+                });
     }
 
   }
@@ -123,6 +137,13 @@ export class GenericFormComponent<
 
   onDateAndTimeChange(control: FormControl) {
     setTimeout(() => control.setValue(new Date(this.dateTimeValue)), 250);
+  }
+
+  showSuccessSnackBar(action: string) {
+    this._snackBar.open(`Element ${action} successfully`, 'Close', {
+      verticalPosition: 'top',
+      duration: 10000
+    });
   }
 
 

@@ -10,6 +10,9 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { Navigation } from '../../models/navigation.interface';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { map, take } from 'rxjs';
 
 
 @Component({
@@ -20,7 +23,8 @@ import { Navigation } from '../../models/navigation.interface';
 })
 export class CalendarComponent {
 
-  constructor(private _matDialog: MatDialog) {}
+  constructor(private _matDialog: MatDialog,
+              private _http: HttpClient) {}
 
   @Input() navigation!: Navigation;
 
@@ -33,9 +37,36 @@ export class CalendarComponent {
       { title: 'event 2', date: '2025-06-02' }
     ]
   };
+  
+  ngOnInit() {
+    this.getCalendarEvent();
+  }
 
   getCalendarEvent() {
-    
+    this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this.navigation.id}`)
+              .pipe(
+                take(1),
+                map<Calendar[], CalendarOptions["events"]>(dbEvents => {
+                  const calendarEvents: CalendarOptions["events"] = [];
+                  dbEvents.forEach(event => {
+                    calendarEvents.push({
+                      id: event.id,
+                      title: event.title,
+                      start: event.startDate,
+                      end: event.endDate,
+                      url: event.url,
+                      extendedProps: {
+                        description: event.description
+                      }
+                    });
+                  });
+                  return calendarEvents;
+                })
+              )
+              .subscribe(resp => {
+                this.calendarOptions.events = resp;
+                console.log(resp);
+              });
   }
 
   handleDateClick(arg: any) {
@@ -48,7 +79,7 @@ export class CalendarComponent {
       endDate: {
         value: null,
         type: 'date',
-        validators: [Validators.required]
+        validators: []
       },
       description: {
         value: null,
