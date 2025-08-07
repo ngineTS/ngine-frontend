@@ -1,5 +1,4 @@
-
-@if (!canEdit) {
+@if (canEdit) {
     <div>
         <quill-editor class="w-100" [(ngModel)]="content">
         </quill-editor>
@@ -13,5 +12,7 @@
     </div>
 }
 @else {
-    <div [innerHtml]="content | safeHtml"></div>
+    @if (content) {
+        <div [innerHtml]="content | safeHtml"></div>
+    }
 }
