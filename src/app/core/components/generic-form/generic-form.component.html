@@ -126,7 +126,7 @@
             }
 
             @case ('date') {
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100 pb-3">
                     <mat-label>{{ input.key }}</mat-label>
                     <input matInput [matDatepicker]="datePicker" [formControl]="control" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
@@ -136,7 +136,7 @@
             }
 
             @case ('date-and-time') {
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100 pb-1">
                     <mat-label>{{ input.key }}</mat-label>
                     <input 
                         matInput 
