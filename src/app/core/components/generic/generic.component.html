@@ -6,7 +6,8 @@
         <div cdkDropList 
             class="example-list" 
             (cdkDropListDropped)="drop($event)"
-            [cdkDropListData]="navigations">
+            [cdkDropListData]="navigations"
+            cdkDropListOrientation="mixed">
             @for (navigation of navigations; track navigation) {
                 <div class="example-box" cdkDrag appResizeObserver (resize)="onResize(navigation.id, $event)">
                     <ng-template #container></ng-template>
