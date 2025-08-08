@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarApi, CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -13,6 +13,7 @@ import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, take } from 'rxjs';
+import { ComponentSize } from '../../models/component-size.interface';
 
 
 @Component({
@@ -26,8 +27,10 @@ export class CalendarComponent {
   constructor(private _matDialog: MatDialog,
               private _http: HttpClient) {}
 
-  @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
   @Input() navigation!: Navigation;
+  @Input() componentSize!: ComponentSize;
+
+  @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
   calendarApi!: CalendarApi;
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -38,14 +41,18 @@ export class CalendarComponent {
   
   ngOnInit() {
     this.getCalendarEvent();
+    console.log(this.componentSize);
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    console.log(simpleChanges);
+    if(simpleChanges["componentSize"]) {
+      this.calendarApi.updateSize();
+    }
   }
 
   ngAfterViewInit() {
     this.calendarApi = this.myFullCalendar.getApi();
-    /*setInterval(() => {
-      console.log("Yo");
-      this.calendarApi.updateSize();
-    }, 500)*/
   }
 
   getCalendarEvent() {

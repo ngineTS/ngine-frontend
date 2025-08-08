@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Injector, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, inject, Injector, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { ResizeObserverDirective } from '../../directives/resize-observer.directive';
+import { ComponentSize } from '../../models/component-size.interface';
 
 
 @Component({
@@ -37,8 +38,9 @@ export class GenericComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
   injector = inject(Injector);
-  navigations!: Navigation[];
+  navigations!: Array<Navigation>;
   isSavingOrder: boolean = false;
+  containerRefs: Map<Navigation["id"], ComponentRef<unknown>> = new Map();
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
@@ -56,6 +58,7 @@ export class GenericComponent implements OnInit, AfterViewInit {
         injector: this.injector
       });  
       containerRef.setInput('navigation', this.navigations[index]);
+      this.containerRefs.set(this.navigations[index].id, containerRef);
     });
   }
 
@@ -83,9 +86,13 @@ export class GenericComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onResize(rect: DOMRectReadOnly) {
+  onResize(navigationId: Navigation["id"], rect: DOMRectReadOnly) {
     console.log(this.container.toArray()[0]);
     console.log('New size:', rect.width, rect.height);
+    this.containerRefs.get(navigationId)?.setInput('componentSize', {
+      width: rect.width,
+      height: rect.height
+    });
   }
 
 }
