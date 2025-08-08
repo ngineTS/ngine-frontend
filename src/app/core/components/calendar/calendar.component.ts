@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
+import { Component, Input, ViewChild } from '@angular/core';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarApi, CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
@@ -26,20 +26,26 @@ export class CalendarComponent {
   constructor(private _matDialog: MatDialog,
               private _http: HttpClient) {}
 
+  @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
   @Input() navigation!: Navigation;
-
+  calendarApi!: CalendarApi;
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
+    events: [],
     dateClick: (arg: any) => this.handleDateClick(arg),
-    events: [
-      { title: 'event 1', date: '2025-06-01' },
-      { title: 'event 2', date: '2025-06-02' }
-    ]
   };
   
   ngOnInit() {
     this.getCalendarEvent();
+  }
+
+  ngAfterViewInit() {
+    this.calendarApi = this.myFullCalendar.getApi();
+    /*setInterval(() => {
+      console.log("Yo");
+      this.calendarApi.updateSize();
+    }, 500)*/
   }
 
   getCalendarEvent() {

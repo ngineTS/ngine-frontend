@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Injector, inputBinding, OnInit, Query, QueryList, Type, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
+import { ResizeObserverDirective } from '../../directives/resize-observer.directive';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { NavigationManagementComponent } from '../navigation-management/navigati
     CdkDragHandle,
     MatProgressSpinnerModule,
     MatMenuModule,
+    ResizeObserverDirective
   ],
   templateUrl: './generic.component.html',
   styleUrl: './generic.component.scss'
@@ -79,6 +81,11 @@ export class GenericComponent implements OnInit, AfterViewInit {
         parentId: this._route.snapshot.data["parentId"]
       }
     });
+  }
+
+  onResize(rect: DOMRectReadOnly) {
+    console.log(this.container.toArray()[0]);
+    console.log('New size:', rect.width, rect.height);
   }
 
 }
