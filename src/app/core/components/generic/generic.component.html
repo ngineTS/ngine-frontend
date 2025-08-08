@@ -4,7 +4,7 @@
     }
     @if (navigations && navigations.length > 0) {
         <div cdkDropList 
-            class="example-list m-2" 
+            class="example-list" 
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations">
             @for (navigation of navigations; track navigation) {
