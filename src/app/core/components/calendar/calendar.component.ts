@@ -67,7 +67,7 @@ export class CalendarComponent {
                   dbEvents.forEach(event => {
                     calendarEvents.push({
                       id: event.id,
-                      title: event.title,
+                      title: event.url ? event.title + ' 🌐' : event.title,
                       start: event.allDay ? this._datePipe.transform(event.startDate, 'yyyy-MM-dd') ?? undefined : event.startDate,
                       end: event.allDay ? this._datePipe.transform(event.endDate, 'yyyy-MM-dd') ?? undefined : event.endDate,
                       url: event.url,
@@ -102,22 +102,22 @@ export class CalendarComponent {
         validators: [Validators.required]
       },
       description: {
-        value: null,
+        value: '',
         type: 'textarea',
         validators: []
       },
       title: {
-        value: null,
+        value: '',
         type: 'text',
         validators: [Validators.required]
       },
       category: {
-        value: null,
+        value: '',
         type: 'text',
         validators: []
       },
       url: {
-        value: null,
+        value: '',
         type: 'text',
         validators: []
       },
@@ -150,16 +150,16 @@ export class CalendarComponent {
 
   handleEventClick(arg: EventClickArg) {
     if(this.canEdit) {
-
+      console.log(arg.event.url);
       arg.jsEvent.preventDefault(); // don't let the browser navigate
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
-          value: arg.event.start,
+          value: arg.event.start ?? new Date(),
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
-          value:  arg.event.end,
+          value: arg.event.end ?? new Date (),
           type: 'date-and-time',
           validators: [Validators.required]
         },
@@ -169,7 +169,7 @@ export class CalendarComponent {
           validators: []
         },
         title: {
-          value: arg.event.title,
+          value: arg.event.url ? arg.event.title.substring(0, arg.event.title.indexOf(' 🌐')) : arg.event.title,
           type: 'text',
           validators: [Validators.required]
         },

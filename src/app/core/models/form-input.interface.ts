@@ -7,7 +7,7 @@ export type DeepFormConfig<T> = T extends Record<string, any>
   : StandardInputConfig<T> | DropdownInputConfig<T, any>
 
 export type InputConfig<T> = {
-    value: T | null;
+    value: T;
     validators: Array<ValidatorFn>;
 }
 
