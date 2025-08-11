@@ -141,7 +141,11 @@ export class CalendarComponent {
       }
     );
 
-    matDialogRef.afterClosed().subscribe(resp => this.getCalendarEvent());
+    matDialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'added') {
+          this.getCalendarEvent();
+        }
+    });
   }
 
   handleEventClick(arg: EventClickArg) {
@@ -199,7 +203,11 @@ export class CalendarComponent {
         }
       );
 
-      matDialogRef.afterClosed().subscribe(resp => this.getCalendarEvent());
+      matDialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'edited') {
+          this.getCalendarEvent();
+        }
+      });
 
     }
   }

@@ -67,7 +67,7 @@ export class GenericFormComponent<
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
                 .subscribe(resp => {
                   this.showSuccessSnackBar('edited');
-                  this._dialogRef.close();
+                  this._dialogRef.close('edited');
                 });
     }
     //add
@@ -80,7 +80,7 @@ export class GenericFormComponent<
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
                 .subscribe(resp => {
                   this.showSuccessSnackBar('added');
-                  this._dialogRef.close();
+                  this._dialogRef.close('added');
                 });
     }
   }
