@@ -128,7 +128,7 @@ export class CalendarComponent {
       }
     }
 
-    this._matDialog.open(
+    const matDialogRef = this._matDialog.open(
       GenericFormComponent<CalendarPayload>,
       { 
         maxWidth: '700px',
@@ -140,6 +140,8 @@ export class CalendarComponent {
         }
       }
     );
+
+    matDialogRef.afterClosed().subscribe(resp => this.getCalendarEvent());
   }
 
   handleEventClick(arg: EventClickArg) {
@@ -184,18 +186,20 @@ export class CalendarComponent {
         }
       }
 
-      this._matDialog.open(
+      const matDialogRef = this._matDialog.open(
         GenericFormComponent<CalendarPayload>,
         { 
           maxWidth: '700px',
           data: {
             formConfig: calendarForm,
-            id: null,
+            id: arg.event.id,
             navigationId: this.navigation.id,
             controllerName: 'calendar',
           }
         }
       );
+
+      matDialogRef.afterClosed().subscribe(resp => this.getCalendarEvent());
 
     }
   }
