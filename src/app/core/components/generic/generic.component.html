@@ -14,7 +14,7 @@
                     cdkDrag 
                     appResizeObserver 
                     (resize)="onResize(navigation.id, $event)"
-                    [style.width]="initialWindowWidth > 500 ? initialComponentSizeMap.get(navigation.id)?.width + 'px' : ''"
+                    [style.width]="initialWindowWidth > 500 ? initialComponentSizeMap.get(navigation.id)?.width + 'px' : '-webkit-fill-available'"
                     [style.height]="initialWindowWidth > 500 ? initialComponentSizeMap.get(navigation.id)?.height + 'px' : ''"
                 >
                     <ng-template #container></ng-template>
