@@ -8,6 +8,15 @@ export interface Calendar {
     fileId: string;
     category: string;
     url: string;
+    allDay: boolean;
 }
 
-export type CalendarPayload = Omit<Calendar, "id" | "navigationId" | "fileId">;
+export type CalendarPayload = {
+    title: string;
+    startDate: Date;
+    endDate?: Date;
+    description: string;
+    category: string;
+    url: string;
+    allDay?: boolean;
+}

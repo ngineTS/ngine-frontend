@@ -141,8 +141,8 @@
                     <input 
                         matInput 
                         [matDatepicker]="datePicker" 
-                        [(ngModel)]="dateTimeValue" 
-                        (valueChange)="onDateAndTimeChange(control)"
+                        [(ngModel)]="dateAndTimeRecord[input.key]" 
+                        (valueChange)="onDateAndTimeChange(control, input.key)"
                     >
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
@@ -153,8 +153,8 @@
                     <input 
                         matInput 
                         [matTimepicker]="timePicker"
-                        [(ngModel)]="dateTimeValue" 
-                        (valueChange)="onDateAndTimeChange(control)"
+                        [(ngModel)]="dateAndTimeRecord[input.key]" 
+                        (valueChange)="onDateAndTimeChange(control, input.key)"
                     >
                     <mat-timepicker-toggle matIconSuffix [for]="timePicker"/>
                     <mat-timepicker #timePicker/>

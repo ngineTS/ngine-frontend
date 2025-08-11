@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarApi, CalendarOptions } from '@fullcalendar/core';
+import { CalendarApi, CalendarOptions, DateSelectArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
@@ -19,13 +19,15 @@ import { ComponentSize } from '../../models/component-size.interface';
 @Component({
   selector: 'app-calendar',
   imports: [CommonModule, FullCalendarModule],
+  providers: [DatePipe],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
 export class CalendarComponent {
 
   constructor(private _matDialog: MatDialog,
-              private _http: HttpClient) {}
+              private _http: HttpClient,
+              private _datePipe: DatePipe) {}
 
   @Input() navigation!: Navigation;
   @Input() componentSize!: ComponentSize;
@@ -36,16 +38,15 @@ export class CalendarComponent {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
     events: [],
-    dateClick: (arg: any) => this.handleDateClick(arg),
+    selectable: true,
+    select: (arg: DateSelectArg) => this.handleDateSelection(arg)
   };
   
   ngOnInit() {
     this.getCalendarEvent();
-    console.log(this.componentSize);
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    console.log(simpleChanges);
     if(simpleChanges["componentSize"]) {
       this.calendarApi.updateSize();
     }
@@ -65,8 +66,8 @@ export class CalendarComponent {
                     calendarEvents.push({
                       id: event.id,
                       title: event.title,
-                      start: event.startDate,
-                      end: event.endDate,
+                      start: event.allDay ? this._datePipe.transform(event.startDate, 'yyyy-MM-dd') ?? undefined : event.startDate,
+                      end: event.allDay ? this._datePipe.transform(event.endDate, 'yyyy-MM-dd') ?? undefined : event.endDate,
                       url: event.url,
                       extendedProps: {
                         description: event.description
@@ -82,17 +83,19 @@ export class CalendarComponent {
               });
   }
 
-  handleDateClick(arg: any) {
+
+  handleDateSelection(arg: DateSelectArg) {
+    console.log(arg);
     const calendarForm: DeepFormConfig<CalendarPayload> = {
       startDate: {
-        value: null,
-        type: 'date',
+        value: arg.start,
+        type: 'date-and-time',
         validators: [Validators.required]
       },
       endDate: {
-        value: null,
-        type: 'date',
-        validators: []
+        value: arg.end,
+        type: 'date-and-time',
+        validators: [Validators.required]
       },
       description: {
         value: null,
@@ -112,6 +115,11 @@ export class CalendarComponent {
       url: {
         value: null,
         type: 'text',
+        validators: []
+      },
+      allDay: {
+        value: false,
+        type: 'checkbox',
         validators: []
       }
     }

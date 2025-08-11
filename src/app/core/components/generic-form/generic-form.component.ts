@@ -52,10 +52,11 @@ export class GenericFormComponent<
           
   formContent!: FormGroup;
   hidePassword = signal(true);
+  dateAndTimeRecord: Record<string, Date> = {};
   dateTimeValue!: Date;
     
   ngOnInit() {
-    console.log(this._data);
+    this.storeDateAndTimeInputsForNgModel(this._data.formConfig);
     this.formContent = this.buildFormGroup(this._data.formConfig);
   }
 
@@ -65,7 +66,6 @@ export class GenericFormComponent<
     if(this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
                 .subscribe(resp => {
-                  console.log(resp);
                   this.showSuccessSnackBar('edited');
                   this._dialogRef.close();
                 });
@@ -79,7 +79,6 @@ export class GenericFormComponent<
       );
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
                 .subscribe(resp => {
-                  console.log(resp);
                   this.showSuccessSnackBar('added');
                   this._dialogRef.close();
                 });
@@ -135,8 +134,8 @@ export class GenericFormComponent<
       event.stopPropagation();
   }
 
-  onDateAndTimeChange(control: FormControl) {
-    setTimeout(() => control.setValue(new Date(this.dateTimeValue)), 250);
+  onDateAndTimeChange(control: FormControl, formControlName: string) {
+    setTimeout(() => control.setValue(new Date(this.dateAndTimeRecord[formControlName])), 250);
   }
 
   showSuccessSnackBar(action: string) {
@@ -144,6 +143,20 @@ export class GenericFormComponent<
       verticalPosition: 'top',
       duration: 10000
     });
+  }
+
+  /**
+   * Store 'date-and-time' inputs inside Records to be used in [(ngModel)] of HTML page.
+   * 
+   * Info: [(ngModel)] is used for 'date-and-time' input instead of form control due to synchronization issue with this last one.
+   * @param formConfig The form config
+   */
+  storeDateAndTimeInputsForNgModel(formConfig: typeof this._data.formConfig) {
+    for (const [key, value] of Object.entries(formConfig)) {
+      if (value.type === 'date-and-time') {
+        this.dateAndTimeRecord[key] = value.value;
+      }
+    }
   }
 
 
