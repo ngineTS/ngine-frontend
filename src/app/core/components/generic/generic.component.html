@@ -9,7 +9,14 @@
             [cdkDropListData]="navigations"
             cdkDropListOrientation="mixed">
             @for (navigation of navigations; track navigation) {
-                <div class="example-box" cdkDrag appResizeObserver (resize)="onResize(navigation.id, $event)">
+                <div 
+                    class="example-box" 
+                    cdkDrag 
+                    appResizeObserver 
+                    (resize)="onResize(navigation.id, $event)"
+                    [style.width]="initialWindowWidth > 500 ? initialComponentSizeMap.get(navigation.id)?.width + 'px' : ''"
+                    [style.height]="initialWindowWidth > 500 ? initialComponentSizeMap.get(navigation.id)?.height + 'px' : ''"
+                >
                     <ng-template #container></ng-template>
                     <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm('component', navigation)"></i>
                     <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
@@ -20,6 +27,9 @@
                 matTooltip="Add component" 
                 (click)="openNavigationManagementForm('component')">
                 +
+        </button>
+        <button matButton (click)="onSaveSizes()">
+            Save Sizes
         </button>
     }
     @else {

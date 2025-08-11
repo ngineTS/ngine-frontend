@@ -66,7 +66,7 @@ export class NavigationService {
      * @param navigationsProps Array of navigation properties to update
      * @returns Array of navigation properties updated
      */
-    bulkUpdateNavigations(navigationsProps: Partial<Navigation>[]) {
+    bulkUpdateNavigations(navigationsProps: Array<Partial<Navigation>>) {
         return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps).pipe(take(1));
     }
 

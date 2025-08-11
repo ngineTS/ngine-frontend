@@ -8,6 +8,8 @@ export interface Navigation {
     displayLabel: string;
     order: number;
     color: string;
+    width: number;
+    height: number;
     isDisabled: string;
     createdDate: Date;
     createdBy: string;

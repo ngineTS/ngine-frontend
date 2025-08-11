@@ -41,9 +41,18 @@ export class GenericComponent implements OnInit, AfterViewInit {
   navigations!: Array<Navigation>;
   isSavingOrder: boolean = false;
   containerRefs: Map<Navigation["id"], ComponentRef<unknown>> = new Map();
+  componentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
+  initialComponentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
+  initialWindowWidth = window.innerWidth; //this property is used for conditional responsivity inside HTML
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
+    this.navigations.forEach(navigation => {
+      this.initialComponentSizeMap.set(navigation.id, {
+        width: window.innerWidth * navigation.width / 100,
+        height: window.innerHeight * navigation.height / 100
+      })
+    });
   }
 
   ngAfterViewInit() {
@@ -87,12 +96,26 @@ export class GenericComponent implements OnInit, AfterViewInit {
   }
 
   onResize(navigationId: Navigation["id"], rect: DOMRectReadOnly) {
-    console.log(this.container.toArray()[0]);
-    console.log('New size:', rect.width, rect.height);
     this.containerRefs.get(navigationId)?.setInput('componentSize', {
       width: rect.width,
       height: rect.height
     });
+    this.componentSizeMap.set(navigationId, {
+      width: rect.width,
+      height: rect.height
+    });
+  }
+
+  onSaveSizes() {
+    const navigationSizes: Array<Partial<Navigation>> = [];
+    this.componentSizeMap.forEach((value, key) => {
+      navigationSizes.push({
+        id: key,
+        width: Math.round(value.width / window.innerWidth * 100),
+        height: Math.round(value.height / window.innerHeight * 100)
+      })
+    });
+    this._navigationService.bulkUpdateNavigations(navigationSizes).subscribe(resp => console.log(resp));
   }
 
 }

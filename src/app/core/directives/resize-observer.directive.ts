@@ -11,7 +11,6 @@ export class ResizeObserverDirective implements OnDestroy {
   constructor(private el: ElementRef) {
     this.observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        console.log(entry);
         this.resize.emit(entry.contentRect);
       }
     });
