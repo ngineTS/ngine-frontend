@@ -15,6 +15,9 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MediaService } from '../../services/media.service';
+import { FormFile } from '../../models/form-file.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-generic-form',
@@ -48,22 +51,28 @@ export class GenericFormComponent<
               private _formBuilder: FormBuilder,
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
               private _http: HttpClient,
-              private _snackBar: MatSnackBar){}
+              private _snackBar: MatSnackBar,
+              private _mediaService: MediaService){}
           
   formContent!: FormGroup;
   hidePassword = signal(true);
   dateAndTimeRecord: Record<string, Date> = {};
-  dateTimeValue!: Date;
+  formFileSettings: Array<FormFile> = [];
     
   ngOnInit() {
-    this.storeDateAndTimeInputsForNgModel(this._data.formConfig);
     this.formContent = this.buildFormGroup(this._data.formConfig);
   }
 
-  submitForm() {
-    console.log(this.formContent.value);
+  async submitForm() {
+    //if new file uploaded then post it to S3 and assign file key to related form control
+    for (const formFileSetting of this.formFileSettings) {
+      if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
+        const media = await firstValueFrom(this._mediaService.uploadFileToS3(formFileSetting.formFile));
+        this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
+      }
+    }
     //edit
-    if(this._data.id) {
+    if (this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
                 .subscribe(resp => {
                   this.showSuccessSnackBar('edited');
@@ -89,9 +98,8 @@ export class GenericFormComponent<
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
                 .subscribe(resp => {
-                  console.log(resp);
                   this.showSuccessSnackBar('deleted');
-                  this._dialogRef.close();
+                  this._dialogRef.close('deleted');
                 });
     }
 
@@ -104,6 +112,8 @@ export class GenericFormComponent<
       if (this.isStandardInput(value) || this.isDropdownInput(value)) {
         // It's an input configuration - create FormControl with the value
         group[key] = new FormControl(value.value, value.validators ?? []);
+        // Check if input is 'date-and-time' or 'file' and setup record information 
+        this.setUpDateTimeAndFileRecords(key, value, group);
       } else {
         // It's an object - create FormGroup
         group[key] = this.buildFormGroup(value);
@@ -145,18 +155,48 @@ export class GenericFormComponent<
     });
   }
 
-  /**
-   * Store 'date-and-time' inputs inside Records to be used in [(ngModel)] of HTML page.
-   * 
-   * Info: [(ngModel)] is used for 'date-and-time' input instead of form control due to synchronization issue with this last one.
-   * @param formConfig The form config
-   */
-  storeDateAndTimeInputsForNgModel(formConfig: typeof this._data.formConfig) {
-    for (const [key, value] of Object.entries(formConfig)) {
-      if (value.type === 'date-and-time') {
-        this.dateAndTimeRecord[key] = value.value;
-      }
+  setUpDateTimeAndFileRecords(key: string, value: any, group: any) {    
+    if (value.type === 'date-and-time') {
+      this.dateAndTimeRecord[key] = value.value;
     }
+
+    if (value.type === 'file') {
+      this.formFileSettings.push({
+        fileId: value.value,
+        formFile: new FormData(),
+        formControlName: key,
+        formGroup: new FormGroup(group),
+        hasChanged: false
+      });
+    }
+  }
+
+  onFileSelection(event: any, formControlName: string) {
+    const fileUploaded: File = event.target.files[0];
+    const formFileSetting = this.formFileSettings.find(obj => obj.formControlName === formControlName);
+    if (formFileSetting) {
+      formFileSetting.formFile.delete('file');
+      formFileSetting.formFile.append('file', fileUploaded);
+      formFileSetting.hasChanged = true;
+      formFileSetting.fileId = fileUploaded.name;  
+    }
+  }
+
+  onFileRemove(formControlName: string, control: FormControl) {
+    const formFileSetting = this.formFileSettings.find(obj => obj.formControlName === formControlName);
+    if (formFileSetting) {
+      formFileSetting.formFile.delete('file');
+      formFileSetting.fileId = '';
+    }
+    control.setValue('');
+  }
+
+  getFileName(formControlName: string): string | undefined {
+    const fileId = this.formFileSettings.find(obj => obj.formControlName === formControlName)?.fileId;
+    if (fileId && fileId !== '') {
+      return fileId;
+    }
+    return 'No file selected'
   }
 
 

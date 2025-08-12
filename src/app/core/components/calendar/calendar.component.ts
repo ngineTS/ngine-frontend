@@ -74,7 +74,8 @@ export class CalendarComponent {
                       extendedProps: {
                         description: event.description,
                         category: event.category,
-                        allDay: event.allDay
+                        allDay: event.allDay,
+                        fileId: event.fileId
                       }
                     });
                   });
@@ -124,6 +125,11 @@ export class CalendarComponent {
       allDay: {
         value: false,
         type: 'checkbox',
+        validators: []
+      },
+      fileId: {
+        value: '',
+        type: 'file',
         validators: []
       }
     }
@@ -187,6 +193,11 @@ export class CalendarComponent {
           value: arg.event.extendedProps["allDay"],
           type: 'checkbox',
           validators: []
+        },
+        fileId: {
+        value: arg.event.extendedProps["fileId"],
+        type: 'file',
+        validators: []
         }
       }
 
@@ -204,7 +215,7 @@ export class CalendarComponent {
       );
 
       matDialogRef.afterClosed().subscribe(resp => {
-        if (resp === 'edited') {
+        if (resp === 'edited' || resp === 'deleted') {
           this.getCalendarEvent();
         }
       });

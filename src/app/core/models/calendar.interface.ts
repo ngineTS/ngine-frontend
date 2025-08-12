@@ -19,4 +19,5 @@ export type CalendarPayload = {
     category: string;
     url: string;
     allDay?: boolean;
+    fileId: string;
 }

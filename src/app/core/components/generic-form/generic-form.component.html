@@ -179,6 +179,28 @@
                 </mat-form-field>
             }
 
+            @case ('file') {
+
+                    <div class="row file-div">
+                        <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
+                            <div class="row">
+                                <span> - {{ input.key }} - </span>
+                                <span>Upload File</span>
+                            </div>
+                            <input 
+                                style="display: none"
+                                #fileDropRef
+                                type="file" 
+                                (change)="onFileSelection($event, input.key)"
+                            />
+                        </button>
+                        <div class="col file-name">
+                            {{ getFileName(input.key) }}
+                            <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
+                        </div>
+                    </div>
+            }
+
         }
     
     </div>
