@@ -1,4 +1,4 @@
-import { Component, Inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -37,7 +37,8 @@ import { firstValueFrom } from 'rxjs';
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './generic-form.component.html',
-  styleUrl: './generic-form.component.scss'
+  styleUrl: './generic-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 //"T extends Record<string, any> & { length?: never }"" constraints the type to be an object and not an array
 export class GenericFormComponent<
@@ -131,10 +132,12 @@ export class GenericFormComponent<
     return input.type && input.type !== 'dropdown'
   }
 
+  //TODO: Find a way to get form group without calling this method from HTML 
   getFormGroup(formGroup: FormGroup, name: any) {
     return formGroup.get(name) as FormGroup;
   }
 
+  //TODO: Find a way to get form control without calling this method from HTML 
   getFormControl(formGroup: FormGroup, name: any) {
     return formGroup.get(name) as FormControl;
   }
@@ -191,6 +194,7 @@ export class GenericFormComponent<
     control.setValue('');
   }
 
+  //TODO: Find a way to get file name without calling this method from HTML 
   getFileName(formControlName: string): string | undefined {
     const fileId = this.formFileSettings.find(obj => obj.formControlName === formControlName)?.fileId;
     if (fileId && fileId !== '') {
