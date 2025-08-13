@@ -164,7 +164,10 @@
             @case ('dropdown') {
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>{{ input.key }}</mat-label>
-                    <mat-select [formControl]="control">
+
+                    <!-- Multiple select dropdown-->
+                    @if (typeof input.value.value === 'object') {
+                        <mat-select [formControl]="control" multiple>
                         @for (item of input.value.dropdownConfig.items; track item) {
                             @if (!input.value.dropdownConfig.bindLabel) {
                                 <mat-option [value]="item">{{ item }}</mat-option>
@@ -175,30 +178,47 @@
                                 </mat-option>
                             }
                         }
-                    </mat-select>
+                        </mat-select>
+                    }
+                    
+                    <!-- Single select dropdown -->
+                    @else {
+                        <mat-select [formControl]="control">
+                            @for (item of input.value.dropdownConfig.items; track item) {
+                                @if (!input.value.dropdownConfig.bindLabel) {
+                                    <mat-option [value]="item">{{ item }}</mat-option>
+                                }
+                                @else {
+                                    <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                        {{ item[input.value.dropdownConfig.bindLabel] }}
+                                    </mat-option>
+                                }
+                            }
+                        </mat-select>
+                    }
+
                 </mat-form-field>
             }
 
             @case ('file') {
-
-                    <div class="row file-div">
-                        <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
-                            <div class="row">
-                                <span> - {{ input.key }} - </span>
-                                <span>Upload File</span>
-                            </div>
-                            <input 
-                                style="display: none"
-                                #fileDropRef
-                                type="file" 
-                                (change)="onFileSelection($event, input.key)"
-                            />
-                        </button>
-                        <div class="col file-name">
-                            {{ getFileName(input.key) }}
-                            <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
+                <div class="row file-div">
+                    <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
+                        <div class="row">
+                            <span> - {{ input.key }} - </span>
+                            <span>Upload File</span>
                         </div>
+                        <input 
+                            style="display: none"
+                            #fileDropRef
+                            type="file" 
+                            (change)="onFileSelection($event, input.key)"
+                        />
+                    </button>
+                    <div class="col file-name">
+                        {{ getFileName(input.key) }}
+                        <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
                     </div>
+                </div>
             }
 
         }

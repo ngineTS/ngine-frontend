@@ -7,7 +7,7 @@ export interface Person {
     book: string;
     numberArray: Array<number>;
     child: {
-      a: number | null, 
+      a: number, 
       b: string, 
       grandChild: {
         c: number,
@@ -26,14 +26,14 @@ export class GenericFormService {
       //age: 19,
       book: 'a2',
       child: {
-        a: null, 
+        a: 1, 
         b: 'b', 
         grandChild: {
           c: 1, 
           d: new Date(), 
       },
       },
-      numberArray: [1, 1, 2]
+      numberArray: [1, 2]
       //objectArray: [{om: 'allez', nad: 38}, {om: 'yoooo', nad: 14}],
   }
 

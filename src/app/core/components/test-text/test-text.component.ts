@@ -8,6 +8,7 @@ import { GenericFormService, Person } from '../../services/generic-form.service'
 import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig } from '../../models/form-input.interface';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-test-text',
@@ -52,21 +53,9 @@ export class TestTextComponent implements OnInit {
     const items: number[] = [1, 2, 3];
     const a = 'a';
     const items2: number[] = [10, 20, 30, 40];
-    const personInputs: DeepFormConfig<TestTextPayload> = {
-      name: {
-        value: this.content.name,
-        type: 'text',
-        validators: [],
-      },
-      message: {
-        value: this.content.message,
-        type: 'textarea',
-        validators: [],
-      }
-    }
-    /*= {
+    const personInputs: DeepFormConfig<Person> = {
       numberArray: {
-        value: null,
+        value: [1, 2],
         validators: [Validators.required],
         type: 'dropdown',
         dropdownConfig: {
@@ -117,7 +106,7 @@ export class TestTextComponent implements OnInit {
           }
         }
       }
-    }*/
+    }
 
     this._matDialog.open(
       GenericFormComponent<TestTextPayload>,
