@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveringArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
@@ -12,8 +12,10 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { map, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { ComponentSize } from '../../models/component-size.interface';
+import tippy from 'tippy.js';
+import { MediaService } from '../../services/media.service';
 
 
 @Component({
@@ -27,13 +29,16 @@ export class CalendarComponent {
 
   constructor(private _matDialog: MatDialog,
               private _http: HttpClient,
-              private _datePipe: DatePipe) {}
+              private _datePipe: DatePipe,
+              private _mediaService: MediaService) {}
 
   @Input() navigation!: Navigation;
   @Input() componentSize!: ComponentSize;
   canEdit = true;
-
+  
+  @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;
   @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
+  tooltipInstance: any;
   calendarApi!: CalendarApi;
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -41,7 +46,8 @@ export class CalendarComponent {
     events: [],
     selectable: true,
     select: (arg: DateSelectArg) => this.handleDateSelection(arg),
-    eventClick: (arg: EventClickArg) => this.handleEventClick(arg)
+    eventClick: (arg: EventClickArg) => this.handleEventClick(arg),
+    eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
 
   ngOnInit() {
@@ -63,6 +69,7 @@ export class CalendarComponent {
               .pipe(
                 take(1),
                 map<Calendar[], CalendarOptions["events"]>(dbEvents => {
+                  console.log(dbEvents);
                   const calendarEvents: CalendarOptions["events"] = [];
                   dbEvents.forEach(event => {
                     calendarEvents.push({
@@ -75,7 +82,8 @@ export class CalendarComponent {
                         description: event.description,
                         category: event.category,
                         allDay: event.allDay,
-                        fileId: event.fileId
+                        fileId: event.fileId,
+                        mediaType: event.media?.type
                       }
                     });
                   });
@@ -86,6 +94,43 @@ export class CalendarComponent {
                 this.calendarOptions.events = resp;
                 console.log(resp);
               });
+  }
+
+  handleEventMouseEnter(arg: EventHoveringArg) {
+    let mediaUrl$!: Observable<string>;
+    
+    if (arg.event.extendedProps["fileId"]) { 
+      mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps["fileId"]);
+    }
+
+    const contentElement = document.createElement('div');
+    const view = this.tooltipTemplate.createEmbeddedView({ 
+        mediaUrl$: mediaUrl$,
+        mediaType: arg.event.extendedProps["mediaType"],
+        title: arg.event.title,
+        description: arg.event.extendedProps["description"],
+        date: `${arg.event.startStr} - ${arg.event.endStr}`
+      }
+    );
+    view.detectChanges();
+    contentElement.appendChild(view.rootNodes[0]);
+    
+    if (arg.event.extendedProps["fileId"]) {
+      mediaUrl$.subscribe(() => view.detectChanges());
+    }
+
+    if (this.tooltipInstance) {
+      this.tooltipInstance.destroy();
+      this.tooltipInstance = null;
+    }
+
+    this.tooltipInstance = tippy(arg.el, {
+        content: contentElement,
+        allowHTML: true,
+        interactive: true,
+        appendTo: document.body
+      }
+    )
   }
 
 
@@ -148,9 +193,9 @@ export class CalendarComponent {
     );
 
     matDialogRef.afterClosed().subscribe(resp => {
-        if (resp === 'added') {
-          this.getCalendarEvent();
-        }
+      if (resp === 'added') {
+        this.getCalendarEvent();
+      }
     });
   }
 
@@ -222,7 +267,5 @@ export class CalendarComponent {
 
     }
   }
-
-
 
 }

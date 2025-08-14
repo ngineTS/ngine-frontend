@@ -12,15 +12,15 @@ export class MediaService {
   baseURL = environment.APIURL;
   constructor(private _http: HttpClient){}
 
-  getS3ObjectSignedUrl(fileId: string): Observable<any>{
-    return this._http.get(`${this.baseURL}file-management/${fileId}`).pipe(take(1));
+  getS3ObjectSignedUrl(fileId: string) {
+    return this._http.get<string>(`${this.baseURL}file-management/${fileId}`).pipe(take(1));
   }
 
-  getAllMedias(): Observable<Array<Media>>{
+  getAllMedias() {
     return this._http.get<Array<Media>>(`${this.baseURL}media-library`).pipe(take(1));
   }
 
-  uploadFileToS3(formData: FormData): Observable<Media> {
+  uploadFileToS3(formData: FormData) {
     return this._http.post<Media>(`${this.baseURL}file-management/upload`, formData).pipe(take(1));
   }
 

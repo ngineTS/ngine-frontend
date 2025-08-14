@@ -1,3 +1,5 @@
+import { Media } from "./media.interface";
+
 export interface Calendar {
     id: string;
     navigationId: string;
@@ -9,6 +11,7 @@ export interface Calendar {
     category: string;
     url: string;
     allDay: boolean;
+    media?: Media
 }
 
 export type CalendarPayload = {
