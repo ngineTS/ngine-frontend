@@ -35,7 +35,7 @@ export class CalendarComponent {
   @Input() navigation!: Navigation;
   @Input() componentSize!: ComponentSize;
   canEdit = true;
-  
+
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;
   @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
   tooltipInstance: any;
@@ -128,6 +128,7 @@ export class CalendarComponent {
         content: contentElement,
         allowHTML: true,
         interactive: true,
+        placement: 'auto',
         appendTo: document.body
       }
     )
