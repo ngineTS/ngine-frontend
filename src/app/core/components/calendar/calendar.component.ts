@@ -211,7 +211,7 @@ export class CalendarComponent {
           validators: [Validators.required]
         },
         endDate: {
-          value: arg.event.end ?? new Date (),
+          value: arg.event.end ?? new Date(),
           type: 'date-and-time',
           validators: [Validators.required]
         },
