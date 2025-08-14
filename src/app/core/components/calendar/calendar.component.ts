@@ -55,7 +55,7 @@ export class CalendarComponent {
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if(simpleChanges["componentSize"]) {
+    if (simpleChanges["componentSize"]) {
       this.calendarApi.updateSize();
     }
   }
