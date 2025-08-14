@@ -241,9 +241,9 @@ export class CalendarComponent {
           validators: []
         },
         fileId: {
-        value: arg.event.extendedProps["fileId"],
-        type: 'file',
-        validators: []
+          value: arg.event.extendedProps["fileId"],
+          type: 'file',
+          validators: []
         }
       }
 
