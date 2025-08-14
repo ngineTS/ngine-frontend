@@ -56,7 +56,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * If navigation is a header then add color form control.
    * 
-   * If navigation is a component then make parent as mandatory.
+   * If navigation is a component then make parent as mandatory and set up initial size.
    */
   createForm() {
     this.navigationForm = this._formBuilder.group({
