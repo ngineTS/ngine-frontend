@@ -47,12 +47,14 @@ export class GenericComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
-    this.navigations.forEach(navigation => {
-      this.initialComponentSizeMap.set(navigation.id, {
-        width: window.innerWidth * navigation.width / 100,
-        height: window.innerHeight * navigation.height / 100
-      })
-    });
+    if (this.navigations) {
+      this.navigations.forEach(navigation => {
+        this.initialComponentSizeMap.set(navigation.id, {
+          width: window.innerWidth * navigation.width / 100,
+          height: window.innerHeight * navigation.height / 100
+        })
+      });
+    }
   }
 
   ngAfterViewInit() {

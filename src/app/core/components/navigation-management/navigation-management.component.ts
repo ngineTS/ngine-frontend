@@ -73,6 +73,8 @@ export class NavigationManagementComponent implements OnInit {
     }
     if (this.data.type === 'component') {
       this.navigationForm.get('parentId')?.addValidators([Validators.required]);
+      this.navigationForm.addControl('width', this._formBuilder.control(50));
+      this.navigationForm.addControl('height', this._formBuilder.control(50));
     }
   }
 
