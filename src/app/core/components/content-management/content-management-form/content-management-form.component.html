@@ -1,0 +1,51 @@
+<div class="main-container">
+    <h5 class="mb-4">Content Management Form</h5>
+
+    <form [formGroup]="formContent" class="m-2" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Module Name</mat-label>
+            <input type="text" matInput formControlName="moduleName"/>
+        </mat-form-field>
+        
+        <div formArrayName="formInputs">
+            
+            @for (formInputGroup of formInputs.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="row align-items-baseline">
+                    
+                    <span class="col-1">{{ i + 1 }}.</span>
+
+                    <mat-form-field appearance="outline" class="col w-100">
+                        <mat-label [title]="'Column Name'">Column Name</mat-label>
+                        <input type="text" matInput formControlName="columnName"/>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col w-100">
+                        <mat-label [title]="'Input Label'">Input Label</mat-label>
+                        <input type="text" matInput formControlName="inputLabel"/>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col w-100">
+                        <mat-label [title]="'Input Type'">Input Type</mat-label>
+                        <mat-select formControlName="inputType">
+                            @for (item of inputTypeItems; track item) {
+                                <mat-option [value]="item">{{ item }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            }
+        
+            <button matButton="outlined" type="button" (click)="addInput()">+ Add another input</button>
+
+        </div>
+
+        <button 
+            matButton="outlined" 
+            type="submit" 
+            class="submit-button"
+            [disabled]="!formContent.valid">
+            Submit
+        </button>
+    </form>
+</div>
