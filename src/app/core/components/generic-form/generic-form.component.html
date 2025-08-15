@@ -13,6 +13,7 @@
 
         <div class="row">
             <button 
+                [style.display]="_data.id ? 'block' : 'none'"
                 class="form-button text-danger col ms-auto"
                 matButton="outlined"
                 type="button" 
@@ -21,6 +22,7 @@
                 Delete
             </button>
             <button 
+                [style.margin-left]="_data.id ? '0px' : 'auto'"
                 class="form-button col"
                 matButton="outlined" 
                 type="submit" 
