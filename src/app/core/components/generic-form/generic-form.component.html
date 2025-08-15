@@ -1,5 +1,8 @@
 <!-- Main level form template-->
 <div class="main-container">
+    @if (isSaving) {
+        <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
+    }
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
         @for (input of _data.formConfig | keyvalue; track input) {
@@ -26,7 +29,7 @@
                 class="form-button col"
                 matButton="outlined" 
                 type="submit" 
-                [disabled]="!formContent.valid"
+                [disabled]="!formContent.valid || isSaving"
             >
                 Submit
             </button>

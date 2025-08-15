@@ -1,9 +1,16 @@
-.main-container{
+.main-container {
     max-height: 90vh;
     overflow-x: hidden;
     padding: 14px;
     margin: 20px 10px;
+    position: relative;
 }    
+
+.loading-spinner {
+    position: absolute;
+    left: 45%;
+    top: 30vh;
+}
 
 .form-group-box {
     width: -webkit-fill-available;
@@ -68,6 +75,3 @@
     cursor: pointer;
     opacity: 0;
 }
-
-
-

@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from '../../services/media.service';
 import { FormFile } from '../../models/form-file.interface';
 import { firstValueFrom } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-generic-form',
@@ -33,7 +34,8 @@ import { firstValueFrom } from 'rxjs';
     MatIconModule,
     KeyValuePipe,
     NgTemplateOutlet,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './generic-form.component.html',
@@ -59,12 +61,14 @@ export class GenericFormComponent<
   hidePassword = signal(true);
   dateAndTimeRecord: Record<string, Date> = {};
   formFileSettings: Array<FormFile> = [];
+  isSaving = false;
     
   ngOnInit() {
     this.formContent = this.buildFormGroup(this._data.formConfig);
   }
 
   async submitForm() {
+    this.isSaving = true;
     //if new file uploaded then post it to S3 and assign file key to related form control
     for (const formFileSetting of this.formFileSettings) {
       if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
@@ -76,6 +80,7 @@ export class GenericFormComponent<
     if (this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
                 .subscribe(resp => {
+                  this.isSaving = false;
                   this.showSuccessSnackBar('edited');
                   this._dialogRef.close('edited');
                 });
@@ -89,6 +94,7 @@ export class GenericFormComponent<
       );
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
                 .subscribe(resp => {
+                  this.isSaving = false;
                   this.showSuccessSnackBar('added');
                   this._dialogRef.close('added');
                 });
