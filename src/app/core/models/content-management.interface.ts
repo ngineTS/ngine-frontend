@@ -1,6 +1,8 @@
+import { Navigation } from "./navigation.interface";
+
 export interface TableViz {
     id: string;
-    navigationId: string;
+    navigationId: Navigation["id"];
     tableName: string;
 }
 

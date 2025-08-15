@@ -24,7 +24,11 @@ export class ContentManagementComponent implements OnInit {
      this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`).subscribe(resp => {
       console.log(resp);
       if (!resp) {
-        this._matDialog.open(ContentManagementFormComponent);
+        this._matDialog.open(ContentManagementFormComponent,
+          {
+            data: { navigationId: this.navigation.id }
+          }
+        );
       }
      })
   }
