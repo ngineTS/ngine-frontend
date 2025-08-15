@@ -8,7 +8,8 @@ export class GenericService {
   componentStore: Record<string, () => Promise<any>> = {
     "test-text": () => import('../components/test-text/test-text.component'),
     "my-quill-editor": () => import('../components/my-quill-editor/my-quill-editor.component'),
-    "calendar": () => import('../components/calendar/calendar.component')
+    "calendar": () => import('../components/calendar/calendar.component'),
+    "content-management": () => import('../components/content-management/content-management.component')
   };
 
   /*createComponentsStore() {
