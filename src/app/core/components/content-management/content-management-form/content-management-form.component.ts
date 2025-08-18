@@ -78,7 +78,9 @@ export class ContentManagementFormComponent implements OnInit {
   onSubmit() {
     const tableVizPayload: Omit<TableViz, "id"> = {
       navigationId: this._data.navigationId,
-      tableName: this.formContent.get('moduleName')?.value
+      tableName: this.formContent.get('moduleName')?.value,
+      tableLabel: this.formContent.get('moduleName')?.value,
+      isEditable: true
     }
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableVizPayload)
       .pipe(
