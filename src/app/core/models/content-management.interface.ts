@@ -1,3 +1,4 @@
+import { InputType } from "./form-input.interface";
 import { Navigation } from "./navigation.interface";
 
 export interface TableViz {
@@ -5,7 +6,8 @@ export interface TableViz {
     navigationId: Navigation["id"];
     tableName: string;
     tableLabel: string;
-    isEditable: boolean
+    isEditable: boolean;
+    customFormInputs: Array<CustomFormInput>
 }
 
 export interface CustomFormInput {
@@ -13,7 +15,7 @@ export interface CustomFormInput {
     tableId: string;
     columnName: string;
     columnType: string;
-    inputType: string;
+    inputType: InputType;
     inputLabel: string;
     bindValue: string;
     bindLabel: string;

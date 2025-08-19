@@ -20,10 +20,11 @@ export class ContentManagementComponent implements OnInit {
               private _matDialog: MatDialog) {}
   
   @Input() navigation!: Navigation;
-  content!: Array<object> | null; 
+  content!: Array<object> | null;
+  tableConfig!: TableViz;
 
   ngOnInit() {
-   this.getContentInformation();
+    this.getContentInformation();
   }
 
   getContentInformation() {
@@ -39,6 +40,7 @@ export class ContentManagementComponent implements OnInit {
             return of(null);
           }
           else {
+            this.tableConfig = tableViz;
             return this._http.get<Array<object>>(`${environment.APIURL}auto-generated-content/table/${tableViz.tableName}`)
               .pipe(take(1))
           }

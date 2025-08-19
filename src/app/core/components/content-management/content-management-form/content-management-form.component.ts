@@ -74,7 +74,7 @@ export class ContentManagementFormComponent implements OnInit {
   }
 
   onSubmit() {
-    const tableVizPayload: Omit<TableViz, "id"> = {
+    const tableVizPayload: Omit<TableViz, "id" | "customFormInputs"> = {
       navigationId: this._data.navigationId,
       tableName: '',
       tableLabel: this.formContent.get('tableLabel')?.value,
