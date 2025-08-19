@@ -47,12 +47,11 @@ export class ContentManagementFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.formContent = this._formBuilder.group({
-      moduleName: new FormControl('', Validators.required),
+      tableLabel: new FormControl('', Validators.required),
       formInputs: this._formBuilder.array([])
     });
     this.formInputs.push(
       this._formBuilder.group({
-        columnName: new FormControl('', Validators.required),
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
         validators: new FormControl([])
@@ -67,7 +66,6 @@ export class ContentManagementFormComponent implements OnInit {
   addInput() {
     this.formInputs.push(
       this._formBuilder.group({
-        columnName: new FormControl('', Validators.required),
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
         validators: new FormControl([])
@@ -78,8 +76,8 @@ export class ContentManagementFormComponent implements OnInit {
   onSubmit() {
     const tableVizPayload: Omit<TableViz, "id"> = {
       navigationId: this._data.navigationId,
-      tableName: this.formContent.get('moduleName')?.value,
-      tableLabel: this.formContent.get('moduleName')?.value,
+      tableName: '',
+      tableLabel: this.formContent.get('tableLabel')?.value,
       isEditable: true
     }
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableVizPayload)
@@ -88,10 +86,10 @@ export class ContentManagementFormComponent implements OnInit {
         switchMap(resp => {
           const customInputFormPayload = this.formInputs.value as Array<Omit<CustomFormInput, "id">>;
           customInputFormPayload.forEach(input => input.tableId = resp.id);
-          return this._http.post(`${environment.APIURL}custom-form-input`, customInputFormPayload)
+          return this._http.post(`${environment.APIURL}custom-form-input/${resp.tableName}`, customInputFormPayload)
             .pipe(
               take(1)
-            );
+            )
         })
       )
       .subscribe(resp => console.log(resp));

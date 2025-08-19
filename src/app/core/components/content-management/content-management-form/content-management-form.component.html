@@ -5,7 +5,7 @@
 
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Module Name</mat-label>
-            <input type="text" matInput formControlName="moduleName"/>
+            <input type="text" matInput formControlName="tableLabel"/>
         </mat-form-field>
         
         <div formArrayName="formInputs">
@@ -14,11 +14,6 @@
                 <div [formGroupName]="i" class="row align-items-baseline">
                     
                     <span class="col-1">{{ i + 1 }}.</span>
-
-                    <mat-form-field appearance="outline" class="col w-100">
-                        <mat-label [title]="'Column Name'">Column Name</mat-label>
-                        <input type="text" matInput formControlName="columnName"/>
-                    </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col w-100">
                         <mat-label [title]="'Input Label'">Input Label</mat-label>
