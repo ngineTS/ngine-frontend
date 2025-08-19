@@ -34,9 +34,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
     for (const key in this.content[0]) {
       this.displayedColumns.push(key);
     }
-    // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(this.content);
-    console.log(this.dataSource);
   }
 
   ngAfterViewInit() {

@@ -23,17 +23,6 @@ export class ContentManagementComponent implements OnInit {
   content!: Array<object> | null; 
 
   ngOnInit() {
-     /*this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`).subscribe(resp => {
-      console.log(resp);
-      //this._http.get(`${environment.APIURL}auto-generated-content/table/${resp.tableName}`).subscribe(result => console.log(result));
-      if (!resp) {
-        this._matDialog.open(ContentManagementFormComponent,
-          {
-            data: { navigationId: this.navigation.id }
-          }
-        );
-      }
-    })*/
    this.getContentInformation();
   }
 
@@ -55,10 +44,7 @@ export class ContentManagementComponent implements OnInit {
           }
         })
       )
-      .subscribe(resp => {
-        console.log(resp);
-        this.content = resp;
-      });
+      .subscribe(resp => this.content = resp);
   }
 
 }
