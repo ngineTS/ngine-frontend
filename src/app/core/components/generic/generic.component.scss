@@ -39,7 +39,8 @@
   max-width: -webkit-fill-available;
   position: relative;
   resize: both;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .cdk-drag-preview {

@@ -1,4 +1,8 @@
 <p>content-management works!</p>
 @if (content) {
-    <app-generic-table [content]="content"></app-generic-table>
+    <app-generic-table 
+        [content]="content"
+        [canAdd]="true"
+        [canEdit]="true">
+    </app-generic-table>
 }
