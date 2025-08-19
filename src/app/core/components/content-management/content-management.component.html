@@ -1,2 +1,4 @@
 <p>content-management works!</p>
-<app-generic-table></app-generic-table>
+@if (content) {
+    <app-generic-table [content]="content"></app-generic-table>
+}

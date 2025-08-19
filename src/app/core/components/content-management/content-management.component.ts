@@ -5,8 +5,8 @@ import { TableViz } from '../../models/content-management.interface';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ContentManagementFormComponent } from './content-management-form/content-management-form.component';
-import { FormArray } from '@angular/forms';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
+import { of, retry, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-content-management',
@@ -20,9 +20,10 @@ export class ContentManagementComponent implements OnInit {
               private _matDialog: MatDialog) {}
   
   @Input() navigation!: Navigation;
+  content!: Array<object> | null; 
 
   ngOnInit() {
-     this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`).subscribe(resp => {
+     /*this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`).subscribe(resp => {
       console.log(resp);
       //this._http.get(`${environment.APIURL}auto-generated-content/table/${resp.tableName}`).subscribe(result => console.log(result));
       if (!resp) {
@@ -32,7 +33,32 @@ export class ContentManagementComponent implements OnInit {
           }
         );
       }
-     })
+    })*/
+   this.getContentInformation();
+  }
+
+  getContentInformation() {
+    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`)
+      .pipe(
+        retry(2),
+        take(1),
+        switchMap(tableViz => {
+          if(!tableViz) {
+            this._matDialog.open(ContentManagementFormComponent,
+              { data: { navigationId: this.navigation.id } }
+            );
+            return of(null);
+          }
+          else {
+            return this._http.get<Array<object>>(`${environment.APIURL}auto-generated-content/table/${tableViz.tableName}`)
+              .pipe(take(1))
+          }
+        })
+      )
+      .subscribe(resp => {
+        console.log(resp);
+        this.content = resp;
+      });
   }
 
 }
