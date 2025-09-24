@@ -88,10 +88,12 @@ export class GenericFormComponent<
     //add
     else {
       //if navigationId is passed then save it in the db;
-      this.formContent.addControl(
-        'navigationId', 
-        this._formBuilder.control(this._data.navigationId ?? null)
-      );
+      if (this._data.navigationId) {
+        this.formContent.addControl(
+          'navigationId', 
+          this._formBuilder.control(this._data.navigationId)
+        );
+      }
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
                 .subscribe(resp => {
                   this.isSaving = false;

@@ -1,10 +1,14 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { DeepFormConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 
 
 @Component({
@@ -28,11 +32,12 @@ export class GenericTableComponent<T extends Record<string, any>> {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  @Input() content!: Array<T>;
+  @Input() content!: Array<T>; //the data in JSON format
+  @Input() tableConfig!: TableViz; //The table and input config used for editing
   @Input() canAdd!: boolean;
   @Input() canEdit!: boolean;
 
-  constructor() { }
+  constructor(private _matDialog: MatDialog) { }
 
   ngOnInit() {
     for (const key in this.content[0]) {
@@ -57,5 +62,50 @@ export class GenericTableComponent<T extends Record<string, any>> {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  addItem() {
+    const payload = {} as DeepFormConfig<Record<string, any>>;
+    for (const [key, value] of Object.entries(this.content[0])) { 
+      const inputConfig = this.tableConfig.customFormInputs.find(obj => obj.columnName === key);
+      if (inputConfig) {
+        if (this.isStandardInput(inputConfig)) {
+          payload[key] = {
+            type: inputConfig.inputType,
+            value: null,
+            validators: []
+          } as StandardInputConfig<any>
+        }
+      }
+      //TODO: Handle dropdown case
+    }
+  
+    this._matDialog.open(GenericFormComponent<T>, {
+      data: {
+        id: null,
+        navigationId: null,
+        controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
+        formConfig: payload
+      }
+    });
+  }
+
+  editItem() {
+    /*this._matDialog.open(GenericFormComponent<T>, {
+      data: {
+        id: null,
+        navigationId: null,
+        controllerName: 'sjss',
+        formConfig: 's'
+      }
+    });*/
+  }
+
+  isStandardInput(inputConfig: CustomFormInput): boolean {
+    if(inputConfig.inputType && inputConfig.inputType !== 'dropdown') {
+      return true;
+    }
+    return false;
+  } 
+
 }
 
