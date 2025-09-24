@@ -4,6 +4,8 @@
         [content]="content"
         [canAdd]="true"
         [canEdit]="true"
-        [tableConfig]="tableConfig">
+        [tableConfig]="tableConfig"
+        (contentChanged)="onContentChange()"
+        >
     </app-generic-table>
 }

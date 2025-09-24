@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,17 +36,23 @@ export class GenericTableComponent<T extends Record<string, any>> {
   @Input() tableConfig!: TableViz; //The table and input config used for editing
   @Input() canAdd!: boolean;
   @Input() canEdit!: boolean;
+  @Output() contentChanged: EventEmitter<null> = new EventEmitter();
 
   constructor(private _matDialog: MatDialog) { }
 
-  ngOnInit() {
-    for (const key in this.content[0]) {
-      this.displayedColumns.push(key);
+  ngOnInit() {}
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges["content"]) {
+      this.displayedColumns = [];
+      for (const key in this.content[0]) {
+        this.displayedColumns.push(key);
+      }
+      if (this.canEdit) {
+        this.displayedColumns.push('edit');
+      }
+      this.dataSource = new MatTableDataSource(this.content);
     }
-    if (this.canEdit) {
-      this.displayedColumns.push('edit');
-    }
-    this.dataSource = new MatTableDataSource(this.content);
   }
 
   ngAfterViewInit() {
@@ -65,26 +71,29 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   addItem() {
     const payload = {} as DeepFormConfig<Record<string, any>>;
-    for (const [key, value] of Object.entries(this.content[0])) { 
-      const inputConfig = this.tableConfig.customFormInputs.find(obj => obj.columnName === key);
-      if (inputConfig) {
-        if (this.isStandardInput(inputConfig)) {
-          payload[key] = {
-            type: inputConfig.inputType,
-            value: null,
-            validators: []
-          } as StandardInputConfig<any>
-        }
+    for (const inputConfig of this.tableConfig.customFormInputs) {
+      if (this.isStandardInput(inputConfig)) {
+        payload[inputConfig.columnName] = {
+          type: inputConfig.inputType,
+          value: null,
+          validators: []
+        } as StandardInputConfig<any>
       }
       //TODO: Handle dropdown case
     }
   
-    this._matDialog.open(GenericFormComponent<T>, {
+    const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
       data: {
         id: null,
         navigationId: null,
         controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
         formConfig: payload
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added') {
+        this.contentChanged.emit();
       }
     });
   }

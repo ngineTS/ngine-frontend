@@ -49,4 +49,8 @@ export class ContentManagementComponent implements OnInit {
       .subscribe(resp => this.content = resp);
   }
 
+  onContentChange() {
+    this.getContentInformation();
+  }
+
 }
