@@ -98,15 +98,36 @@ export class GenericTableComponent<T extends Record<string, any>> {
     });
   }
 
-  editItem() {
-    /*this._matDialog.open(GenericFormComponent<T>, {
-      data: {
-        id: null,
-        navigationId: null,
-        controllerName: 'sjss',
-        formConfig: 's'
+  editItem(row: T) {
+    console.log(row);
+    const payload = {} as DeepFormConfig<Record<string, any>>;
+    for (const [key, value] of Object.entries(row)) { 
+      const inputConfig = this.tableConfig.customFormInputs.find(obj => obj.columnName === key);
+      if (inputConfig) {
+        if (this.isStandardInput(inputConfig)) {
+          payload[key] = {
+            type: inputConfig.inputType,
+            value: value,
+            validators: []
+          } as StandardInputConfig<any>
+        }
       }
-    });*/
+    }
+
+    const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
+      data: {
+        id: row["id"],
+        navigationId: null,
+        controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
+        formConfig: payload
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'edited') {
+        this.contentChanged.emit();
+      }
+    });
   }
 
   isStandardInput(inputConfig: CustomFormInput): boolean {
