@@ -9,6 +9,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
+import { ColumnLabelPipe } from '../../pipes/column-label.pipe';
+
 
 
 @Component({
@@ -19,7 +21,8 @@ import { CustomFormInput, TableViz } from '../../models/content-management.inter
     MatTableModule, 
     MatSortModule, 
     MatPaginatorModule,
-    MatButton
+    MatButton,
+    ColumnLabelPipe
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'

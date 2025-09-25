@@ -6,10 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { take } from 'rxjs';
 import { QuillEditorContent } from '../../models/quill-editor.interface';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 
 
 @Component({
