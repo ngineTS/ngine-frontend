@@ -32,7 +32,13 @@
               </td>
             }
             @else {
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ tableConfig.customFormInputs | columnLabelPipe : columnName }} </th>
+              <th 
+                mat-header-cell 
+                *matHeaderCellDef 
+                mat-sort-header
+                class="fw-bold"> 
+                {{ tableConfig.customFormInputs | columnLabelPipe : columnName }} 
+              </th>
               <td mat-cell *matCellDef="let row"> {{ row[columnName] }} </td>
             }
         </ng-container>
