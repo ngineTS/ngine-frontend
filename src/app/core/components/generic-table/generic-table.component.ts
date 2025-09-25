@@ -52,6 +52,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
         this.displayedColumns.push('edit');
       }
       this.dataSource = new MatTableDataSource(this.content);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }
   }
 
@@ -124,7 +126,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
     });
 
     dialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'edited') {
+      if (resp === 'edited' || resp === 'deleted') {
         this.contentChanged.emit();
       }
     });
