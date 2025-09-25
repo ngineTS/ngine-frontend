@@ -101,7 +101,6 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
   editItem(row: T) {
-    console.log(row);
     const payload = {} as DeepFormConfig<Record<string, any>>;
     for (const [key, value] of Object.entries(row)) { 
       const inputConfig = this.tableConfig.customFormInputs.find(obj => obj.columnName === key);
