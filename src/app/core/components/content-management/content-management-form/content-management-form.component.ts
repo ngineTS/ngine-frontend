@@ -6,10 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { environment } from '../../../../../environments/environment';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../../models/navigation.interface';
 import { CustomFormInput, TableViz } from '../../../models/content-management.interface';
 import { switchMap, take } from 'rxjs';
+import { NavigationManagementComponent } from '../../navigation-management/navigation-management.component';
 
 @Component({
   selector: 'app-content-management-form',
@@ -28,7 +29,8 @@ export class ContentManagementFormComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,
               private _http: HttpClient,
               @Inject(MAT_DIALOG_DATA) 
-              public _data: { navigationId: Navigation["id"] }) {}
+              public _data: { navigationId: Navigation["id"] },
+              private _dialogRef: MatDialogRef<NavigationManagementComponent>) {}
 
   formContent!: FormGroup;
   inputTypeItems = [
@@ -94,7 +96,7 @@ export class ContentManagementFormComponent implements OnInit {
             )
         })
       )
-      .subscribe(resp => console.log(resp));
+      .subscribe(resp => this._dialogRef.close('Content added successfully'));
   }
 
 }

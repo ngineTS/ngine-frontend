@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ContentManagementFormComponent } from './content-management-form/content-management-form.component';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { of, retry, switchMap, take } from 'rxjs';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-content-management',
@@ -17,7 +18,8 @@ import { of, retry, switchMap, take } from 'rxjs';
 export class ContentManagementComponent implements OnInit {
 
   constructor(private _http: HttpClient,
-              private _matDialog: MatDialog) {}
+              private _matDialog: MatDialog,
+              private _snackbarService: SnackBarService) {}
   
   @Input() navigation!: Navigation;
   content!: Array<object> | null;
@@ -34,9 +36,18 @@ export class ContentManagementComponent implements OnInit {
         take(1),
         switchMap(tableViz => {
           if(!tableViz) {
-            this._matDialog.open(ContentManagementFormComponent,
-              { data: { navigationId: this.navigation.id } }
+            const dialogRef = this._matDialog.open(ContentManagementFormComponent,
+              { 
+                disableClose: true,
+                data: { navigationId: this.navigation.id } 
+              }
             );
+            dialogRef.afterClosed().subscribe(resp => {
+              if(resp) {
+                this._snackbarService.showSuccessSnackBar(resp);
+                this.getContentInformation();
+              }
+            })
             return of(null);
           }
           else {
