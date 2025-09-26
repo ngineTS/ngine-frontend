@@ -28,6 +28,15 @@
                             }
                         </mat-select>
                     </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col w-100">
+                        <mat-label [title]="'Validators'">Validators</mat-label>
+                        <mat-select formControlName="validators" multiple>
+                            @for (item of validatorItems; track item) {
+                                <mat-option [value]="item">{{ item }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             }
         

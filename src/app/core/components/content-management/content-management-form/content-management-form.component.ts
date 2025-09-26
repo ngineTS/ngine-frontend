@@ -43,7 +43,9 @@ export class ContentManagementFormComponent implements OnInit {
     'checkbox',
     'file',
     'textarea'
-  ]
+  ];
+  validatorItems = ['required', 'email'];
+
 
   ngOnInit(): void {
     this.formContent = this._formBuilder.group({

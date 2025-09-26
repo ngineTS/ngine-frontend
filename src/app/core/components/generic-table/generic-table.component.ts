@@ -10,6 +10,7 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { ColumnLabelPipe } from '../../pipes/column-label.pipe';
+import { ValidatorFn, Validators } from '@angular/forms';
 
 
 
@@ -31,6 +32,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   displayedColumns: Array<string> = [];
   dataSource!: MatTableDataSource<T>;
+  validatorsMap: Map<string, ValidatorFn> = new Map();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -43,7 +45,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   constructor(private _matDialog: MatDialog) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.validatorsMap.set('required', Validators.required);
+    this.validatorsMap.set('email', Validators.email);
+  }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges["content"]) {
@@ -77,11 +82,18 @@ export class GenericTableComponent<T extends Record<string, any>> {
   addItem() {
     const payload = {} as DeepFormConfig<Record<string, any>>;
     for (const inputConfig of this.tableConfig.customFormInputs) {
+      const validators: Array<ValidatorFn> = [];
+      for (let validatorName of inputConfig.validators) {
+        const validatorFn = this.validatorsMap.get(validatorName);
+        if(validatorFn) {
+          validators.push(validatorFn);
+        }
+      }
       if (this.isStandardInput(inputConfig)) {
         payload[inputConfig.columnName] = {
           type: inputConfig.inputType,
           value: null,
-          validators: []
+          validators: validators
         } as StandardInputConfig<any>
       }
       //TODO: Handle dropdown case
@@ -108,11 +120,18 @@ export class GenericTableComponent<T extends Record<string, any>> {
     for (const [key, value] of Object.entries(row)) { 
       const inputConfig = this.tableConfig.customFormInputs.find(obj => obj.columnName === key);
       if (inputConfig) {
+        const validators: Array<ValidatorFn> = [];
+        for (let validatorName of inputConfig.validators) {
+          const validatorFn = this.validatorsMap.get(validatorName);
+          if(validatorFn) {
+            validators.push(validatorFn);
+          }
+        }
         if (this.isStandardInput(inputConfig)) {
           payload[key] = {
             type: inputConfig.inputType,
             value: value,
-            validators: []
+            validators: validators
           } as StandardInputConfig<any>
         }
       }
