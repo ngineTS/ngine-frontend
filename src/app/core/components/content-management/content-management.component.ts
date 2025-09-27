@@ -34,7 +34,7 @@ export class ContentManagementComponent implements OnInit {
    * 
    * If no configuration exist then open configuration form to create new table.
    * 
-   * Else return table content by calling auto-genereated table API.
+   * Else return table content by calling GET custom-table table API.
    * 
    * @returns The table content of unknown type.
    */
@@ -61,7 +61,7 @@ export class ContentManagementComponent implements OnInit {
           }
           else {
             this.tableConfig = tableViz;
-            return this._http.get<Array<object>>(`${environment.APIURL}auto-generated-content/table/${tableViz.tableName}`)
+            return this._http.get<Array<object>>(`${environment.APIURL}custom-table/table/${tableViz.tableName}`)
               .pipe(take(1))
           }
         })

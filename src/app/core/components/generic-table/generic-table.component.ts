@@ -110,7 +110,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
       data: {
         id: null, //id null therefore generic form understand it has to insert a record
         navigationId: null,
-        controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
+        controllerName: `custom-table/${this.tableConfig.tableName}`,
         formConfig: payload
       }
     });
@@ -153,7 +153,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
       data: {
         id: row["id"], //assign id therefore generic form understand it has to update record
         navigationId: null,
-        controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
+        controllerName: `custom-table/${this.tableConfig.tableName}`,
         formConfig: payload
       }
     });
