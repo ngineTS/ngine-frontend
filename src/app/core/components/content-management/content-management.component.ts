@@ -70,7 +70,7 @@ export class ContentManagementComponent implements OnInit {
   }
 
   /**
-   * Methods called when child (generic table) emits Output event after content modification 
+   * Get new contet value when child (generic table) emits Output event after content modification.
    */
   onContentChange() {
     this.getContentInformation();
