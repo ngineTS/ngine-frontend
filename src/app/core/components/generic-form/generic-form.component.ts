@@ -17,7 +17,7 @@ import { environment } from '../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from '../../services/media.service';
 import { FormFile } from '../../models/form-file.interface';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, retry, take } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -42,7 +42,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './generic-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-//"T extends Record<string, any> & { length?: never }"" constraints the type to be an object and not an array
+/**
+ * "T extends Record<string, any> & { length?: never } & { getTime?: never }"
+ *  constraints the type to be an object and not an array or a date
+ */
 export class GenericFormComponent<
                                   T extends Record<string, any> 
                                     & { length?: never } 
@@ -79,11 +82,15 @@ export class GenericFormComponent<
     //edit
     if (this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
-                .subscribe(resp => {
-                  this.isSaving = false;
-                  this.showSuccessSnackBar('edited');
-                  this._dialogRef.close('edited');
-                });
+        .pipe(
+          retry(2),
+          take(1),
+        )
+        .subscribe(resp => {
+          this.isSaving = false;
+          this.showSuccessSnackBar('edited');
+          this._dialogRef.close('edited');
+        });
     }
     //add
     else {
@@ -95,21 +102,29 @@ export class GenericFormComponent<
         );
       }
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
-                .subscribe(resp => {
-                  this.isSaving = false;
-                  this.showSuccessSnackBar('added');
-                  this._dialogRef.close('added');
-                });
+        .pipe(
+          retry(2),
+          take(1),
+        )
+        .subscribe(resp => {
+          this.isSaving = false;
+          this.showSuccessSnackBar('added');
+          this._dialogRef.close('added');
+        });
     }
   }
 
   deleteObject(){
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
-                .subscribe(resp => {
-                  this.showSuccessSnackBar('deleted');
-                  this._dialogRef.close('deleted');
-                });
+      .pipe(
+        retry(2),
+        take(1),
+      )
+      .subscribe(resp => {
+        this.showSuccessSnackBar('deleted');
+        this._dialogRef.close('deleted');
+      });
     }
 
   }
