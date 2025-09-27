@@ -69,7 +69,6 @@ export class CalendarComponent {
               .pipe(
                 take(1),
                 map<Calendar[], CalendarOptions["events"]>(dbEvents => {
-                  console.log(dbEvents);
                   const calendarEvents: CalendarOptions["events"] = [];
                   dbEvents.forEach(event => {
                     calendarEvents.push({
@@ -92,7 +91,6 @@ export class CalendarComponent {
               )
               .subscribe(resp => {
                 this.calendarOptions.events = resp;
-                console.log(resp);
               });
   }
 
@@ -136,7 +134,6 @@ export class CalendarComponent {
 
 
   handleDateSelection(arg: DateSelectArg) {
-    console.log(arg);
     const calendarForm: DeepFormConfig<CalendarPayload> = {
       startDate: {
         value: arg.start,
@@ -202,7 +199,6 @@ export class CalendarComponent {
 
   handleEventClick(arg: EventClickArg) {
     if(this.canEdit) {
-      console.log(arg.event.url);
       arg.jsEvent.preventDefault(); // don't let the browser navigate
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {

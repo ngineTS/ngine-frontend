@@ -43,7 +43,7 @@ export class AppService {
                 navigations: navigation.children,
                 parentId: navigation.id,
               },
-              loadComponent: () => import('../components/generic/generic.component').then(m => m.GenericComponent),
+              loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
             });
           }
         }
@@ -55,7 +55,7 @@ export class AppService {
               navigations: null,
               parentId: navigation.id
             },
-            loadComponent: () => import('../components/generic/generic.component').then(m => m.GenericComponent),
+            loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           });
         }
         i = i + 1;

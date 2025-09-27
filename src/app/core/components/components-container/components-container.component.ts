@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ComponentRef, inject, Injector, OnInit, Query
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
-import { GenericService } from '../../services/generic.service';
+import { ComponentsContainerService } from '../../services/components-container.service';
 import { CommonModule } from '@angular/common';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
@@ -15,7 +15,7 @@ import { ComponentSize } from '../../models/component-size.interface';
 
 
 @Component({
-  selector: 'app-generic',
+  selector: 'app-components-container',
   imports: [
     MatTooltipModule, 
     CommonModule, 
@@ -26,13 +26,13 @@ import { ComponentSize } from '../../models/component-size.interface';
     MatMenuModule,
     ResizeObserverDirective
   ],
-  templateUrl: './generic.component.html',
-  styleUrl: './generic.component.scss'
+  templateUrl: './components-container.component.html',
+  styleUrl: './components-container.component.scss'
 })
-export class GenericComponent implements OnInit, AfterViewInit {
+export class ComponentsContainer implements OnInit, AfterViewInit {
 
   constructor(private _route: ActivatedRoute,
-              private _genericService: GenericService,
+              private _componentContainerService: ComponentsContainerService,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog) {}
 
@@ -63,7 +63,7 @@ export class GenericComponent implements OnInit, AfterViewInit {
 
   async loadComponents() {
     this.container.map(async (vcr: ViewContainerRef, index: number) => {
-      const component = await this._genericService.componentStore[this.navigations[index].navigationType.name]()
+      const component = await this._componentContainerService.componentStore[this.navigations[index].navigationType.name]()
         .then(m => m[this.kebabCasetoPascaleCase(this.navigations[index].navigationType.name) + 'Component']);
       const containerRef = vcr.createComponent(component, {
         injector: this.injector

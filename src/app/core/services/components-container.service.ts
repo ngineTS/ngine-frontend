@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 @Injectable({
   providedIn: 'root',
 })
-export class GenericService {
+export class ComponentsContainerService {
 
   componentStore: Record<string, () => Promise<any>> = {
     "test-text": () => import('../components/test-text/test-text.component'),
