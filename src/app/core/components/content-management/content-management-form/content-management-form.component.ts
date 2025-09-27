@@ -9,7 +9,7 @@ import { environment } from '../../../../../environments/environment';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../../models/navigation.interface';
 import { CustomFormInput, TableViz } from '../../../models/content-management.interface';
-import { switchMap, take } from 'rxjs';
+import { retry, switchMap, take } from 'rxjs';
 import { NavigationManagementComponent } from '../../navigation-management/navigation-management.component';
 
 @Component({
@@ -48,7 +48,11 @@ export class ContentManagementFormComponent implements OnInit {
   ];
   validatorItems = ['required', 'email'];
 
-
+  /**
+   * On initialization, create forms with following format:
+   * - A form group for table configuration
+   * - A form array for columns/inputs configuration
+   */
   ngOnInit(): void {
     this.formContent = this._formBuilder.group({
       tableLabel: new FormControl('', Validators.required),
@@ -63,10 +67,18 @@ export class ContentManagementFormComponent implements OnInit {
     );
   }
 
+  /**
+   * Create accessor for inputs configurations form array.
+   * 
+   * This allows to call 'formInputs' in html without using 'formContent' property.
+   */
   get formInputs() {
     return this.formContent.get('formInputs') as FormArray;
   }
 
+  /**
+   * Add new input configuration row when user click on "Add item" button.
+   */
   addInput() {
     this.formInputs.push(
       this._formBuilder.group({
@@ -77,6 +89,13 @@ export class ContentManagementFormComponent implements OnInit {
     );
   }
 
+  /**
+   * Save Table and inputs configuration into database:
+   * 
+   * 1. Save table information record and retrieve table id.
+   * 2. Assign table id to each input config and save them.
+   * 3. Close form and pass success message to parent.
+   */
   onSubmit() {
     const tableVizPayload: Omit<TableViz, "id" | "customFormInputs"> = {
       navigationId: this._data.navigationId,
@@ -86,12 +105,14 @@ export class ContentManagementFormComponent implements OnInit {
     }
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableVizPayload)
       .pipe(
+        retry(2),
         take(1),
         switchMap(resp => {
           const customInputFormPayload = this.formInputs.value as Array<Omit<CustomFormInput, "id">>;
           customInputFormPayload.forEach(input => input.tableId = resp.id);
           return this._http.post(`${environment.APIURL}custom-form-input/${resp.tableName}`, customInputFormPayload)
             .pipe(
+              retry(2),
               take(1)
             )
         })
