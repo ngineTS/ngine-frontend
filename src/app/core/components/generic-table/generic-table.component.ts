@@ -13,7 +13,6 @@ import { ColumnLabelPipe } from '../../pipes/column-label.pipe';
 import { ValidatorFn, Validators } from '@angular/forms';
 
 
-
 @Component({
   selector: 'app-generic-table',
   imports: [
@@ -32,16 +31,16 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   displayedColumns: Array<string> = [];
   dataSource!: MatTableDataSource<T>;
-  validatorsMap: Map<string, ValidatorFn> = new Map();
+  validatorsMap: Map<string, ValidatorFn> = new Map(); //map object used to get form valifator functions from input configuration
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  @Input() content!: Array<T>; //the data in JSON format
-  @Input() tableConfig!: TableViz; //The table and input config used for editing
-  @Input() canAdd!: boolean;
-  @Input() canEdit!: boolean;
-  @Output() contentChanged: EventEmitter<null> = new EventEmitter();
+  @Input() content!: Array<T>; //table content as array of objects of type T
+  @Input() tableConfig!: TableViz; //table and input configurations used for editing
+  @Input() canAdd!: boolean; //user permission
+  @Input() canEdit!: boolean; //user permission
+  @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
   constructor(private _matDialog: MatDialog) { }
 
@@ -70,6 +69,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
     this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Filter table on search input keyup.
+   * @param event The value emited by keyup output.
+   */
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -79,6 +82,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
     }
   }
 
+  /**
+   * Create generic form inputs object (of type DeepFormConfig<...>).
+   * based on input configurations then open form to add item. 
+   */
   addItem() {
     const payload = {} as DeepFormConfig<Record<string, any>>;
     for (const inputConfig of this.tableConfig.customFormInputs) {
@@ -101,7 +108,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   
     const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
       data: {
-        id: null,
+        id: null, //id null therefore generic form understand it has to insert a record
         navigationId: null,
         controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
         formConfig: payload
@@ -115,6 +122,11 @@ export class GenericTableComponent<T extends Record<string, any>> {
     });
   }
 
+  /**
+   * Create generic form inputs object (of type DeepFormConfig<...>).
+   * based on input configurations then open form to edit row.
+   * @param row The object (of type T) to edit.
+   */
   editItem(row: T) {
     const payload = {} as DeepFormConfig<Record<string, any>>;
     for (const [key, value] of Object.entries(row)) { 
@@ -139,7 +151,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
     const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
       data: {
-        id: row["id"],
+        id: row["id"], //assign id therefore generic form understand it has to update record
         navigationId: null,
         controllerName: `auto-generated-content/${this.tableConfig.tableName}`,
         formConfig: payload
@@ -153,6 +165,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
     });
   }
 
+  /**
+   * Check if input is a standard input (i.e not a dropdown).
+   * @param inputConfig The input to check.
+   */
   isStandardInput(inputConfig: CustomFormInput): boolean {
     if(inputConfig.inputType && inputConfig.inputType !== 'dropdown') {
       return true;

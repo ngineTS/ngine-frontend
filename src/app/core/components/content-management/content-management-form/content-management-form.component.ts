@@ -77,7 +77,7 @@ export class ContentManagementFormComponent implements OnInit {
   }
 
   /**
-   * Add new input configuration row when user click on "Add item" button.
+   * Add new input configuration row when user click on "+ Add another input" button.
    */
   addInput() {
     this.formInputs.push(
