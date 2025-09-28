@@ -217,14 +217,4 @@ export class GenericFormComponent<
     control.setValue('');
   }
 
-  //TODO: Find a way to get file name without calling this method from HTML 
-  getFileName(formControlName: string): string | undefined {
-    const fileId = this.formFileSettings.find(obj => obj.formControlName === formControlName)?.fileId;
-    if (fileId && fileId !== '') {
-      return fileId;
-    }
-    return 'No file selected'
-  }
-
-
 }

@@ -220,8 +220,14 @@
                         />
                     </button>
                     <div class="col file-name">
-                        {{ getFileName(input.key) }}
-                        <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
+                        @if (input.value.value) {
+                            <span>{{ input.value.value }}</span>
+                            <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
+                        } 
+                        @else {   
+                            <span>No file selected</span>
+                        }
+                        
                     </div>
                 </div>
             }
