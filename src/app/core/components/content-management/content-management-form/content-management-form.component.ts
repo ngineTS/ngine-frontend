@@ -90,6 +90,11 @@ export class ContentManagementFormComponent implements OnInit {
       this._formBuilder.group({
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
+        columnType: new FormControl(''),
+        dropdownItems: new FormControl(''),
+        dropdownRouteName: new FormControl(''),
+        bindLabel: new FormControl(''),
+        bindValue: new FormControl(''),
         validators: new FormControl([])
       })
     );
