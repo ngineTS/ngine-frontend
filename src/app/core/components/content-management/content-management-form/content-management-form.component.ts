@@ -135,4 +135,8 @@ export class ContentManagementFormComponent implements OnInit {
       .subscribe(resp => this._dialogRef.close('Content added successfully'));
   }
 
+  onDeleteClick(index: number) {
+    this.formInputs.removeAt(index);
+  }
+
 }

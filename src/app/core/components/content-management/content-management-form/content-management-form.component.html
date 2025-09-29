@@ -37,6 +37,10 @@
                                 }
                             </mat-select>
                         </mat-form-field>
+
+                        @if (formInputs.length > 1) {
+                            <i class="bi bi-trash-fill delete-icon col-1" (click)="onDeleteClick(i)"></i>
+                        }
                     </div>
 
                     <!-- If dropdown is selected then add additional form control for dropdown information -->
