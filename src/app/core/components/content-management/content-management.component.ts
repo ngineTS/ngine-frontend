@@ -47,6 +47,7 @@ export class ContentManagementComponent implements OnInit {
           if(!tableViz) {
             const dialogRef = this._matDialog.open(ContentManagementFormComponent,
               { 
+                maxWidth: '700px',
                 disableClose: true,
                 data: { navigationId: this.navigation.id } 
               }

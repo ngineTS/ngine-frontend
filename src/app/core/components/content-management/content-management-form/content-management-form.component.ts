@@ -47,6 +47,7 @@ export class ContentManagementFormComponent implements OnInit {
     'textarea'
   ];
   validatorItems = ['required', 'email'];
+  columnTypeItems = ['number', 'text']; // use when dropdown is selected (to know the value type)
 
   /**
    * On initialization, create forms with following format:
@@ -62,6 +63,11 @@ export class ContentManagementFormComponent implements OnInit {
       this._formBuilder.group({
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
+        columnType: new FormControl(''),
+        dropdownItems: new FormControl(''),
+        dropdownRouteName: new FormControl(''),
+        bindLabel: new FormControl(''),
+        bindValue: new FormControl(''),
         validators: new FormControl([])
       })
     );

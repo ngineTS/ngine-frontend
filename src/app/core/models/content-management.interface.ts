@@ -7,7 +7,7 @@ export interface TableViz {
     tableName: string;
     tableLabel: string;
     isEditable: boolean;
-    customFormInputs: Array<CustomFormInput>
+    customFormInputs: Array<CustomFormInput>;
 }
 
 export interface CustomFormInput {
@@ -19,5 +19,7 @@ export interface CustomFormInput {
     inputLabel: string;
     bindValue: string;
     bindLabel: string;
-    validators: Array<string>
+    validators: Array<string>;
+    dropdownItems: string;
+    dropdownRouteName: string;
 }
