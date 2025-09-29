@@ -3,6 +3,10 @@
     @if (isSaving) {
         <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
     }
+
+    @if (_data.title) {
+        <h5 class="mb-4">{{ _data.title }}</h5>
+    }
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
         @for (input of _data.formConfig | keyvalue; track input) {

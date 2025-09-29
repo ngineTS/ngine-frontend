@@ -51,4 +51,5 @@ export type GenericFormDialogData<T> = {
   navigationId: string;
   formConfig: DeepFormConfig<T>;
   controllerName: string;
+  title: string;
 }

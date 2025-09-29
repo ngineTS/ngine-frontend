@@ -111,7 +111,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
         id: null, //id null therefore generic form understand it has to insert a record
         navigationId: null,
         controllerName: `custom-table/${this.tableConfig.tableName}`,
-        formConfig: payload
+        formConfig: payload,
+        title: this.tableConfig.tableLabel
       }
     });
 
@@ -154,7 +155,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
         id: row["id"], //assign id therefore generic form understand it has to update record
         navigationId: null,
         controllerName: `custom-table/${this.tableConfig.tableName}`,
-        formConfig: payload
+        formConfig: payload,
+        title: this.tableConfig.tableLabel
       }
     });
 
