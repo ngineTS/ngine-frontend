@@ -43,13 +43,15 @@
                     @if (formInputGroup.get('inputType')?.value === 'dropdown') {
                         <div class="row dropdown-row">
                             <mat-form-field appearance="outline" class="col w-100">
-                                <mat-label [title]="'Column Type'">Column Type</mat-label>
+                                <mat-label [title]="'Value Type'">Value Type</mat-label>
                                 <mat-select formControlName="columnType">
                                     @for (item of columnTypeItems; track item) {
                                         <mat-option [value]="item">{{ item }}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
+
+                            <mat-checkbox formControlName="isList" class="col w-100">Multiple Values</mat-checkbox>
 
                             <mat-form-field appearance="outline" class="col w-100">
                                 <mat-label [title]="'Dropdown Items'">Dropdown Items</mat-label>

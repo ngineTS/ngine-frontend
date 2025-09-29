@@ -7,7 +7,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { DeepFormConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { ColumnLabelPipe } from '../../pipes/column-label.pipe';
 import { ValidatorFn, Validators } from '@angular/forms';
@@ -83,7 +83,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
   /**
-   * Create generic form inputs object (of type DeepFormConfig<...>).
+   * Create generic form inputs object (of type DeepFormConfig<...>)
    * based on input configurations then open form to add item. 
    */
   addItem() {
@@ -103,7 +103,16 @@ export class GenericTableComponent<T extends Record<string, any>> {
           validators: validators
         } as StandardInputConfig<any>
       }
-      //TODO: Handle dropdown case
+      else {
+        payload[inputConfig.columnName] = {
+          type: inputConfig.inputType,
+          value: inputConfig.isList ? [] : null,
+          validators: validators,
+          dropdownConfig: { //TODO: Handle dropdown route name
+            items: inputConfig.dropdownItems.split(',')
+          }
+        } as DropdownInputConfig<any, typeof inputConfig.dropdownItems>
+      }
     }
   
     const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
@@ -124,7 +133,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
   /**
-   * Create generic form inputs object (of type DeepFormConfig<...>).
+   * Create generic form inputs object (of type DeepFormConfig<...>)
    * based on input configurations then open form to edit row.
    * @param row The object (of type T) to edit.
    */
@@ -146,6 +155,16 @@ export class GenericTableComponent<T extends Record<string, any>> {
             value: value,
             validators: validators
           } as StandardInputConfig<any>
+        }
+        else { 
+          payload[key] = {
+            type: inputConfig.inputType,
+            value: value,
+            validators: validators,
+            dropdownConfig: { //TODO: Handle dropdown route name
+              items: inputConfig.dropdownItems.split(',')
+            }
+          } as DropdownInputConfig<any, typeof inputConfig.dropdownItems>
         }
       }
     }
@@ -173,6 +192,17 @@ export class GenericTableComponent<T extends Record<string, any>> {
    */
   isStandardInput(inputConfig: CustomFormInput): boolean {
     if(inputConfig.inputType && inputConfig.inputType !== 'dropdown') {
+      return true;
+    }
+    return false;
+  } 
+
+  /**
+   * Check if input is a dropdown input.
+   * @param inputConfig The input to check.
+   */
+  isDropdownInput(inputConfig: CustomFormInput): boolean {
+    if(inputConfig.inputType && inputConfig.inputType === 'dropdown') {
       return true;
     }
     return false;

@@ -114,8 +114,8 @@ export class TestTextComponent implements OnInit {
         maxWidth: '700px',
         data: {
           formConfig: personInputs,
-          id: this.content.id,
-          navigationId: this.content.navigationId,
+          id: null, //this.content.id,
+          navigationId: null, //this.content.navigationId,
           controllerName: 'test-text',
         }
       }

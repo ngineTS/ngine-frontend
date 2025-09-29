@@ -175,7 +175,7 @@
                     <mat-label>{{ input.key }}</mat-label>
 
                     <!-- Multiple select dropdown-->
-                    @if (typeof input.value.value === 'object') {
+                    @if (input.value.value && typeof input.value.value === 'object') {
                         <mat-select [formControl]="control" multiple>
                         @for (item of input.value.dropdownConfig.items; track item) {
                             @if (!input.value.dropdownConfig.bindLabel) {

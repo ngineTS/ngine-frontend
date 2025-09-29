@@ -11,6 +11,7 @@ import { Navigation } from '../../../models/navigation.interface';
 import { CustomFormInput, TableViz } from '../../../models/content-management.interface';
 import { retry, switchMap, take } from 'rxjs';
 import { NavigationManagementComponent } from '../../navigation-management/navigation-management.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-content-management-form',
@@ -19,7 +20,8 @@ import { NavigationManagementComponent } from '../../navigation-management/navig
     MatFormFieldModule,
     MatInputModule,
     MatButton,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   templateUrl: './content-management-form.component.html',
   styleUrl: './content-management-form.component.scss'
@@ -64,11 +66,12 @@ export class ContentManagementFormComponent implements OnInit {
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
         columnType: new FormControl(''),
+        validators: new FormControl([]),
+        isList: new FormControl(false),
         dropdownItems: new FormControl(''),
         dropdownRouteName: new FormControl(''),
         bindLabel: new FormControl(''),
-        bindValue: new FormControl(''),
-        validators: new FormControl([])
+        bindValue: new FormControl('')
       })
     );
   }
@@ -91,11 +94,12 @@ export class ContentManagementFormComponent implements OnInit {
         inputType: new FormControl('', Validators.required),
         inputLabel: new FormControl('', Validators.required),
         columnType: new FormControl(''),
+        validators: new FormControl([]),
+        isList: new FormControl(false),
         dropdownItems: new FormControl(''),
         dropdownRouteName: new FormControl(''),
         bindLabel: new FormControl(''),
-        bindValue: new FormControl(''),
-        validators: new FormControl([])
+        bindValue: new FormControl('')
       })
     );
   }

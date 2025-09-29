@@ -17,9 +17,10 @@ export interface CustomFormInput {
     columnType: string;
     inputType: InputType;
     inputLabel: string;
+    validators: Array<string>;
+    isList: boolean;
     bindValue: string;
     bindLabel: string;
-    validators: Array<string>;
     dropdownItems: string;
     dropdownRouteName: string;
 }
