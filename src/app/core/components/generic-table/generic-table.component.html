@@ -44,14 +44,16 @@
     }
 
     <!-- Edit button column -->
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let row" class="edit-cell">
-        <button mat-button="outlined" (click)="editItem(row)">
-          <i class="bi bi-pen edit-icon"></i>
-        </button>
-      </td>
-    </ng-container>
+    @if (canEdit) {
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row" class="edit-cell">
+          <button mat-button="outlined" (click)="editItem(row)">
+            <i class="bi bi-pen edit-icon"></i>
+          </button>
+        </td>
+      </ng-container>
+    }
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
