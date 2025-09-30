@@ -205,6 +205,7 @@ export class GenericFormComponent<
       formFileSetting.formFile.append('file', fileUploaded);
       formFileSetting.hasChanged = true;
       formFileSetting.fileId = fileUploaded.name;  
+      this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(fileUploaded.name);
     }
   }
 
@@ -213,6 +214,7 @@ export class GenericFormComponent<
     if (formFileSetting) {
       formFileSetting.formFile.delete('file');
       formFileSetting.fileId = '';
+      this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue('');
     }
     control.setValue('');
   }

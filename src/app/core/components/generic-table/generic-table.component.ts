@@ -9,8 +9,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
-import { ColumnLabelPipe } from '../../pipes/column-label.pipe';
 import { ValidatorFn, Validators } from '@angular/forms';
+import { MediaService } from '../../services/media.service';
 
 
 @Component({
@@ -22,7 +22,6 @@ import { ValidatorFn, Validators } from '@angular/forms';
     MatSortModule, 
     MatPaginatorModule,
     MatButton,
-    ColumnLabelPipe
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
@@ -42,7 +41,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
   @Input() canEdit!: boolean; //user permission
   @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
-  constructor(private _matDialog: MatDialog) { }
+  constructor(private _matDialog: MatDialog,
+              private _mediaService: MediaService) { }
 
   ngOnInit() {
     this.validatorsMap.set('required', Validators.required);
@@ -52,8 +52,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges["content"]) {
       this.displayedColumns = [];
-      for (const key in this.content[0]) {
-        this.displayedColumns.push(key);
+      for (const inputConfig of this.tableConfig.customFormInputs) {
+        this.displayedColumns.push(inputConfig.columnName);
       }
       if (this.canEdit) {
         this.displayedColumns.push('edit');
@@ -207,6 +207,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
     }
     return false;
   } 
+
+  redirectToS3File(fileName: string) {
+    this._mediaService.getS3ObjectSignedUrl(fileName).subscribe(resp => window.open(resp));
+  }
 
 }
 
