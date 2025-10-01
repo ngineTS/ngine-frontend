@@ -27,11 +27,11 @@ export class ContentVisualizationComponent {
 
   constructor(private _http: HttpClient) {}
 
-  @Input() navigation!: Navigation; //the component instance navigation
-  content!: Array<object>; //the content reprensenting the table sample
-  tableConfig: TableViz | undefined; //the table and columns/inputs configuration 
-  tableNames: Array<string> | null = []; //the list of table names used as dropdown items
-  isEditMode = false; //used to identify if we need to update tableViz or insert it
+  @Input() navigation!: Navigation; // The component instance navigation.
+  content!: Array<object>; // The content reprensenting the table sample.
+  tableConfig: TableViz | undefined; // The table and columns/inputs configuration. 
+  tableNames: Array<string> | null = []; //The list of table names used as dropdown items.
+  isEditMode = false; // Used to identify if we need to update tableViz or insert it.
 
   ngOnInit() {
     this.getTableNames().subscribe(resp => this.tableNames = resp);
@@ -93,7 +93,7 @@ export class ContentVisualizationComponent {
             navigationId: this.navigation.id,
             tableName: event.value,
             tableLabel: event.value,
-            isEditable: false, //Inform it's only a visualization content
+            isEditable: false,
             customFormInputs: []
           }
           this.buildFakeInputsConfig(this.tableConfig, resp[0]);
