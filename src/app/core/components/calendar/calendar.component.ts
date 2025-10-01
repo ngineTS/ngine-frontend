@@ -45,6 +45,7 @@ export class CalendarComponent {
     plugins: [dayGridPlugin, interactionPlugin],
     events: [],
     selectable: true,
+    fixedWeekCount: false,
     select: (arg: DateSelectArg) => this.handleDateSelection(arg),
     eventClick: (arg: EventClickArg) => this.handleEventClick(arg),
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
