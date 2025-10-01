@@ -39,10 +39,10 @@ export class ContentVisualizationComponent {
   }
   
   /**
-   * Get table configuration and content for given navigation.
-   * 
-   * If no table configuration exist then do nothing.
-   * 
+   * Get table configuration.
+   * If it exists then get table content and
+   * build fake input configuration (needed for generic table component),
+   * else do nothing.
    */
   getContentInformation() {
     this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`)
@@ -75,7 +75,8 @@ export class ContentVisualizationComponent {
   /**
    * Method triggered when table names dropdown selection changes.
    * 
-   * Get table content from table name selected and build table configuration.
+   * Get table content from table name selected and
+   * build table configuration (needed for generic table component).
    * @param event The MatSelectChange event containing table name selected.
    */
   onSelectTable(event: MatSelectChange) {
@@ -101,7 +102,7 @@ export class ContentVisualizationComponent {
   }
 
   /**
-   * Define Fake Input configuration to be passed to generic table component.
+   * Define fake input configuration to be passed to generic table component.
    * 
    * @param tableViz The table configuration. 
    * @param contentRow The table row sample used to get column names.
@@ -143,7 +144,7 @@ export class ContentVisualizationComponent {
   }
 
   /**
-   * Get application table
+   * Get application table names.
    * @returns An array of table names.
    */
   getTableNames() {
