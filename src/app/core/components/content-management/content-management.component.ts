@@ -30,13 +30,11 @@ export class ContentManagementComponent implements OnInit {
   }
 
   /**
-   * Get table and columns configuration for given navigation.
+   * Get table configuration and content for given navigation and set 'content' and 'tableViz' prop accordingly.
    * 
    * If no configuration exist then open configuration form to create new table.
    * 
    * Else return table content by calling GET custom-table table API.
-   * 
-   * @returns The table content of unknown type.
    */
   getContentInformation() {
     this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`)
@@ -44,7 +42,7 @@ export class ContentManagementComponent implements OnInit {
         retry(2),
         take(1),
         switchMap(tableViz => {
-          if(!tableViz) {
+          if (!tableViz) {
             const dialogRef = this._matDialog.open(ContentManagementFormComponent,
               { 
                 maxWidth: '700px',

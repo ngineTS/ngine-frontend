@@ -269,7 +269,7 @@ export class NavigationManagementComponent implements OnInit {
   storeNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
     if(navigation?.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
-      for(const child of navigation.children) {
+      for (const child of navigation.children) {
         this.storeNavigationChildrenAndOldChildrenAsArray(child);
       }
     }

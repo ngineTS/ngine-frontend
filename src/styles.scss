@@ -16,3 +16,13 @@ html {
 .fc table {
   cursor: pointer;
 }
+
+::ng-deep .mat-mdc-tooltip {
+    .mat-mdc-tooltip-surface{
+        background-color: lightgray;
+        color: black;
+        text-align: center !important;
+        white-space: pre-line !important;
+        border: 1px solid darkgray;
+    }
+}

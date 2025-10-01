@@ -17,10 +17,10 @@
     }
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-container">
   <table mat-table [dataSource]="dataSource" matSort>
 
-    @for (inputConfig of tableConfig.customFormInputs; track inputConfig) {
+    @for (inputConfig of tableConfig.customFormInputs; track inputConfig.columnName) {
         <ng-container matColumnDef="{{ inputConfig.columnName }}">
               <th 
                 mat-header-cell 

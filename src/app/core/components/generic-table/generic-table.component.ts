@@ -109,7 +109,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
           value: inputConfig.isList ? [] : null,
           validators: validators,
           dropdownConfig: { //TODO: Handle dropdown route name
-            items: inputConfig.dropdownItems.split(',')
+            items: inputConfig.dropdownItems!.split(',')
           }
         } as DropdownInputConfig<any, typeof inputConfig.dropdownItems>
       }
@@ -162,7 +162,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
             value: value,
             validators: validators,
             dropdownConfig: { //TODO: Handle dropdown route name
-              items: inputConfig.dropdownItems.split(',')
+              items: inputConfig.dropdownItems!.split(',')
             }
           } as DropdownInputConfig<any, typeof inputConfig.dropdownItems>
         }

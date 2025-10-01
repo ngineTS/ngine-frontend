@@ -2,7 +2,7 @@ import { InputType } from "./form-input.interface";
 import { Navigation } from "./navigation.interface";
 
 export interface TableViz {
-    id: string;
+    id: string | null;
     navigationId: Navigation["id"];
     tableName: string;
     tableLabel: string;
@@ -11,7 +11,7 @@ export interface TableViz {
 }
 
 export interface CustomFormInput {
-    id: string;
+    id: string | null;
     tableId: string;
     columnName: string;
     columnType: string;
@@ -19,8 +19,8 @@ export interface CustomFormInput {
     inputLabel: string;
     validators: Array<string>;
     isList: boolean;
-    bindValue: string;
-    bindLabel: string;
-    dropdownItems: string;
-    dropdownRouteName: string;
+    bindValue: string | null;
+    bindLabel: string | null;
+    dropdownItems: string | null;
+    dropdownRouteName: string | null;
 }
