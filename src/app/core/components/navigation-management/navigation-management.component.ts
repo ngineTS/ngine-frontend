@@ -178,7 +178,7 @@ export class NavigationManagementComponent implements OnInit {
     //EDIT
     if (this.data.navigation?.id) {
       //Parent has changed
-      if(this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value){
+      if (this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value) {
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
           obj.parentId === this.navigationForm.get('parentId')?.value).length;
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
@@ -256,7 +256,7 @@ export class NavigationManagementComponent implements OnInit {
    * Close popup, refresh routing and redirect to parent navigation.
    * @param parentId The navigation parent id we want to redirect on.
    */
-  refreshRoutingAndRedirect(parentId: Navigation["parentId"]){
+  refreshRoutingAndRedirect(parentId: Navigation["parentId"]) {
     const redirectName = this.getParentName(parentId);
     this._dialogRef.close();
     this._appService.createRouting(redirectName);

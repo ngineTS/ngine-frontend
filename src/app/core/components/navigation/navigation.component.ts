@@ -35,11 +35,8 @@ export class NavigationComponent implements OnInit {
     this.navigations = this._route.snapshot.data["navigations"];
   }
 
-  isRouteActive(navigationName: string){
+  isRouteActive(navigationName: string) {
     return this._router.url.includes(navigationName);
-  }
-
-  ngOnDestroy(){
   }
 
   drop(event: CdkDragDrop<Navigation[]>) {

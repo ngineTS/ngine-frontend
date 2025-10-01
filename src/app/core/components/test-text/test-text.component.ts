@@ -40,7 +40,7 @@ export class TestTextComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
   }
 
   ngOnDestroy() {
@@ -49,7 +49,7 @@ export class TestTextComponent implements OnInit {
   onSpanClick() {
   }
 
-  openGenericForm(){
+  openGenericForm() {
     const items: number[] = [1, 2, 3];
     const a = 'a';
     const items2: number[] = [10, 20, 30, 40];

@@ -9,8 +9,7 @@ import { NavigationService } from "./navigation.service";
 export class AppService {
 
   constructor(private _router: Router,
-              private _navigationService: NavigationService
-             ){}
+              private _navigationService: NavigationService) {}
 
   /**
    * Recursively create routes for given navigations and their children
@@ -83,7 +82,7 @@ export class AppService {
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
       this._router.resetConfig(routes);
-      if(redirectRouteName){
+      if(redirectRouteName) {
         this._router.navigateByUrl(redirectRouteName);
       }
     });

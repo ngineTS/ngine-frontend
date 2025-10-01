@@ -1,11 +1,11 @@
-@if (tableConfig && tableConfig.id) {
+@if (!editMode ) {
     <div class="row align-items-center mb-4">
-        <h5 class="col">Content Visualization: {{ tableConfig.tableName }}</h5>
+        <h5 class="col">Content Visualization: {{ tableConfig?.tableName }}</h5>
 
         <button 
             matButton="outlined" 
             class="col-1 me-2 save-button"
-            (click)="onChangeVisualizationClick()">
+            (click)="onEditVisualizationClick()">
             <i class="bi bi-pen edit-icon"></i>
         </button>
     </div>
@@ -24,7 +24,7 @@
 }
 
 
-@if (!tableConfig || !tableConfig.id) {
+@if (editMode) {
     <button 
         matButton="outlined" 
         class="save-button"

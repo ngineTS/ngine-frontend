@@ -3,7 +3,7 @@ import { Navigation } from '../../models/navigation.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { retry, switchMap, take } from 'rxjs/operators';
+import { retry, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -29,9 +29,9 @@ export class ContentVisualizationComponent {
 
   @Input() navigation!: Navigation; // The component instance navigation.
   content!: Array<object>; // The content reprensenting the table sample.
-  tableConfig: TableViz | undefined; // The table and columns/inputs configuration. 
-  tableNames: Array<string> | null = []; //The list of table names used as dropdown items.
-  isEditMode = false; // Used to identify if we need to update tableViz or insert it.
+  tableConfig!: TableViz; // The table and columns/inputs configuration. 
+  tableNames: Array<string> | null = []; // The list of table names used as dropdown items.
+  editMode = false; // Used to identify if we need to update tableViz or insert it.
 
   ngOnInit() {
     this.getTableNames().subscribe(resp => this.tableNames = resp);
@@ -50,7 +50,6 @@ export class ContentVisualizationComponent {
         retry(2),
         take(1),
         switchMap(tableViz => {
-          console.log(tableViz);
           if (tableViz) {
             this.tableConfig = tableViz;
             return this._http.get<Array<object>>(`${environment.APIURL}table-viz/table-content/${tableViz.tableName}`)
@@ -60,6 +59,7 @@ export class ContentVisualizationComponent {
             )
           }
           else {
+            this.editMode = true;
             return of(null);
           }
         })
@@ -67,7 +67,7 @@ export class ContentVisualizationComponent {
       .subscribe(resp => {
         if (resp) {
           this.content = resp;
-          this.buildFakeInputsConfig(this.tableConfig!, resp[0]);
+          this.buildFakeInputsConfig(this.tableConfig, resp[0]);
         }
       });
   }
@@ -75,30 +75,34 @@ export class ContentVisualizationComponent {
   /**
    * Method triggered when table names dropdown selection changes.
    * 
-   * Get table content from table name selected and
-   * build table configuration (needed for generic table component).
+   * - Get table content from selected table name.
+   * - Build table configuration (needed for generic table component).
    * @param event The MatSelectChange event containing table name selected.
    */
   onSelectTable(event: MatSelectChange) {
     this._http.get<Array<object>>(`${environment.APIURL}table-viz/table-content/${event.value}`)
       .pipe(
         retry(2),
-        take(1)
-      )
-      .subscribe(resp => {
-        if (resp && resp.length > 0) {
-          this.content = resp;
-          this.tableConfig = {
-            id: null,
-            navigationId: this.navigation.id,
-            tableName: event.value,
-            tableLabel: event.value,
-            isEditable: false,
-            customFormInputs: []
+        take(1),
+        tap(x => {
+          if (this.editMode && this.tableConfig) {
+            this.tableConfig.tableName = event.value;
+            this.tableConfig.tableLabel = event.value;
           }
-          this.buildFakeInputsConfig(this.tableConfig, resp[0]);
-        }
-      });
+          else {
+            this.tableConfig = {
+              id: null,
+              navigationId: this.navigation.id,
+              tableName: event.value,
+              tableLabel: event.value,
+              isEditable: false,
+              customFormInputs: []
+            }
+          }
+          this.buildFakeInputsConfig(this.tableConfig, x[0]);
+        })
+      )
+      .subscribe(resp => this.content = resp);
   }
 
   /**
@@ -129,18 +133,17 @@ export class ContentVisualizationComponent {
   }
 
   /**
-   * Save table configuration into database.
+   * Upsert table configuration into database.
    */
   onSaveSelectionClick() {
     let {customFormInputs, ...tableConfigPayload} = this.tableConfig!;
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableConfigPayload)
     .pipe(
       retry(2),
-      take(1)
+      take(1),
+      tap(() => this.getContentInformation())
     )
-    .subscribe(resp => {
-      this.getContentInformation();
-    });
+    .subscribe(() => this.editMode = false);
   }
 
   /**
@@ -155,8 +158,8 @@ export class ContentVisualizationComponent {
       )
   }
 
-  onChangeVisualizationClick() {
-    this.tableConfig = undefined;
+  onEditVisualizationClick() {
+    this.editMode = true;
   }
   
 

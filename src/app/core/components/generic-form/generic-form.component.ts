@@ -58,7 +58,7 @@ export class GenericFormComponent<
               private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
               private _http: HttpClient,
               private _snackBar: MatSnackBar,
-              private _mediaService: MediaService){}
+              private _mediaService: MediaService) {}
           
   formContent!: FormGroup;
   hidePassword = signal(true);
@@ -114,7 +114,7 @@ export class GenericFormComponent<
     }
   }
 
-  deleteObject(){
+  deleteObject() {
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
       .pipe(

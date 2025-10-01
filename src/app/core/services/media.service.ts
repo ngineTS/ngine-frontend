@@ -10,7 +10,7 @@ import { Media } from "../models/media.interface";
 export class MediaService {
 
   baseURL = environment.APIURL;
-  constructor(private _http: HttpClient){}
+  constructor(private _http: HttpClient) {}
 
   getS3ObjectSignedUrl(fileId: string) {
     return this._http.get<string>(`${this.baseURL}file-management/${fileId}`)
