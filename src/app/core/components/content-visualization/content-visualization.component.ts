@@ -29,8 +29,9 @@ export class ContentVisualizationComponent {
 
   @Input() navigation!: Navigation; //the component instance navigation
   content!: Array<object>; //the content reprensenting the table sample
-  tableConfig!: TableViz | undefined; //the table and columns/inputs configuration 
+  tableConfig: TableViz | undefined; //the table and columns/inputs configuration 
   tableNames: Array<string> | null = []; //the list of table names used as dropdown items
+  isEditMode = false; //used to identify if we need to update tableViz or insert it
 
   ngOnInit() {
     this.getTableNames().subscribe(resp => this.tableNames = resp);
