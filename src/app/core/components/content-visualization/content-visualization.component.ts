@@ -136,7 +136,7 @@ export class ContentVisualizationComponent {
    * Upsert table configuration into database.
    */
   onSaveSelectionClick() {
-    let {customFormInputs, ...tableConfigPayload} = this.tableConfig!;
+    let {customFormInputs, ...tableConfigPayload} = this.tableConfig;
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableConfigPayload)
     .pipe(
       retry(2),
