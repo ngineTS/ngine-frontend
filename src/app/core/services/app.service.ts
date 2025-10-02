@@ -30,7 +30,7 @@ export class AppService {
                 navigations: navigation.children,
                 parentId: navigation.id
               },
-              loadComponent: () => import('../components/navigation/navigation.component').then(m => m.NavigationComponent),
+              loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
               loadChildren: () => this.generateNestedRoutes(navigation.children!),
             });
           }
@@ -78,7 +78,7 @@ export class AppService {
           navigations: navigations,
           parentId: null 
         },
-        loadComponent: () => import('../components/navigation/navigation.component').then(m => m.NavigationComponent),
+        loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
         loadChildren: () => this.generateNestedRoutes(navigations),
       }];
       this._router.resetConfig(routes);

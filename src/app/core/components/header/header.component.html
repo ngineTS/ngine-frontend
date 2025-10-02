@@ -1,0 +1,25 @@
+<div class="d-flex flex-row align-items-center">
+    <div cdkDropList 
+         class="example-list" 
+         (cdkDropListDropped)="drop($event)"
+         [cdkDropListData]="navigations"
+         cdkDropListOrientation="horizontal">
+        @for (navigation of navigations; track navigation) {
+            <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
+                <a [routerLink]="navigation.name" 
+                   [class.active]="isRouteActive(navigation.name)"
+                   [style.color]="navigation.isDisabled ? '#ccc' : navigation.color">
+                    {{ navigation.displayLabel }}
+                </a>
+                <i class="bi bi-pen edit-icon" (click)="openNavigationManagementForm(navigation)"></i>
+            </div>
+        }
+    </div>
+    <button class="add-nav-button" 
+            matTooltip="Add navigation" 
+            (click)="openNavigationManagementForm()">
+            +
+    </button>
+</div>
+<router-outlet />
+
