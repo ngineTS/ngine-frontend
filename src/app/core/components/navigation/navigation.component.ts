@@ -1,59 +1,62 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Component, input, Input } from '@angular/core';
 import { Navigation } from '../../models/navigation.interface';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-
+import { NavigationService } from '../../services/navigation.service';
+import { ResizeObserverDirective } from '../../directives/resize-observer.directive';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
   imports: [
-            RouterOutlet, 
-            RouterModule, 
-            CommonModule, 
-            MatTooltipModule,
-            CdkDropList, 
-            CdkDrag,
-           ],
+    ResizeObserverDirective,
+    MatProgressSpinnerModule,
+    CommonModule
+  ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
-export class NavigationComponent implements OnInit {
-  
-  constructor(public _router: Router,
-              private _route: ActivatedRoute,
-              private _navigationService: NavigationService,
-              private _matDialog: MatDialog) {}
+export class NavigationComponent<T> {
 
-  navigations!: Navigation[];
+  @Input() navigation!: Navigation;
+  @Input() canEdit!: boolean;
+  @Input() canAdd!: boolean;
+  content: T | undefined;
 
-  ngOnInit() {
-    this.navigations = this._route.snapshot.data["navigations"];
-  }
+  constructor(protected _matDialog: MatDialog,
+              protected _navigationService: NavigationService) {}
 
-  isRouteActive(navigationName: string) {
-    return this._router.url.includes(navigationName);
-  }
-
-  drop(event: CdkDragDrop<Navigation[]>) {
-    const navigationOrders: Partial<Navigation>[] = [];
-    moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index })); 
-    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
-  }
-
-  openNavigationManagementForm(navigation?: Navigation) {
+  /**
+   * Methods call on edit button click.
+   * 
+   * Open navigation management form to edit component.
+   */
+  openFormToEditComponent() {
+    console.log('navigation', this.navigation);
+    console.log('canAdd', this.canAdd);
+    console.log('canEdit', this.canEdit);
     this._matDialog.open(NavigationManagementComponent, {
       data: {
-        navigation: navigation,
-        type: 'header',
-        parentId: this._route.snapshot.data["parentId"]
-      },
+        navigation: this.navigation,
+        type: 'component',
+        parentId: this.navigation.parentId,
+      }
     });
   }
 
+  /*onResize(rect: DOMRectReadOnly) {
+    this.navigation.width = rect.width,
+    this.navigation.height = rect.height
+  }
+
+  saveSizes() {
+    const navigationSize: Partial<Navigation> = {
+      width: Math.round(this.navigation.width / window.innerWidth * 100),
+      height: Math.round(this.navigation.height / window.innerHeight * 100)
+    };
+    this._navigationService.updateNavigation(this.navigation.id, navigationSize)
+      .subscribe(resp => console.log(resp));
+  }*/
+  
 }

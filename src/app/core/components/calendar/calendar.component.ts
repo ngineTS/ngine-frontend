@@ -16,25 +16,26 @@ import { map, Observable, take } from 'rxjs';
 import { ComponentSize } from '../../models/component-size.interface';
 import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { NavigationService } from '../../services/navigation.service';
 
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, FullCalendarModule],
+  imports: [CommonModule, FullCalendarModule, NavigationComponent],
   providers: [DatePipe],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent {
+export class CalendarComponent extends NavigationComponent<Calendar> {
 
-  constructor(private _matDialog: MatDialog,
-              private _http: HttpClient,
+  constructor(private _http: HttpClient,
               private _datePipe: DatePipe,
-              private _mediaService: MediaService) {}
-
-  @Input() navigation!: Navigation;
-  @Input() componentSize!: ComponentSize;
-  canEdit = true;
+              private _mediaService: MediaService,
+              _matDialog: MatDialog,
+              _navigationService: NavigationService) { 
+                super(_matDialog, _navigationService); 
+              }
 
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;
   @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
@@ -51,7 +52,10 @@ export class CalendarComponent {
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
 
-  ngOnInit() {
+  ngOnInit () {
+    console.log('navigation', this.navigation);
+    console.log('canAdd', this.canAdd);
+    console.log('canEdit', this.canEdit);
     this.getCalendarEvent();
   }
 
@@ -135,6 +139,9 @@ export class CalendarComponent {
 
 
   handleDateSelection(arg: DateSelectArg) {
+    console.log('navigation', this.navigation);
+    console.log('canAdd', this.canAdd);
+    console.log('canEdit', this.canEdit);
     const calendarForm: DeepFormConfig<CalendarPayload> = {
       startDate: {
         value: arg.start,

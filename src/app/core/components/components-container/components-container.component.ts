@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, inject, Injector, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, inject, Injector, inputBinding, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { ResizeObserverDirective } from '../../directives/resize-observer.directive';
 import { ComponentSize } from '../../models/component-size.interface';
+import { NavigationComponent } from '../navigation/navigation.component';
 
 
 @Component({
@@ -24,7 +25,7 @@ import { ComponentSize } from '../../models/component-size.interface';
     CdkDragHandle,
     MatProgressSpinnerModule,
     MatMenuModule,
-    ResizeObserverDirective
+    ResizeObserverDirective,
   ],
   templateUrl: './components-container.component.html',
   styleUrl: './components-container.component.scss'
@@ -66,9 +67,17 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
       const component = await this._componentContainerService.componentStore[this.navigations[index].navigationType.name]()
         .then(m => m[this.kebabCasetoPascaleCase(this.navigations[index].navigationType.name) + 'Component']);
       const containerRef = vcr.createComponent(component, {
-        injector: this.injector
+        injector: this.injector,
+        bindings: [
+          inputBinding('navigation', () => this.navigations[index]),
+          inputBinding('canEdit', () => true),
+          inputBinding('canAdd', () => true),
+
+        ]
       });  
-      containerRef.setInput('navigation', this.navigations[index]);
+      /*containerRef.setInput('navigation', this.navigations[index]);
+      containerRef.setInput('canEdit', true);
+      containerRef.setInput('canAdd', true);*/
       this.containerRefs.set(this.navigations[index].id, containerRef);
     });
   }
@@ -87,17 +96,24 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
-  openNavigationManagementForm(type: 'header' | 'component', navigation?: Navigation) {
+  /**
+   * Methods trigered on '+' button click.
+   * 
+   * Open navigation management form to add header or component
+   * depending on the type passed.
+   * @param type The type ('header' or 'component').
+   */
+  openFormToAddHeaderOrComponent(type: 'header' | 'component') {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
-        navigation: navigation,
+        navigation: undefined,
         type: type,
         parentId: this._route.snapshot.data["parentId"]
       }
     });
   }
 
-  onResize(navigationId: Navigation["id"], rect: DOMRectReadOnly) {
+  /*onResize(navigationId: Navigation["id"], rect: DOMRectReadOnly) {
     this.containerRefs.get(navigationId)?.setInput('componentSize', {
       width: rect.width,
       height: rect.height
@@ -118,6 +134,6 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
       })
     });
     this._navigationService.bulkUpdateNavigations(navigationSizes).subscribe(resp => console.log(resp));
-  }
+  }*/
 
 }

@@ -46,7 +46,15 @@ export class HeaderComponent implements OnInit {
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
-  openNavigationManagementForm(navigation?: Navigation) {
+  /**
+   * Methods call on 'edit' or '+' button click.
+   * 
+   * Open navigation management form to add or edit header.
+   * 
+   * If navigation is passed edit header else add header.
+   * @param navigation Navigation to edit (optional).
+   */
+  openFormToaddOrEditHeader(navigation?: Navigation) {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,

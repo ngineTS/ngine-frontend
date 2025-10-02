@@ -29,18 +29,11 @@
 }
 
 .example-box {
-  padding: 20px 10px;
-  border: solid 1px #ccc;
-  border-radius: 4px;
   color: rgba(0, 0, 0, 0.87);
   display: inline-block;
   box-sizing: border-box;
   background: white;
-  max-width: -webkit-fill-available;
   position: relative;
-  resize: both;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .cdk-drag-preview {
@@ -71,7 +64,7 @@
 .drag-icon {
   position: absolute;
   top: 0px;
-  right: 0px;
+  left: 0px;
   font-size: 16px;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
@@ -82,24 +75,7 @@
   color: #636363;
   display: none;
   cursor: move;
-}
-
-.edit-icon {
-  position: absolute;
-  top: 0px;
-  right: 28px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-top: none;
-  background-color: #dee2e6;
-  padding: 2px 6px;
-  color: #636363;
-  display: none;
-  cursor: pointer;
-}
-
-.example-box:hover .edit-icon {
-  display: block;
+  z-index: 999;
 }
 
 .example-box:hover:hover .drag-icon {

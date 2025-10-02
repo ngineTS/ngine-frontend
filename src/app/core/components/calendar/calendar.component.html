@@ -1,3 +1,8 @@
+<app-navigation
+    [navigation]="navigation"
+    [canEdit]="canEdit"
+    [canAdd]="canAdd"
+>
 <div>
     <full-calendar #myFullCalendar [options]="calendarOptions"></full-calendar>
 </div>
@@ -53,3 +58,4 @@
         <div class="mb-2">{{ date }}</div>
     </div>
 </ng-template>
+</app-navigation>
