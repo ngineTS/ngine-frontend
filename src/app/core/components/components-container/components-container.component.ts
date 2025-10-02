@@ -26,6 +26,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
     MatProgressSpinnerModule,
     MatMenuModule,
     ResizeObserverDirective,
+    NavigationComponent
   ],
   templateUrl: './components-container.component.html',
   styleUrl: './components-container.component.scss'
@@ -41,7 +42,7 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
   injector = inject(Injector);
   navigations!: Array<Navigation>;
   isSavingOrder: boolean = false;
-  containerRefs: Map<Navigation["id"], ComponentRef<unknown>> = new Map();
+  //containerRefs: Map<Navigation["id"], ComponentRef<unknown>> = new Map();
   componentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
   initialComponentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
   initialWindowWidth = window.innerWidth; //this property is used for conditional responsivity inside HTML
@@ -66,19 +67,18 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
     this.container.map(async (vcr: ViewContainerRef, index: number) => {
       const component = await this._componentContainerService.componentStore[this.navigations[index].navigationType.name]()
         .then(m => m[this.kebabCasetoPascaleCase(this.navigations[index].navigationType.name) + 'Component']);
-      const containerRef = vcr.createComponent(component, {
+      vcr.createComponent(component, {
         injector: this.injector,
         bindings: [
           inputBinding('navigation', () => this.navigations[index]),
           inputBinding('canEdit', () => true),
           inputBinding('canAdd', () => true),
-
         ]
       });  
       /*containerRef.setInput('navigation', this.navigations[index]);
       containerRef.setInput('canEdit', true);
       containerRef.setInput('canAdd', true);*/
-      this.containerRefs.set(this.navigations[index].id, containerRef);
+      //this.containerRefs.set(this.navigations[index].id, containerRef);
     });
   }
 

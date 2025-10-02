@@ -1,7 +1,5 @@
 <div class="m-2">
-    @if (isSavingOrder) {
-        <mat-spinner [diameter]="50"></mat-spinner>
-    }
+    
     @if (navigations && navigations.length > 0) {
         <div cdkDropList 
             class="example-list" 
@@ -11,31 +9,30 @@
             @for (navigation of navigations; track navigation) {
                 <div class="example-box" cdkDrag>
                     <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
-                    <ng-template #container></ng-template>
+                    <app-navigation
+                        [navigation]="navigation"
+                        [canEdit]="true"
+                        [canAdd]="true"
+                    >
+                        <ng-template #container></ng-template>
+                    </app-navigation>
                 </div>
             }
         </div>
-        <button 
-            class="add-nav-button" 
-            matTooltip="Add component" 
-            (click)="openFormToAddHeaderOrComponent('component')">
-            +
-        </button>
-        <!--<button matButton (click)="onSaveSizes()">
-            Save Sizes
-        </button>-->
     }
-    @else {
-        <button 
-            matButton 
-            [matMenuTriggerFor]="menu" 
-            class="add-nav-button">
-            +
-        </button>
-        <mat-menu #menu="matMenu">
+    
+    <button 
+        matButton 
+        [matMenuTriggerFor]="menu" 
+        class="add-nav-button">
+        +
+    </button>
+    <mat-menu #menu="matMenu">
+        @if (!navigations) {
             <button mat-menu-item (click)="openFormToAddHeaderOrComponent('header')">Add header</button>
-            <button mat-menu-item (click)="openFormToAddHeaderOrComponent('component')">Add component</button>
-        </mat-menu>
-    }
+        }
+        <button mat-menu-item (click)="openFormToAddHeaderOrComponent('component')">Add component</button>
+    </mat-menu>
+    
 </div>
 

@@ -22,7 +22,7 @@ import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, FullCalendarModule, NavigationComponent],
+  imports: [CommonModule, FullCalendarModule],
   providers: [DatePipe],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
