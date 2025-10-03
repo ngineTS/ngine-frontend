@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, inject, Injector, inputBinding, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
-import { ComponentsContainerService } from '../../services/components-container.service';
 import { CommonModule } from '@angular/common';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
@@ -38,14 +37,16 @@ export class ComponentsContainer implements OnInit {
   //injector = inject(Injector);
   navigations!: Array<Navigation>;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
   }
 
-  drop(event: CdkDragDrop<Navigation[]>) {
+  drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index }));
+    event.container.data.forEach((navigation, index) => {
+      navigationOrders.push({ id: navigation.id, order: index })
+    });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
@@ -56,7 +57,7 @@ export class ComponentsContainer implements OnInit {
    * depending on the type passed.
    * @param type The type ('header' or 'component').
    */
-  openFormToAddHeaderOrComponent(type: 'header' | 'component') {
+  openFormToAddHeaderOrComponent(type: 'header' | 'component'): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: undefined,
