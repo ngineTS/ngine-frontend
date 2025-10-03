@@ -5,6 +5,11 @@ import { Injectable } from "@angular/core";
 })
 export class ComponentsContainerService {
 
+  /**
+   * Application component dictionnary.
+   * 
+   * Map navigation type name with a method witch returns a promise of component imports.
+   */
   componentStore: Record<string, () => Promise<any>> = {
     "test-text": () => import('../components/test-text/test-text.component'),
     "my-quill-editor": () => import('../components/my-quill-editor/my-quill-editor.component'),
@@ -13,18 +18,16 @@ export class ComponentsContainerService {
     "content-visualization": () => import('../components/content-visualization/content-visualization.component'),
   };
 
-  /*createComponentsStore() {
-    return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`).pipe(
-      take(1),
-      tap(navigationTypes => 
-        navigationTypes.forEach(navigationType => {
-          if (navigationType.name !== 'header') {
-            this.componentStore[navigationType.name] = () => import(`../test-text/test-text.component`)
-          }
-        }
-        )
-      )
-    );
-  }*/
+  /**
+   * Transform a kebab case string to a pascale case string.
+   * @param input The string to transform.
+   * @returns A string in pascale case.
+   */
+  kebabCasetoPascaleCase(input: string): string {
+    return input
+      .split('-')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('');
+  }
 
 }

@@ -28,45 +28,18 @@ import { NavigationComponent } from '../navigation/navigation.component';
   templateUrl: './components-container.component.html',
   styleUrl: './components-container.component.scss'
 })
-export class ComponentsContainer implements OnInit, AfterViewInit {
+export class ComponentsContainer implements OnInit {
 
   constructor(private _route: ActivatedRoute,
-              private _componentContainerService: ComponentsContainerService,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog) {}
 
-  @ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
-  injector = inject(Injector);
+  //@ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
+  //injector = inject(Injector);
   navigations!: Array<Navigation>;
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
-  }
-
-  ngAfterViewInit() {
-    this.loadComponents();
-  }
-
-  async loadComponents() {
-    this.container.map(async (vcr: ViewContainerRef, index: number) => {
-      const component = await this._componentContainerService.componentStore[this.navigations[index].navigationType.name]()
-        .then(m => m[this.kebabCasetoPascaleCase(this.navigations[index].navigationType.name) + 'Component']);
-      vcr.createComponent(component, {
-        injector: this.injector,
-        bindings: [
-          inputBinding('_navigation', () => this.navigations[index]),
-          inputBinding('_canEdit', () => false),
-          inputBinding('_canAdd', () => false),
-        ]
-      });
-    });
-  }
-
-  kebabCasetoPascaleCase(input: string) {
-    return input
-      .split('-')
-      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-      .join('');
   }
 
   drop(event: CdkDragDrop<Navigation[]>) {

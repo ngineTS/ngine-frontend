@@ -18,6 +18,7 @@ import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { NavigationService } from '../../services/navigation.service';
+import { ComponentsContainerService } from '../../services/components-container.service';
 
 
 @Component({
@@ -33,8 +34,9 @@ export class CalendarComponent extends NavigationComponent {
               private _datePipe: DatePipe,
               private _mediaService: MediaService,
               _matDialog: MatDialog,
-              _navigationService: NavigationService) { 
-                super(_matDialog, _navigationService); 
+              _navigationService: NavigationService,
+              _componentContainerService: ComponentsContainerService) { 
+                super(_matDialog, _navigationService, _componentContainerService); 
               }
 
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;

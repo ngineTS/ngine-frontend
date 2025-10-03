@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, input, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Injector, input, Input, inputBinding, NgZone, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { retry, take } from 'rxjs';
+import { ComponentsContainerService } from '../../services/components-container.service';
 
 @Component({
   selector: 'app-navigation',
@@ -27,6 +28,8 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly _takeCount = 1;
   //_content: T | undefined;
 
+  injector = inject(Injector);
+  @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
   width!: number;
   heigth!: number;
@@ -37,12 +40,15 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   observer: MutationObserver | undefined;
 
   constructor(protected _matDialog: MatDialog,
-              protected _navigationService: NavigationService) { }
+              protected _navigationService: NavigationService,
+              private _componentContainerService: ComponentsContainerService,
+              ) { }
 
   /**
    * Initialize width, previousWidth and initialWindowSize properties.
    */
   ngOnInit() {
+    console.log(this._navigation);
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowHeigth = window.innerHeight;
     this.previousWidth = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
@@ -58,6 +64,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * and assign it to width and height properties on each change.
    */
   ngAfterViewInit() {
+    this.loadComponent();
     this.observer = new MutationObserver(() => {
       this.width = this.navigationDiv.nativeElement.offsetWidth;
       this.heigth = this.navigationDiv.nativeElement.offsetHeight;
@@ -73,6 +80,22 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnDestroy() {
     this.observer?.disconnect();
+  }
+
+  async loadComponent() {
+    const component = await this._componentContainerService
+      .componentStore[this._navigation.navigationType.name]().then(m => 
+        m[this._componentContainerService.kebabCasetoPascaleCase(this._navigation.navigationType.name) + 'Component']
+      );
+
+    this.container.createComponent(component, {
+        injector: this.injector,
+        bindings: [
+          inputBinding('_navigation', () => this._navigation),
+          inputBinding('_canEdit', () => false),
+          inputBinding('_canAdd', () => false),
+        ]
+    });
   }
 
   /**
@@ -113,7 +136,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditComponent() {
+  openFormToEditNavigation() {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
