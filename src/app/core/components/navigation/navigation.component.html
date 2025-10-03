@@ -1,11 +1,7 @@
 <div #navigationDiv
     class="navigation-container"
-    [style.width]="initialWindowWidth > 500 
-        ? width + 'px' 
-        : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 
-        ? heigth + 'px' 
-        : ''">
+    [style.width]="initialWindowWidth > 500 ? width + 'px' : '-webkit-fill-available'"
+    [style.height]="initialWindowWidth > 500 ? heigth + 'px' : ''">
     
     <i class="bi bi-pen edit-icon" (click)="openFormToEditComponent()"></i>
     
