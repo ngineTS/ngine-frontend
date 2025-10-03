@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, Injector, input, Input, inputBinding, NgZone, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, Input, inputBinding, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
@@ -31,6 +31,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   injector = inject(Injector);
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
+  //containerRef!: ComponentRef<unknown>;
   width!: number;
   heigth!: number;
   previousWidth!: number;
@@ -48,7 +49,6 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initialize width, previousWidth and initialWindowSize properties.
    */
   ngOnInit(): void {
-    console.log(this._navigation);
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowHeigth = window.innerHeight;
     this.previousWidth = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
@@ -58,21 +58,12 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * After view init, create a size observer on navigation div HTML element.
-   * 
-   * This observer retrieve width and height of HTML element
-   * and assign it to width and height properties on each change.
+   * After view init, 
+   * load component and create size observer.
    */
   ngAfterViewInit(): void {
     this.loadComponent();
-    this.observer = new MutationObserver(() => {
-      this.width = this.navigationDiv.nativeElement.offsetWidth;
-      this.heigth = this.navigationDiv.nativeElement.offsetHeight;
-    });
-    this.observer.observe(
-      this.navigationDiv.nativeElement,
-      { attributes: true, attributeFilter: ['style'] }
-    );
+    this.createSizeObserver();
   }
 
   /**
@@ -96,6 +87,24 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
           inputBinding('_canAdd', () => false),
         ]
     });
+  }
+
+  /**
+   * Create size observer on itself.
+   * 
+   * This observer retrieve width and height of HTML element
+   * and assign it to width and height class properties on each change.
+   * 
+   */
+  createSizeObserver() {
+    this.observer = new MutationObserver(() => {
+      this.width = this.navigationDiv.nativeElement.offsetWidth;
+      this.heigth = this.navigationDiv.nativeElement.offsetHeight;
+    });
+    this.observer.observe(
+      this.navigationDiv.nativeElement,
+      { attributes: true, attributeFilter: ['style'] }
+    );
   }
 
   /**
