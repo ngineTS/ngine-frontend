@@ -54,7 +54,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * After view init, create a size observer on navigation div HTML element.
    * 
-   * This observer retrieve width and height of HTML element 
+   * This observer retrieve width and height of HTML element
    * and assign it to width and height properties on each change.
    */
   ngAfterViewInit() {

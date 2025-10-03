@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, inject, Injector, inputBinding, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, inputBinding, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -10,7 +10,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-import { ComponentSize } from '../../models/component-size.interface';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 
@@ -39,22 +38,9 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
   @ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
   injector = inject(Injector);
   navigations!: Array<Navigation>;
-  isSavingOrder: boolean = false;
-  //containerRefs: Map<Navigation["id"], ComponentRef<unknown>> = new Map();
-  componentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
-  initialComponentSizeMap: Map<Navigation["id"], ComponentSize> = new Map();
-  initialWindowWidth = window.innerWidth; //this property is used for conditional responsivity inside HTML
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
-    if (this.navigations) {
-      this.navigations.forEach(navigation => {
-        this.initialComponentSizeMap.set(navigation.id, {
-          width: window.innerWidth * navigation.width / 100,
-          height: window.innerHeight * navigation.height / 100
-        })
-      });
-    }
   }
 
   ngAfterViewInit() {
@@ -72,11 +58,7 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
           inputBinding('_canEdit', () => false),
           inputBinding('_canAdd', () => false),
         ]
-      });  
-      /*containerRef.setInput('navigation', this.navigations[index]);
-      containerRef.setInput('canEdit', true);
-      containerRef.setInput('canAdd', true);*/
-      //this.containerRefs.set(this.navigations[index].id, containerRef);
+      });
     });
   }
 
@@ -110,28 +92,5 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
       }
     });
   }
-
-  /*onResize(navigationId: Navigation["id"], rect: DOMRectReadOnly) {
-    this.containerRefs.get(navigationId)?.setInput('componentSize', {
-      width: rect.width,
-      height: rect.height
-    });
-    this.componentSizeMap.set(navigationId, {
-      width: rect.width,
-      height: rect.height
-    });
-  }
-
-  onSaveSizes() {
-    const navigationSizes: Array<Partial<Navigation>> = [];
-    this.componentSizeMap.forEach((value, key) => {
-      navigationSizes.push({
-        id: key,
-        width: Math.round(value.width / window.innerWidth * 100),
-        height: Math.round(value.height / window.innerHeight * 100)
-      })
-    });
-    this._navigationService.bulkUpdateNavigations(navigationSizes).subscribe(resp => console.log(resp));
-  }*/
 
 }
