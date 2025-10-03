@@ -33,20 +33,20 @@ export class ComponentsContainer implements OnInit {
               private _navigationService: NavigationService,
               private _matDialog: MatDialog) {}
 
-  //@ViewChildren('container', { read: ViewContainerRef }) container!: QueryList<ViewContainerRef>;
-  //injector = inject(Injector);
   navigations!: Array<Navigation>;
 
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
   }
 
+  /**
+   * Drop a component and update position of all navigations.
+   * @param event The CdkDragDrop event containing navigation positions.
+   */
   drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => {
-      navigationOrders.push({ id: navigation.id, order: index })
-    });
+    event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index })});
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 

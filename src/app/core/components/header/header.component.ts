@@ -39,7 +39,11 @@ export class HeaderComponent implements OnInit {
     return this._router.url.includes(navigationName);
   }
 
-  drop(event: CdkDragDrop<Navigation[]>) {
+  /**
+   * Drop a component and update position of all navigations.
+   * @param event The CdkDragDrop event containing navigation positions. 
+   */
+  drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index })); 
@@ -54,7 +58,7 @@ export class HeaderComponent implements OnInit {
    * If navigation is passed edit header else add header.
    * @param navigation Navigation to edit (optional).
    */
-  openFormToaddOrEditHeader(navigation?: Navigation) {
+  openFormToaddOrEditHeader(navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
