@@ -52,7 +52,7 @@ export class CalendarComponent extends NavigationComponent {
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
 
-  ngOnInit () {
+  override ngOnInit () {
     console.log('navigation', this._navigation);
     console.log('canAdd', this._canAdd);
     console.log('canEdit', this._canEdit);
@@ -65,7 +65,7 @@ export class CalendarComponent extends NavigationComponent {
     }
   }
 
-  ngAfterViewInit() {
+  override ngAfterViewInit() {
     this.calendarApi = this.myFullCalendar.getApi();
   }
 

@@ -10,7 +10,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-import { ResizeObserverDirective } from '../../directives/resize-observer.directive';
 import { ComponentSize } from '../../models/component-size.interface';
 import { NavigationComponent } from '../navigation/navigation.component';
 
