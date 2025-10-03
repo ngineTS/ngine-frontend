@@ -1,5 +1,15 @@
-<div class="navigation-container">
+<div 
+    class="navigation-container"
+    appResizeObserver 
+    (resize)="onResize($event)"
+    [style.width]="initialWindowWidth > 500 
+        ? initialWindowWidth * _navigation.width / 100 + 'px' 
+        : '-webkit-fill-available'"
+    [style.height]="initialWindowWidth > 500 
+        ? initialWindowHeigth * _navigation.height / 100  + 'px' 
+        : ''">
     <i class="bi bi-pen edit-icon" (click)="openFormToEditComponent()"></i>
+    <i class="bi bi-pen" (click)="saveSize()"></i>
     <ng-content></ng-content>
 </div>
 

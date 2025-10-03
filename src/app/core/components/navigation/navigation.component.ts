@@ -17,12 +17,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
-export class NavigationComponent<T> {
+export class NavigationComponent {
 
-  @Input() navigation!: Navigation;
-  @Input() canEdit!: boolean;
-  @Input() canAdd!: boolean;
-  content: T | undefined;
+  @Input() _navigation!: Navigation;
+  @Input() _canEdit!: boolean;
+  @Input() _canAdd!: boolean;
+  width!: number;
+  height!: number;
+  initialWindowWidth = window.innerWidth; //this property is used for conditional responsivity inside HTML
+  initialWindowHeigth = window.innerHeight; //this property is used for conditional responsivity inside HTML
+
+  //content: T | undefined;
 
   constructor(protected _matDialog: MatDialog,
               protected _navigationService: NavigationService) {}
@@ -33,30 +38,32 @@ export class NavigationComponent<T> {
    * Open navigation management form to edit component.
    */
   openFormToEditComponent() {
-    console.log('navigation', this.navigation);
-    console.log('canAdd', this.canAdd);
-    console.log('canEdit', this.canEdit);
+    console.log('navigation', this._navigation);
+    console.log('canAdd', this._canAdd);
+    console.log('canEdit', this._canEdit);
     this._matDialog.open(NavigationManagementComponent, {
       data: {
-        navigation: this.navigation,
+        navigation: this._navigation,
         type: 'component',
-        parentId: this.navigation.parentId,
+        parentId: this._navigation.parentId,
       }
     });
   }
 
-  /*onResize(rect: DOMRectReadOnly) {
-    this.navigation.width = rect.width,
-    this.navigation.height = rect.height
+  onResize(rect: DOMRectReadOnly) {
+    console.log('resize');
+    this.width = rect.width,
+    this.height = rect.height
   }
 
-  saveSizes() {
+  saveSize() {
+    console.log('save');
     const navigationSize: Partial<Navigation> = {
-      width: Math.round(this.navigation.width / window.innerWidth * 100),
-      height: Math.round(this.navigation.height / window.innerHeight * 100)
+      width: Math.round(this.width / window.innerWidth * 100),
+      height: Math.round(this.height / window.innerHeight * 100)
     };
-    this._navigationService.updateNavigation(this.navigation.id, navigationSize)
+    this._navigationService.updateNavigation(this._navigation.id, navigationSize)
       .subscribe(resp => console.log(resp));
-  }*/
+  }
   
 }

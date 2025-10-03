@@ -34,6 +34,7 @@
   box-sizing: border-box;
   background: white;
   position: relative;
+  max-width: -webkit-fill-available;
 }
 
 .cdk-drag-preview {

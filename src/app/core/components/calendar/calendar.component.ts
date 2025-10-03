@@ -27,7 +27,7 @@ import { NavigationService } from '../../services/navigation.service';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent extends NavigationComponent<Calendar> {
+export class CalendarComponent extends NavigationComponent {
 
   constructor(private _http: HttpClient,
               private _datePipe: DatePipe,
@@ -53,9 +53,9 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
   };
 
   ngOnInit () {
-    console.log('navigation', this.navigation);
-    console.log('canAdd', this.canAdd);
-    console.log('canEdit', this.canEdit);
+    console.log('navigation', this._navigation);
+    console.log('canAdd', this._canAdd);
+    console.log('canEdit', this._canEdit);
     this.getCalendarEvent();
   }
 
@@ -70,7 +70,7 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
   }
 
   getCalendarEvent() {
-    this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this.navigation.id}`)
+    this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this._navigation.id}`)
               .pipe(
                 take(1),
                 map<Calendar[], CalendarOptions["events"]>(dbEvents => {
@@ -139,9 +139,9 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
 
 
   handleDateSelection(arg: DateSelectArg) {
-    console.log('navigation', this.navigation);
-    console.log('canAdd', this.canAdd);
-    console.log('canEdit', this.canEdit);
+    console.log('navigation', this._navigation);
+    console.log('canAdd', this._canAdd);
+    console.log('canEdit', this._canEdit);
     const calendarForm: DeepFormConfig<CalendarPayload> = {
       startDate: {
         value: arg.start,
@@ -192,7 +192,7 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
         data: {
           formConfig: calendarForm,
           id: null,
-          navigationId: this.navigation.id,
+          navigationId: this._navigation.id,
           controllerName: 'calendar',
         }
       }
@@ -206,7 +206,7 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
   }
 
   handleEventClick(arg: EventClickArg) {
-    if(this.canEdit) {
+    if(this._canEdit) {
       arg.jsEvent.preventDefault(); // don't let the browser navigate
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
@@ -258,7 +258,7 @@ export class CalendarComponent extends NavigationComponent<Calendar> {
           data: {
             formConfig: calendarForm,
             id: arg.event.id,
-            navigationId: this.navigation.id,
+            navigationId: this._navigation.id,
             controllerName: 'calendar',
           }
         }

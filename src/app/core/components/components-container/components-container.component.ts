@@ -25,7 +25,6 @@ import { NavigationComponent } from '../navigation/navigation.component';
     CdkDragHandle,
     MatProgressSpinnerModule,
     MatMenuModule,
-    ResizeObserverDirective,
     NavigationComponent
   ],
   templateUrl: './components-container.component.html',
@@ -70,9 +69,9 @@ export class ComponentsContainer implements OnInit, AfterViewInit {
       vcr.createComponent(component, {
         injector: this.injector,
         bindings: [
-          inputBinding('navigation', () => this.navigations[index]),
-          inputBinding('canEdit', () => true),
-          inputBinding('canAdd', () => true),
+          inputBinding('_navigation', () => this.navigations[index]),
+          inputBinding('_canEdit', () => false),
+          inputBinding('_canAdd', () => false),
         ]
       });  
       /*containerRef.setInput('navigation', this.navigations[index]);
