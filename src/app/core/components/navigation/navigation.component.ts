@@ -47,7 +47,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Initialize width, previousWidth and initialWindowSize properties.
    */
-  ngOnInit() {
+  ngOnInit(): void {
     console.log(this._navigation);
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowHeigth = window.innerHeight;
@@ -63,7 +63,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * This observer retrieve width and height of HTML element
    * and assign it to width and height properties on each change.
    */
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.loadComponent();
     this.observer = new MutationObserver(() => {
       this.width = this.navigationDiv.nativeElement.offsetWidth;
@@ -78,7 +78,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * On destroy, disconnect observer.
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.observer?.disconnect();
   }
 
@@ -105,7 +105,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * - Call API to update navigation width and height.
    * - Assign new value to previousWidth and previousHeight properties.
    */
-  onSaveSizeClick() {
+  onSaveSizeClick(): void {
     const navigationSize: Partial<Navigation> = {
       width: Math.round((this.width / window.innerWidth * 100)),
       height: Math.round((this.heigth / window.innerHeight * 100))
@@ -126,7 +126,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * 
    * Reset width and height to their previous value.
    */
-  onResetSizeClick() {
+  onResetSizeClick(): void {
     this.width = this.previousWidth.valueOf();
     this.heigth = this.previousHeigth.valueOf();
   }
@@ -136,7 +136,7 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation() {
+  openFormToEditNavigation(): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
