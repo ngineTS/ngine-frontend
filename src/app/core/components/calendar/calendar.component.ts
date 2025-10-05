@@ -29,10 +29,8 @@ export class CalendarComponent extends NavigationBaseComponent {
 
   constructor(private _http: HttpClient,
               private _datePipe: DatePipe,
-              private _mediaService: MediaService,
-              _matDialog: MatDialog,
-              _navigationService: NavigationService) { 
-                super(_matDialog, _navigationService); 
+              private _mediaService: MediaService) { 
+                super(); 
               }
 
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;

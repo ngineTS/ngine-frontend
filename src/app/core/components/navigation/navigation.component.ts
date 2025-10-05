@@ -32,11 +32,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   initialWindowHeigth!: number;
   observer: MutationObserver | undefined;
 
-  constructor(
-              private _componentContainerService: ComponentsContainerService,
-              _matDialog: MatDialog,
-              _navigationService: NavigationService) { 
-                super(_matDialog, _navigationService); 
+  constructor(private _componentContainerService: ComponentsContainerService) { 
+                super(); 
               }
 
   /**

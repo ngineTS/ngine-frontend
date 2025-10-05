@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationService } from '../../services/navigation.service';
@@ -21,6 +21,10 @@ export class NavigationBaseComponent {
   protected readonly _takeCount = 1;
   //_content: T | undefined;
 
-  constructor(protected _matDialog: MatDialog,
-              protected _navigationService: NavigationService) { }
+  constructor() { }
+
+  protected _matDialog = inject(MatDialog);
+  protected _navigationService = inject(NavigationService);
+
+
 }
