@@ -9,16 +9,13 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { Navigation } from '../../models/navigation.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable, take } from 'rxjs';
-import { ComponentSize } from '../../models/component-size.interface';
 import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
-import { NavigationComponent } from '../navigation/navigation.component';
 import { NavigationService } from '../../services/navigation.service';
-import { ComponentsContainerService } from '../../services/components-container.service';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 
 @Component({
@@ -28,15 +25,14 @@ import { ComponentsContainerService } from '../../services/components-container.
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent extends NavigationComponent {
+export class CalendarComponent extends NavigationBaseComponent {
 
   constructor(private _http: HttpClient,
               private _datePipe: DatePipe,
               private _mediaService: MediaService,
               _matDialog: MatDialog,
-              _navigationService: NavigationService,
-              _componentContainerService: ComponentsContainerService) { 
-                super(_matDialog, _navigationService, _componentContainerService); 
+              _navigationService: NavigationService) { 
+                super(_matDialog, _navigationService); 
               }
 
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;
@@ -54,7 +50,7 @@ export class CalendarComponent extends NavigationComponent {
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
 
-  override ngOnInit () {
+  ngOnInit () {
     console.log('navigation', this._navigation);
     console.log('canAdd', this._canAdd);
     console.log('canEdit', this._canEdit);
@@ -69,7 +65,7 @@ export class CalendarComponent extends NavigationComponent {
     }
   }
 
-  override ngAfterViewInit() {
+  ngAfterViewInit() {
     this.calendarApi = this.myFullCalendar.getApi();
   }
 

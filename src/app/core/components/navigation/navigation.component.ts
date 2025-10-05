@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { retry, take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-navigation',
@@ -19,14 +20,7 @@ import { ComponentsContainerService } from '../../services/components-container.
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
-export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  @Input() _navigation!: Navigation;
-  @Input() _canEdit!: boolean;
-  @Input() _canAdd!: boolean;
-  protected readonly _retryCount = 2;
-  protected readonly _takeCount = 1;
-  //_content: T | undefined;
+export class NavigationComponent extends NavigationBaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   injector = inject(Injector);
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
@@ -40,10 +34,12 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   initialWindowHeigth!: number;
   observer: MutationObserver | undefined;
 
-  constructor(protected _matDialog: MatDialog,
-              protected _navigationService: NavigationService,
+  constructor(
               private _componentContainerService: ComponentsContainerService,
-              ) { }
+              _matDialog: MatDialog,
+              _navigationService: NavigationService) { 
+                super(_matDialog, _navigationService); 
+              }
 
   /**
    * Initialize width, previousWidth and initialWindowSize properties.
@@ -83,8 +79,8 @@ export class NavigationComponent implements OnInit, AfterViewInit, OnDestroy {
         injector: this.injector,
         bindings: [
           inputBinding('_navigation', () => this._navigation),
-          inputBinding('_canEdit', () => false),
-          inputBinding('_canAdd', () => false),
+          inputBinding('_canEdit', () => this._canEdit),
+          inputBinding('_canAdd', () => this._canAdd),
         ]
     });
   }

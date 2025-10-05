@@ -1,0 +1,24 @@
+import { Component, Input } from '@angular/core';
+import { Navigation } from '../../models/navigation.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { NavigationService } from '../../services/navigation.service';
+
+@Component({
+  selector: 'app-navigation-base',
+  imports: [],
+  template: `
+    ...
+  `,
+})
+export class NavigationBaseComponent {
+
+  @Input() _navigation!: Navigation;
+  @Input() _canEdit!: boolean;
+  @Input() _canAdd!: boolean;
+  protected readonly _retryCount = 2;
+  protected readonly _takeCount = 1;
+  //_content: T | undefined;
+
+  constructor(protected _matDialog: MatDialog,
+              protected _navigationService: NavigationService) { }
+}
