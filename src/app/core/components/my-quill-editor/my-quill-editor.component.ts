@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { QuillModule } from 'ngx-quill'
-import { Navigation } from '../../models/navigation.interface';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -8,6 +7,7 @@ import { take } from 'rxjs';
 import { QuillEditorContent } from '../../models/quill-editor.interface';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 
 @Component({
@@ -20,15 +20,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './my-quill-editor.component.html',
   styleUrl: './my-quill-editor.component.scss'
 })
-export class MyQuillEditorComponent {
+export class MyQuillEditorComponent extends NavigationBaseComponent {
 
-  constructor(private _http: HttpClient, private _snackBar: MatSnackBar) {}
+  constructor(private _http: HttpClient, private _snackBar: MatSnackBar) { 
+                super();
+              }
 
-  @Input() navigation!: Navigation;
+  isEditing: boolean = false;
   content!: string;
   myQuillEditor!: QuillEditorContent;
-  canEdit = false;
-
   quillConfig = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -41,13 +41,11 @@ export class MyQuillEditorComponent {
       ['clean'],
     ],
   }
-
   
   ngOnInit() {
-    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this.navigation.id}`).pipe(take(1)).subscribe(resp => {
+    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`).pipe(take(1)).subscribe(resp => {
       this.myQuillEditor = resp;
       this.content = resp?.content;
-      console.log(this.myQuillEditor);
     });
     
   }
@@ -56,20 +54,20 @@ export class MyQuillEditorComponent {
     //edit
     if (this.myQuillEditor?.id) {
       this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
-        navigationId: this.navigation.id,
+        navigationId: this._navigation.id,
         content: this.content
-      }).subscribe(resp => {
-        console.log(resp);
+      }).subscribe(() => {
         this.showSuccessSnackBar('updated');
+        this.isEditing = false;
       });
     }
     //add
     else {
       this._http.post(`${environment.APIURL}quill-editor`, {
-        navigationId: this.navigation.id,
+        navigationId: this._navigation.id,
         content: this.content
-      }).subscribe(resp => {
-        console.log(resp);
+      }).subscribe(() => {
+        this.isEditing = false;
         this.showSuccessSnackBar('saved');
       });
     }

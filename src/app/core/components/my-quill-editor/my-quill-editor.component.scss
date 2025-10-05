@@ -1,5 +1,15 @@
+.view-contianer {
+    position: relative;
+}
+
 .save-button {
     float: right;
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.edit-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }

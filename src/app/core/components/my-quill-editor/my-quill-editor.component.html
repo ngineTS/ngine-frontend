@@ -1,4 +1,4 @@
-@if (canEdit) {
+@if (_canEdit && isEditing) {
     <div>
         <quill-editor class="w-100" [(ngModel)]="content">
         </quill-editor>
@@ -13,8 +13,14 @@
 }
 @else {
     @if (content) {
-        <div>
+        <div class="view-contianer">
             <quill-view [content]="content"></quill-view>
+            <button 
+                matButton="outlined" 
+                class="edit-button"
+                (click)="isEditing = !isEditing">
+                <i class="bi bi-pen edit-icon"></i>
+            </button>
         </div>
     }
 }
