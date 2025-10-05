@@ -2,8 +2,8 @@
     <h4 class="mb-4">{{ tableConfig.tableLabel }}</h4>
     <app-generic-table 
         [content]="content"
-        [canAdd]="true"
-        [canEdit]="true"
+        [canAdd]="_canAdd"
+        [canEdit]="_canEdit"
         [tableConfig]="tableConfig"
         (contentChanged)="onContentChange()"
         >

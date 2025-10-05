@@ -8,6 +8,7 @@ import { ContentManagementFormComponent } from './content-management-form/conten
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { of, retry, switchMap, take } from 'rxjs';
 import { SnackBarService } from '../../services/snackbar.service';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-content-management',
@@ -15,13 +16,13 @@ import { SnackBarService } from '../../services/snackbar.service';
   templateUrl: './content-management.component.html',
   styleUrl: './content-management.component.scss'
 })
-export class ContentManagementComponent implements OnInit {
+export class ContentManagementComponent extends NavigationBaseComponent implements OnInit {
 
   constructor(private _http: HttpClient,
-              private _matDialog: MatDialog,
-              private _snackbarService: SnackBarService) {}
+              private _snackbarService: SnackBarService) { 
+                super(); 
+              }
   
-  @Input() navigation!: Navigation; //the component instance navigation
   content!: Array<object> | null; //the content reprensenting the table sample
   tableConfig!: TableViz; //the table and columns/inputs configuration 
 
@@ -37,7 +38,7 @@ export class ContentManagementComponent implements OnInit {
    * Else return table content by calling GET custom-table table API.
    */
   getContentInformation() {
-    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`)
+    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this._navigation.id}`)
       .pipe(
         retry(2),
         take(1),
@@ -47,7 +48,7 @@ export class ContentManagementComponent implements OnInit {
               { 
                 maxWidth: '700px',
                 disableClose: true,
-                data: { navigationId: this.navigation.id } 
+                data: { navigationId: this._navigation.id } 
               }
             );
             dialogRef.afterClosed().subscribe(resp => {
