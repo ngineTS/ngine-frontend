@@ -10,6 +10,18 @@
 
 .edit-button {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 12px;
+    right: 12px;
+    background-color: white;
+}
+
+.back-button {
+    position: absolute;
+    bottom: -6px;
+    right: 125px;
+    background-color: white;
+}
+
+.back-icon {
+    color: blue;
 }

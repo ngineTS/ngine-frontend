@@ -1,7 +1,13 @@
 @if (_canEdit && isEditing) {
-    <div>
+    <div class="view-container">
         <quill-editor class="w-100" [(ngModel)]="content">
         </quill-editor>
+        <button 
+            matButton="outlined"
+            class="back-button"
+            (click)="isEditing = !isEditing">
+            <i class="bi bi-backspace back-icon"></i>            
+        </button>
         <button 
             matButton="outlined" 
             class="save-button"
