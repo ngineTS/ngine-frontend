@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { TableViz } from '../../models/content-management.interface';
-import { Navigation } from '../../models/navigation.interface';
-import { MatDialog } from '@angular/material/dialog';
 import { ContentManagementFormComponent } from './content-management-form/content-management-form.component';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { of, retry, switchMap, take } from 'rxjs';

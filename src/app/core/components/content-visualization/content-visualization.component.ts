@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { Navigation } from '../../models/navigation.interface';
+import { Component } from '@angular/core';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +9,7 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-content-visualization',
@@ -23,15 +23,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './content-visualization.component.html',
   styleUrl: './content-visualization.component.scss'
 })
-export class ContentVisualizationComponent {
+export class ContentVisualizationComponent extends NavigationBaseComponent {
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { super(); }
 
-  @Input() navigation!: Navigation; // The component instance navigation.
   content!: Array<object>; // The content reprensenting the table sample.
   tableConfig!: TableViz; // The table and columns/inputs configuration. 
   tableNames: Array<string> | null = []; // The list of table names used as dropdown items.
-  editMode = false; // Used to identify if we need to update tableViz or insert it.
+  isEditing: boolean = false; // Used to identify if we need to update tableViz or insert it.
 
   ngOnInit() {
     this.getTableNames().subscribe(resp => this.tableNames = resp);
@@ -45,7 +44,7 @@ export class ContentVisualizationComponent {
    * else do nothing.
    */
   getContentInformation() {
-    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this.navigation.id}`)
+    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this._navigation.id}`)
       .pipe(
         retry(2),
         take(1),
@@ -59,7 +58,7 @@ export class ContentVisualizationComponent {
             )
           }
           else {
-            this.editMode = true;
+            this.isEditing = true;
             return of(null);
           }
         })
@@ -85,14 +84,14 @@ export class ContentVisualizationComponent {
         retry(2),
         take(1),
         tap(x => {
-          if (this.editMode && this.tableConfig) {
+          if (this.isEditing && this.tableConfig) {
             this.tableConfig.tableName = event.value;
             this.tableConfig.tableLabel = event.value;
           }
           else {
             this.tableConfig = {
               id: null,
-              navigationId: this.navigation.id,
+              navigationId: this._navigation.id,
               tableName: event.value,
               tableLabel: event.value,
               isEditable: false,
@@ -143,7 +142,7 @@ export class ContentVisualizationComponent {
       take(1),
       tap(() => this.getContentInformation())
     )
-    .subscribe(() => this.editMode = false);
+    .subscribe(() => this.isEditing = false);
   }
 
   /**
@@ -157,10 +156,5 @@ export class ContentVisualizationComponent {
         take(1)
       )
   }
-
-  onEditVisualizationClick() {
-    this.editMode = true;
-  }
-  
 
 }

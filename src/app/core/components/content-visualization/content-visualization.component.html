@@ -1,18 +1,4 @@
-@if (!editMode && tableConfig) {
-    <div class="row align-items-center mb-4">
-        
-        <h5 class="col">Content Visualization: {{ tableConfig.tableName }}</h5>   
-        
-        <button 
-            matButton="outlined" 
-            class="col-1 me-2 save-button"
-            (click)="onEditVisualizationClick()">
-            <i class="bi bi-pen edit-icon"></i>
-        </button>
-        
-    </div>
-}
-@if (editMode) {
+@if (_canEdit && isEditing) {
     <h5 class="mb-4">Content Visualization Setup</h5>
 
     <mat-form-field appearance="outline">
@@ -32,11 +18,25 @@
         Save Selection
     </button>
 }
+@else {
+    @if (tableConfig) {
+    <div class="row align-items-center mb-4">      
+        <h5 class="col">Content Visualization: {{ tableConfig.tableName }}</h5>   
+        
+        @if (_canEdit) {
+            <button 
+                matButton="outlined" 
+                class="col-1 me-2 save-button"
+                (click)="isEditing = true">
+                <i class="bi bi-pen edit-icon"></i>
+            </button>
+        } 
+    </div>
 
-
-@if (tableConfig) {
     <app-generic-table 
         [content]="content"
         [tableConfig]="tableConfig">
     </app-generic-table>
+    }
+    
 }
