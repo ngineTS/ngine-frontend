@@ -15,6 +15,8 @@ export class NavigationBaseComponent {
   @Input() _navigation!: Navigation;
   @Input() _canEdit!: boolean;
   @Input() _canAdd!: boolean;
+  @Input({required: false}) _width!: number;
+  @Input({required: false}) _heigth!: number;
   protected readonly _retryCount = 2;
   protected readonly _takeCount = 1;
   //_content: T | undefined;

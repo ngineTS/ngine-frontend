@@ -1,15 +1,15 @@
 <div #navigationDiv
     class="navigation-container"
-    [style.width]="initialWindowWidth > 500 ? width + 'px' : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 ? heigth + 'px' : ''">
+    [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
+    [style.height]="initialWindowWidth > 500 ? _heigth + 'px' : ''">
     
     <i class="bi bi-pen edit-icon" (click)="openFormToEditNavigation()"></i>
     
     @if (
-        width - previousWidth > 1 
-        || previousWidth - width > 1 
-        || heigth - previousHeigth > 1 
-        || previousHeigth - heigth > 1) {
+        _width - previousWidth > 1 
+        || previousWidth - _width > 1 
+        || _heigth - previousHeigth > 1 
+        || previousHeigth - _heigth > 1) {
         <div class="size-icons-div" >
             <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
             <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>

@@ -58,10 +58,9 @@ export class CalendarComponent extends NavigationBaseComponent {
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    console.log("SD");
-    if (simpleChanges["_navigation"]) {
+    if (simpleChanges["_width"]) {
       console.log('CALENDAR', this._navigation);
-      //this.calendarApi.updateSize();
+      this.calendarApi?.updateSize();
     }
   }
 

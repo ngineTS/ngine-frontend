@@ -10,7 +10,7 @@ export interface Navigation {
     color: string;
     width: number;
     height: number;
-    isDisabled: string;
+    isDisabled: boolean;
     createdDate: Date;
     createdBy: string;
     updatedDate: Date;
