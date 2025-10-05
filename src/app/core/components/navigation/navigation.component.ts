@@ -69,6 +69,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.observer?.disconnect();
   }
 
+  /**
+   * Load component from component dictionnary.  
+   */
   async loadComponent() {
     const component = await this._componentContainerService
       .componentStore[this._navigation.navigationType.name]().then(m => 
