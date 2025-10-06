@@ -18,7 +18,7 @@ export class NavigationBaseComponent {
   @Input({required: false}) _width!: number;
   @Input({required: false}) _heigth!: number;
   @Input({required: false}) _isEditing: boolean = false;
-  @Output() _hasContentChanged: EventEmitter<boolean> = new EventEmitter(false); //event emitter to inform parent about table change
+  @Output() _hasContentChanged: EventEmitter<boolean> = new EventEmitter(false);
   protected readonly _retryCount = 2;
   protected readonly _takeCount = 1;
   //_content: T | undefined;
