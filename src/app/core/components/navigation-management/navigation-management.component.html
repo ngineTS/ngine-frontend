@@ -5,8 +5,8 @@
         <mat-form-field appearance="outline">
             <mat-label>Navigation Type </mat-label>
             <mat-select formControlName="navigationTypeId">
-                @for (navigationType of navigationTypes; track navigationType) {
-                    <mat-option [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
+                @for (navigationType of navigationTypes; track navigationType.name) {
+                    <mat-option [disabled]="data.navigation?.id" [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
@@ -15,7 +15,7 @@
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
                     <mat-option [value]="null" style="color: #b3b3b3">None</mat-option>
-                @for (parent of parentNavigations; track parent) {
+                @for (parent of parentNavigations; track parent.name) {
                     <mat-option [value]="parent.id">{{ parent.displayLabel }}</mat-option>
                 }
             </mat-select>
