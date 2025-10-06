@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationService } from '../../services/navigation.service';
@@ -17,6 +17,8 @@ export class NavigationBaseComponent {
   @Input() _canAdd!: boolean;
   @Input({required: false}) _width!: number;
   @Input({required: false}) _heigth!: number;
+  @Input({required: false}) _isEditing: boolean = false;
+  @Output() _hasContentChanged: EventEmitter<boolean> = new EventEmitter(false); //event emitter to inform parent about table change
   protected readonly _retryCount = 2;
   protected readonly _takeCount = 1;
   //_content: T | undefined;

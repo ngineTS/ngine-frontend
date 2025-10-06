@@ -25,7 +25,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   injector = inject(Injector);
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
-  containerRef!: ComponentRef<unknown>;
+  containerRef!: ComponentRef<NavigationBaseComponent>;
   previousWidth!: number;
   previousHeigth!: number;
   initialWindowWidth!: number;
@@ -62,6 +62,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
+    this.containerRef?.destroy();
   }
 
   /**
@@ -82,6 +83,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_canAdd', this._canAdd);
     this.containerRef.setInput('_width', this._width);
     this.containerRef.setInput('_heigth', this._heigth);
+    this.containerRef.setInput('_isEditing', false);
+    this.containerRef.instance._hasContentChanged.subscribe(resp => {
+      this._isEditing = !resp;
+      this.containerRef.setInput('_isEditing', this._isEditing);
+    })
   }
 
   /**
@@ -137,7 +143,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods called on edit button click.
+   * Methods triggered on gear button click.
    * 
    * Open navigation management form to edit navigation properties.
    */
@@ -149,6 +155,16 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
         parentId: this._navigation.parentId,
       }
     });
+  }
+
+  /**
+   * Methods triggered on "edit" or "x" button click.
+   * 
+   * Switch edit mode.
+   */
+  switchEditMode() {
+    this._isEditing = !this._isEditing;
+    this.containerRef.setInput('_isEditing', this._isEditing);
   }
   
 }

@@ -26,7 +26,6 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
                 super();
               }
 
-  isEditing: boolean = false;
   content!: string;
   myQuillEditor!: QuillEditorContent;
   quillConfig = {
@@ -58,7 +57,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         content: this.content
       }).subscribe(() => {
         this.showSuccessSnackBar('updated');
-        this.isEditing = false;
+        this._hasContentChanged.emit(true);
       });
     }
     //add
@@ -67,7 +66,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         navigationId: this._navigation.id,
         content: this.content
       }).subscribe(() => {
-        this.isEditing = false;
+        this._hasContentChanged.emit(true);
         this.showSuccessSnackBar('saved');
       });
     }
