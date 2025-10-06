@@ -30,7 +30,6 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
   content!: Array<object>; // The content reprensenting the table sample.
   tableConfig!: TableViz; // The table and columns/inputs configuration. 
   tableNames: Array<string> | null = []; // The list of table names used as dropdown items.
-  isEditing: boolean = false; // Used to identify if we need to update tableViz or insert it.
 
   ngOnInit() {
     this.getTableNames().subscribe(resp => this.tableNames = resp);
@@ -58,7 +57,6 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
             )
           }
           else {
-            this.isEditing = true;
             return of(null);
           }
         })
@@ -84,7 +82,7 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
         retry(2),
         take(1),
         tap(x => {
-          if (this.isEditing && this.tableConfig) {
+          if (this._isEditing && this.tableConfig) {
             this.tableConfig.tableName = event.value;
             this.tableConfig.tableLabel = event.value;
           }
@@ -142,7 +140,7 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
       take(1),
       tap(() => this.getContentInformation())
     )
-    .subscribe(() => this.isEditing = false);
+    .subscribe(() => this._hasContentChanged.emit(true));
   }
 
   /**
