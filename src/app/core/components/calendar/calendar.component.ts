@@ -57,7 +57,6 @@ export class CalendarComponent extends NavigationBaseComponent {
 
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges["_width"]) {
-      console.log('CALENDAR', this._navigation);
       this.calendarApi?.updateSize();
     }
   }
@@ -136,74 +135,73 @@ export class CalendarComponent extends NavigationBaseComponent {
 
 
   handleDateSelection(arg: DateSelectArg) {
-    console.log('navigation', this._navigation);
-    console.log('canAdd', this._canAdd);
-    console.log('canEdit', this._canEdit);
-    const calendarForm: DeepFormConfig<CalendarPayload> = {
-      startDate: {
-        value: arg.start,
-        type: 'date-and-time',
-        validators: [Validators.required]
-      },
-      endDate: {
-        value: arg.end,
-        type: 'date-and-time',
-        validators: [Validators.required]
-      },
-      description: {
-        value: '',
-        type: 'textarea',
-        validators: []
-      },
-      title: {
-        value: '',
-        type: 'text',
-        validators: [Validators.required]
-      },
-      category: {
-        value: '',
-        type: 'text',
-        validators: []
-      },
-      url: {
-        value: '',
-        type: 'text',
-        validators: []
-      },
-      allDay: {
-        value: false,
-        type: 'checkbox',
-        validators: []
-      },
-      fileId: {
-        value: '',
-        type: 'file',
-        validators: []
-      }
-    }
-
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<CalendarPayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          formConfig: calendarForm,
-          id: null,
-          navigationId: this._navigation.id,
-          controllerName: 'calendar',
+    if (this._canAdd) {
+      const calendarForm: DeepFormConfig<CalendarPayload> = {
+        startDate: {
+          value: arg.start,
+          type: 'date-and-time',
+          validators: [Validators.required]
+        },
+        endDate: {
+          value: arg.end,
+          type: 'date-and-time',
+          validators: [Validators.required]
+        },
+        description: {
+          value: '',
+          type: 'textarea',
+          validators: []
+        },
+        title: {
+          value: '',
+          type: 'text',
+          validators: [Validators.required]
+        },
+        category: {
+          value: '',
+          type: 'text',
+          validators: []
+        },
+        url: {
+          value: '',
+          type: 'text',
+          validators: []
+        },
+        allDay: {
+          value: false,
+          type: 'checkbox',
+          validators: []
+        },
+        fileId: {
+          value: '',
+          type: 'file',
+          validators: []
         }
       }
-    );
 
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added') {
-        this.getCalendarEvent();
-      }
-    });
+      const matDialogRef = this._matDialog.open(
+        GenericFormComponent<CalendarPayload>,
+        { 
+          maxWidth: '700px',
+          data: {
+            formConfig: calendarForm,
+            id: null,
+            navigationId: this._navigation.id,
+            controllerName: 'calendar',
+          }
+        }
+      );
+
+      matDialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'added') {
+          this.getCalendarEvent();
+        }
+      });
+    }
   }
 
   handleEventClick(arg: EventClickArg) {
-    if(this._canEdit) {
+    if(this._canEdit && this._isEditing) {
       arg.jsEvent.preventDefault(); // don't let the browser navigate
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
