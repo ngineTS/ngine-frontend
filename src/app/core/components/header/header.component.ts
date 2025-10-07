@@ -72,4 +72,8 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  onpenFormToEditHeaderBar() {
+    
+  }
+
 }
