@@ -29,7 +29,7 @@ export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
-                navigation: Navigation, 
+                navigation: Navigation | undefined, 
                 type: 'header' | 'component',
                 parentId: Navigation["parentId"],
               },
@@ -45,7 +45,9 @@ export class NavigationManagementComponent implements OnInit {
   navigationChildrenAndGrandChildren: Navigation[] = [];
 
   ngOnInit() {
-    this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
+    if (this.data.navigation) {
+      this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
+    }
     this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
     this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
@@ -164,7 +166,7 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(
             retry(2),
             take(1),
-            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation.parentId, this.data.navigation?.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
           .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
@@ -187,7 +189,7 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(
             retry(2),
             take(1),
-            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation.parentId, this.data.navigation?.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
           .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
       }
@@ -269,7 +271,7 @@ export class NavigationManagementComponent implements OnInit {
    * @param navigation The navigation we want to know the children.
    */
   storeNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
-    if(navigation?.children) {
+    if(navigation.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
       for (const child of navigation.children) {
         this.storeNavigationChildrenAndOldChildrenAsArray(child);
