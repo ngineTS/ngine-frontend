@@ -30,8 +30,9 @@ export class AppService {
             routes.push({
               path: navigation.name,
               data: { 
+                headerBarConfig: navigation.headerBar,
                 navigations: navigation.children,
-                parentId: navigation.id
+                parentId: navigation.id,
               },
               loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
               loadChildren: () => this.generateNestedRoutes(navigation.children!),
@@ -76,6 +77,7 @@ export class AppService {
   createRouting(redirectRouteName?: string) {
     const $navigations = this._navigationService.getNestedNavigations();
     const $headerBar = this._headerBarService.getMainHeaderBar();
+    
     forkJoin([$navigations, $headerBar]).subscribe({
       next: ([navigations, headerBar]) => {
         console.log(navigations);
@@ -95,10 +97,11 @@ export class AppService {
           this._router.navigateByUrl(redirectRouteName);
         }
       },
+      
       error: (err) => {
         console.error("Error loading data", err);
       }
-    })
+    });
   }
 
 }

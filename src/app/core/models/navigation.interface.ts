@@ -1,5 +1,6 @@
 import { TestText } from "./test-text.interface";
 import { NavigationType } from "./navigation-type.interface";
+import { HeaderBar } from "./header-bar.interface";
 
 export interface Navigation {
     id: string;
@@ -19,7 +20,7 @@ export interface Navigation {
     navigationTypeId: string;
     navigationType: NavigationType;
     icon: string;
+    headerBar: HeaderBar;
     children?: Navigation[];
     parent?: Navigation;
-    testText?: TestText;
 }
