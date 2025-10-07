@@ -102,7 +102,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._width = this.navigationDiv.nativeElement.offsetWidth;
       this._heigth = this.navigationDiv.nativeElement.offsetHeight;
       this.containerRef.setInput('_width', this._width);
-      this.containerRef.setInput('_height', this._heigth);
+      this.containerRef.setInput('_heigth', this._heigth);
     });
     this.observer.observe(
       this.navigationDiv.nativeElement,
