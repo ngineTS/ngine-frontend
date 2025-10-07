@@ -7,6 +7,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
+import { HeaderBar } from '../../models/header-bar.interface';
 
 
 @Component({
@@ -30,9 +31,12 @@ export class HeaderComponent implements OnInit {
               private _matDialog: MatDialog) {}
 
   navigations!: Navigation[];
+  headerBarConfig : HeaderBar | undefined;
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
+    this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
+    console.log(this.headerBarConfig)
   }
 
   isRouteActive(navigationName: string) {

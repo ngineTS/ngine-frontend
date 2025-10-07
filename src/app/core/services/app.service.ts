@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
+import { forkJoin } from "rxjs";
+import { HeaderBarService } from "./header-bar.service";
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,8 @@ import { NavigationService } from "./navigation.service";
 export class AppService {
 
   constructor(private _router: Router,
-              private _navigationService: NavigationService) {}
+              private _navigationService: NavigationService,
+              private _headerBarService: HeaderBarService) {}
 
   /**
    * Recursively create routes for given navigations and their children
@@ -71,21 +74,31 @@ export class AppService {
   }
 
   createRouting(redirectRouteName?: string) {
-    this._navigationService.getNestedNavigations().subscribe(navigations => {
-      const routes: Routes = [{ 
-        path: '', 
-        data: { 
-          navigations: navigations,
-          parentId: null 
-        },
-        loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
-        loadChildren: () => this.generateNestedRoutes(navigations),
-      }];
-      this._router.resetConfig(routes);
-      if(redirectRouteName) {
-        this._router.navigateByUrl(redirectRouteName);
+    const $navigations = this._navigationService.getNestedNavigations();
+    const $headerBar = this._headerBarService.getMainHeaderBar();
+    forkJoin([$navigations, $headerBar]).subscribe({
+      next: ([navigations, headerBar]) => {
+        console.log(navigations);
+        console.log(headerBar);
+        const routes: Routes = [{ 
+          path: '', 
+          data: {
+            headerBarConfig: headerBar,
+            navigations: navigations,
+            parentId: null 
+          },
+          loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
+          loadChildren: () => this.generateNestedRoutes(navigations),
+        }];
+        this._router.resetConfig(routes);
+        if(redirectRouteName) {
+          this._router.navigateByUrl(redirectRouteName);
+        }
+      },
+      error: (err) => {
+        console.error("Error loading data", err);
       }
-    });
+    })
   }
 
 }

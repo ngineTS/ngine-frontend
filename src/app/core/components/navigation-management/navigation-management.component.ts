@@ -67,12 +67,6 @@ export class NavigationManagementComponent implements OnInit {
       displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
-    if (this.data.type === 'header') {
-      this.navigationForm.addControl(
-        'color', 
-        this._formBuilder.control(this.data.navigation?.color ?? null, Validators.required)
-      );
-    }
     if (this.data.type === 'component') {
       this.navigationForm.get('parentId')?.addValidators([Validators.required]);
       if (!this.data.navigation?.id) {     

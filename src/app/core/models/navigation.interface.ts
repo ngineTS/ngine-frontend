@@ -7,7 +7,6 @@ export interface Navigation {
     name: string;
     displayLabel: string;
     order: number;
-    color: string;
     width: number;
     height: number;
     isDisabled: boolean;
@@ -19,6 +18,7 @@ export interface Navigation {
     deletedBy: string;
     navigationTypeId: string;
     navigationType: NavigationType;
+    icon: string;
     children?: Navigation[];
     parent?: Navigation;
     testText?: TestText;

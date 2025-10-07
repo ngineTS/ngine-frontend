@@ -26,13 +26,6 @@
             <input matInput formControlName="displayLabel">
         </mat-form-field>
 
-        @if (data.type === 'header') {
-            <mat-form-field appearance="outline">
-                <mat-label>Color</mat-label>
-                <input matInput type="color" formControlName="color">
-            </mat-form-field>
-        }
-
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
         <div class="row form-buttons">
