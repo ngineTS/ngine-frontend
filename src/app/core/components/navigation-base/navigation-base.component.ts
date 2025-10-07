@@ -16,7 +16,7 @@ export class NavigationBaseComponent {
   @Input() _canEdit!: boolean;
   @Input() _canAdd!: boolean;
   @Input({required: false}) _width!: number;
-  @Input({required: false}) _heigth!: number;
+  @Input({required: false}) _height!: number;
   @Input({required: false}) _isEditing: boolean = false;
   @Output() _hasContentChanged: EventEmitter<boolean> = new EventEmitter(false);
   protected readonly _retryCount = 2;

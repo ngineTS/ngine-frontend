@@ -1,7 +1,7 @@
 <div #navigationDiv
     class="navigation-container"
     [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 ? _heigth + 'px' : ''">
+    [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''">
     
     @if (_canEdit) {
         @if (_isEditing) {
@@ -16,8 +16,8 @@
         @if (
             _width - previousWidth > 1 
             || previousWidth - _width > 1 
-            || _heigth - previousHeigth > 1 
-            || previousHeigth - _heigth > 1) {
+            || _height - previousheight > 1 
+            || previousheight - _height > 1) {
             <div class="size-icons-div" >
                 <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
                 <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>

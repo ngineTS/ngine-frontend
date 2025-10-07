@@ -27,9 +27,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
   containerRef!: ComponentRef<NavigationBaseComponent>;
   previousWidth!: number;
-  previousHeigth!: number;
+  previousheight!: number;
   initialWindowWidth!: number;
-  initialWindowHeigth!: number;
+  initialWindowheight!: number;
   observer: MutationObserver | undefined;
 
   constructor(private _componentContainerService: ComponentsContainerService) { 
@@ -41,11 +41,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnInit(): void {
     this.initialWindowWidth = window.innerWidth;
-    this.initialWindowHeigth = window.innerHeight;
+    this.initialWindowheight = window.innerHeight;
     this.previousWidth = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
-    this.previousHeigth = this._navigation.height.valueOf() * this.initialWindowHeigth / 100;
+    this.previousheight = this._navigation.height.valueOf() * this.initialWindowheight / 100;
     this._width = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
-    this._heigth = this._navigation.height.valueOf() * this.initialWindowHeigth / 100;
+    this._height = this._navigation.height.valueOf() * this.initialWindowheight / 100;
   }
 
   /**
@@ -82,7 +82,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_canEdit', this._canEdit);
     this.containerRef.setInput('_canAdd', this._canAdd);
     this.containerRef.setInput('_width', this._width);
-    this.containerRef.setInput('_heigth', this._heigth);
+    this.containerRef.setInput('_height', this._height);
     this.containerRef.setInput('_isEditing', false);
     this.containerRef.instance._hasContentChanged.subscribe(resp => {
       this._isEditing = !resp;
@@ -100,9 +100,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   createSizeObserver() {
     this.observer = new MutationObserver(() => {
       this._width = this.navigationDiv.nativeElement.offsetWidth;
-      this._heigth = this.navigationDiv.nativeElement.offsetHeight;
+      this._height = this.navigationDiv.nativeElement.offsetHeight;
       this.containerRef.setInput('_width', this._width);
-      this.containerRef.setInput('_heigth', this._heigth);
+      this.containerRef.setInput('_height', this._height);
     });
     this.observer.observe(
       this.navigationDiv.nativeElement,
@@ -120,7 +120,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   onSaveSizeClick(): void {
     const navigationSize: Partial<Navigation> = {
       width: Math.round((this._width! / window.innerWidth * 100)),
-      height: Math.round((this._heigth! / window.innerHeight * 100))
+      height: Math.round((this._height! / window.innerHeight * 100))
     };
     this._navigationService.updateNavigation(this._navigation.id, navigationSize)
       .pipe(
@@ -129,7 +129,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       )
       .subscribe(() => {
         this.previousWidth = this._width!.valueOf();
-        this.previousHeigth = this._heigth!.valueOf();
+        this.previousheight = this._height!.valueOf();
       });
   }
 
@@ -140,7 +140,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   onResetSizeClick(): void {
     this._width = this.previousWidth.valueOf();
-    this._heigth = this.previousHeigth.valueOf();
+    this._height = this.previousheight.valueOf();
   }
 
   /**

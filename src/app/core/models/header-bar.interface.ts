@@ -9,6 +9,7 @@ export interface HeaderBar {
     fontSize: string;
     color: string;
     activeColor: string;
+    height: string;
     isVertical: boolean;
     isVisibleDuringNavigation: boolean;
 }
