@@ -11,7 +11,21 @@ export class HeaderBarService {
 
     constructor(private _http: HttpClient) {}
 
+    headerBarFonts = [
+        'Roboto',
+        'Open Sans',
+        'Lato',
+        'Montserrat',
+        'Poppins',
+        'Oswald',
+        'Raleway',
+        'Merriweather',
+        'Nunito',
+        'Ubuntu'
+    ];
+
     getMainHeaderBar(): Observable<HeaderBar> {
         return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`);
     }
+
 }

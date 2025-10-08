@@ -1,5 +1,7 @@
 <div class="d-flex flex-row align-items-center"
-    [style.background-color]="headerBarConfig?.backgroundColor ?? 'transparent'">
+    [style.background-color]="headerBarConfig.backgroundColor"
+    [style.height]="headerBarConfig.height"
+    [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + ' solid ' + headerBarConfig.activeColor : 'none'">
     <div cdkDropList 
          class="example-list" 
          (cdkDropListDropped)="drop($event)"
@@ -7,9 +9,14 @@
          cdkDropListOrientation="horizontal">
         @for (navigation of navigations; track navigation) {
             <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
-                <a [routerLink]="navigation.name" 
+                <a [routerLink]="navigation.name"
                    [class.active]="isRouteActive(navigation.name)"
-                   [style.color]="navigation.isDisabled ? '#ccc' : 'black'">
+                   [style.color]="navigation.isDisabled ? '#ccc' 
+                    : isRouteActive(navigation.name) 
+                    ? headerBarConfig.activeColor
+                    : headerBarConfig.color"
+                   [style.font-family]="headerBarConfig.fontFamily"
+                   [style.font-size]="headerBarConfig.fontSize">
                     {{ navigation.displayLabel }}
                 </a>
                 <i class="bi bi-pen edit-icon" (click)="openFormToaddOrEditHeader(navigation)"></i>

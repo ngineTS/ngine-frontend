@@ -7,7 +7,6 @@ a {
     text-underline-offset: 3px;
     text-decoration: underline !important;
     text-decoration-thickness: 2px !important;
-    color: green !important;
 }
 
 .disabled {
@@ -105,8 +104,8 @@ a {
 
 .navigation-container:hover {
   padding-right: 35px;
-  border: 1px dashed #636363;
-  border-radius: 3px;
+  border: 1.5px dashed white;
+  border-radius: 4px;
   .edit-icon {
      display: block;
   }

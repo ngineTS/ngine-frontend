@@ -134,6 +134,13 @@
                 <mat-checkbox [formControl]="control" class="mt-2">{{ input.key }}</mat-checkbox>
             }
 
+            @case ('color') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{ input.key }}</mat-label>
+                    <input matInput type="color" [formControl]="control">
+                </mat-form-field>
+            }
+
             @case ('date') {
                 <mat-form-field appearance="outline" class="w-100 pb-3">
                     <mat-label>{{ input.key }}</mat-label>
@@ -195,7 +202,9 @@
                         <mat-select [formControl]="control">
                             @for (item of input.value.dropdownConfig.items; track item) {
                                 @if (!input.value.dropdownConfig.bindLabel) {
-                                    <mat-option [value]="item">{{ item }}</mat-option>
+                                    <mat-option [value]="item" [style.font-family]="input.key === 'fontFamily' ? item : ''">
+                                        {{ item }}
+                                    </mat-option>
                                 }
                                 @else {
                                     <mat-option [value]="item[input.value.dropdownConfig.bindValue]">

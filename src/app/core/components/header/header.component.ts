@@ -8,6 +8,10 @@ import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { HeaderBar } from '../../models/header-bar.interface';
+import { DeepFormConfig } from '../../models/form-input.interface';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { Validators } from '@angular/forms';
+import { HeaderBarService } from '../../services/header-bar.service';
 
 
 @Component({
@@ -28,10 +32,11 @@ export class HeaderComponent implements OnInit {
   constructor(public _router: Router,
               private _route: ActivatedRoute,
               private _navigationService: NavigationService,
-              private _matDialog: MatDialog) {}
+              private _matDialog: MatDialog,
+              private _headerBarService: HeaderBarService) { }
 
   navigations!: Navigation[];
-  headerBarConfig : HeaderBar | undefined;
+  headerBarConfig! : HeaderBar;
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
@@ -73,7 +78,85 @@ export class HeaderComponent implements OnInit {
   }
 
   onpenFormToEditHeaderBar() {
-    
+    const headerBarForm: DeepFormConfig<Omit<HeaderBar, "id" | "navigationId">> = {
+      imageName: {
+        value: this.headerBarConfig.imageName,
+        type: 'file',
+        validators: []
+      },
+      backgroundColor: {
+        value: this.headerBarConfig.backgroundColor,
+        type: 'color',
+        validators: [Validators.required]
+      },
+      borderBottom: {
+        value: this.headerBarConfig.borderBottom,
+        type: 'text',
+        validators: []
+      },
+      gap: {
+        value: this.headerBarConfig.gap,
+        type: 'text',
+        validators: [Validators.required]
+      },
+      fontFamily: {
+        value: this.headerBarConfig.fontFamily,
+        type: 'dropdown',
+        dropdownConfig: {
+          items: this._headerBarService.headerBarFonts
+        },
+        validators: [Validators.required]
+      },
+      fontSize: {
+        value: this.headerBarConfig.fontSize,
+        type: 'text',
+        validators: [Validators.required]
+      },
+      color: {
+        value: this.headerBarConfig.color,
+        type: 'color',
+        validators: [Validators.required]
+      },
+      activeColor: {
+        value: this.headerBarConfig.activeColor,
+        type: 'color',
+        validators: [Validators.required]
+      },
+      height: {
+        value: this.headerBarConfig.height,
+        type: 'text',
+        validators: [Validators.required]
+      },
+      isVertical: {
+        value: this.headerBarConfig.isVertical,
+        type: 'checkbox',
+        validators: [Validators.required]
+      },
+      isVisibleDuringNavigation: {
+        value: this.headerBarConfig.isVisibleDuringNavigation,
+        type: 'checkbox',
+        validators: [Validators.required]
+      },
+    }
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<Omit<HeaderBar, "id" | "navigationId">>,
+      { 
+        maxWidth: '700px',
+        data: {
+          formConfig: headerBarForm,
+          id: this.headerBarConfig.id,
+          navigationId: this.navigations[0].parentId,
+          controllerName: 'header-bar',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'edited' || resp === 'deleted') {
+       console.log("WOUHOUHOU");
+      }
+    });
   }
 
 }
