@@ -1,38 +1,39 @@
-<div class="d-flex flex-row align-items-center"
-    [style.background-color]="headerBarConfig.backgroundColor"
-    [style.height]="headerBarConfig.height"
-    [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + ' solid ' + headerBarConfig.activeColor : 'none'">
-    <div cdkDropList 
-         class="example-list" 
-         (cdkDropListDropped)="drop($event)"
-         [cdkDropListData]="navigations"
-         cdkDropListOrientation="horizontal">
-        @for (navigation of navigations; track navigation) {
-            <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
-                <a [routerLink]="navigation.name"
-                   [class.active]="isRouteActive(navigation.name)"
-                   [style.color]="navigation.isDisabled ? '#ccc' 
-                    : isRouteActive(navigation.name) 
-                    ? headerBarConfig.activeColor
-                    : headerBarConfig.color"
-                   [style.font-family]="headerBarConfig.fontFamily"
-                   [style.font-size]="headerBarConfig.fontSize">
-                    {{ navigation.displayLabel }}
-                </a>
-                <i class="bi bi-pen edit-icon" (click)="openFormToaddOrEditHeader(navigation)"></i>
-            </div>
-        }
+@if (headerBarConfig) {
+    <div class="d-flex flex-row align-items-center"
+        [style.background-color]="headerBarConfig.backgroundColor"
+        [style.height]="headerBarConfig.height + 'px'"
+        [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
+        <div cdkDropList 
+            class="example-list" 
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="navigations"
+            cdkDropListOrientation="horizontal">
+            @for (navigation of navigations; track navigation) {
+                <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
+                    <a [routerLink]="navigation.name"
+                    [class.active]="isRouteActive(navigation.name)"
+                    [style.color]="navigation.isDisabled ? '#ccc' 
+                        : isRouteActive(navigation.name) 
+                        ? headerBarConfig.activeColor
+                        : headerBarConfig.color"
+                    [style.font-family]="headerBarConfig.fontFamily"
+                    [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        {{ navigation.displayLabel }}
+                    </a>
+                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                </div>
+            }
+        </div>
+        <button 
+            class="add-nav-button" 
+            matTooltip="Add header" 
+            (click)="openFormToAddOrEditHeader()">
+            +
+        </button>
+        <i class="bi bi-pen edit-header-icon" 
+        (click)="openFormToAddOrEditHeaderBar()"
+        matTooltip="Edit header bar">
+        </i>
     </div>
-    <button 
-        class="add-nav-button" 
-        matTooltip="Add header" 
-        (click)="openFormToaddOrEditHeader()">
-        +
-    </button>
-    <i class="bi bi-pen edit-header-icon" 
-       (click)="onpenFormToEditHeaderBar()"
-       matTooltip="Edit header bar">
-    </i>
-</div>
-<router-outlet />
-
+    <router-outlet />
+}

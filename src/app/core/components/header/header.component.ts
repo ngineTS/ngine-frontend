@@ -12,18 +12,19 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { Validators } from '@angular/forms';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { AppService } from '../../services/app.service';
 
 
 @Component({
   selector: 'app-header',
   imports: [
-            RouterOutlet, 
-            RouterModule, 
-            CommonModule, 
-            MatTooltipModule,
-            CdkDropList, 
-            CdkDrag,
-           ],
+    RouterOutlet, 
+    RouterModule, 
+    CommonModule, 
+    MatTooltipModule,
+    CdkDropList, 
+    CdkDrag,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -33,17 +34,26 @@ export class HeaderComponent implements OnInit {
               private _route: ActivatedRoute,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
-              private _headerBarService: HeaderBarService) { }
+              private _headerBarService: HeaderBarService,
+              private _appService: AppService) { }
 
   navigations!: Navigation[];
-  headerBarConfig! : HeaderBar;
+  headerBarConfig : HeaderBar | undefined;
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    console.log(this.headerBarConfig)
+    if (!this.headerBarConfig) {
+      this.openFormToAddOrEditHeaderBar();
+    }
   }
 
+  /**
+   * Check wether the user is on this header or not.
+   * Used to change color of header.
+   * @param navigationName The navigation name to check.
+   * @returns true or false.
+   */
   isRouteActive(navigationName: string) {
     return this._router.url.includes(navigationName);
   }
@@ -67,7 +77,7 @@ export class HeaderComponent implements OnInit {
    * If navigation is passed edit header else add header.
    * @param navigation Navigation to edit (optional).
    */
-  openFormToaddOrEditHeader(navigation?: Navigation): void {
+  openFormToAddOrEditHeader(navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
@@ -77,30 +87,30 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onpenFormToEditHeaderBar() {
+  openFormToAddOrEditHeaderBar() {
     const headerBarForm: DeepFormConfig<Omit<HeaderBar, "id" | "navigationId">> = {
       imageName: {
-        value: this.headerBarConfig.imageName,
+        value: this.headerBarConfig?.imageName ?? '',
         type: 'file',
         validators: []
       },
       backgroundColor: {
-        value: this.headerBarConfig.backgroundColor,
+        value: this.headerBarConfig?.backgroundColor ?? '',
         type: 'color',
         validators: [Validators.required]
       },
       borderBottom: {
-        value: this.headerBarConfig.borderBottom,
-        type: 'text',
+        value: this.headerBarConfig?.borderBottom ?? 0,
+        type: 'number',
         validators: []
       },
       gap: {
-        value: this.headerBarConfig.gap,
-        type: 'text',
+        value: this.headerBarConfig?.gap ?? 10,
+        type: 'number',
         validators: [Validators.required]
       },
       fontFamily: {
-        value: this.headerBarConfig.fontFamily,
+        value: this.headerBarConfig?.fontFamily ?? 'Roboto',
         type: 'dropdown',
         dropdownConfig: {
           items: this._headerBarService.headerBarFonts
@@ -108,32 +118,32 @@ export class HeaderComponent implements OnInit {
         validators: [Validators.required]
       },
       fontSize: {
-        value: this.headerBarConfig.fontSize,
-        type: 'text',
+        value: this.headerBarConfig?.fontSize ?? 16,
+        type: 'number',
         validators: [Validators.required]
       },
       color: {
-        value: this.headerBarConfig.color,
+        value: this.headerBarConfig?.color ?? '',
         type: 'color',
         validators: [Validators.required]
       },
       activeColor: {
-        value: this.headerBarConfig.activeColor,
+        value: this.headerBarConfig?.activeColor ?? '',
         type: 'color',
         validators: [Validators.required]
       },
       height: {
-        value: this.headerBarConfig.height,
-        type: 'text',
+        value: this.headerBarConfig?.height ?? 50,
+        type: 'number',
         validators: [Validators.required]
       },
       isVertical: {
-        value: this.headerBarConfig.isVertical,
+        value: this.headerBarConfig?.isVertical ?? false,
         type: 'checkbox',
         validators: [Validators.required]
       },
       isVisibleDuringNavigation: {
-        value: this.headerBarConfig.isVisibleDuringNavigation,
+        value: this.headerBarConfig?.isVisibleDuringNavigation ?? true,
         type: 'checkbox',
         validators: [Validators.required]
       },
@@ -145,16 +155,16 @@ export class HeaderComponent implements OnInit {
         maxWidth: '700px',
         data: {
           formConfig: headerBarForm,
-          id: this.headerBarConfig.id,
-          navigationId: this.navigations[0].parentId,
+          id: this.headerBarConfig?.id,
+          navigationId: this.navigations[0]?.parentId,
           controllerName: 'header-bar',
         }
       }
     );
 
     matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'edited' || resp === 'deleted') {
-       console.log("WOUHOUHOU");
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createRouting('');
       }
     });
   }

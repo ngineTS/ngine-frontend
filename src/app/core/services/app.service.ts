@@ -80,8 +80,6 @@ export class AppService {
     
     forkJoin([$navigations, $headerBar]).subscribe({
       next: ([navigations, headerBar]) => {
-        console.log(navigations);
-        console.log(headerBar);
         const routes: Routes = [{ 
           path: '', 
           data: {
@@ -93,11 +91,8 @@ export class AppService {
           loadChildren: () => this.generateNestedRoutes(navigations),
         }];
         this._router.resetConfig(routes);
-        if(redirectRouteName) {
-          this._router.navigateByUrl(redirectRouteName);
-        }
+        this._router.navigateByUrl(redirectRouteName ?? '');
       },
-      
       error: (err) => {
         console.error("Error loading data", err);
       }

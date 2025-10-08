@@ -3,7 +3,7 @@ export interface HeaderBar {
     navigationId: string;
     imageName: string;
     backgroundColor: string;
-    borderBottom: string;
+    borderBottom: number;
     gap: number;
     fontFamily: string;
     fontSize: number;
