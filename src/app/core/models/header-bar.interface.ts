@@ -4,12 +4,12 @@ export interface HeaderBar {
     imageName: string;
     backgroundColor: string;
     borderBottom: string;
-    gap: string;
+    gap: number;
     fontFamily: string;
-    fontSize: string;
+    fontSize: number;
     color: string;
     activeColor: string;
-    height: string;
+    height: number;
     isVertical: boolean;
     isVisibleDuringNavigation: boolean;
 }
