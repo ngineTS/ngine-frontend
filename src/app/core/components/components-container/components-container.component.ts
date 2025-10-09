@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NavigationComponent } from '../navigation/navigation.component';
+import { HeaderBarService } from '../../services/header-bar.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class ComponentsContainer implements OnInit {
 
   constructor(private _route: ActivatedRoute,
               private _navigationService: NavigationService,
-              private _matDialog: MatDialog) {}
+              private _matDialog: MatDialog,
+              public _headerBarService: HeaderBarService) {}
 
   navigations!: Array<Navigation>;
 

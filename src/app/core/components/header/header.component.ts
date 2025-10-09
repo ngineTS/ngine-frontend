@@ -43,7 +43,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    if (!this.headerBarConfig) {
+    if (this.headerBarConfig) {
+      this._headerBarService.totalHeaderHeight = this._headerBarService.totalHeaderHeight 
+        + this.headerBarConfig.height
+        + this.headerBarConfig.borderBottom;
+    }
+    else {
       this.openFormToAddOrEditHeaderBar();
     }
   }

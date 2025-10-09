@@ -24,6 +24,8 @@ export class HeaderBarService {
         'Ubuntu'
     ];
 
+    totalHeaderHeight: number = 0;
+
     getMainHeaderBar(): Observable<HeaderBar> {
         return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`);
     }

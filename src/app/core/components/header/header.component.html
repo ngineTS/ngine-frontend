@@ -5,6 +5,7 @@
         [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
         <div cdkDropList 
             class="example-list" 
+            [style.gap]="headerBarConfig.gap + 'px'"
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="horizontal">

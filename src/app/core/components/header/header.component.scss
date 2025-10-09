@@ -25,11 +25,11 @@ a {
 .example-list {
   max-width: 100%;
   height: fit-content;
-  display: block;
   background: white;
   border-radius: 4px;
   overflow: hidden;
   background-color: transparent;
+  display: flex;
 }
 
 .example-box {
@@ -104,7 +104,7 @@ a {
 
 .navigation-container:hover {
   padding-right: 35px;
-  border: 1.5px dashed white;
+  border: 1px dashed white;
   border-radius: 4px;
   .edit-icon {
      display: block;

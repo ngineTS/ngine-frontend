@@ -6,6 +6,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=Montserrat&family=Poppins&family=Oswald&family=Raleway&family=Merriweather&family=Nunito&family=Ubuntu&display=swap');
 
 
+html, body {
+  overflow: hidden;
+  height: 100vh;
+}
+
 html {
   color-scheme: light dark;
   @include mat.theme((
