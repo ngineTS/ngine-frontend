@@ -1,17 +1,18 @@
 @if (headerBarConfig) {
-
     <!-- Header Bar section -->
     @if (headerBarConfig.isVisibleDuringNavigation) {
         <div class="d-flex flex-row align-items-center"
             [style.background-color]="headerBarConfig.backgroundColor"
             [style.height]="headerBarConfig.height + 'px'"
             [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
+            
             <div cdkDropList 
                 class="example-list" 
                 [style.gap]="headerBarConfig.gap + 'px'"
                 (cdkDropListDropped)="drop($event)"
                 [cdkDropListData]="navigations"
                 cdkDropListOrientation="horizontal">
+                
                 @for (navigation of navigations; track navigation.id) {
                     <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
                         <a [routerLink]="navigation.name"
@@ -27,18 +28,23 @@
                         <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
                     </div>
                 }
+                
             </div>
+            
             <button 
                 class="add-nav-button" 
                 matTooltip="Add header" 
                 (click)="openFormToAddOrEditHeader()">
                 +
             </button>
+
             <i class="bi bi-pen edit-header-bar auto-margin-left" 
                 (click)="openFormToAddOrEditHeaderBar()"
                 matTooltip="Edit menu">
             </i>
+
         </div>
+
         <router-outlet />
     }
 
@@ -46,15 +52,18 @@
     @else {
         <div class="card-container"
             [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
+            
             <i class="bi bi-pen edit-header-bar right-align"
                 (click)="openFormToAddOrEditHeaderBar()"
                 matTooltip="Edit menu">
             </i>
+            
             <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
                 cdkDropList
                 (cdkDropListDropped)="drop($event)"
                 [cdkDropListData]="navigations"
                 cdkDropListOrientation="mixed">
+                
                 @for (navigation of navigations; track navigation.id) {
                     <div class="col-3 m-3 card-div example-box"
                         cdkDrag
@@ -68,8 +77,9 @@
                         </span>
                     </div>
                 }
+
             </div>
+
         </div>
     }
-    
 }
