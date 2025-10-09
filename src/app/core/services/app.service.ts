@@ -75,6 +75,8 @@ export class AppService {
   }
 
   createRouting(redirectRouteName?: string) {
+    //reset height before it is calculated again
+    this._headerBarService.totalHeaderHeight = 0;
     const $navigations = this._navigationService.getNestedNavigations();
     const $headerBar = this._headerBarService.getMainHeaderBar();
     

@@ -1,5 +1,6 @@
 @if (headerBarConfig) {
 
+    <!-- Header Bar section -->
     @if (headerBarConfig.isVisibleDuringNavigation) {
         <div class="d-flex flex-row align-items-center"
             [style.background-color]="headerBarConfig.backgroundColor"
@@ -33,23 +34,41 @@
                 (click)="openFormToAddOrEditHeader()">
                 +
             </button>
-            <i class="bi bi-pen edit-header-icon" 
+            <i class="bi bi-pen edit-header-bar auto-margin-left" 
                 (click)="openFormToAddOrEditHeaderBar()"
-                matTooltip="Edit header bar">
+                matTooltip="Edit menu">
             </i>
         </div>
         <router-outlet />
     }
 
+    <!-- List of cards section -->
     @else {
-        <div class="row py-4 mx-1 justify-content-center align-items-center"
-            style="overflow-y: auto;"
+        <div class="card-container"
             [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
-            @for (navigation of navigations; track navigation.id) {
-                <div class="col-3 m-4" style="background-color: green; min-height: 120px; min-width: 120px;" >
-                    <span >{{ navigation.displayLabel }}</span>
-                </div>
-            }
+            <i class="bi bi-pen edit-header-bar right-align"
+                (click)="openFormToAddOrEditHeaderBar()"
+                matTooltip="Edit menu">
+            </i>
+            <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
+                cdkDropList
+                (cdkDropListDropped)="drop($event)"
+                [cdkDropListData]="navigations"
+                cdkDropListOrientation="mixed">
+                @for (navigation of navigations; track navigation.id) {
+                    <div class="col-3 m-3 card-div example-box"
+                        cdkDrag
+                        (mouseenter)="isMouseOverCard[navigation.id] = true"
+                        (mouseleave)="isMouseOverCard[navigation.id] = false"
+                        [style.background-color]="isMouseOverCard[navigation.id] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
+                        <span [style.color]="headerBarConfig.color"
+                            [style.font-family]="headerBarConfig.fontFamily"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            {{ navigation.displayLabel }}
+                        </span>
+                    </div>
+                }
+            </div>
         </div>
     }
     

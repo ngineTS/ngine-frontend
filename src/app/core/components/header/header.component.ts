@@ -39,11 +39,13 @@ export class HeaderComponent implements OnInit {
 
   navigations!: Navigation[];
   headerBarConfig : HeaderBar | undefined;
+  isMouseOverCard: Record<string, boolean> = {};
 
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    //if no hedaerBarConfig found then create one
+    this.createMouseOverObject();
+    //if no headerBarConfig found then create one
     if (!this.headerBarConfig) {
       this.openFormToAddOrEditHeaderBar();
     }
@@ -169,6 +171,13 @@ export class HeaderComponent implements OnInit {
         this._appService.createRouting();
       }
     });
+  }
+
+  createMouseOverObject() {
+    for (let navigation of this.navigations) {
+      this.isMouseOverCard[navigation.id] = false;
+    }
+
   }
 
 }

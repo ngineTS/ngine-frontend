@@ -90,7 +90,7 @@ a {
   display: none;
 }
 
-.edit-header-icon {
+.edit-header-bar {
   font-size: 14px;
   border: 1px solid #636363;
   border-radius: 3px;
@@ -99,7 +99,15 @@ a {
   color: #636363;
   margin-right: 6px;
   cursor: pointer;
-  margin-left: auto;
+}
+
+.auto-margin-left {
+    margin-left: auto;
+}
+
+.right-align {
+  float: right;
+  margin-top: 8px;
 }
 
 .navigation-container:hover {
@@ -109,4 +117,21 @@ a {
   .edit-icon {
      display: block;
   }
+}
+
+.card-container {
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.card-div {
+  border-radius: 4px;
+  min-height: 120px; 
+  min-width: 120px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  cursor: pointer;
 }
