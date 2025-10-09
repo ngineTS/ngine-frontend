@@ -10,6 +10,23 @@ export interface HeaderBar {
     color: string;
     activeColor: string;
     height: number;
-    isVertical: boolean;
     isVisibleDuringNavigation: boolean;
+    createdBy: string;
+    createdDate: Date;
+    updatedBy: string;
+    updatedDate: Date;
+    deletedBy: string;
+    deletedDate: Date;
 }
+
+export type HeaderBarPayload = Omit<HeaderBar,
+    "id" |
+    "navigationId" |
+    "createdBy" |
+    "createdDate" |
+    "updatedBy" |
+    "updatedDate" |
+    "deletedBy" |
+    "deletedDate"
+>
+ 

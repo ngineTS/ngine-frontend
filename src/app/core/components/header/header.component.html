@@ -1,40 +1,56 @@
 @if (headerBarConfig) {
-    <div class="d-flex flex-row align-items-center"
-        [style.background-color]="headerBarConfig.backgroundColor"
-        [style.height]="headerBarConfig.height + 'px'"
-        [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
-        <div cdkDropList 
-            class="example-list" 
-            [style.gap]="headerBarConfig.gap + 'px'"
-            (cdkDropListDropped)="drop($event)"
-            [cdkDropListData]="navigations"
-            cdkDropListOrientation="horizontal">
-            @for (navigation of navigations; track navigation) {
-                <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
-                    <a [routerLink]="navigation.name"
-                    [class.active]="isRouteActive(navigation.name)"
-                    [style.color]="navigation.isDisabled ? '#ccc' 
-                        : isRouteActive(navigation.name) 
-                        ? headerBarConfig.activeColor
-                        : headerBarConfig.color"
-                    [style.font-family]="headerBarConfig.fontFamily"
-                    [style.font-size]="headerBarConfig.fontSize + 'px'">
-                        {{ navigation.displayLabel }}
-                    </a>
-                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+
+    @if (headerBarConfig.isVisibleDuringNavigation) {
+        <div class="d-flex flex-row align-items-center"
+            [style.background-color]="headerBarConfig.backgroundColor"
+            [style.height]="headerBarConfig.height + 'px'"
+            [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
+            <div cdkDropList 
+                class="example-list" 
+                [style.gap]="headerBarConfig.gap + 'px'"
+                (cdkDropListDropped)="drop($event)"
+                [cdkDropListData]="navigations"
+                cdkDropListOrientation="horizontal">
+                @for (navigation of navigations; track navigation.id) {
+                    <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
+                        <a [routerLink]="navigation.name"
+                        [class.active]="isRouteActive(navigation.name)"
+                        [style.color]="navigation.isDisabled ? '#ccc' 
+                            : isRouteActive(navigation.name) 
+                            ? headerBarConfig.activeColor
+                            : headerBarConfig.color"
+                        [style.font-family]="headerBarConfig.fontFamily"
+                        [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            {{ navigation.displayLabel }}
+                        </a>
+                        <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                    </div>
+                }
+            </div>
+            <button 
+                class="add-nav-button" 
+                matTooltip="Add header" 
+                (click)="openFormToAddOrEditHeader()">
+                +
+            </button>
+            <i class="bi bi-pen edit-header-icon" 
+                (click)="openFormToAddOrEditHeaderBar()"
+                matTooltip="Edit header bar">
+            </i>
+        </div>
+        <router-outlet />
+    }
+
+    @else {
+        <div class="row py-4 mx-1 justify-content-center align-items-center"
+            style="overflow-y: auto;"
+            [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
+            @for (navigation of navigations; track navigation.id) {
+                <div class="col-3 m-4" style="background-color: green; min-height: 120px; min-width: 120px;" >
+                    <span >{{ navigation.displayLabel }}</span>
                 </div>
             }
         </div>
-        <button 
-            class="add-nav-button" 
-            matTooltip="Add header" 
-            (click)="openFormToAddOrEditHeader()">
-            +
-        </button>
-        <i class="bi bi-pen edit-header-icon" 
-        (click)="openFormToAddOrEditHeaderBar()"
-        matTooltip="Edit header bar">
-        </i>
-    </div>
-    <router-outlet />
+    }
+    
 }

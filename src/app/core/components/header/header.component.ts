@@ -7,7 +7,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-import { HeaderBar } from '../../models/header-bar.interface';
+import { HeaderBar, HeaderBarPayload } from '../../models/header-bar.interface';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { Validators } from '@angular/forms';
@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit {
               private _route: ActivatedRoute,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
-              private _headerBarService: HeaderBarService,
+              public _headerBarService: HeaderBarService,
               private _appService: AppService) { }
 
   navigations!: Navigation[];
@@ -43,13 +43,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    if (this.headerBarConfig) {
+    //if no hedaerBarConfig found then create one
+    if (!this.headerBarConfig) {
+      this.openFormToAddOrEditHeaderBar();
+    }
+    //if in "card" mode then no need to take in account the height of headerBar because there is no header bar.
+    if (this.headerBarConfig?.isVisibleDuringNavigation) {
       this._headerBarService.totalHeaderHeight = this._headerBarService.totalHeaderHeight 
         + this.headerBarConfig.height
         + this.headerBarConfig.borderBottom;
-    }
-    else {
-      this.openFormToAddOrEditHeaderBar();
     }
   }
 
@@ -93,7 +95,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openFormToAddOrEditHeaderBar() {
-    const headerBarForm: DeepFormConfig<Omit<HeaderBar, "id" | "navigationId">> = {
+    const headerBarForm: DeepFormConfig<HeaderBarPayload> = {
       imageName: {
         value: this.headerBarConfig?.imageName ?? '',
         type: 'file',
@@ -142,11 +144,6 @@ export class HeaderComponent implements OnInit {
         type: 'number',
         validators: [Validators.required]
       },
-      isVertical: {
-        value: this.headerBarConfig?.isVertical ?? false,
-        type: 'checkbox',
-        validators: [Validators.required]
-      },
       isVisibleDuringNavigation: {
         value: this.headerBarConfig?.isVisibleDuringNavigation ?? true,
         type: 'checkbox',
@@ -169,7 +166,7 @@ export class HeaderComponent implements OnInit {
 
     matDialogRef.afterClosed().subscribe(resp => {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createRouting('');
+        this._appService.createRouting();
       }
     });
   }
