@@ -49,9 +49,6 @@ export class CalendarComponent extends NavigationBaseComponent {
   };
 
   ngOnInit () {
-    console.log('navigation', this._navigation);
-    console.log('canAdd', this._canAdd);
-    console.log('canEdit', this._canEdit);
     this.getCalendarEvent();
   }
 
