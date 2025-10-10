@@ -56,7 +56,7 @@ export class ComponentsContainer implements OnInit {
   }
 
   /**
-   * Methods trigered on '+' button click.
+   * Methods triggered on '+' button click.
    * 
    * If type is 'header' and it is the first header 
    * then open header bar form first then open header form
