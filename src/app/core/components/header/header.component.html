@@ -39,7 +39,7 @@
             </button>
 
             <i class="bi bi-pen edit-header-bar auto-margin-left" 
-                (click)="openFormToAddOrEditHeaderBar()"
+                (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu">
             </i>
 
@@ -54,7 +54,7 @@
             [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
             
             <i class="bi bi-pen edit-header-bar right-align"
-                (click)="openFormToAddOrEditHeaderBar()"
+                (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu">
             </i>
             
@@ -69,6 +69,7 @@
                         cdkDrag
                         (mouseenter)="isMouseOverCard[navigation.id] = true"
                         (mouseleave)="isMouseOverCard[navigation.id] = false"
+                        (click)="navigateToCardUrl(navigation.name)"
                         [style.background-color]="isMouseOverCard[navigation.id] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
                         <span [style.color]="headerBarConfig.color"
                             [style.font-family]="headerBarConfig.fontFamily"

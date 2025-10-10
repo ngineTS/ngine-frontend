@@ -8,9 +8,7 @@ import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { HeaderBar, HeaderBarPayload } from '../../models/header-bar.interface';
-import { DeepFormConfig } from '../../models/form-input.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { Validators } from '@angular/forms';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
 
@@ -41,14 +39,16 @@ export class HeaderComponent implements OnInit {
   headerBarConfig : HeaderBar | undefined;
   isMouseOverCard: Record<string, boolean> = {};
 
+  /**
+   * On init:
+   * - Assign header bar config and headers.
+   * - Create MouseOverNavigation object used to display background color of cards dynamically.
+   * - Increment total header height.
+   */
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.createMouseOverObject();
-    //if no headerBarConfig found then create one
-    if (!this.headerBarConfig) {
-      this.openFormToAddOrEditHeaderBar();
-    }
     //if in "card" mode then no need to take in account the height of headerBar because there is no header bar.
     if (this.headerBarConfig?.isVisibleDuringNavigation) {
       this._headerBarService.totalHeaderHeight = this._headerBarService.totalHeaderHeight 
@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit {
   }
 
   /**
-   * Methods call on 'edit' or '+' button click.
+   * Methods call on 'edit header' or 'add header' button click.
    * 
    * Open navigation management form to add or edit header.
    * 
@@ -96,65 +96,16 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  openFormToAddOrEditHeaderBar() {
-    const headerBarForm: DeepFormConfig<HeaderBarPayload> = {
-      imageName: {
-        value: this.headerBarConfig?.imageName ?? '',
-        type: 'file',
-        validators: []
-      },
-      backgroundColor: {
-        value: this.headerBarConfig?.backgroundColor ?? '',
-        type: 'color',
-        validators: [Validators.required]
-      },
-      borderBottom: {
-        value: this.headerBarConfig?.borderBottom ?? 0,
-        type: 'number',
-        validators: []
-      },
-      gap: {
-        value: this.headerBarConfig?.gap ?? 10,
-        type: 'number',
-        validators: [Validators.required]
-      },
-      fontFamily: {
-        value: this.headerBarConfig?.fontFamily ?? 'Roboto',
-        type: 'dropdown',
-        dropdownConfig: {
-          items: this._headerBarService.headerBarFonts
-        },
-        validators: [Validators.required]
-      },
-      fontSize: {
-        value: this.headerBarConfig?.fontSize ?? 16,
-        type: 'number',
-        validators: [Validators.required]
-      },
-      color: {
-        value: this.headerBarConfig?.color ?? '',
-        type: 'color',
-        validators: [Validators.required]
-      },
-      activeColor: {
-        value: this.headerBarConfig?.activeColor ?? '',
-        type: 'color',
-        validators: [Validators.required]
-      },
-      height: {
-        value: this.headerBarConfig?.height ?? 50,
-        type: 'number',
-        validators: [Validators.required]
-      },
-      isVisibleDuringNavigation: {
-        value: this.headerBarConfig?.isVisibleDuringNavigation ?? true,
-        type: 'checkbox',
-        validators: [Validators.required]
-      },
-    }
+  /**
+   * Methods call on 'edit header bar' button click.
+   * 
+   * Open header bar form to edit header bar configuration.
+   */
+  openFormToEditHeaderBar() {
+    const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
 
     const matDialogRef = this._matDialog.open(
-      GenericFormComponent<Omit<HeaderBar, "id" | "navigationId">>,
+      GenericFormComponent<HeaderBarPayload>,
       { 
         maxWidth: '700px',
         data: {
@@ -177,7 +128,11 @@ export class HeaderComponent implements OnInit {
     for (let navigation of this.navigations) {
       this.isMouseOverCard[navigation.id] = false;
     }
+  }
 
+  navigateToCardUrl(navigationName: string) {
+    console.log("yeeaaaah");
+    this._router.navigate([navigationName], { relativeTo: this._route });
   }
 
 }
