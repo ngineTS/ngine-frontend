@@ -12,7 +12,7 @@
                 (cdkDropListDropped)="drop($event)"
                 [cdkDropListData]="navigations"
                 cdkDropListOrientation="horizontal">
-                
+               
                 @for (navigation of navigations; track navigation.id) {
                     <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
                         <a [routerLink]="navigation.name"
@@ -77,6 +77,18 @@
                         </span>
                     </div>
                 }
+
+                <div class="card-div col-3 m-3"
+                    (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
+                    (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
+                    (click)="openFormToAddOrEditHeader()"
+                    [style.background-color]="isMouseOverCard['addHeaderCard'] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
+                    <span [style.color]="headerBarConfig.color"
+                        [style.font-family]="headerBarConfig.fontFamily"
+                        [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        <i class="bi bi-plus-circle add-card-icon"></i>
+                    </span>
+                </div>
 
             </div>
 
