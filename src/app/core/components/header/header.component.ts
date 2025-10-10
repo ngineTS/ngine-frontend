@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit {
   }
 
   /**
-   * Methods call on 'edit header' or 'add header' button click.
+   * Methods call on 'Add header' or 'Edit header' button click.
    * 
    * Open navigation management form to add or edit header.
    * 
@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit {
   }
 
   /**
-   * Methods call on 'edit header bar' button click.
+   * Methods call on 'Edit menu' button click.
    * 
    * Open header bar form to edit header bar configuration.
    */
