@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
               private _route: ActivatedRoute,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
-              public _headerBarService: HeaderBarService,
+              private _headerBarService: HeaderBarService,
               private _appService: AppService) { }
 
   navigations!: Navigation[];

@@ -35,7 +35,7 @@ export class ComponentsContainer implements OnInit {
   constructor(private _route: ActivatedRoute,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
-              public _headerBarService: HeaderBarService) {}
+              private _headerBarService: HeaderBarService) {}
 
   navigations!: Array<Navigation>;
   totHeaderHeight!: number;
