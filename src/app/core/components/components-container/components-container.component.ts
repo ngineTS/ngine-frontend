@@ -38,9 +38,11 @@ export class ComponentsContainer implements OnInit {
               public _headerBarService: HeaderBarService) {}
 
   navigations!: Array<Navigation>;
+  totHeaderHeight!: number;
 
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
+    this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
   }
 
   /**

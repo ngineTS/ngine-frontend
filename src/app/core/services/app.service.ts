@@ -21,30 +21,37 @@ export class AppService {
    * @param navigations The array of navigations.
    * @returns The routes with path, component and data setup.
    */
-  generateNestedRoutes(navigations: Navigation[], isHeaderVisibleDuringNavigation: boolean) {
+  generateNestedRoutes(
+    navigations: Navigation[], 
+    isHeaderVisibleDuringNavigation: boolean, 
+    totHeaderHeight: number
+  ): Routes {
     const routes: Routes = [];
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-          //Case 1: children are headers (this is assuming children[0] sisters are only of type 'header')
-          if (navigation.children 
-            && navigation.children.length > 0
-            &&navigation.children[0].navigationType.name === 'header'
-          ) {
-            routes.push(
-              this.createHeaderRoute(navigation.children, navigation.headerBar, navigation.name)
-            );
-          }
-          //Case 2: children are components (this is assuming children[0] sisters are not of type 'header')
-          else {
-            routes.push({
-              path: navigation.name,
-              data: { 
-                navigations: navigation.children ?? [],
-                parentId: navigation.id,
-              },
-              loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
-            });
-          }
+        //Case 1: children are headers (this is assuming children[0] sisters are only of type 'header')
+        if (navigation.children 
+          && navigation.children.length > 0
+          && navigation.children[0].navigationType.name === 'header'
+        ) {
+          //if header not visible (i.e cards) then don't take his height in account.
+          const headerHeight = navigation.headerBar.isVisibleDuringNavigation ? navigation.headerBar.height : 0;
+          routes.push(
+            this.createHeaderRoute(navigation.children, navigation.headerBar, headerHeight + totHeaderHeight, navigation.name)
+          );
+        }
+        //Case 2: children are components (this is assuming children[0] sisters are not of type 'header')
+        else {
+          routes.push({
+            path: navigation.name,
+            data: { 
+              totHeaderHeight: totHeaderHeight,
+              navigations: navigation.children ?? [],
+              parentId: navigation.id,
+            },
+            loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
+          });
+        }
       }
       if (isHeaderVisibleDuringNavigation) {
         routes.unshift({
@@ -56,7 +63,10 @@ export class AppService {
       else {
         routes.unshift({
           path: '',
-          data: { isCardContainer: true },
+          data: { 
+            isCardContainer: true,
+            totHeaderHeight: totHeaderHeight,
+          },
           loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
         });
       }  
@@ -74,7 +84,6 @@ export class AppService {
    */
   createRouting(redirectRouteName?: string): void {
     //reset height before it is calculated again
-    this._headerBarService.totalHeaderHeight = 0;
     const $navigations = this._navigationService.getNestedNavigations();
     const $headerBar = this._headerBarService.getMainHeaderBar();
     
@@ -82,7 +91,7 @@ export class AppService {
       next: ([navigations, headerBar]) => {
         let routes: Routes;
         if (navigations && navigations.length > 0) {
-          routes = [this.createHeaderRoute(navigations, headerBar)];
+          routes = [this.createHeaderRoute(navigations, headerBar, headerBar.height)];
         }
         else {
           routes = [{
@@ -115,6 +124,7 @@ export class AppService {
   createHeaderRoute(
     children: Array<Navigation>,
     headerBar: HeaderBar,
+    totHeaderHeight: number,
     parentName: string = ''
   ): Route {
     let route: Route;
@@ -128,7 +138,7 @@ export class AppService {
           parentId: headerBar.navigationId 
         },
         loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
-        loadChildren: () => this.generateNestedRoutes(children, true),
+        loadChildren: () => this.generateNestedRoutes(children, true, totHeaderHeight),
       };
     }
     //Case card container --> HeaderComponent as sister component
@@ -140,7 +150,7 @@ export class AppService {
           navigations: children,
           parentId: headerBar.navigationId 
         },
-        loadChildren: () => this.generateNestedRoutes(children, false),
+        loadChildren: () => this.generateNestedRoutes(children, false, totHeaderHeight),
       };
     }
     return route;

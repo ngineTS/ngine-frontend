@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   headerBarConfig! : HeaderBar;
   isMouseOverCard: Record<string, boolean> = {};
   isCardContainer!: boolean;
+  totHeaderHeight!: number;
 
   /**
    * On init:
@@ -50,13 +51,8 @@ export class HeaderComponent implements OnInit {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.isCardContainer = this._route.snapshot.data["isCardContainer"];
+    this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
     this.createMouseOverObject();
-    //if in "card" mode then no need to take in account the height of headerBar because there is no header bar.
-    if (this.headerBarConfig.isVisibleDuringNavigation) {
-      this._headerBarService.totalHeaderHeight = this._headerBarService.totalHeaderHeight 
-        + this.headerBarConfig.height
-        + this.headerBarConfig.borderBottom;
-    }
   }
 
   /**
