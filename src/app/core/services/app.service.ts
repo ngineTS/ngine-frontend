@@ -5,6 +5,8 @@ import { NavigationService } from "./navigation.service";
 import { forkJoin } from "rxjs";
 import { HeaderBarService } from "./header-bar.service";
 import { HeaderBar } from "../models/header-bar.interface";
+import { HeaderComponent } from "../components/header/header.component";
+import { ComponentsContainer } from "../components/components-container/components-container.component";
 
 @Injectable({
   providedIn: 'root',
@@ -16,18 +18,19 @@ export class AppService {
               private _headerBarService: HeaderBarService) {}
 
   /**
-   * Recursively create routes for given navigations and their children
-   * @param navigations The array of navigations
-   * @returns The routes with path, component and data setup 
+   * Recursively create routes for given navigations and their children.
+   * @param navigations The array of navigations.
+   * @returns The routes with path, component and data setup.
    */
-  generateNestedRoutes(navigations: Navigation[]) {
+  generateNestedRoutes(navigations: Navigation[], isHeaderVisibleDuringNavigation: boolean) {
     const routes: Routes = [];
-    let i = 0;
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-        if (navigation.children && navigation.children.length > 0) {
           //Case 1: children are headers (this is assuming children[0] sisters are only of type 'header')
-          if (navigation.children[0].navigationType.name === 'header') {
+          if (navigation.children 
+            && navigation.children.length > 0
+            &&navigation.children[0].navigationType.name === 'header'
+          ) {
             routes.push(
               this.createHeaderRoute(navigation.children, navigation.headerBar, navigation.name)
             );
@@ -37,37 +40,39 @@ export class AppService {
             routes.push({
               path: navigation.name,
               data: { 
-                navigations: navigation.children,
+                navigations: navigation.children ?? [],
                 parentId: navigation.id,
               },
               loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
             });
           }
-        }
-        //Case 3: No children --> blank page with possibility to add header or component
-        else {
-          routes.push({
-            path: navigation.name,
-            data: {
-              navigations: null,
-              parentId: navigation.id
-            },
-            loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
-          });
-        }
-        i = i + 1;
       }
-      if (i > 0) {
+      if (isHeaderVisibleDuringNavigation) {
         routes.unshift({
           path: '',
           redirectTo: navigations[0].name,
           pathMatch: 'full'
         });
       }
+      else {
+        routes.unshift({
+          path: '',
+          data: { isCardContainer: true },
+          loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
+        });
+      }  
     }
     return routes;
   }
 
+  /**
+   * Create App Routing.
+   * 
+   * If no navigation are found (i.e first time on the app)
+   * then load component container
+   * else generate routing.
+   * @param redirectRouteName 
+   */
   createRouting(redirectRouteName?: string): void {
     //reset height before it is calculated again
     this._headerBarService.totalHeaderHeight = 0;
@@ -76,7 +81,20 @@ export class AppService {
     
     forkJoin([$navigations, $headerBar]).subscribe({
       next: ([navigations, headerBar]) => {
-        const routes = [this.createHeaderRoute(navigations, headerBar)];
+        let routes: Routes;
+        if (navigations && navigations.length > 0) {
+          routes = [this.createHeaderRoute(navigations, headerBar)];
+        }
+        else {
+          routes = [{
+            path: '',
+            data: { 
+              navigations: [],
+              parentId: null,
+            },
+            loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
+          }]
+        }
         this._router.resetConfig(routes);
         this._router.navigateByUrl(redirectRouteName ?? '');
       },
@@ -90,21 +108,20 @@ export class AppService {
   /**
    * Create Route for header component.
    * 
-   * If header bar configuration mentions it should be visible during navigation
-   * then load header component and children
-   * else load only header component.
-   * 
    * @param navigations The navigations.
-   * @param headerBar The header bar configuration
+   * @param headerBar The header bar configuration.
+   * @param parentName The parent navigation name.
    * @returns An array of routes to display.
    */
   createHeaderRoute(
-    children: Array<Navigation>, 
-    headerBar: HeaderBar, 
-    parentName: string = ''
+    children: Array<Navigation>, //Main1 subA, Main1 Sub B
+    headerBar: HeaderBar, //Main 1 header bar
+    parentName: string = '' //Main 1
   ): Route {
+    let route: Route;
+    //Case menu bar --> HeaderComponent as parent component
     if (headerBar.isVisibleDuringNavigation) {
-      return { 
+      route = { 
         path: parentName, 
         data: {
           headerBarConfig: headerBar,
@@ -112,20 +129,21 @@ export class AppService {
           parentId: headerBar.navigationId 
         },
         loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
-        loadChildren: () => this.generateNestedRoutes(children),
+        loadChildren: () => this.generateNestedRoutes(children, true),
       };
     }
+    //Case card container --> HeaderComponent as sister component
     else {
-      return { 
+      route = { 
         path: parentName, 
         data: {
           headerBarConfig: headerBar,
           navigations: children,
-          parentId: headerBar.navigationId
+          parentId: headerBar.navigationId 
         },
-        loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
+        loadChildren: () => this.generateNestedRoutes(children, false),
       };
     }
+    return route;
   }
-
 }

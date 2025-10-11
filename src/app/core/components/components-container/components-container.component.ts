@@ -41,7 +41,6 @@ export class ComponentsContainer implements OnInit {
 
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
-    console.log(this.navigations);
   }
 
   /**

@@ -1,5 +1,5 @@
 <!-- Header Bar section -->
-@if (headerBarConfig.isVisibleDuringNavigation) {
+@if (!isCardContainer) {
     <div class="d-flex flex-row align-items-center"
         [style.background-color]="headerBarConfig.backgroundColor"
         [style.height]="headerBarConfig.height + 'px'"
@@ -43,7 +43,6 @@
         </i>
 
     </div>
-
     <router-outlet />
 }
 
