@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
               private _appService: AppService) { }
 
   navigations!: Navigation[];
-  headerBarConfig : HeaderBar | undefined;
+  headerBarConfig! : HeaderBar;
   isMouseOverCard: Record<string, boolean> = {};
 
   /**
@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.createMouseOverObject();
     //if in "card" mode then no need to take in account the height of headerBar because there is no header bar.
-    if (this.headerBarConfig?.isVisibleDuringNavigation) {
+    if (this.headerBarConfig.isVisibleDuringNavigation) {
       this._headerBarService.totalHeaderHeight = this._headerBarService.totalHeaderHeight 
         + this.headerBarConfig.height
         + this.headerBarConfig.borderBottom;
@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
         maxWidth: '700px',
         data: {
           formConfig: headerBarForm,
-          id: this.headerBarConfig?.id,
+          id: this.headerBarConfig.id,
           navigationId: this.navigations[0]?.parentId,
           controllerName: 'header-bar',
         }

@@ -1,98 +1,96 @@
-@if (headerBarConfig) {
-    <!-- Header Bar section -->
-    @if (headerBarConfig.isVisibleDuringNavigation) {
-        <div class="d-flex flex-row align-items-center"
-            [style.background-color]="headerBarConfig.backgroundColor"
-            [style.height]="headerBarConfig.height + 'px'"
-            [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
+<!-- Header Bar section -->
+@if (headerBarConfig.isVisibleDuringNavigation) {
+    <div class="d-flex flex-row align-items-center"
+        [style.background-color]="headerBarConfig.backgroundColor"
+        [style.height]="headerBarConfig.height + 'px'"
+        [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
+        
+        <div cdkDropList 
+            class="example-list" 
+            [style.gap]="headerBarConfig.gap + 'px'"
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="navigations"
+            cdkDropListOrientation="horizontal">
             
-            <div cdkDropList 
-                class="example-list" 
-                [style.gap]="headerBarConfig.gap + 'px'"
-                (cdkDropListDropped)="drop($event)"
-                [cdkDropListData]="navigations"
-                cdkDropListOrientation="horizontal">
-               
-                @for (navigation of navigations; track navigation.id) {
-                    <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
-                        <a [routerLink]="navigation.name"
-                        [class.active]="isRouteActive(navigation.name)"
-                        [style.color]="navigation.isDisabled ? '#ccc' 
-                            : isRouteActive(navigation.name) 
-                            ? headerBarConfig.activeColor
-                            : headerBarConfig.color"
-                        [style.font-family]="headerBarConfig.fontFamily"
-                        [style.font-size]="headerBarConfig.fontSize + 'px'">
-                            {{ navigation.displayLabel }}
-                        </a>
-                        <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
-                    </div>
-                }
-                
-            </div>
+            @for (navigation of navigations; track navigation.id) {
+                <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container">
+                    <a [routerLink]="navigation.name"
+                    [class.active]="isRouteActive(navigation.name)"
+                    [style.color]="navigation.isDisabled ? '#ccc' 
+                        : isRouteActive(navigation.name) 
+                        ? headerBarConfig.activeColor
+                        : headerBarConfig.color"
+                    [style.font-family]="headerBarConfig.fontFamily"
+                    [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        {{ navigation.displayLabel }}
+                    </a>
+                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                </div>
+            }
             
-            <button 
-                class="add-nav-button" 
-                matTooltip="Add header" 
-                (click)="openFormToAddOrEditHeader()">
-                +
-            </button>
-
-            <i class="bi bi-pen edit-header-bar auto-margin-left" 
-                (click)="openFormToEditHeaderBar()"
-                matTooltip="Edit menu">
-            </i>
-
         </div>
+        
+        <button 
+            class="add-nav-button" 
+            matTooltip="Add header" 
+            (click)="openFormToAddOrEditHeader()">
+            +
+        </button>
 
-        <router-outlet />
-    }
+        <i class="bi bi-pen edit-header-bar auto-margin-left" 
+            (click)="openFormToEditHeaderBar()"
+            matTooltip="Edit menu">
+        </i>
 
-    <!-- List of cards section -->
-    @else {
-        <div class="card-container"
-            [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
+    </div>
+
+    <router-outlet />
+}
+
+<!-- List of cards section -->
+@else {
+    <div class="card-container"
+        [style.height]="'calc(100vh - ' + _headerBarService.totalHeaderHeight + 'px)'">
+        
+        <i class="bi bi-pen edit-header-bar right-align"
+            (click)="openFormToEditHeaderBar()"
+            matTooltip="Edit menu">
+        </i>
+        
+        <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="navigations"
+            cdkDropListOrientation="mixed">
             
-            <i class="bi bi-pen edit-header-bar right-align"
-                (click)="openFormToEditHeaderBar()"
-                matTooltip="Edit menu">
-            </i>
-            
-            <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
-                cdkDropList
-                (cdkDropListDropped)="drop($event)"
-                [cdkDropListData]="navigations"
-                cdkDropListOrientation="mixed">
-                
-                @for (navigation of navigations; track navigation.id) {
-                    <div class="col-3 m-3 card-div example-box"
-                        cdkDrag
-                        (mouseenter)="isMouseOverCard[navigation.id] = true"
-                        (mouseleave)="isMouseOverCard[navigation.id] = false"
-                        (click)="navigateToCardUrl(navigation.name)"
-                        [style.background-color]="isMouseOverCard[navigation.id] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
-                        <span [style.color]="headerBarConfig.color"
-                            [style.font-family]="headerBarConfig.fontFamily"
-                            [style.font-size]="headerBarConfig.fontSize + 'px'">
-                            {{ navigation.displayLabel }}
-                        </span>
-                    </div>
-                }
-
-                <div class="card-div col-3 m-3"
-                    (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
-                    (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
-                    (click)="openFormToAddOrEditHeader()"
-                    [style.background-color]="isMouseOverCard['addHeaderCard'] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
+            @for (navigation of navigations; track navigation.id) {
+                <div class="col-3 m-3 card-div example-box"
+                    cdkDrag
+                    (mouseenter)="isMouseOverCard[navigation.id] = true"
+                    (mouseleave)="isMouseOverCard[navigation.id] = false"
+                    (click)="navigateToCardUrl(navigation.name)"
+                    [style.background-color]="isMouseOverCard[navigation.id] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
                     <span [style.color]="headerBarConfig.color"
                         [style.font-family]="headerBarConfig.fontFamily"
                         [style.font-size]="headerBarConfig.fontSize + 'px'">
-                        <i class="bi bi-plus-circle add-card-icon" matTooltip="Add header"></i>
+                        {{ navigation.displayLabel }}
                     </span>
                 </div>
+            }
 
+            <div class="card-div col-3 m-3"
+                (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
+                (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
+                (click)="openFormToAddOrEditHeader()"
+                [style.background-color]="isMouseOverCard['addHeaderCard'] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
+                <span [style.color]="headerBarConfig.color"
+                    [style.font-family]="headerBarConfig.fontFamily"
+                    [style.font-size]="headerBarConfig.fontSize + 'px'">
+                    <i class="bi bi-plus-circle add-card-icon" matTooltip="Add header"></i>
+                </span>
             </div>
 
         </div>
-    }
+
+    </div>
 }
