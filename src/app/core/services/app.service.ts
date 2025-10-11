@@ -114,9 +114,9 @@ export class AppService {
    * @returns An array of routes to display.
    */
   createHeaderRoute(
-    children: Array<Navigation>, //Main1 subA, Main1 Sub B
-    headerBar: HeaderBar, //Main 1 header bar
-    parentName: string = '' //Main 1
+    children: Array<Navigation>,
+    headerBar: HeaderBar,
+    parentName: string = ''
   ): Route {
     let route: Route;
     //Case menu bar --> HeaderComponent as parent component
