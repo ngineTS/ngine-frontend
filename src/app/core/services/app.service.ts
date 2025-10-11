@@ -5,8 +5,7 @@ import { NavigationService } from "./navigation.service";
 import { forkJoin } from "rxjs";
 import { HeaderBarService } from "./header-bar.service";
 import { HeaderBar } from "../models/header-bar.interface";
-import { HeaderComponent } from "../components/header/header.component";
-import { ComponentsContainer } from "../components/components-container/components-container.component";
+
 
 @Injectable({
   providedIn: 'root',
