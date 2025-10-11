@@ -69,6 +69,9 @@
                     (mouseleave)="isMouseOverCard[navigation.id] = false"
                     (click)="navigateToCardUrl(navigation.name)"
                     [style.background-color]="isMouseOverCard[navigation.id] ? headerBarConfig.activeColor : headerBarConfig.backgroundColor">
+                    
+                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation); $event.stopPropagation();"></i>
+                    
                     <span [style.color]="headerBarConfig.color"
                         [style.font-family]="headerBarConfig.fontFamily"
                         [style.font-size]="headerBarConfig.fontSize + 'px'">

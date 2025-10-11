@@ -134,6 +134,14 @@ a {
   justify-content: center; 
   align-items: center;
   cursor: pointer;
+  position: relative;
+}
+
+.card-div:hover {
+  .edit-icon {
+     display: block;
+     z-index: 999;
+  }
 }
 
 .add-card-icon {
