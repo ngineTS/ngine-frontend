@@ -17,11 +17,16 @@ export class AppService {
               private _headerBarService: HeaderBarService) {}
 
   /**
-   * Recursively create routes for given navigations and their children.
-   * @param navigations The array of navigations.
-   * @returns The routes with path, component and data setup.
+   * Create route for each navigations passed and return array of routes.
+   * Each route can redirect either to a routing module or to ComponentsContainer component.
+   * 
+   * Once all routes have been created, add main route (with path '') at the start of the array.
+   * 
+   * @param navigations The array of navigations passed to create either header route or component container.
+   * @param isHeaderVisibleDuringNavigation if parent is header bar (not cards container)
+   * @returns The routes set up.
    */
-  generateNestedRoutes(
+  createRoutes(
     navigations: Navigation[], 
     isHeaderVisibleDuringNavigation: boolean, 
     totHeaderHeight: number
@@ -29,7 +34,8 @@ export class AppService {
     const routes: Routes = [];
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-        //Case 1: children are headers (this is assuming children[0] sisters are only of type 'header')
+        //Case 1: Children of navigation are headers (this is assuming children[0] sisters are only of type 'header')
+        //--> Create header route
         if (navigation.children 
           && navigation.children.length > 0
           && navigation.children[0].navigationType.name === 'header'
@@ -37,10 +43,11 @@ export class AppService {
           //if header not visible (i.e cards) then don't take his height in account.
           const headerHeight = navigation.headerBar.isVisibleDuringNavigation ? navigation.headerBar.height : 0;
           routes.push(
-            this.createHeaderRoute(navigation.children, navigation.headerBar, headerHeight + totHeaderHeight, navigation.name)
+            this.createRoutingModule(navigation.children, navigation.headerBar, headerHeight + totHeaderHeight, navigation.name)
           );
         }
-        //Case 2: children are components (this is assuming children[0] sisters are not of type 'header')
+        //Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'header')
+        //--> Create Component container
         else {
           routes.push({
             path: navigation.name,
@@ -77,13 +84,12 @@ export class AppService {
   /**
    * Create App Routing.
    * 
-   * If no navigation are found (i.e first time on the app)
+   * If no navigation are found (i.e nothing has been created yet)
    * then load component container
    * else generate routing.
    * @param redirectRouteName 
    */
-  createRouting(redirectRouteName?: string): void {
-    //reset height before it is calculated again
+  createAppRouting(redirectRouteName?: string): void {
     const $navigations = this._navigationService.getNestedNavigations();
     const $headerBar = this._headerBarService.getMainHeaderBar();
     
@@ -91,7 +97,7 @@ export class AppService {
       next: ([navigations, headerBar]) => {
         let routes: Routes;
         if (navigations && navigations.length > 0) {
-          routes = [this.createHeaderRoute(navigations, headerBar, headerBar.height)];
+          routes = [this.createRoutingModule(navigations, headerBar, headerBar.height)];
         }
         else {
           routes = [{
@@ -114,43 +120,50 @@ export class AppService {
 
 
   /**
-   * Create Route for header component.
+   * Create routing module and return main route of routing module. 
    * 
-   * @param navigations The navigations.
-   * @param headerBar The header bar configuration.
-   * @param parentName The parent navigation name.
-   * @returns An array of routes to display.
+   * If routing settings specifies header bar then:
+   * - Lazy load header bar component on main route.
+   * - Lazy load sister navigations component (or  module) as children.
+   * 
+   * If routing settings specifies cards container then:
+   * - Lazy load nothing on main route.
+   * - Lazy load sister navigations component (or module) with cards container component as children.
+   * 
+   * @param navigations The array of sisters navigations.
+   * @param headerBar The routing settings.
+   * @param parentName The parent name of sister navigations.
+   * @param totHeaderHeight The total header bar height (in px) accumulated from the chain.
+   * @returns The main route of routing module.
    */
-  createHeaderRoute(
-    children: Array<Navigation>,
+  createRoutingModule(
+    navigations: Array<Navigation>,
     headerBar: HeaderBar,
     totHeaderHeight: number,
     parentName: string = ''
   ): Route {
     let route: Route;
-    //Case menu bar --> HeaderComponent as parent component
     if (headerBar.isVisibleDuringNavigation) {
       route = { 
         path: parentName, 
         data: {
           headerBarConfig: headerBar,
-          navigations: children,
+          navigations: navigations,
           parentId: headerBar.navigationId 
         },
         loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
-        loadChildren: () => this.generateNestedRoutes(children, true, totHeaderHeight),
+        loadChildren: () => this.createRoutes(navigations, true, totHeaderHeight),
       };
     }
-    //Case card container --> HeaderComponent as sister component
     else {
       route = { 
         path: parentName, 
         data: {
           headerBarConfig: headerBar,
-          navigations: children,
+          navigations: navigations,
           parentId: headerBar.navigationId 
         },
-        loadChildren: () => this.generateNestedRoutes(children, false, totHeaderHeight),
+        loadChildren: () => this.createRoutes(navigations, false, totHeaderHeight),
       };
     }
     return route;

@@ -116,7 +116,7 @@ export class HeaderComponent implements OnInit {
 
     matDialogRef.afterClosed().subscribe(resp => {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createRouting();
+        this._appService.createAppRouting();
       }
     });
   }

@@ -257,7 +257,7 @@ export class NavigationManagementComponent implements OnInit {
   refreshRoutingAndRedirect(parentId: Navigation["parentId"]) {
     const redirectName = this.getParentName(parentId);
     this._dialogRef.close();
-    this._appService.createRouting(redirectName);
+    this._appService.createAppRouting(redirectName);
   }
 
   /**

@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   title = 'my-app-frontend';
 
   ngOnInit() {
-    this._appService.createRouting();
+    this._appService.createAppRouting();
   }
 
 
