@@ -18,13 +18,15 @@ export class AppService {
 
 
   /**
-   * Create route for each navigations passed and return array of routes.
+   * Create route for each navigation passed and return array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
-   * Once all routes have been created, add main route (with path '') at the start of the array.
+   * Once all routes have been created, add route with path "" at the start of the array with this config:
+   * - If navigations are part of a header bar module then then redirect to first navigation.
+   * - If navigations are part of a cards container module then redirect to cards container component.
    * 
    * @param navigations The array of navigations passed to create either header route or component container.
-   * @param isHeaderVisibleDuringNavigation if menu is an header bar and not a cards container.
+   * @param isHeaderVisibleDuringNavigation if module is a header bar and not a cards container.
    * @returns The routes set up.
    */
   createRoutes(
@@ -86,9 +88,7 @@ export class AppService {
   /**
    * Create App Routing.
    * 
-   * If no navigation are found (i.e nothing has been created yet)
-   * then load component container
-   * else generate routing.
+   * If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
    * @param redirectRouteName 
    */
   createAppRouting(redirectRouteName?: string): void {
@@ -122,18 +122,18 @@ export class AppService {
 
 
   /**
-   * Create routing module and return main route of routing module. 
+   * Create routing module and return his main route. 
    * 
    * If routing settings specifies header bar then:
    * - Lazy load header bar component on main route.
-   * - Lazy load sister navigations component (or  module) as children.
+   * - Lazy load sister navigation routes as children.
    * 
    * If routing settings specifies cards container then:
    * - Lazy load nothing on main route.
-   * - Lazy load sister navigations component (or module) with cards container component as children.
+   * - Lazy load sister navigation routes as children.
    * 
    * @param navigations The array of sisters navigations.
-   * @param headerBar The routing settings.
+   * @param headerBar The routing module settings.
    * @param parentName The parent name of sister navigations.
    * @param totHeaderHeight The total header bar height (in px) accumulated from the chain.
    * @returns The main route of routing module.
