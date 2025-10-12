@@ -94,8 +94,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Create size observer on itself.
    * 
    * This observer retrieve width and height of HTML element
-   * and assign it to width and height class properties on each change.
+   * and assign it to _width and _height class properties on each change.
    * 
+   * It also updates _width and _height inputs of container ref.
    */
   createSizeObserver() {
     this.observer = new MutationObserver(() => {
