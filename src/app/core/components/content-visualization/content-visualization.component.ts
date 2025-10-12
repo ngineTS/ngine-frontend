@@ -140,7 +140,7 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
       take(1),
       tap(() => this.getContentInformation())
     )
-    .subscribe(() => this._hasContentChanged.emit(true));
+    .subscribe(() => this._stopEditing.emit(true));
   }
 
   /**

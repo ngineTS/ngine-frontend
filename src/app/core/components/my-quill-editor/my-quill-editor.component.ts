@@ -57,7 +57,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         content: this.content
       }).subscribe(() => {
         this.showSuccessSnackBar('updated');
-        this._hasContentChanged.emit(true);
+        this._stopEditing.emit(true);
       });
     }
     //add
@@ -66,7 +66,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         navigationId: this._navigation.id,
         content: this.content
       }).subscribe(() => {
-        this._hasContentChanged.emit(true);
+        this._stopEditing.emit(true);
         this.showSuccessSnackBar('saved');
       });
     }

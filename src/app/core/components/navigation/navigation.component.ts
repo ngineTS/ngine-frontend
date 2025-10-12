@@ -84,7 +84,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_width', this._width);
     this.containerRef.setInput('_height', this._height);
     this.containerRef.setInput('_isEditing', false);
-    this.containerRef.instance._hasContentChanged.subscribe(resp => {
+    this.containerRef.instance._stopEditing.subscribe(resp => {
       this._isEditing = !resp;
       this.containerRef.setInput('_isEditing', this._isEditing);
     })
