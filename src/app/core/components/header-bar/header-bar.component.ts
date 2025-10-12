@@ -26,6 +26,11 @@ import { AppService } from '../../services/app.service';
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
 })
+/**
+ * HeaderBar Component is either a header bar or a cards container.
+ * If isCardContainer prop is equal to true then it's a cards container
+ * else it is a header bar .
+ */
 export class HeaderBarComponent implements OnInit {
   
   constructor(public _router: Router,
