@@ -16,6 +16,7 @@ export class AppService {
               private _navigationService: NavigationService,
               private _headerBarService: HeaderBarService) {}
 
+
   /**
    * Create route for each navigations passed and return array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
@@ -23,7 +24,7 @@ export class AppService {
    * Once all routes have been created, add main route (with path '') at the start of the array.
    * 
    * @param navigations The array of navigations passed to create either header route or component container.
-   * @param isHeaderVisibleDuringNavigation if parent is header bar (not cards container)
+   * @param isHeaderVisibleDuringNavigation if menu is an header bar and not a cards container.
    * @returns The routes set up.
    */
   createRoutes(
@@ -40,7 +41,7 @@ export class AppService {
           && navigation.children.length > 0
           && navigation.children[0].navigationType.name === 'header'
         ) {
-          //if header not visible (i.e cards) then don't take his height in account.
+          //if menu not visible (i.e cards) then don't add his height to total height.
           const headerHeight = navigation.headerBar.isVisibleDuringNavigation ? navigation.headerBar.height : 0;
           routes.push(
             this.createRoutingModule(navigation.children, navigation.headerBar, headerHeight + totHeaderHeight, navigation.name)
@@ -80,6 +81,7 @@ export class AppService {
     }
     return routes;
   }
+
 
   /**
    * Create App Routing.
