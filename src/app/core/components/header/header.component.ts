@@ -45,7 +45,6 @@ export class HeaderComponent implements OnInit {
    * On init:
    * - Assign header bar config and headers.
    * - Create MouseOverNavigation object used to display background color of cards dynamically.
-   * - Increment total header height.
    */
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
@@ -129,7 +128,6 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToCardUrl(navigationName: string) {
-    console.log("yeeaaaah");
     this._router.navigate([navigationName], { relativeTo: this._route });
   }
 
