@@ -77,7 +77,7 @@ export class AppService {
             isCardContainer: true,
             totHeaderHeight: totHeaderHeight,
           },
-          loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
+          loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         });
       }  
     }
@@ -153,7 +153,7 @@ export class AppService {
           navigations: navigations,
           parentId: headerBar.navigationId 
         },
-        loadComponent: () => import('../components/header/header.component').then(m => m.HeaderComponent),
+        loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         loadChildren: () => this.createRoutes(navigations, true, totHeaderHeight),
       };
     }

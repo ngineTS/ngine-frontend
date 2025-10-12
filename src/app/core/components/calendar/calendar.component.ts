@@ -7,14 +7,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable, take } from 'rxjs';
 import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
-import { NavigationService } from '../../services/navigation.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 

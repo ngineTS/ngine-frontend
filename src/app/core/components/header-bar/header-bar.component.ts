@@ -14,7 +14,7 @@ import { AppService } from '../../services/app.service';
 
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-header-bar',
   imports: [
     RouterOutlet, 
     RouterModule, 
@@ -23,10 +23,10 @@ import { AppService } from '../../services/app.service';
     CdkDropList, 
     CdkDrag,
   ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  templateUrl: './header-bar.component.html',
+  styleUrl: './header-bar.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderBarComponent implements OnInit {
   
   constructor(public _router: Router,
               private _route: ActivatedRoute,
@@ -56,7 +56,6 @@ export class HeaderComponent implements OnInit {
 
   /**
    * Check wether the user is on this header or not.
-   * Used to change color of header.
    * @param navigationName The navigation name to check.
    * @returns true or false.
    */
@@ -65,7 +64,7 @@ export class HeaderComponent implements OnInit {
   }
 
   /**
-   * Drop a component and update position of all navigations.
+   * Drop a header and update position of all navigations.
    * @param event The CdkDragDrop event containing navigation positions. 
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
