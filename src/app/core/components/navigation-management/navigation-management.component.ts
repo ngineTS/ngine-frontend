@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
+import { HeaderBarService } from '../../services/header-bar.service';
 
 @Component({
   selector: 'app-navigation-management',
@@ -36,7 +37,8 @@ export class NavigationManagementComponent implements OnInit {
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
               private _dialogRef: MatDialogRef<NavigationManagementComponent>,
-              private _appService: AppService) {}
+              private _appService: AppService,
+              public _headerBarService: HeaderBarService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -74,6 +76,11 @@ export class NavigationManagementComponent implements OnInit {
         this.navigationForm.addControl('width', this._formBuilder.control(50));
         this.navigationForm.addControl('height', this._formBuilder.control(50));
       }
+    }
+    if (this.data.type === 'header') {
+      this.navigationForm.addControl('icon', this._formBuilder.control(
+        this.data.navigation?.icon ?? null
+      ));
     }
   }
 
@@ -272,6 +279,13 @@ export class NavigationManagementComponent implements OnInit {
         this.storeNavigationChildrenAndOldChildrenAsArray(child);
       }
     }
+  }
+
+  /**
+   * Getter used in icon dropdown to display icon as selected value.
+   */
+  get iconFormControl() {
+    return this.navigationForm.get('icon')!;
   }
 
 }

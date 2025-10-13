@@ -1,8 +1,13 @@
+.navigation-form {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 80vh;
+}
+
 .form-buttons {
     max-width: 300px; 
     margin-left: auto;
 }
-
 
 h4 {
     margin-bottom: 24px;

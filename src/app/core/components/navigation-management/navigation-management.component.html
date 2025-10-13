@@ -1,6 +1,6 @@
 <div class="m-4">
     <h4>Navigation Management</h4>
-    <form [formGroup]="navigationForm" class="row" (ngSubmit)="submitForm()">
+    <form [formGroup]="navigationForm" class="row navigation-form" (ngSubmit)="submitForm()">
 
         <mat-form-field appearance="outline">
             <mat-label>Navigation Type </mat-label>
@@ -30,6 +30,22 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
+
+        @if (data.type === 'header') {
+            <mat-form-field appearance="outline">
+                <mat-label>Icon</mat-label>
+                <mat-select formControlName="icon">
+                    <mat-select-trigger>
+                        <i [class]="'bi bi-' + iconFormControl.value"></i>
+                    </mat-select-trigger>
+                    @for (iconName of _headerBarService.boostrapIconNamesList; track iconName) {
+                        <mat-option [value]="iconName">
+                            <i [class]="'bi bi-' + iconName"></i>
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        }
 
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
