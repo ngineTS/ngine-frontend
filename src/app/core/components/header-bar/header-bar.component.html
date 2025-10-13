@@ -5,6 +5,14 @@
         [style.height]="headerBarConfig.height + 'px'"
         [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
         
+        @if (headerBarConfig.imageName) {
+            <img class="header-bar-img"
+                [src]="headerBarImgUrl$ | async"
+                [style.height]="0.7 * headerBarConfig.height + 'px'"
+                [style.margin-right]="2.5 * headerBarConfig.gap + 'px'"
+            />
+        }
+
         <div cdkDropList 
             class="example-list" 
             [style.gap]="headerBarConfig.gap + 'px'"

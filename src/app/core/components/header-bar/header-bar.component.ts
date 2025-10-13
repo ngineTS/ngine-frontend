@@ -11,6 +11,8 @@ import { HeaderBar, HeaderBarPayload } from '../../models/header-bar.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
+import { MediaService } from '../../services/media.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -38,13 +40,15 @@ export class HeaderBarComponent implements OnInit {
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
               private _headerBarService: HeaderBarService,
-              private _appService: AppService) { }
+              private _appService: AppService,
+              private _mediaService: MediaService) { }
 
   navigations!: Navigation[];
   headerBarConfig! : HeaderBar;
   isMouseOverCard: Record<string, boolean> = {};
   isCardContainer!: boolean;
   totHeaderHeight!: number;
+  headerBarImgUrl$: Observable<string> | undefined;
 
   /**
    * On init:
@@ -57,6 +61,9 @@ export class HeaderBarComponent implements OnInit {
     this.isCardContainer = this._route.snapshot.data["isCardContainer"];
     this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
     this.createMouseOverObject();
+    if (this.headerBarConfig.imageName) {
+      this.headerBarImgUrl$ = this._mediaService.getS3ObjectSignedUrl(this.headerBarConfig.imageName);
+    }
   }
 
   /**
