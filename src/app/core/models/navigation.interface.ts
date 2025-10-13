@@ -7,6 +7,7 @@ export interface Navigation {
     parentId: string;
     name: string;
     displayLabel: string;
+    description: string;
     order: number;
     width: number;
     height: number;

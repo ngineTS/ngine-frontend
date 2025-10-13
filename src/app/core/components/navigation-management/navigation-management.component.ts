@@ -65,6 +65,7 @@ export class NavigationManagementComponent implements OnInit {
       parentId: [this.data.navigation?.parentId ?? this.data.parentId],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
+      description: [this.data.navigation?.description ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
     if (this.data.type === 'component') {
