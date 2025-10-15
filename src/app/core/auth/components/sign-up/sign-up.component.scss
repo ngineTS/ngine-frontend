@@ -1,0 +1,30 @@
+.sign-up-container{
+    
+}
+
+.err-email{
+    color: red;
+    font-size: 12px;
+}
+
+.input-password{
+    padding-left: 8px;
+    margin-bottom: 6px;
+}
+
+.signup-button{
+    color: whitesmoke;
+    background-color: #5272E9;
+    height: 50px;
+    border: 1px solid #5272E9;
+    border-radius: 6px;
+    margin-top: 25px;
+    margin-left: 12px;
+    width: 95%;
+    cursor: pointer;
+}
+
+.signup-button:disabled{
+    cursor: default;
+    opacity: 0.3;
+}

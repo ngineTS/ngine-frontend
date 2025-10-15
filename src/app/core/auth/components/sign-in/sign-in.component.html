@@ -1,7 +1,7 @@
 <div class="row">
     @if (!_authService.forgotPwdPage) {
         
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Email address</mat-label>
             <input matInput type="email" placeholder="Email address" [(ngModel)]="userEmail"/>
         </mat-form-field>
@@ -9,7 +9,7 @@
             <span class="err-email">{{errorEmail}}</span>
         }
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
             <input matInput 
                 [type]="hidePassword() ? 'password' : 'text'" 
@@ -42,7 +42,7 @@
         <span class="recover-header">Recover Password</span>
         <span class="recover-description">Don't worry we got you covered, write in your E-mail
             and we'll send you a recovery link</span>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput type="email" placeholder="Email address" [(ngModel)]="recoveryEmail"/>
         </mat-form-field>

@@ -114,12 +114,11 @@ export class AppService {
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           }
         }
-        route.children?.push({
+        const unauthorisedRoute = {
           path: 'unauthorised',
           loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
-        })
-        console.log(route);
-        this._router.resetConfig([route]);
+        }
+        this._router.resetConfig([route, unauthorisedRoute]);
         this._router.navigateByUrl(redirectRouteName ?? '');
       },
       error: (err) => {

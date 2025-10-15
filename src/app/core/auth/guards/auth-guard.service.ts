@@ -18,12 +18,13 @@ export class AuthGuard implements CanActivate {
       if(token) jwtDecoded = jwtDecode(token);
       const jwtExpirationTime: number = jwtDecoded?.exp;
       const currentTime: number = new Date().getTime() / 1000;
-
+      console.log(currentTime);
+      console.log(jwtExpirationTime);
       if (jwtExpirationTime && jwtExpirationTime >= currentTime) {
         return true;
       }
       else {
-        this.router.navigate(['/unauthorised']);
+        this.router.navigateByUrl('unauthorised');
         return false;
       }
       

@@ -13,7 +13,9 @@ export class UnauthorisedComponent implements OnInit{
   constructor(private _matDialog: MatDialog) { }
 
   ngOnInit(): void {
-    this._matDialog.open(SignContainerComponent);
+    this._matDialog.open(SignContainerComponent, {
+      disableClose: true,
+    });
   }
 
 }

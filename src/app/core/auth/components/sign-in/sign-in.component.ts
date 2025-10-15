@@ -1,6 +1,5 @@
-import { Component, NgModule, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SignContainerComponent } from '../sign-container/sign-container.component';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AppService } from '../../../services/app.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -37,7 +37,7 @@ export class SignInComponent {
 
   constructor(public _authService: AuthService,
               public _dialogRef: MatDialogRef<SignContainerComponent>,
-              private _router: Router) { }
+              private _appService: AppService) { }
 
   ngOnInit(): void {
   }
@@ -73,8 +73,8 @@ export class SignInComponent {
         this.errorPassword = null;
         localStorage.setItem('access_token', resp['access_token']);
         this.isLogin = false;
+        this._appService.createAppRouting();
         this._dialogRef.close();
-        this._router.navigate(['']);
       }
     });
   }

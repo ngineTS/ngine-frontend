@@ -1,1 +1,59 @@
-<p>sign-up works!</p>
+<div class="row">
+    
+    <mat-form-field appearance="outline">
+        <mat-label>Email address</mat-label>
+        <input matInput 
+            type="email" 
+            placeholder="Email address" 
+            [(ngModel)]="userForm.emailAddress"
+            (keyup)="onEmailAdressChange()"
+        />
+    </mat-form-field>
+    @if (emailAddressAlreadyExists) {
+        <span class="err-email">This email address is already used</span>
+    }
+    <!--<span class="input-label">Email address</span>
+    <input type="email" 
+           placeholder="Email address" 
+           [(ngModel)]="userForm.emailAddress"
+           (keyup)="onEmailAdressChange()"
+    />
+    @if (emailAddressAlreadyExists) {
+        <span class="err-email">This email address is already used</span>
+    }-->
+
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput
+           type="password" 
+           placeholder="Password" 
+           [(ngModel)]="userForm.password" 
+           (keyup)="onPasswordChange()"
+        />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <input matInput
+           type="password" 
+           placeholder="Repeat password" 
+           [(ngModel)]="repeatPassword"
+        />
+    </mat-form-field>
+    @if (passwordTooShort) {
+        <span class="err-email">Please enter min 8 characters</span>
+    }
+    <!--<span class="input-label">Password</span>
+    <input type="password" 
+           class="input-password" 
+           placeholder="Password" 
+           [(ngModel)]="userForm.password" 
+           (keyup)="onPasswordChange()"/>
+    <input type="password" 
+        placeholder="Repeat password" 
+        [(ngModel)]="repeatPassword"
+    />
+    @if (passwordTooShort) {
+        <span class="err-email">Please enter min 8 characters</span>
+    }-->
+    
+    <button class="signup-button" (click)="onSignUpClick()" [disabled]="isSignUpDisabled()">Sign Up</button>
+</div>
