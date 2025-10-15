@@ -1,0 +1,53 @@
+.forgot-pwd{
+    color: #8B8B8B;
+    font-size: 12px;
+    margin-left: auto;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.signin-button{
+    color: whitesmoke;
+    background-color: #5272E9;
+    height: 50px;
+    border: 1px solid #5272E9;
+    border-radius: 6px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    margin-left: 12px;
+    width: 95%;
+    cursor: pointer;
+}
+
+.signin-button:disabled{
+    cursor: default;
+    opacity: 0.3;
+}
+
+.err-email{
+    color: red;
+    font-size: 12px;
+}
+
+.success-email{
+    color: green;
+    font-size: 10px;
+}
+
+.recover-header{
+    margin-top: 22px;
+    font-size: 16px;
+}
+
+.recover-description{
+    margin-top: 16px;
+    font-size: 10px;
+    color: #8B8B8B;
+    line-height: 16px;
+}
+
+.back-icon {
+    cursor: pointer;
+    font-size: 18px;
+    width: fit-content;
+}

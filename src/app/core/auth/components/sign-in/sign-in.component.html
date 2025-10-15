@@ -1,0 +1,61 @@
+<div class="row">
+    @if (!_authService.forgotPwdPage) {
+        
+        <mat-form-field>
+            <mat-label>Email address</mat-label>
+            <input matInput type="email" placeholder="Email address" [(ngModel)]="userEmail"/>
+        </mat-form-field>
+        @if (errorEmail) {
+            <span class="err-email">{{errorEmail}}</span>
+        }
+
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput 
+                [type]="hidePassword() ? 'password' : 'text'" 
+                placeholder="Password" 
+                [(ngModel)]="userPassword" 
+                (keyup)="resetErrorPassword()"
+            />
+            <button
+                type="button"
+                matIconButton
+                matSuffix
+                (click)="passwordEyeclickEvent($event)"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword()"
+            >
+                <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
+            </button>
+        </mat-form-field>
+        @if (errorPassword) {
+            <span class="err-email">{{ errorPassword }}</span>
+        }
+
+        <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
+        
+        <button class="signin-button" (click)="onSignInClick()" [disabled]="isSignInDisabled()">Sign In</button>
+    }
+
+    @else {
+        <i class="bi bi-arrow-left-square back-icon" (click)="onGoBackClick()"></i>
+        <span class="recover-header">Recover Password</span>
+        <span class="recover-description">Don't worry we got you covered, write in your E-mail
+            and we'll send you a recovery link</span>
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" placeholder="Email address" [(ngModel)]="recoveryEmail"/>
+        </mat-form-field>
+        <button class="signin-button" 
+            (click)="onContinueClick()"
+            [disabled]="emailSentMessage || continueButtonIsDisabled || !recoveryEmail">Continue</button>
+        
+        @if (errorSendingEmail) {
+            <span class="err-email">{{errorSendingEmail}}</span>
+        }
+        @if (emailSentMessage) {
+            <span class="success-email">{{emailSentMessage}}</span>
+        }
+    }
+    
+</div>
