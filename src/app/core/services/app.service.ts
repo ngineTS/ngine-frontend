@@ -5,7 +5,7 @@ import { NavigationService } from "./navigation.service";
 import { forkJoin } from "rxjs";
 import { HeaderBarService } from "./header-bar.service";
 import { HeaderBar } from "../models/header-bar.interface";
-
+import { AuthGuard } from "../auth/guards/auth-guard.service";
 
 @Injectable({
   providedIn: 'root',
@@ -89,6 +89,8 @@ export class AppService {
    * Create App Routing.
    * 
    * If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
+   * 
+   * Add extra components on main route children (ex: UnhautorisedComponent).
    * @param redirectRouteName 
    */
   createAppRouting(redirectRouteName?: string): void {
@@ -97,21 +99,27 @@ export class AppService {
     
     forkJoin([$navigations, $headerBar]).subscribe({
       next: ([navigations, headerBar]) => {
-        let routes: Routes;
+        let route: Route;
         if (navigations && navigations.length > 0) {
-          routes = [this.createRoutingModule(navigations, headerBar, headerBar.height)];
+          route = this.createRoutingModule(navigations, headerBar, headerBar.height);
         }
         else {
-          routes = [{
+          route = {
             path: '',
+            canActivate: [AuthGuard],
             data: { 
               navigations: [],
               parentId: null,
             },
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
-          }]
+          }
         }
-        this._router.resetConfig(routes);
+        route.children?.push({
+          path: 'unauthorised',
+          loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
+        })
+        console.log(route);
+        this._router.resetConfig([route]);
         this._router.navigateByUrl(redirectRouteName ?? '');
       },
       error: (err) => {
@@ -147,7 +155,8 @@ export class AppService {
     let route: Route;
     if (headerBar.isVisibleDuringNavigation) {
       route = { 
-        path: parentName, 
+        path: parentName,
+        canActivate: [AuthGuard],
         data: {
           headerBarConfig: headerBar,
           navigations: navigations,
