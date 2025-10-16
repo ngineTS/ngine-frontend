@@ -4,10 +4,10 @@
         <mat-form-field appearance="outline">
             <mat-label>Email address</mat-label>
             <input matInput type="email" placeholder="Email address" [(ngModel)]="userEmail"/>
+             @if (errorEmail) {
+                <span class="err-email">{{ errorEmail }}</span>
+            }
         </mat-form-field>
-        @if (errorEmail) {
-            <span class="err-email">{{errorEmail}}</span>
-        }
 
         <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
@@ -27,10 +27,10 @@
             >
                 <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
             </button>
+            @if (errorPassword) {
+                <span class="err-email">{{ errorPassword }}</span>
+            }
         </mat-form-field>
-        @if (errorPassword) {
-            <span class="err-email">{{ errorPassword }}</span>
-        }
 
         <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
         
@@ -45,14 +45,14 @@
         <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput type="email" placeholder="Email address" [(ngModel)]="recoveryEmail"/>
+            @if (errorEmail) {
+                <span class="err-email">{{ errorEmail }}</span>
+            }   
         </mat-form-field>
         <button class="signin-button" 
             (click)="onContinueClick()"
-            [disabled]="emailSentMessage || continueButtonIsDisabled || !recoveryEmail">Continue</button>
-        
-        @if (errorSendingEmail) {
-            <span class="err-email">{{errorSendingEmail}}</span>
-        }
+            [disabled]="emailSentMessage || continueButtonIsDisabled || !recoveryEmail">Continue
+        </button>
         @if (emailSentMessage) {
             <span class="success-email">{{emailSentMessage}}</span>
         }

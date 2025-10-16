@@ -28,7 +28,6 @@ export class SignInComponent {
   errorEmail: string | null = null;
   errorPassword: string | null = null;
   recoveryEmail: string | null = null;
-  errorSendingEmail: string | null = null;
   emailSentMessage: string | null = null;
   continueButtonIsDisabled: boolean = false;
   isLogin: boolean = false;
@@ -85,7 +84,7 @@ export class SignInComponent {
 
   onGoBackClick(){
     this._authService.forgotPwdPage = false;
-    this.errorSendingEmail = null;
+    this.errorEmail = null;
     this.emailSentMessage = null;
     this.recoveryEmail = null;
   }
@@ -95,17 +94,17 @@ export class SignInComponent {
     this._authService.askForgotPasswordLink(this.recoveryEmail!).subscribe(
       (resp: { [x: string]: string | null; }) => {
         if(resp["err"]){
-          this.errorSendingEmail = resp["err"];
+          this.errorEmail = resp["err"];
           this.emailSentMessage = null;
         }
         else{
           this.emailSentMessage = "Email successfully sent! Please check your mailbox";
-          this.errorSendingEmail = null;
+          this.errorEmail = null;
         }
         this.continueButtonIsDisabled = false;
       },
       (error: { error: string | null; }) => {
-        this.errorSendingEmail = error.error;
+        this.errorEmail = error.error;
         this.continueButtonIsDisabled = false;
       }
     );
