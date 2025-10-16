@@ -38,12 +38,6 @@ export class SignInComponent {
               public _dialogRef: MatDialogRef<SignContainerComponent>,
               private _appService: AppService) { }
 
-  ngOnInit(): void {
-  }
-
-  resetErrorPassword(){
-   this.errorPassword = null; 
-  }
 
   isSignInDisabled(){
     if(!this.userEmail || !this.userPassword || this.isLogin){
@@ -80,6 +74,7 @@ export class SignInComponent {
 
   onForgotPasswordClick(){
     this._authService.forgotPwdPage = true;
+    this.errorEmail = null;
   }
 
   onGoBackClick(){
