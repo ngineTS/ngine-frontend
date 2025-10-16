@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AppService } from './core/services/app.service';
 
 @Component({
@@ -10,12 +10,18 @@ import { AppService } from './core/services/app.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _appService: AppService) { }
+  constructor(private _appService: AppService,
+              private _router: Router,
+             ) { }
 
   title = 'my-app-frontend';
 
   ngOnInit() {
-    this._appService.createAppRouting();
+    setTimeout(() => {
+      if (!this._router.url.includes('password-recovery')) {
+        this._appService.createAppRouting();
+      }
+    }, 50);
   }
 
 
