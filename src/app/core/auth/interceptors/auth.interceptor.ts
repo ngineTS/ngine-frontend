@@ -24,10 +24,9 @@ export const tokenInterceptior: HttpInterceptorFn = (
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401) {
-        console.log("Heeeey");
         router.navigateByUrl('/unauthorised');
       }
-      return throwError(() => new Error("HMMMMM" + err.message));
+      throw err.error;
     })
   );
 }

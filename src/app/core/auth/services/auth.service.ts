@@ -17,7 +17,7 @@ export class AuthService {
         return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto);
     }
 
-    userSignIn(signInDto: UserSignInPayload): any {
+    userSignIn(signInDto: UserSignInPayload) {
         return this._http.post(`${environment.APIURL}auth/sign-in`, signInDto);
     }
 

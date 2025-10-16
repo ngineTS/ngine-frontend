@@ -39,52 +39,49 @@ export class SignInComponent {
               private _appService: AppService) { }
 
 
-  isSignInDisabled(){
+  isSignInDisabled() {
     if(!this.userEmail || !this.userPassword || this.isLogin){
       return true;
     }
     return false;
   }
 
-  onSignInClick(){
+  onSignInClick() {
     this.isLogin = true;
     this._authService.userSignIn({ 
       emailAddress: this.userEmail!, 
       password: this.userPassword! 
-    }).subscribe((resp: { [x: string]: string; }) => {
-      if(resp['emailErr']){
-        this.errorEmail = resp['emailErr'];
-        this.errorPassword = null;
-        this.isLogin = false;
-      } else if(resp['passwordErr']){
-        this.errorPassword = resp['passwordErr'];
-        this.errorEmail = null;
-        this.isLogin = false;
-      }
-      else{
-        this.errorEmail = null;
-        this.errorPassword = null;
+    }).subscribe({
+      next: (resp: any) => {
         localStorage.setItem('access_token', resp['access_token']);
-        this.isLogin = false;
         this._appService.createAppRouting();
         this._dialogRef.close();
+      },
+      error: (err /*NestJs error type*/) => {
+        this.isLogin = false;
+        if (err.statusCode === 404) {
+          this.errorEmail = err.message;
+        }
+        if (err.statusCode === 400) {
+          this.errorPassword = err.message;
+        }
       }
     });
   }
 
-  onForgotPasswordClick(){
+  onForgotPasswordClick() {
     this._authService.forgotPwdPage = true;
     this.errorEmail = null;
   }
 
-  onGoBackClick(){
+  onGoBackClick() {
     this._authService.forgotPwdPage = false;
     this.errorEmail = null;
     this.emailSentMessage = null;
     this.recoveryEmail = null;
   }
 
-  onContinueClick(){
+  onContinueClick() {
     this.continueButtonIsDisabled = true;
     this._authService.askForgotPasswordLink(this.recoveryEmail!).subscribe(
       (resp: { [x: string]: string | null; }) => {
