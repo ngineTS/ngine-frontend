@@ -1,5 +1,4 @@
 <div class="row">
-    
     <mat-form-field appearance="outline">
         <mat-label>Email address</mat-label>
         <input matInput 
@@ -8,10 +7,10 @@
             [(ngModel)]="userForm.emailAddress"
             (keyup)="onEmailAdressChange()"
         />
+        @if (emailAddressAlreadyExists) {
+            <span class="err-email">This email address is already used</span>
+        }
     </mat-form-field>
-    @if (emailAddressAlreadyExists) {
-        <span class="err-email">This email address is already used</span>
-    }
 
     <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
@@ -21,6 +20,9 @@
            [(ngModel)]="userForm.password" 
            (keyup)="onPasswordChange()"
         />
+        @if (passwordTooShort) {
+            <span class="err-email">Please enter min 8 characters</span>
+        }
     </mat-form-field>
     <mat-form-field appearance="outline">
         <input matInput
@@ -29,9 +31,6 @@
            [(ngModel)]="repeatPassword"
         />
     </mat-form-field>
-    @if (passwordTooShort) {
-        <span class="err-email">Please enter min 8 characters</span>
-    }
     
     <button class="signup-button" (click)="onSignUpClick()" [disabled]="isSignUpDisabled()">Sign Up</button>
 </div>
