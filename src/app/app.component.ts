@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
       if (!this._router.url.includes('password-recovery')) {
         this._appService.createAppRouting();
       }
-    }, 50);
+    }, 80);
   }
 
 

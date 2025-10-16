@@ -1,18 +1,21 @@
-@if (isSignUpTab) {
-    <div class="row m-5">
-        <app-sign-up></app-sign-up>
-        <div class="text-center mt-4">
-                <span class="align-middle">Already have an account?</span>
-                <button matButton class="ms-2" (click)="goToSignIn()">Sign in</button>
+<div class="m-5">
+
+    @if (isSignUpTab) {
+        <div class="row">
+            <app-sign-up></app-sign-up>
+            <div class="text-center mt-4">
+                    <span class="align-middle">Already have an account?</span>
+                    <button matButton class="ms-2" (click)="goToSignIn()">Sign in</button>
+            </div>
         </div>
-    </div>
-}
-@else {
-    <div class="row m-5">
-        <app-sign-in></app-sign-in>
-        <div class="text-center mt-4">
-            <span class="align-middle">Don't have an account yet?</span>
-            <button matButton class="ms-2" (click)="goToSignUp()">Sign up</button>
+    }
+    @else {
+        <div class="row">
+            <app-sign-in></app-sign-in>
+            <div class="text-center mt-4">
+                <span class="align-middle">Don't have an account yet?</span>
+                <button matButton class="ms-2" (click)="goToSignUp()">Sign up</button>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
