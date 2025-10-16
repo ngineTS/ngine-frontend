@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AppService } from '../../../services/app.service';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -28,7 +29,6 @@ export class SignInComponent {
   errorEmail: string | null = null;
   errorPassword: string | null = null;
   recoveryEmail: string | null = null;
-  emailSentMessage: string | null = null;
   continueButtonIsDisabled: boolean = false;
   isLogin: boolean = false;
   hidePassword = signal(true);
@@ -36,7 +36,8 @@ export class SignInComponent {
 
   constructor(public _authService: AuthService,
               public _dialogRef: MatDialogRef<SignContainerComponent>,
-              private _appService: AppService) { }
+              private _appService: AppService,
+              private _snackbarService: SnackBarService) { }
 
 
   isSignInDisabled() {
@@ -57,13 +58,15 @@ export class SignInComponent {
         this._appService.createAppRouting();
         this._dialogRef.close();
       },
-      error: (err /*NestJs error type*/) => {
+      error: (err /*NestJS error type*/) => {
         this.isLogin = false;
         if (err.statusCode === 404) {
           this.errorEmail = err.message;
+          this.errorPassword = null;
         }
         if (err.statusCode === 400) {
           this.errorPassword = err.message;
+          this.errorEmail = null;
         }
       }
     });
@@ -77,29 +80,21 @@ export class SignInComponent {
   onGoBackClick() {
     this._authService.forgotPwdPage = false;
     this.errorEmail = null;
-    this.emailSentMessage = null;
     this.recoveryEmail = null;
   }
 
   onContinueClick() {
     this.continueButtonIsDisabled = true;
-    this._authService.askForgotPasswordLink(this.recoveryEmail!).subscribe(
-      (resp: { [x: string]: string | null; }) => {
-        if(resp["err"]){
-          this.errorEmail = resp["err"];
-          this.emailSentMessage = null;
+    this._authService.askForgotPasswordLink(this.recoveryEmail!)
+      .subscribe({
+        next: () => {
+            this._snackbarService.showSuccessSnackBar('Email successfully sent! Please check your mailbox.');
+        },
+        error: (err /*NestJS error type*/) => {
+          this.errorEmail = err.message;
+          this.continueButtonIsDisabled = false;
         }
-        else{
-          this.emailSentMessage = "Email successfully sent! Please check your mailbox";
-          this.errorEmail = null;
-        }
-        this.continueButtonIsDisabled = false;
-      },
-      (error: { error: string | null; }) => {
-        this.errorEmail = error.error;
-        this.continueButtonIsDisabled = false;
-      }
-    );
+      });
   }
 
   passwordEyeclickEvent(event: MouseEvent) {

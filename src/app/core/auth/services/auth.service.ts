@@ -25,13 +25,8 @@ export class AuthService {
         return this._http.get(`${environment.APIURL}user/email-address/${emailAdress}`);
     }
 
-    askForgotPasswordLink(emailAdress: string): any {
-        return this._http.get(`${environment.APIURL}password-recovery/forgot/${emailAdress}`)
-            .pipe(
-                catchError((error: HttpErrorResponse) => {
-                    return throwError(() => error.error);
-                })
-            );
+    askForgotPasswordLink(emailAdress: string) {
+        return this._http.get(`${environment.APIURL}password-recovery/forgot/${emailAdress}`);
     }
 
     resetUserPassword(resetPasswordObject: any): any{

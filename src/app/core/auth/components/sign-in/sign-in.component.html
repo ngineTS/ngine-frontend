@@ -62,14 +62,10 @@
         
         <button class="signin-button" 
             (click)="onContinueClick()"
-            [disabled]="emailSentMessage || continueButtonIsDisabled || !recoveryEmail"
+            [disabled]="continueButtonIsDisabled || !recoveryEmail"
         >
             Continue
         </button>
-        
-        @if (emailSentMessage) {
-            <span class="success-email">{{emailSentMessage}}</span>
-        }
     }
     
 </div>

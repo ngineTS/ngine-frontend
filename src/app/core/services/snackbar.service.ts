@@ -6,12 +6,13 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class SnackBarService {
 
-    constructor(private _snackBar: MatSnackBar) {}
+  constructor(private _snackBar: MatSnackBar) {}
 
-    showSuccessSnackBar(message: string) {
+  showSuccessSnackBar(message: string) {
     this._snackBar.open(message, 'Close', {
       verticalPosition: 'top',
       duration: 10000
     });
   }
+  
  }

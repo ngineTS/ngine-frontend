@@ -26,7 +26,7 @@ export const tokenInterceptior: HttpInterceptorFn = (
       if (err.status === 401) {
         router.navigateByUrl('/unauthorised');
       }
-      throw err.error;
+      return throwError(() => err.error);
     })
   );
 }
