@@ -39,15 +39,15 @@ export class SignUpComponent {
     this.repeatPassword = null;
   }
 
-  onEmailAdressChange(){
+  onEmailAdressChange() {
     this.emailAddressAlreadyExists = false;
   }
 
-  onPasswordChange(){
+  onPasswordChange() {
     this.passwordTooShort = this.userForm.password!.length < 8 ? true : false;
   }
 
-  onSignUpClick(){
+  onSignUpClick() {
     this._authService.checkIfEmailAddressAlreadyExists(this.userForm.emailAddress)
       .pipe(
         switchMap(resp => { 
@@ -73,7 +73,7 @@ export class SignUpComponent {
       });
   }
 
-  isSignUpDisabled(){
+  isSignUpDisabled() {
     if(!this.userForm.emailAddress 
        || !this.userForm.password 
        || this.userForm.password !== this.repeatPassword
