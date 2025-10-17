@@ -29,7 +29,7 @@ export class AuthService {
         return this._http.get(`${environment.APIURL}password-recovery/forgot/${emailAdress}`);
     }
 
-    resetUserPassword(resetPasswordObject: any): any{
+    resetUserPassword(resetPasswordObject: any) {
         return this._http.post(`${environment.APIURL}user/password-change`, resetPasswordObject);
     }
 

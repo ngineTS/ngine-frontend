@@ -50,15 +50,17 @@ export class PasswordRecoveryComponent {
       newPassword: this.newPassword,
       repeatPassword: this.repeatPassword,
       token: this.data.token
-    }).subscribe((resp: any) => {
-      if(resp["affected"] > 0){
-        this._snackbarService.showSuccessSnackBar('Password reset successfull!');
-        this.expiredLinkMessage = null;
-        this.newPassword = '';
-        this.repeatPassword = '';
-      }
-      else{
-        this.expiredLinkMessage = resp.toString();
+    }).subscribe({
+      next: (resp: any) => {
+        if (resp["affected"] > 0) {
+          this._snackbarService.showSuccessSnackBar('Password reset successfull!');
+          this.expiredLinkMessage = null;
+          this.newPassword = '';
+          this.repeatPassword = '';
+        }
+      },
+      error: (err /* NestJS error type */) => {
+        this.expiredLinkMessage = err.message;
         this.newPassword = '';
         this.repeatPassword = '';
       }
