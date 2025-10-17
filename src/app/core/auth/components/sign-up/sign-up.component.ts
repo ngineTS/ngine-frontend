@@ -9,10 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../../../services/app.service';
 import { of, switchMap } from 'rxjs';
 import { SnackBarService } from '../../../services/snackbar.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    FormsModule, 
+    MatFormFieldModule, 
+    MatInputModule,
+    MatButtonModule
+  ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss'
 })

@@ -37,7 +37,15 @@
 
         <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
         
-        <button class="signin-button" (click)="onSignInClick()" [disabled]="isSignInDisabled()">Sign In</button>
+        <div>
+            <button class="w-100 my-4" 
+                matButton="outlined"
+                (click)="onSignInClick()" 
+                [disabled]="isSignInDisabled()"
+            >
+                Sign In
+            </button>
+        </div>
     }
 
     @else {
@@ -60,12 +68,15 @@
             }   
         </mat-form-field>
         
-        <button class="signin-button" 
-            (click)="onContinueClick()"
-            [disabled]="continueButtonIsDisabled || !recoveryEmail"
-        >
-            Continue
-        </button>
+        <div>
+            <button class="w-100 my-4" 
+                matButton="outlined"
+                (click)="onContinueClick()"
+                [disabled]="continueButtonIsDisabled || !recoveryEmail"
+            >
+                Continue
+            </button>
+        </div>
     }
     
 </div>

@@ -32,5 +32,13 @@
         />
     </mat-form-field>
     
-    <button class="signup-button" (click)="onSignUpClick()" [disabled]="isSignUpDisabled()">Sign Up</button>
+    <div>
+        <button class="w-100 my-3" 
+            matButton="outlined"
+            (click)="onSignUpClick()" 
+            [disabled]="isSignUpDisabled()"
+        >   
+            Sign Up
+        </button>
+    </div>
 </div>
