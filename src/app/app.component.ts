@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   title = 'my-app-frontend';
 
   ngOnInit() {
+    /* Wait for initial routing to be loaded before checking url */
     setTimeout(() => {
       if (!this._router.url.includes('password-recovery')) {
         this._appService.createAppRouting();

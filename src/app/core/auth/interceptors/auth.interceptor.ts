@@ -7,7 +7,7 @@ export const tokenInterceptior: HttpInterceptorFn = (
   req: HttpRequest<unknown>, 
   next: HttpHandlerFn
 ) => {
-  const router = inject(Router);
+  const _router = inject(Router);
 
   let token: string | null = null;
   if (typeof localStorage !== 'undefined') {
@@ -15,16 +15,14 @@ export const tokenInterceptior: HttpInterceptorFn = (
   }
   if (token) {
     req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      setHeaders: { Authorization: `Bearer ${token}`}
     });
   }
 
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401) {
-        router.navigateByUrl('/unauthorised');
+        _router.navigateByUrl('/unauthorised');
       }
       return throwError(() => err.error);
     })
