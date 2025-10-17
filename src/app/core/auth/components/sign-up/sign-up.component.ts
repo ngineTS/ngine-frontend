@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../../../services/app.service';
+import { of, switchMap } from 'rxjs';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,7 +25,8 @@ export class SignUpComponent {
 
   constructor(public _authService: AuthService, 
               public _dialogRef: MatDialogRef<SignContainerComponent>,
-              private _appService: AppService
+              private _appService: AppService,
+              private _snackbarService: SnackBarService
               ) { }
 
   ngOnInit(): void {
@@ -41,30 +44,32 @@ export class SignUpComponent {
   }
 
   onPasswordChange(){
-    if(this.userForm.password!.length >= 8){
-      this.passwordTooShort = false;
-    }
+    this.passwordTooShort = this.userForm.password!.length < 8 ? true : false;
   }
 
   onSignUpClick(){
     this._authService.checkIfEmailAddressAlreadyExists(this.userForm.emailAddress)
-      .subscribe((resp: boolean) => {
-        if(resp === true){
-          this.emailAddressAlreadyExists = true;
-        }
-        else{
-          if(this.userForm.password!.length < 8){
-            this.passwordTooShort = true;
+      .pipe(
+        switchMap(resp => { 
+          if (resp === true) {
+            this.emailAddressAlreadyExists = true;
+            return of(null);
           }
-          else{
-            this._authService.userSignUp(this.userForm)
-              .subscribe((result: { [x: string]: string; }) => {
-                localStorage.setItem('access_token', result['access_token']);
-                this._dialogRef.close();
-                this._appService.createAppRouting();
-              });
+          else {
+            return this._authService.userSignUp(this.userForm);
           }
-        }
+        })
+      )
+      .subscribe({
+        next: (result: any) => {
+          if (result) {
+            localStorage.setItem('access_token', result['access_token']);
+            this._snackbarService.showSuccessSnackBar("Welcome!");
+            this._dialogRef.close();
+            this._appService.createAppRouting();
+          }
+        },
+        error: err => console.log(err)
       });
   }
 

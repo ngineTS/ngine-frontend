@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { catchError, throwError } from "rxjs";
+import { Observable } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
 
 @Injectable({
@@ -21,8 +21,8 @@ export class AuthService {
         return this._http.post(`${environment.APIURL}auth/sign-in`, signInDto);
     }
 
-    checkIfEmailAddressAlreadyExists(emailAdress: string): any {
-        return this._http.get(`${environment.APIURL}user/email-address/${emailAdress}`);
+    checkIfEmailAddressAlreadyExists(emailAdress: string): Observable<boolean> {
+        return this._http.get<boolean>(`${environment.APIURL}user/email-address/${emailAdress}`);
     }
 
     askForgotPasswordLink(emailAdress: string) {

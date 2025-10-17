@@ -13,10 +13,6 @@ export class SignContainerComponent {
 
   isSignUpTab: boolean = false;
 
-  ngOnInit(): void {
-
-  }
-
   goToSignIn(){
     this.isSignUpTab = false;
   }
