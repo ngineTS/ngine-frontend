@@ -51,10 +51,10 @@ export class AppComponent implements OnInit {
             next: (resp: any) => {
               localStorage.setItem('access_token', resp['access_token']);
             },
-            error: (err: any) => {
-              console.log('interval - err', err);
+            error: () => {
+              this._router.navigateByUrl('/unauthorised');
             }
-        }); 
+          }); 
         }
       }
       else {
