@@ -9,21 +9,7 @@ import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interfac
 })
 export class AuthService {
 
-    hasSignedIn = new BehaviorSubject(false);
-
-    constructor(private _http: HttpClient){
-
-        this.hasSignedIn.subscribe(resp => {
-            if (resp) {
-                setInterval(() => {
-                  this.refreshToken().subscribe((resp: any) => {
-                    localStorage.setItem('access_token', resp['access_token']);
-                })
-                }, 240000);   
-            }
-        })
-        
-    }
+    constructor(private _http: HttpClient) {}
 
     forgotPwdPage: boolean = false;
 

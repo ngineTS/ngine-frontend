@@ -13,9 +13,14 @@ export class AuthGuard implements CanActivate {
   
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
       
-      const token = localStorage.getItem('access_token');
+      let token: string | null = null; 
+      if (typeof localStorage !== 'undefined') {
+        token = localStorage.getItem('access_token');
+      }
       let jwtDecoded: any;
-      if(token) jwtDecoded = jwtDecode(token);
+      if (token) {
+        jwtDecoded = jwtDecode(token);
+      }
       const jwtExpirationTime: number = jwtDecoded?.exp;
       const currentTime: number = new Date().getTime() / 1000;
       console.log(currentTime);

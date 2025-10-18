@@ -55,7 +55,6 @@ export class SignInComponent {
     }).subscribe({
       next: (resp: any) => {
         localStorage.setItem('access_token', resp['access_token']);
-        this._authService.hasSignedIn.next(true);
         this._appService.createAppRouting();
         this._dialogRef.close();
       },
