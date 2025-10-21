@@ -22,8 +22,10 @@ export class AppService {
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
    * Once all routes have been created, add route with path "" at the start of the array with this config:
-   * - If navigations are part of a header bar module then then redirect to first navigation.
+   * - If navigations are part of a header bar module then redirect to first navigation.
    * - If navigations are part of a cards container module then redirect to cards container component.
+   * 
+   * Add admin routing module at the end if we are on main navigation.
    * 
    * @param navigations The array of navigations passed to create either header route or component container.
    * @param isHeaderVisibleDuringNavigation if module is a header bar and not a cards container.
@@ -46,7 +48,12 @@ export class AppService {
           //if menu not visible (i.e cards) then don't add his height to total height.
           const headerHeight = navigation.headerBar.isVisibleDuringNavigation ? navigation.headerBar.height : 0;
           routes.push(
-            this.createRoutingModule(navigation.children, navigation.headerBar, headerHeight + totHeaderHeight, navigation.name)
+            this.createRoutingModule(
+              navigation.children,
+              navigation.headerBar,
+              headerHeight + totHeaderHeight,
+              navigation.name
+            )
           );
         }
         //Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'header')
@@ -79,7 +86,12 @@ export class AppService {
           },
           loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         });
-      }  
+      }
+      if (!navigations[0].parentId) {
+        routes.push(
+          this.createAdminRoutingModule()
+        );
+      }
     }
     return routes;
   }
@@ -168,6 +180,7 @@ export class AppService {
     else {
       route = { 
         path: parentName, 
+        canActivate: [AuthGuard],
         data: {
           headerBarConfig: headerBar,
           navigations: navigations,
@@ -177,5 +190,29 @@ export class AppService {
       };
     }
     return route;
+  }
+
+  createAdminRoutingModule(): Route {
+    return {
+      path: 'admin',
+      loadChildren: () => [
+        {
+          path: '',
+          loadComponent: () => import('../../pages/admin/admin.component').then(m => m.AdminComponent)
+        },
+        {
+          path: 'user-role-management',
+          loadComponent: () => import('../../pages/admin/user-role-management/user-role-management.component').then(m => m.UserRoleManagementComponent)
+        },
+        {
+          path: 'media-library',
+          loadComponent: () => import('../../pages/admin/media-library/media-library.component').then(m => m.MediaLibraryComponent)
+        },
+        {
+          path: 'analytic',
+          loadComponent: () => import('../../pages/admin/analytic/analytic.component').then(m => m.AnalyticComponent)
+        },
+      ]
+    }
   }
 }

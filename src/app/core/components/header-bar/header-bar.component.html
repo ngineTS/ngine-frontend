@@ -48,6 +48,21 @@
                     <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
                 </div>
             }
+
+            <!-- Admin -->
+            @if (!navigations[0].parentId) {
+                <div class="d-inline-flex mx-2 example-box">                   
+                    <a [routerLink]="'admin'"
+                    [class.active]="isRouteActive('admin')"
+                    [style.color]="isRouteActive('admin') 
+                        ? headerBarConfig.activeColor
+                        : headerBarConfig.color"
+                    [style.font-family]="headerBarConfig.fontFamily"
+                    [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        ADMIN
+                    </a>
+                </div>
+            }
             
         </div>
         

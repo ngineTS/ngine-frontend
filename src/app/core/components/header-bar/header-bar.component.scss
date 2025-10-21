@@ -41,7 +41,6 @@ a {
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
   background: white;
   font-size: 14px;
   background-color: transparent;
@@ -74,6 +73,7 @@ a {
 
 .navigation-container {
   position: relative;
+  cursor: move;
 }
 
 .edit-icon {

@@ -132,12 +132,20 @@ export class HeaderBarComponent implements OnInit {
     });
   }
 
+  /**
+   * Store navigation hover status.
+   * Used to change background and color on header mouse over.
+   */
   createMouseOverObject() {
     for (let navigation of this.navigations) {
       this.isMouseOverCard[navigation.id] = false;
     }
   }
 
+  /**
+   * Navigate to given route name.
+   * @param navigationName The name of the route.
+   */
   navigateToCardUrl(navigationName: string) {
     this._router.navigate([navigationName], { relativeTo: this._route });
   }
