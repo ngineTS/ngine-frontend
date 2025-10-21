@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
         this._router.navigateByUrl('/unauthorised');
       }
 
-    }, this.refreshInterval * 999);
+    }, this.refreshInterval * 990);
   }
 
 
