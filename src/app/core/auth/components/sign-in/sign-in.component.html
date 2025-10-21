@@ -1,0 +1,82 @@
+<div class="row">
+    @if (!_authService.forgotPwdPage) {
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Email address</mat-label>
+            <input matInput 
+                type="email" 
+                placeholder="Email address" 
+                [(ngModel)]="userEmail"
+            />
+            @if (errorEmail) {
+                <span class="err-email">{{ errorEmail }}</span>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput 
+                [type]="hidePassword() ? 'password' : 'text'" 
+                placeholder="Password" 
+                [(ngModel)]="userPassword"
+            />
+            <button
+                type="button"
+                matIconButton
+                matSuffix
+                (click)="passwordEyeclickEvent($event)"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword()"
+            >
+                <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
+            </button>
+            @if (errorPassword) {
+                <span class="err-email">{{ errorPassword }}</span>
+            }
+        </mat-form-field>
+
+        <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
+        
+        <div>
+            <button class="w-100 my-4" 
+                matButton="outlined"
+                (click)="onSignInClick()" 
+                [disabled]="isSignInDisabled()"
+            >
+                Sign In
+            </button>
+        </div>
+    }
+
+    @else {
+        <i class="bi bi-arrow-left-square back-icon" (click)="onGoBackClick()"></i>
+        <span class="recover-header">Recover Password</span>
+        <span class="recover-description">
+            Don't worry we got you covered, write in your E-mail
+            and we'll send you a recovery link.
+        </span>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput 
+                type="email" 
+                placeholder="Email address" 
+                [(ngModel)]="recoveryEmail"
+            />
+            @if (errorEmail) {
+                <span class="err-email">{{ errorEmail }}</span>
+            }   
+        </mat-form-field>
+        
+        <div>
+            <button class="w-100 my-4" 
+                matButton="outlined"
+                (click)="onContinueClick()"
+                [disabled]="continueButtonIsDisabled || !recoveryEmail"
+            >
+                Continue
+            </button>
+        </div>
+    }
+    
+</div>
