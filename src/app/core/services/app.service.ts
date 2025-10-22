@@ -192,6 +192,10 @@ export class AppService {
     return route;
   }
 
+  /**
+   * Create admin routing module.
+   * @returns The main route of admin module.
+   */
   createAdminRoutingModule(): Route {
     return {
       path: 'admin',
@@ -201,10 +205,6 @@ export class AppService {
           loadComponent: () => import('../../pages/admin/admin.component').then(m => m.AdminComponent)
         },
         {
-          path: 'user-role-management',
-          loadComponent: () => import('../../pages/admin/user-role-management/user-role-management.component').then(m => m.UserRoleManagementComponent)
-        },
-        {
           path: 'media-library',
           loadComponent: () => import('../../pages/admin/media-library/media-library.component').then(m => m.MediaLibraryComponent)
         },
@@ -212,7 +212,35 @@ export class AppService {
           path: 'analytic',
           loadComponent: () => import('../../pages/admin/analytic/analytic.component').then(m => m.AnalyticComponent)
         },
+        this.createUserRoleManagementRoutingModule(),
       ]
     }
   }
+
+  /**
+   * Create user role management routing module.
+   * @returns The main route of user role module.
+   */
+  createUserRoleManagementRoutingModule(): Route {
+    return {
+      path: 'user-role-management',
+      loadComponent: () => import('../../pages/admin/user-role-management/user-role-management.component').then(m => m.UserRoleManagementComponent),
+      loadChildren: () => [
+        {
+          path: '',
+          redirectTo: 'role-management',
+          pathMatch: 'full'
+        },
+        {
+          path: 'role-management',
+          loadComponent: () => import('../../pages/admin/user-role-management/role-management/role-management.component').then(m => m.RoleManagementComponent),
+        },
+        {
+          path: 'user-management',
+          loadComponent: () => import('../../pages/admin/user-role-management/user-management/user-management.component').then(m => m.UserManagementComponent),
+        }
+      ]
+    }
+  }
+
 }
