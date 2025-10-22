@@ -7,7 +7,7 @@ import { Role, RolePayload } from "../models/role.interface";
 @Injectable({
   providedIn: 'root',
 })
-export class NavigationService {
+export class RoleService {
 
     constructor(private _http: HttpClient) { }
 

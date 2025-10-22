@@ -44,6 +44,9 @@ export class GenericTableComponent<T extends Record<string, any>> {
   constructor(private _matDialog: MatDialog,
               private _mediaService: MediaService) { }
 
+  /**
+   * On init store required and email validators fn which are the only handled for now.
+   */
   ngOnInit() {
     this.validatorsMap.set('required', Validators.required);
     this.validatorsMap.set('email', Validators.email);

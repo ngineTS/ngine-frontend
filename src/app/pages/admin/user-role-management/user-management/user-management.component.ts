@@ -8,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class UserManagementComponent {
 
+  ngOnInit() {
+    console.log("DD");
+  }
+
 }
