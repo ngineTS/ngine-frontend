@@ -16,7 +16,7 @@ export type UpdateReturnType = {
 })
 export class NavigationService {
 
-    constructor(private _http: HttpClient) {}
+    constructor(private _http: HttpClient) { }
 
     /**
      * Get navigations and their children
