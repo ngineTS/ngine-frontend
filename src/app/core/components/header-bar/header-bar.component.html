@@ -6,7 +6,7 @@
         [style.border-bottom]="headerBarConfig.borderBottom ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor : 'none'">
         
         @if (headerBarConfig.imageName) {
-            <img class="header-bar-img"
+            <img class="mx-2"
                 [src]="headerBarImgUrl$ | async"
                 [style.height]="0.7 * headerBarConfig.height + 'px'"
                 [style.margin-right]="2.5 * headerBarConfig.gap + 'px'"
@@ -21,11 +21,11 @@
             cdkDropListOrientation="horizontal">
             
             @for (navigation of navigations; track navigation.id) {
-                <div cdkDrag class="d-inline-flex mx-2 example-box navigation-container"
+                <div cdkDrag class="d-inline-flex mx-2 p-1 navigation-container"
                     matTooltip="{{navigation.description}}">
                     
                     @if (navigation.icon) {
-                        <i  class="text-center me-2"
+                        <i  class="me-2"
                             [class]="'bi bi-' + navigation.icon"
                             [style.font-size]="headerBarConfig.fontSize + 'px'"
                             [style.color]="navigation.isDisabled ? '#ccc' 
@@ -51,14 +51,21 @@
 
             <!-- Admin -->
             @if (!navigations[0].parentId) {
-                <div class="d-inline-flex mx-2 example-box">                   
+                <div class="mx-2 p-1">
+                    <i  class="bi bi-gear me-1"
+                        [style.font-size]="headerBarConfig.fontSize + 'px'"
+                        [style.color]="isRouteActive('admin') 
+                            ? headerBarConfig.activeColor
+                            : headerBarConfig.color"
+                    >
+                    </i>
                     <a [routerLink]="'admin'"
-                    [class.active]="isRouteActive('admin')"
-                    [style.color]="isRouteActive('admin') 
-                        ? headerBarConfig.activeColor
-                        : headerBarConfig.color"
-                    [style.font-family]="headerBarConfig.fontFamily"
-                    [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        [class.active]="isRouteActive('admin')"
+                        [style.color]="isRouteActive('admin') 
+                            ? headerBarConfig.activeColor
+                            : headerBarConfig.color"
+                        [style.font-family]="headerBarConfig.fontFamily"
+                        [style.font-size]="headerBarConfig.fontSize + 'px'">
                         ADMIN
                     </a>
                 </div>
@@ -99,7 +106,7 @@
             cdkDropListOrientation="mixed">
             
             @for (navigation of navigations; track navigation.id) {
-                <div class="col-3 m-3 card-div example-box"
+                <div class="col-3 m-3 card-div"
                     cdkDrag
                     matTooltip="{{navigation.description}}"
                     (mouseenter)="isMouseOverCard[navigation.id] = true"
@@ -128,7 +135,36 @@
                 </div>
             }
 
-            <div class="card-div col-3 m-3"
+            <!-- Admin card-->
+            @if (!navigations[0].parentId) {
+                <div class="col-3 m-3 card-div"
+                    (mouseenter)="isMouseOverCard['adminCard'] = true"
+                    (mouseleave)="isMouseOverCard['adminCard'] = false"
+                    [style.background-color]="isMouseOverCard['adminCard'] 
+                        ? headerBarConfig.activeColor 
+                        : headerBarConfig.backgroundColor"
+                    (click)="navigateToCardUrl('admin')"
+                >
+                    <div class="row justify-content-center gap-1">
+                        <i  class="bi bi-gear text-center"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'"
+                            [style.color]="isRouteActive('admin') 
+                                ? headerBarConfig.activeColor
+                                : headerBarConfig.color"
+                        >
+                        </i>
+                        <span class="text-center"
+                            [style.color]="headerBarConfig.color"
+                            [style.font-family]="headerBarConfig.fontFamily"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            ADMIN
+                        </span>
+                    </div>
+                </div>
+            }
+
+            <!-- Add header card -->
+            <div class="col-3 m-3 card-div"
                 (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
                 (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
                 (click)="openFormToAddOrEditHeader()"

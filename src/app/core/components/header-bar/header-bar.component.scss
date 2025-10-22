@@ -33,17 +33,17 @@ a {
   display: flex;
 }
 
-.example-box {
-  padding: 8px 12px;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
+.navigation-container {
+  cursor: move;
   align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  background: white;
-  font-size: 14px;
-  background-color: transparent;
+}
+
+.navigation-container:hover {
+  border: 1px dashed white;
+  border-radius: 4px;
+  .edit-icon {
+     display: block;
+  }
 }
 
 .cdk-drag-preview {
@@ -63,30 +63,22 @@ a {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.example-box:last-child {
+.navigation-container:last-child {
   border: none;
 }
 
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+.navigation-container.cdk-drop-list-dragging .navigation-container:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.navigation-container {
-  position: relative;
-  cursor: move;
-}
-
 .edit-icon {
-  position: absolute;
-  top: 8px;
-  right: 0px;
   font-size: 12px;
   border: 1px solid #636363;
   border-radius: 3px;
   background-color: #dee2e6;
   padding: 2px 6px;
   color: #636363;
-  margin-right: 4px;
+  margin-left: 6px;
   cursor: pointer;
   display: none;
 }
@@ -109,15 +101,6 @@ a {
 .right-align {
   float: right;
   margin-top: 8px;
-}
-
-.navigation-container:hover {
-  padding-right: 35px;
-  border: 1px dashed white;
-  border-radius: 4px;
-  .edit-icon {
-     display: block;
-  }
 }
 
 .card-container {
@@ -146,8 +129,4 @@ a {
 
 .add-card-icon {
   font-size: 26px;
-}
-
-.header-bar-img{
-  margin-left: 8px;
 }
