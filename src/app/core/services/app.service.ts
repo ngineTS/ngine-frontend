@@ -205,7 +205,7 @@ export class AppService {
           loadComponent: () => import('../../pages/admin/admin.component').then(m => m.AdminComponent)
         },
         {
-          path: 'media-library',
+          path: 'file-management',
           loadComponent: () => import('../../pages/admin/media-library/media-library.component').then(m => m.MediaLibraryComponent)
         },
         {

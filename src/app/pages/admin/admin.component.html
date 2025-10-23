@@ -11,7 +11,7 @@
                     (mouseleave)="isUserRoleManagementHovered = false"
                     (click)="navigateToCardUrl('user-role-management')">                                   
                     
-                    <div class="row justify-content-center gap-1">
+                    <div class="row gap-1">
                         <i class="bi bi-person-gear text-center" 
                             [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
                             [style.color]="headerBarConfig.color"></i>
@@ -32,7 +32,7 @@
                     (mouseleave)="isAnalyticHovered = false"
                     (click)="navigateToCardUrl('analytic')">                                   
                     
-                    <div class="row justify-content-center gap-1">
+                    <div class="row gap-1">
                         <i class="bi bi-graph-up text-center" 
                             [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
                             [style.color]="headerBarConfig.color"></i>
@@ -46,14 +46,14 @@
                 </div>
 
                 <div class="col-3 m-3 card-div"
-                    [style.background-color]="isMediaLibraryHovered 
+                    [style.background-color]="isFileManagementHovered 
                         ? headerBarConfig.activeColor 
                         : headerBarConfig.backgroundColor"
-                    (mouseenter)="isMediaLibraryHovered = true"
-                    (mouseleave)="isMediaLibraryHovered = false"
-                    (click)="navigateToCardUrl('media-library')">                                   
+                    (mouseenter)="isFileManagementHovered = true"
+                    (mouseleave)="isFileManagementHovered = false"
+                    (click)="navigateToCardUrl('file-management')">                                   
                     
-                    <div class="row justify-content-center gap-1">
+                    <div class="row gap-1">
                         <i class="bi bi-card-image text-center" 
                             [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
                             [style.color]="headerBarConfig.color"></i>
@@ -61,7 +61,7 @@
                             [style.color]="headerBarConfig.color"
                             [style.font-family]="headerBarConfig.fontFamily"
                             [style.font-size]="headerBarConfig.fontSize + 'px'">
-                            Media Library
+                            File Management
                         </span>
                     </div>
                 </div>

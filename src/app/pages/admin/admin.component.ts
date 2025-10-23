@@ -18,7 +18,7 @@ export class AdminComponent {
   headerBarConfig: HeaderBar | undefined;
   isUserRoleManagementHovered = false;
   isAnalyticHovered = false;
-  isMediaLibraryHovered = false;
+  isFileManagementHovered = false;
 
   ngOnInit() {
     this._headerBarService.getMainHeaderBar().subscribe(resp => {
