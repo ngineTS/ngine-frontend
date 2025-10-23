@@ -1,0 +1,75 @@
+<div class="m-4">
+    <h5>Add Role</h5>
+
+    <form [formGroup]="roleForm">
+
+        <div class="mt-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="displayLabel"/>
+            </mat-form-field>
+
+            <mat-slide-toggle class="ms-4" formControlName="isDisabled"></mat-slide-toggle>
+        </div>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <div formArrayName="roleNavigationPermissions" class="form-array">
+            
+            <div class="nav-info">Associate navigations and permissions to this role.</div>
+            
+            @for (roleNavPermGroup of roleNavigationPermissions.controls; track $index; let i = $index) {   
+                <div [formGroupName]="i">
+                    <mat-form-field appearance="outline" class="me-2">
+                        <mat-label >Navigation</mat-label>
+                        <mat-select formControlName="navigationId">
+                            @for (navigation of navigations; track navigation.id) {
+                                <mat-option [value]="navigation.id">{{ navigation.displayLabel }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="me-2">
+                        <mat-label>Permission</mat-label>
+                        <mat-select formControlName="permissionId">
+                            @for (permission of permissions; track permission.id) {
+                                <mat-option [value]="permission.id">{{ permission.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    @if (roleNavigationPermissions.length > 1) {
+                        <i class="bi bi-trash-fill trash-icon" (click)="onRemoveNavigationPermissionClick(i)"></i>
+                    }
+                </div>
+            }
+
+            <button matButton="outlined" 
+                type="button"
+                (click)="addNavigationPermission()"
+            >   
+                + Add other navigation
+            </button>
+
+        </div>
+
+    </form>
+
+    <div class="mt-3">
+         <button matButton="outlined" 
+            class="right-align"
+            [disabled]="!roleForm.valid"
+            (click)="saveRole()"
+        >   
+            Save
+        </button>
+        <button matButton="outlined" 
+            class="me-3 text-danger right-align"
+            (click)="deleteRole()"
+        >   
+            Delete
+        </button>
+    </div>
+</div>

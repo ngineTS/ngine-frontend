@@ -8,6 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { RoleManagementFormComponent } from './role-management-form/role-management-form.component';
 
 
 @Component({
@@ -28,7 +30,8 @@ export class RoleManagementComponent implements OnInit {
   filteredRoles!: Array<Role>;
   roles!: Array<Role>;
 
-  constructor(private _roleService: RoleService) { }
+  constructor(private _roleService: RoleService,
+              private _matDialog: MatDialog) { }
 
   ngOnInit() {
     this._roleService.getAllRoles().pipe(retry(2), take(1))
@@ -40,6 +43,9 @@ export class RoleManagementComponent implements OnInit {
 
   addRole() {
     console.log('add role');
+    this._matDialog.open(RoleManagementFormComponent, {
+      maxHeight: '92vh'
+    });
   }
 
   editRole(role: Role) {
