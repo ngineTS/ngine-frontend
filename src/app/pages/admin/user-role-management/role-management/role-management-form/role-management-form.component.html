@@ -20,7 +20,7 @@
             
             <div class="nav-info">Associate navigations and permissions to this role.</div>
             
-            @for (roleNavPermGroup of roleNavigationPermissions.controls; track $index; let i = $index) {   
+            @for (roleNavPermGroup of roleNavigationPermissions.controls; let i = $index; track roleNavPermGroup) {   
                 <div [formGroupName]="i">
                     <mat-form-field appearance="outline" class="me-2">
                         <mat-label >Navigation</mat-label>
