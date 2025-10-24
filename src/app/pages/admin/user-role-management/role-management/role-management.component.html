@@ -4,7 +4,7 @@
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
-    <button class="col-sm-2 ms-auto me-4" matButton="outlined" (click)="addRole()">Add Role</button>
+    <button class="col-sm-2 ms-auto me-4 mb-3" matButton="outlined" (click)="addRole()">Add Role</button>
 
     @for (role of filteredRoles; track role.id) {
         <div class="row my-2 gap-3 align-items-center">

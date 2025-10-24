@@ -14,13 +14,14 @@ import { NavigationService } from '../../../../../core/services/navigation.servi
 import { RoleService } from '../../../../../core/services/role.service';
 import { firstValueFrom } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-role-management-form',
   imports: [
     MatInputModule,
     MatFormFieldModule,
-    MatSlideToggleModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatSelectModule,
     ReactiveFormsModule

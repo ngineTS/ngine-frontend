@@ -4,12 +4,12 @@
     <form [formGroup]="roleForm">
 
         <div class="mt-4">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-75 me-2">
                 <mat-label>Name</mat-label>
                 <input type="text" matInput formControlName="displayLabel"/>
             </mat-form-field>
 
-            <mat-slide-toggle class="ms-4" formControlName="isDisabled"></mat-slide-toggle>
+            <mat-checkbox class="mb-2" formControlName="isDisabled">Disable</mat-checkbox>
         </div>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Description</mat-label>
