@@ -48,6 +48,7 @@
 
             <button matButton="outlined" 
                 type="button"
+                [disabled]="roleNavigationPermissions.invalid"
                 (click)="addNavigationPermission()"
             >   
                 + Add other navigation
