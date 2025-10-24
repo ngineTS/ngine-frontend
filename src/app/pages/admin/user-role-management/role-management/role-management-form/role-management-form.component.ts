@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Role } from '../../../../../core/models/role.interface';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { Navigation } from '../../../../../core/models/navigation.interface';
 import { Permission } from '../../../../../core/models/permission.interface';
@@ -15,7 +14,6 @@ import { RoleService } from '../../../../../core/services/role.service';
 import { firstValueFrom } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { IsNavigationIdInFormArrayPipe } from '../../../../../core/pipes/is-navigationi-id-in-form-array.pipe';
 
 @Component({
   selector: 'app-role-management-form',
@@ -26,10 +24,10 @@ import { IsNavigationIdInFormArrayPipe } from '../../../../../core/pipes/is-navi
     MatButtonModule,
     MatSelectModule,
     ReactiveFormsModule,
-    IsNavigationIdInFormArrayPipe
   ],
   templateUrl: './role-management-form.component.html',
-  styleUrl: './role-management-form.component.scss'
+  styleUrl: './role-management-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoleManagementFormComponent implements OnInit{
 
@@ -39,8 +37,8 @@ export class RoleManagementFormComponent implements OnInit{
               private _permissionService: PermissionService,
               private _navigationService: NavigationService,
               private _roleService: RoleService,
-              private _dialogRef: MatDialogRef<RoleManagementFormComponent>,
-  ) {}
+              private _dialogRef: MatDialogRef<RoleManagementFormComponent>
+             ) { }
 
   roleForm!: FormGroup;
   navigations!: Navigation[];
@@ -161,6 +159,20 @@ export class RoleManagementFormComponent implements OnInit{
       await this.saveRoleNavigationPermissions(roleId);
       this._dialogRef.close('added');
     }
+  }
+
+  /**
+   * TODO: Find another way to detect selected navigation. This way has to bad performances.
+   * Check if given navigation is already selected.
+   * @param navigationId The dropdown option to check.
+   * @returns True if it is selected, false if not.
+   * 
+   */
+  isNavigationSelected(navigationId: string): boolean {
+    const isSelected = this.roleNavigationPermissions.controls.find(obj => 
+      obj.value['navigationId'] === navigationId
+    );
+    return isSelected ? true : false;
   }
 
 }

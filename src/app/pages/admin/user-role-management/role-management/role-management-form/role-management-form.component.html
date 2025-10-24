@@ -26,7 +26,7 @@
                         <mat-select formControlName="navigationId">
                             @for (navigation of navigations; track navigation.id) {
                                 <mat-option [value]="navigation.id" 
-                                    [disabled]="(navigation.id | isNavigationIdInFormArray : roleNavigationPermissions)"
+                                    [disabled]="isNavigationSelected(navigation.id)"
                                 >
                                     {{ navigation.displayLabel }}
                                 </mat-option>
