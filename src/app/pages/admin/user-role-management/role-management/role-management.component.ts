@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleManagementFormComponent } from './role-management-form/role-management-form.component';
+import { SnackBarService } from '../../../../core/services/snackbar.service';
 
 
 @Component({
@@ -31,33 +32,41 @@ export class RoleManagementComponent implements OnInit {
   roles!: Array<Role>;
 
   constructor(private _roleService: RoleService,
-              private _matDialog: MatDialog) { }
+              private _matDialog: MatDialog,
+              private _snackbarService: SnackBarService) { }
 
   ngOnInit() {
-    this._roleService.getAllRoles().pipe(retry(2), take(1))
-      .subscribe(resp => {
-        this.roles = resp;
-        this.filteredRoles = resp;
-      });
+    this.getAllRoles();
   }
 
   addRole() {
-    console.log('add role');
     const role: RolePayload = {
       displayLabel: '',
       description: '',
-      isDisabled: false,
+      isDisabled: false
     }
-    this._matDialog.open(RoleManagementFormComponent, {
+    const dialogRef = this._matDialog.open(RoleManagementFormComponent, {
       maxHeight: '92vh',
       data: {role: role}
+    });
+    dialogRef.afterClosed().subscribe(message => {
+      if(message) {
+        this.getAllRoles();
+        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully`);
+      }
     });
   }
 
   editRole(role: Role) {
-     this._matDialog.open(RoleManagementFormComponent, {
+    const dialogRef = this._matDialog.open(RoleManagementFormComponent, {
       maxHeight: '92vh',
       data: {role: role}
+    });
+    dialogRef.afterClosed().subscribe(message => {
+      if(message) {
+        this.getAllRoles();
+        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully`);
+      }
     });
   }
 
@@ -75,6 +84,15 @@ export class RoleManagementComponent implements OnInit {
         obj.displayLabel.trim().toLocaleLowerCase().includes(filterValue)
       );
     }
+  }
+
+  getAllRoles() {
+    this._roleService.getAllRoles().pipe(retry(2), take(1))
+      .subscribe(resp => {
+        this.roles = resp;
+        this.filteredRoles = resp;
+      }
+    );
   }
 
 }

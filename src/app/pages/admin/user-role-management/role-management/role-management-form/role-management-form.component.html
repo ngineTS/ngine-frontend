@@ -59,7 +59,7 @@
     <div class="mt-3">
          <button matButton="outlined" 
             class="right-align"
-            [disabled]="!roleForm.valid"
+            [disabled]="!roleForm.valid || isSaving"
             (click)="submitForm()"
         >   
             Save

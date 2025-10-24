@@ -42,6 +42,7 @@ export class RoleManagementFormComponent implements OnInit{
   roleForm!: FormGroup;
   navigations!: Navigation[];
   permissions! : Permission[];
+  isSaving = false;
 
   /**
    * On init,
@@ -143,6 +144,7 @@ export class RoleManagementFormComponent implements OnInit{
    * Add or update role then close the pop up.
    */
   async submitForm() {
+    this.isSaving = true;
     if (this._data.role.id) {
       await this.updateRole();
       await this.saveRoleNavigationPermissions(this._data.role.id);
