@@ -1,5 +1,5 @@
 <div class="m-4">
-    <h5>Add Role</h5>
+    <h5>{{title}}</h5>
 
     <form [formGroup]="roleForm">
 
@@ -25,7 +25,11 @@
                         <mat-label >Navigation</mat-label>
                         <mat-select formControlName="navigationId">
                             @for (navigation of navigations; track navigation.id) {
-                                <mat-option [value]="navigation.id">{{ navigation.displayLabel }}</mat-option>
+                                <mat-option [value]="navigation.id" 
+                                    [disabled]="(navigation.id | isNavigationIdInFormArray : roleNavigationPermissions)"
+                                >
+                                    {{ navigation.displayLabel }}
+                                </mat-option>
                             }
                         </mat-select>
                     </mat-form-field>

@@ -15,6 +15,7 @@ import { RoleService } from '../../../../../core/services/role.service';
 import { firstValueFrom } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { IsNavigationIdInFormArrayPipe } from '../../../../../core/pipes/is-navigationi-id-in-form-array.pipe';
 
 @Component({
   selector: 'app-role-management-form',
@@ -24,7 +25,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     MatButtonModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IsNavigationIdInFormArrayPipe
   ],
   templateUrl: './role-management-form.component.html',
   styleUrl: './role-management-form.component.scss'
@@ -44,13 +46,16 @@ export class RoleManagementFormComponent implements OnInit{
   navigations!: Navigation[];
   permissions! : Permission[];
   isSaving = false;
+  title: string = 'Add Role';
 
   /**
    * On init,
+   * - Setup title up to form status (add or edit).
    * - Create form model.
    * - Get permission and navigation data to be used as items of dropdown.
    */
   ngOnInit(): void {
+    if(this._data.role.id) this.title = 'Edit Role';
     this._permissionService.getPermissions().subscribe(resp => this.permissions = resp);
     this._navigationService.getFlatNavigations().subscribe(resp => this.navigations = resp);
     this.roleForm = this._formBuilder.group({
