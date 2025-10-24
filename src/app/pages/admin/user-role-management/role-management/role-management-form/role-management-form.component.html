@@ -66,11 +66,14 @@
         >   
             Save
         </button>
-        <button matButton="outlined" 
-            class="me-3 text-danger right-align"
-            (click)="deleteRole()"
-        >   
-            Delete
-        </button>
+        
+        @if (_data.role.id) {
+            <button matButton="outlined" 
+                class="me-3 text-danger right-align"
+                (click)="deleteRole()"
+            >   
+                Delete
+            </button>
+        }
     </div>
 </div>

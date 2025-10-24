@@ -15,3 +15,5 @@ export interface RoleNavigationPermission {
     navigation?: Navigation;
     permission?: Permission;
 }
+
+export type RoleNavigationPermissionPayload = Pick<RoleNavigationPermission, 'roleId' | 'navigationId' | 'permissionId'>;

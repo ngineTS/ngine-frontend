@@ -11,6 +11,9 @@ import { Permission } from '../../../../../core/models/permission.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { PermissionService } from '../../../../../core/services/permission.service';
 import { NavigationService } from '../../../../../core/services/navigation.service';
+import { RoleService } from '../../../../../core/services/role.service';
+import { firstValueFrom } from 'rxjs';
+import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
 
 @Component({
   selector: 'app-role-management-form',
@@ -32,6 +35,7 @@ export class RoleManagementFormComponent implements OnInit{
                 private _formBuilder: FormBuilder,
                 private _permissionService: PermissionService,
                 private _navigationService: NavigationService,
+                private _roleService: RoleService
     ) {}
 
     roleForm!: FormGroup;
@@ -39,26 +43,33 @@ export class RoleManagementFormComponent implements OnInit{
     permissions! : Permission[];
 
     ngOnInit(): void {
-      this._permissionService.getPermissions().subscribe(resp => {
-        console.log(resp);
-        this.permissions = resp;
-      });
-      this._navigationService.getFlatNavigations().subscribe(resp => {
-        console.log(resp);
-        this.navigations = resp;
-      })
+      this._permissionService.getPermissions().subscribe(resp => this.permissions = resp);
+      this._navigationService.getFlatNavigations().subscribe(resp => this.navigations = resp);
       this.roleForm = this._formBuilder.group({
-        displayLabel: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required),
-        isDisabled: new FormControl(false),
+        displayLabel: new FormControl(this._data.role.displayLabel ?? '', Validators.required),
+        description: new FormControl(this._data.role.description ?? '', Validators.required),
+        isDisabled: new FormControl(this._data.role.isDisabled ?? false),
         roleNavigationPermissions: this._formBuilder.array([])
       });
-      this.roleNavigationPermissions.push(
-        this._formBuilder.group({
-          navigationId: new FormControl('', Validators.required),
-          permissionId: new FormControl('', Validators.required),
-        })
-      );
+
+      if (this._data.role.roleNavigationPermissions) {
+        for (let roleNavigationPermission of this._data.role.roleNavigationPermissions) {
+          this.roleNavigationPermissions.push(
+            this._formBuilder.group({
+              navigationId: new FormControl(roleNavigationPermission.navigationId, Validators.required),
+              permissionId: new FormControl(roleNavigationPermission.permissionId, Validators.required),
+            })
+          );
+        }
+      }
+      else {
+        this.roleNavigationPermissions.push(
+          this._formBuilder.group({
+            navigationId: new FormControl('', Validators.required),
+            permissionId: new FormControl('', Validators.required),
+          })
+        );
+      }
     }
 
     get roleNavigationPermissions() {
@@ -81,8 +92,15 @@ export class RoleManagementFormComponent implements OnInit{
     }
 
     
-    saveRole() {
-
+    async saveRole() {
+      const { roleNavigationPermissions, ...rolePayload } = this.roleForm.value;
+      const roleId = (await firstValueFrom(this._roleService.saveRole(rolePayload))).id;
+      const roleNavigationPermissionsPayload: Array<RoleNavigationPermissionPayload> = this.roleNavigationPermissions.value;
+      roleNavigationPermissionsPayload.forEach(rnp => rnp.roleId = roleId);
+      console.log(roleNavigationPermissionsPayload);
+      this._roleService.saveRoleNavigationPermissions(roleNavigationPermissionsPayload).subscribe(resp => {
+        console.log(resp);
+      })
     }
     
     deleteRole() {

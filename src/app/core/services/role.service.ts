@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { Observable } from "rxjs";
 import { Role, RolePayload } from "../models/role.interface";
+import { RoleNavigationPermission, RoleNavigationPermissionPayload } from "../models/role-navigation-permission.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,12 @@ export class RoleService {
             [prop: string]: any; 
             affected: number;
         }>(`${environment.APIURL}role/${id}`, updateRolePayload);
+    }
+
+    saveRoleNavigationPermissions(
+        roleNavigationPermissionsPayload: Array<RoleNavigationPermissionPayload>
+    ): Observable<Array<RoleNavigationPermission>> {
+        return this._http.post<Array<RoleNavigationPermission>>(`${environment.APIURL}role-navigation-permission`, roleNavigationPermissionsPayload);
     }
 
 

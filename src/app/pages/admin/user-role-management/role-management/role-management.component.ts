@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../../../../core/services/role.service';
-import { Role } from '../../../../core/models/role.interface';
+import { Role, RolePayload } from '../../../../core/models/role.interface';
 import { retry, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,13 +43,22 @@ export class RoleManagementComponent implements OnInit {
 
   addRole() {
     console.log('add role');
+    const role: RolePayload = {
+      displayLabel: '',
+      description: '',
+      isDisabled: false,
+    }
     this._matDialog.open(RoleManagementFormComponent, {
-      maxHeight: '92vh'
+      maxHeight: '92vh',
+      data: {role: role}
     });
   }
 
   editRole(role: Role) {
-    console.log(role)
+     this._matDialog.open(RoleManagementFormComponent, {
+      maxHeight: '92vh',
+      data: {role: role}
+    });
   }
 
   deleteRole(roleId: string) {
