@@ -17,7 +17,6 @@
         </mat-form-field>
 
         <div formArrayName="roleNavigationPermissions" class="form-array">
-            
             <div class="nav-info">Associate navigations and permissions to this role.</div>
             
             @for (roleNavPermGroup of roleNavigationPermissions.controls; let i = $index; track roleNavPermGroup) {   
@@ -51,9 +50,8 @@
                 [disabled]="roleNavigationPermissions.invalid"
                 (click)="addNavigationPermission()"
             >   
-                + Add other navigation
+                + Add
             </button>
-
         </div>
 
     </form>
@@ -62,18 +60,9 @@
          <button matButton="outlined" 
             class="right-align"
             [disabled]="!roleForm.valid"
-            (click)="saveRole()"
+            (click)="submitForm()"
         >   
             Save
         </button>
-        
-        @if (_data.role.id) {
-            <button matButton="outlined" 
-                class="me-3 text-danger right-align"
-                (click)="deleteRole()"
-            >   
-                Delete
-            </button>
-        }
     </div>
 </div>

@@ -30,11 +30,14 @@ export class RoleService {
         }>(`${environment.APIURL}role/${id}`, updateRolePayload);
     }
 
-    saveRoleNavigationPermissions(
+    bulkSaveRoleNavigationPermissions(
         roleNavigationPermissionsPayload: Array<RoleNavigationPermissionPayload>
     ): Observable<Array<RoleNavigationPermission>> {
-        return this._http.post<Array<RoleNavigationPermission>>(`${environment.APIURL}role-navigation-permission`, roleNavigationPermissionsPayload);
+        return this._http.post<Array<RoleNavigationPermission>>(`${environment.APIURL}role-navigation-permission/bulk-save`, roleNavigationPermissionsPayload);
     }
 
+    bulkDeleteRoleNavigationPermissions(ids: string[]): Observable<RoleNavigationPermission> {
+        return this._http.post<RoleNavigationPermission>(`${environment.APIURL}role-navigation-permission/bulk-delete`, ids);
+    }
 
 }
