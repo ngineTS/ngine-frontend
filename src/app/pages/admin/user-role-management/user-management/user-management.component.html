@@ -6,12 +6,12 @@
     </mat-form-field>
 
     @for (user of filteredUsers; track user.id) {
-        <div class="row my-2 gap-3 align-items-center">
-            <span class="col fw-bold ellipsis">
+        <div class="row my-2 gap-3 align-items-baseline">
+            <span class="col-sm-3 fw-bold ellipsis">
                 <i class="bi bi-typescript me-2"></i>
                 {{user.emailAddress}}
             </span>
-            <mat-form-field appearance="outline" class="col">
+            <mat-form-field appearance="outline" class="col-sm-4">
                 <mat-label >Roles</mat-label>
                 <mat-select multiple>
                     @for (role of roles; track role.id) {
@@ -21,11 +21,18 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle class="col-1" (change)="onDisableToggleChange($event)"></mat-slide-toggle>
+            <mat-slide-toggle class="col-1 ms-auto me-4" (change)="onDisableToggleChange($event)"></mat-slide-toggle>
+            <button class="col-1" 
+                matButton="outlined" 
+                matTooltip="Save"
+            >
+                <i class="bi bi-check-lg"></i>
+            </button>
             <button class="col-1 text-danger" 
                 matButton="outlined" 
-                matTooltip="Delete role" 
-                (click)="deleteUser(user.id)">
+                matTooltip="Delete user" 
+                (click)="deleteUser(user.id)"
+            >
                 <i class="bi bi-trash"></i>
             </button>
         </div>
