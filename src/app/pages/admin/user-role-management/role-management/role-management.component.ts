@@ -33,10 +33,17 @@ export class RoleManagementComponent implements OnInit {
               private _matDialog: MatDialog,
               private _snackbarService: SnackBarService) { }
 
+  /**
+   * On init, get all roles and assign filteredRoles value.
+   */
   ngOnInit() {
     this.getAllRoles();
   }
 
+  /**
+   * Open role management form to add role.
+   * If form is closed with message then load roles.
+   */
   addRole() {
     const role: RolePayload = {
       displayLabel: '',
@@ -55,6 +62,11 @@ export class RoleManagementComponent implements OnInit {
     });
   }
 
+  /**
+   * Open role management form to edit role.
+   * If form is closed with message then load roles.
+   * @param role The role to edit.
+   */
   editRole(role: Role) {
     const dialogRef = this._matDialog.open(RoleManagementFormComponent, {
       maxHeight: '92vh',
@@ -68,6 +80,10 @@ export class RoleManagementComponent implements OnInit {
     });
   }
 
+  /**
+   * Delete role and exclude it from roles array.
+   * @param roleId The role id to delete.
+   */
   deleteRole(roleId: string) {
     if (confirm("Are you sure to delete this role and his dependencies?")) {
       this._roleService.deleteRole(roleId)
@@ -82,6 +98,10 @@ export class RoleManagementComponent implements OnInit {
     }
   }
 
+  /**
+   * Apply filter on displayLabel on search input keyup.
+   * @param event The keyup event.
+   */
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLocaleLowerCase();
     if (filterValue === '') {
@@ -94,6 +114,9 @@ export class RoleManagementComponent implements OnInit {
     }
   }
 
+  /** 
+   * Get all roles and assign filteredRoles value.
+   */
   getAllRoles() {
     this._roleService.getAllRoles()
       .pipe(

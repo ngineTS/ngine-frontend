@@ -12,14 +12,28 @@ export class RoleService {
 
     constructor(private _http: HttpClient) { }
 
+    /**
+     * Get all roles.
+     * @returns An obervable of all roles.
+     */
     getAllRoles(): Observable<Array<Role>> {
         return this._http.get<Array<Role>>(`${environment.APIURL}role`);
     }
 
+    /**
+     * Save role and return it.
+     * @returns An obervable of the role saved.
+     */
     saveRole(rolePayload: RolePayload): Observable<Role> {
         return this._http.post<Role>(`${environment.APIURL}role`, rolePayload);
     }
 
+    /**
+     * Update role.
+     * @param id The id of the role to update.
+     * @param updateRolePayload The role properties to update.
+     * @returns An update response type object.
+     */
     updateRole(id: string, updateRolePayload: Partial<RolePayload>): Observable<{
         [prop: string]: any;
         affected: number;
@@ -30,16 +44,31 @@ export class RoleService {
         }>(`${environment.APIURL}role/${id}`, updateRolePayload);
     }
 
+    /**
+     * Delete role.
+     * @param id The id of the role to delete.
+     * @returns An update response type object.
+     */
     deleteRole(id: string) {
         return this._http.delete(`${environment.APIURL}role/${id}`);
     }
 
+    /**
+     * Save Array of roleNavigationPermission.
+     * @param roleNavigationPermissionsPayload An array of roleNavigationPermission payload to save.
+     * @returns The array of roleNavigationPermission saved.
+     */
     bulkSaveRoleNavigationPermissions(
         roleNavigationPermissionsPayload: Array<RoleNavigationPermissionPayload>
     ): Observable<Array<RoleNavigationPermission>> {
         return this._http.post<Array<RoleNavigationPermission>>(`${environment.APIURL}role-navigation-permission/bulk-save`, roleNavigationPermissionsPayload);
     }
 
+    /**
+     * Delete Array of roleNavigationPermission.
+     * @param ids An array of roleNavigationPermission ids to delete.
+     * @returns An update response type object.
+     */
     bulkDeleteRoleNavigationPermissions(ids: string[]): Observable<RoleNavigationPermission> {
         return this._http.post<RoleNavigationPermission>(`${environment.APIURL}role-navigation-permission/bulk-delete`, ids);
     }
