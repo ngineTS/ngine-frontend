@@ -8,12 +8,12 @@
 
     @for (role of filteredRoles; track role.id) {
         <div class="row my-2 gap-3 align-items-center">
-            <span class="col-sm-3 col-6 fw-bold ellipsis" matTooltip="{{role.displayLabel}}">
+            <span class="col-sm-3 col-6 fw-bold ellipsis" [title]="role.displayLabel">
                 <i class="bi bi-typescript me-2"></i>
                 {{role.displayLabel}}
             </span>
             <span class="col-6 d-none d-sm-block ellipsis" 
-                matTooltip="{{role.description}}"
+                [title]="role.description"
             >
                 {{role.description}}
             </span>
