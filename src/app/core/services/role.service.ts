@@ -13,7 +13,14 @@ export class RoleService {
     constructor(private _http: HttpClient) { }
 
     /**
-     * Get all roles.
+     * Get all roles ordered alphabaetically.
+     */
+    getAllRoles(): Observable<Array<Role>> {
+        return this._http.get<Array<Role>>(`${environment.APIURL}role`);
+    }
+
+    /**
+     * Get all roles and related navigation permissions.
      * @returns An obervable of all roles.
      */
     getAllRolesWithNavigationPermissions(): Observable<Array<Role>> {

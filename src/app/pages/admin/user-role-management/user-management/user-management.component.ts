@@ -10,6 +10,7 @@ import { SnackBarService } from '../../../../core/services/snackbar.service';
 import { UserService } from '../../../../core/services/user.service';
 import { User } from '../../../../core/models/user.interface';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { Role } from '../../../../core/models/role.interface';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class UserManagementComponent implements OnInit {
 
   filteredUsers!: Array<User>;
   users!: Array<User>;
+  roles!: Array<Role>;
 
   constructor(private _roleService: RoleService,
               private _userService: UserService,
@@ -38,6 +40,7 @@ export class UserManagementComponent implements OnInit {
    * On init, get all users and assign filteredUsers value.
    */
   ngOnInit() {
+    this._roleService.getAllRoles().subscribe(resp => console.log(resp));
     this._userService.getAllUsers().subscribe(resp => {
       this.users = resp;
       this.filteredUsers = this.users;
