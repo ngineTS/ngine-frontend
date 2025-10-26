@@ -41,8 +41,8 @@ export class RoleManagementFormComponent implements OnInit{
              ) { }
 
   roleForm!: FormGroup;
-  navigations!: Navigation[];
-  permissions! : Permission[];
+  navigations!: Array<Partial<Navigation>>;
+  permissions! : Array<Permission>;
   isSaving = false;
   title: string = 'Add Role';
 
@@ -50,12 +50,16 @@ export class RoleManagementFormComponent implements OnInit{
    * On init,
    * - Setup title up to form status (add or edit).
    * - Create form model.
-   * - Get permission and navigation data to be used as items of dropdown.
+   * - Get navigation dropdown items and add "All" navigation item.
+   * - Get Permissision dropdown items.
    */
   ngOnInit(): void {
     if(this._data.role.id) this.title = 'Edit Role';
     this._permissionService.getPermissions().subscribe(resp => this.permissions = resp);
-    this._navigationService.getFlatNavigations().subscribe(resp => this.navigations = resp);
+    this._navigationService.getFlatNavigations().subscribe(resp => {
+      this.navigations = resp;
+      this.navigations.unshift({id: '00000000-0000-0000-0000-000000000000', displayLabel: 'All'});
+    });
     this.roleForm = this._formBuilder.group({
       displayLabel: new FormControl(this._data.role.displayLabel ?? '', Validators.required),
       description: new FormControl(this._data.role.description ?? '', Validators.required),
