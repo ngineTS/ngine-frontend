@@ -16,8 +16,8 @@ export class RoleService {
      * Get all roles.
      * @returns An obervable of all roles.
      */
-    getAllRoles(): Observable<Array<Role>> {
-        return this._http.get<Array<Role>>(`${environment.APIURL}role`);
+    getAllRolesWithNavigationPermissions(): Observable<Array<Role>> {
+        return this._http.get<Array<Role>>(`${environment.APIURL}role/rpn`);
     }
 
     /**

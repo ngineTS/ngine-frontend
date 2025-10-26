@@ -118,7 +118,7 @@ export class RoleManagementComponent implements OnInit {
    * Get all roles and assign filteredRoles value.
    */
   getAllRoles() {
-    this._roleService.getAllRoles()
+    this._roleService.getAllRolesWithNavigationPermissions()
       .pipe(
         retry(2), 
         take(1)
