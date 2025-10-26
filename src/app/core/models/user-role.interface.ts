@@ -12,3 +12,5 @@ export interface UserRole {
     deletedBy: string;
     role?: Role;
 }
+
+export type UserRolePayload = Pick<UserRole, 'roleId' | 'userId'>

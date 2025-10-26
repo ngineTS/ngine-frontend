@@ -55,11 +55,13 @@ export class RoleManagementFormComponent implements OnInit{
    */
   ngOnInit(): void {
     if(this._data.role.id) this.title = 'Edit Role';
+
     this._permissionService.getPermissions().subscribe(resp => this.permissions = resp);
     this._navigationService.getFlatNavigations().subscribe(resp => {
       this.navigations = resp;
       this.navigations.unshift({id: '00000000-0000-0000-0000-000000000000', displayLabel: 'All'});
     });
+    
     this.roleForm = this._formBuilder.group({
       displayLabel: new FormControl(this._data.role.displayLabel ?? '', Validators.required),
       description: new FormControl(this._data.role.description ?? '', Validators.required),

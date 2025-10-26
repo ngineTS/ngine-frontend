@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../../../../core/services/role.service';
-import { retry, take } from 'rxjs';
+import { firstValueFrom, of, retry, switchMap, take, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -12,6 +12,8 @@ import { User } from '../../../../core/models/user.interface';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { Role } from '../../../../core/models/role.interface';
 import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { UserRolePayload } from '../../../../core/models/user-role.interface';
 
 
 @Component({
@@ -23,7 +25,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss'
@@ -33,6 +36,10 @@ export class UserManagementComponent implements OnInit {
   filteredUsers!: Array<User>;
   users!: Array<User>;
   roles!: Array<Role>;
+  userNgModel: Record<string, {
+    isEnabled: boolean;
+    roleIds: string[];
+  }> = {};
 
   constructor(private _roleService: RoleService,
               private _userService: UserService,
@@ -42,8 +49,26 @@ export class UserManagementComponent implements OnInit {
    * On init, get all users and assign filteredUsers value.
    */
   ngOnInit() {
-    this._roleService.getAllRoles().subscribe(resp => this.roles = resp);
-    this._userService.getAllUsers().subscribe(resp => {
+    this._roleService.getAllRoles()
+      .pipe(
+        retry(2),
+        take(1)
+      )
+      .subscribe(resp => this.roles = resp);
+    this._userService.getAllUsers()
+      .pipe(
+        retry(2),
+        take(1),
+        tap(users => {
+          console.log(users)
+          users.forEach(user => this.userNgModel[user.id] = {
+            isEnabled: !user.isDisabled,
+            roleIds: user.userRoles?.map(userRole => userRole.roleId) ?? [],
+          })
+          console.log(this.userNgModel);
+        })
+      )
+      .subscribe(resp => {
       this.users = resp;
       this.filteredUsers = this.users;
       console.log(this.users);
@@ -55,16 +80,57 @@ export class UserManagementComponent implements OnInit {
    * @param userId The user id to delete.
    */
   deleteUser(userId: string) {
+    console.log(userId);
     if (confirm("Are you sure to delete this user?")) {
-      this._roleService.deleteRole(userId)
+      this._userService.deleteUser(userId)
         .pipe(
           retry(2),
           take(1)
         )
-        .subscribe(() => {
-
+        .subscribe(resp => {
+          console.log(resp);
+          this.users = this.users.filter(user => user.id !== userId);
+          this.filteredUsers = this.users;
         }); 
     }
+  }
+
+  async onSaveUserClick(userId: string) {
+    console.log(this.userNgModel[userId]);
+    if (confirm("Do you want to update this user?")) {
+      this.updateUser(userId)
+        .pipe(
+          retry(2),
+          take(1),
+          switchMap(x => this.saveUserRoles(userId))
+        )
+        .subscribe(userRolesSaved => {
+          console.log(userRolesSaved);
+          this._snackbarService.showSuccessSnackBar('User updated successfully.')
+        })
+      
+    }
+  }
+
+  /**
+   * Update user props based on userNgModel value.
+   * @param userId The user id to update.
+   */
+  updateUser(userId: string) {
+    const userPayload = { isDisabled: !this.userNgModel[userId].isEnabled }
+    return this._userService.updateUser(userId, userPayload);
+  }
+  
+  saveUserRoles(userId: string) {
+    const userRolesPayload: Array<UserRolePayload> = [];
+    this.userNgModel[userId].roleIds.forEach(roleId => {
+      userRolesPayload.push({
+        userId: userId,
+        roleId: roleId
+      })
+    });
+    console.log(userRolesPayload);
+    return this._userService.bulksaveUserRoles(userId, userRolesPayload);
   }
 
   /**
@@ -85,7 +151,6 @@ export class UserManagementComponent implements OnInit {
 
   onDisableToggleChange(event: MatSlideToggleChange) {
     console.log(event.checked);
-
   }
 
 }

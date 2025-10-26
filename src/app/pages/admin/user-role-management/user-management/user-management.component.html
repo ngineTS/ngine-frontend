@@ -13,7 +13,7 @@
             </span>
             <mat-form-field appearance="outline" class="col-sm-4">
                 <mat-label >Roles</mat-label>
-                <mat-select multiple>
+                <mat-select [(ngModel)]="userNgModel[user.id].roleIds" multiple>
                     @for (role of roles; track role.id) {
                         <mat-option [value]="role.id">
                             {{ role.displayLabel }}
@@ -21,10 +21,14 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle class="col-1 ms-auto me-4" (change)="onDisableToggleChange($event)"></mat-slide-toggle>
+            <mat-slide-toggle class="col-1 ms-auto me-4" 
+                (change)="onDisableToggleChange($event)"
+                [(ngModel)]="userNgModel[user.id].isEnabled">
+            </mat-slide-toggle>
             <button class="col-1" 
                 matButton="outlined" 
                 matTooltip="Save"
+                (click)="onSaveUserClick(user.id)"
             >
                 <i class="bi bi-check-lg"></i>
             </button>
