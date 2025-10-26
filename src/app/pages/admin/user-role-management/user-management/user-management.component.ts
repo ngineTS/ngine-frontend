@@ -11,6 +11,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { User } from '../../../../core/models/user.interface';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { Role } from '../../../../core/models/role.interface';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -21,7 +22,8 @@ import { Role } from '../../../../core/models/role.interface';
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss'
@@ -40,7 +42,7 @@ export class UserManagementComponent implements OnInit {
    * On init, get all users and assign filteredUsers value.
    */
   ngOnInit() {
-    this._roleService.getAllRoles().subscribe(resp => console.log(resp));
+    this._roleService.getAllRoles().subscribe(resp => this.roles = resp);
     this._userService.getAllUsers().subscribe(resp => {
       this.users = resp;
       this.filteredUsers = this.users;

@@ -11,6 +11,16 @@
                 <i class="bi bi-typescript me-2"></i>
                 {{user.emailAddress}}
             </span>
+            <mat-form-field appearance="outline" class="col">
+                <mat-label >Roles</mat-label>
+                <mat-select multiple>
+                    @for (role of roles; track role.id) {
+                        <mat-option [value]="role.id">
+                            {{ role.displayLabel }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
             <mat-slide-toggle class="col-1" (change)="onDisableToggleChange($event)"></mat-slide-toggle>
             <button class="col-1 text-danger" 
                 matButton="outlined" 
