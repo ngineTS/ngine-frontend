@@ -5,7 +5,6 @@ import { retry, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +18,6 @@ import { SnackBarService } from '../../../../core/services/snackbar.service';
     CommonModule, 
     MatButtonModule,
     MatTooltipModule,
-    MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule
   ],
