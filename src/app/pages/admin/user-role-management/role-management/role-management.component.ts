@@ -71,7 +71,17 @@ export class RoleManagementComponent implements OnInit {
   }
 
   deleteRole(roleId: string) {
-    console.log(roleId);
+    if (confirm("Are you sure to delete this role and his dependencies?")) {
+      this._roleService.deleteRole(roleId)
+        .pipe(
+          retry(2),
+          take(1)
+        )
+        .subscribe(() => {
+          this.roles = this.roles.filter(role => role.id !== roleId);
+          this.filteredRoles = this.roles;
+        }); 
+    }
   }
 
   applyFilter(event: Event) {
@@ -87,7 +97,11 @@ export class RoleManagementComponent implements OnInit {
   }
 
   getAllRoles() {
-    this._roleService.getAllRoles().pipe(retry(2), take(1))
+    this._roleService.getAllRoles()
+      .pipe(
+        retry(2), 
+        take(1)
+      )
       .subscribe(resp => {
         this.roles = resp;
         this.filteredRoles = resp;

@@ -30,6 +30,10 @@ export class RoleService {
         }>(`${environment.APIURL}role/${id}`, updateRolePayload);
     }
 
+    deleteRole(id: string) {
+        return this._http.delete(`${environment.APIURL}role/${id}`);
+    }
+
     bulkSaveRoleNavigationPermissions(
         roleNavigationPermissionsPayload: Array<RoleNavigationPermissionPayload>
     ): Observable<Array<RoleNavigationPermission>> {
