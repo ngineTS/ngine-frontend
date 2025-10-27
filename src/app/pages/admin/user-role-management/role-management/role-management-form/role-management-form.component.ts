@@ -50,8 +50,8 @@ export class RoleManagementFormComponent implements OnInit{
    * On init,
    * - Setup title up to form status (add or edit).
    * - Create form model.
-   * - Get navigation dropdown items and add "All" navigation item.
-   * - Get Permissision dropdown items.
+   * - Get navigation dropdown items and add "All navigations" item.
+   * - Get Permission dropdown items.
    */
   ngOnInit(): void {
     if(this._data.role.id) this.title = 'Edit Role';

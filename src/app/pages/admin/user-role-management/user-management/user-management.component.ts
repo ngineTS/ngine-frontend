@@ -46,7 +46,9 @@ export class UserManagementComponent implements OnInit {
               private _snackbarService: SnackBarService) { }
 
   /**
-   * On init, get all users and assign filteredUsers value.
+   * On init:
+   * Get roles dropdown items.
+   * Get all users and assign filteredUsers.
    */
   ngOnInit() {
     this._roleService.getAllRoles()
@@ -95,6 +97,11 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
+  /**
+   * Methods trigger on ✓ button click.
+   * Update user and his roles assignment.
+   * @param userId The user id to update.
+   */
   async onSaveUserClick(userId: string) {
     console.log(this.userNgModel[userId]);
     if (confirm("Do you want to update this user?")) {
@@ -121,6 +128,11 @@ export class UserManagementComponent implements OnInit {
     return this._userService.updateUser(userId, userPayload);
   }
   
+  /**
+   * Save user roles.
+   * @param userId The user id to update.
+   * @returns An observable of array of users that have been saved.
+   */
   saveUserRoles(userId: string) {
     const userRolesPayload: Array<UserRolePayload> = [];
     this.userNgModel[userId].roleIds.forEach(roleId => {
@@ -147,10 +159,6 @@ export class UserManagementComponent implements OnInit {
         obj.name.trim().toLocaleLowerCase().includes(filterValue)
       );
     }
-  }
-
-  onDisableToggleChange(event: MatSlideToggleChange) {
-    console.log(event.checked);
   }
 
 }
