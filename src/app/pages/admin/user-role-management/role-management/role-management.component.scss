@@ -1,5 +1,5 @@
 .roles-container {
-    height: calc(100vh - 152px); 
+    max-height: calc(100vh - 152px); 
     overflow-y: auto;
     overflow-x: hidden;
 }
