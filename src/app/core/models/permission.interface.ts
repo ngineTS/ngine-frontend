@@ -1,6 +1,6 @@
 export interface Permission {
     id: string;
-    name: string;
+    name: PermissionName;
     priority: number;
     createdDate: Date;
     createdBy: string;
@@ -9,3 +9,5 @@ export interface Permission {
     deletedDate: Date;
     deletedBy: string;
 }
+
+export type PermissionName = 'Can view' | 'Can add' | 'Can add and edit' | 'Can add, edit and delete';

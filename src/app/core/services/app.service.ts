@@ -111,6 +111,7 @@ export class AppService {
     
     forkJoin([$navigations, $headerBar]).subscribe({
       next: ([navigations, headerBar]) => {
+        console.log(navigations);
         let route: Route;
         if (navigations && navigations.length > 0) {
           route = this.createRoutingModule(navigations, headerBar, headerBar.height);

@@ -1,4 +1,3 @@
-import { TestText } from "./test-text.interface";
 import { NavigationType } from "./navigation-type.interface";
 import { HeaderBar } from "./header-bar.interface";
 
@@ -24,4 +23,5 @@ export interface Navigation {
     headerBar: HeaderBar;
     children?: Navigation[];
     parent?: Navigation;
+    permissionName?: PermissionName;
 }
