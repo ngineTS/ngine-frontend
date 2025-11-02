@@ -37,8 +37,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   @Input() content!: Array<T>; //table content as array of objects of type T
   @Input() tableConfig!: TableViz; //table and input configurations used for editing
-  @Input() canAdd!: boolean; //user permission
-  @Input() canEdit!: boolean; //user permission
+  @Input() canAdd: boolean | undefined; //user permission
+  @Input() canEdit: boolean | undefined; //user permission
   @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
   constructor(private _matDialog: MatDialog,

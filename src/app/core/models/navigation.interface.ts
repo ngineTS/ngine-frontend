@@ -1,5 +1,6 @@
 import { NavigationType } from "./navigation-type.interface";
 import { HeaderBar } from "./header-bar.interface";
+import { PermissionName } from "./permission.interface";
 
 export interface Navigation {
     id: string;

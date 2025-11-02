@@ -79,8 +79,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     });
 
     this.containerRef.setInput('_navigation', this._navigation);
-    this.containerRef.setInput('_canEdit', this._canEdit);
     this.containerRef.setInput('_canAdd', this._canAdd);
+    this.containerRef.setInput('_canEdit', this._canEdit);
+    this.containerRef.setInput('_canDelete', this._canDelete);
     this.containerRef.setInput('_width', this._width);
     this.containerRef.setInput('_height', this._height);
     this.containerRef.setInput('_isEditing', false);

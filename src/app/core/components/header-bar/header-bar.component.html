@@ -56,7 +56,9 @@
                         {{ navigation.displayLabel }}
                     </a>
 
-                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                    @if (navigation.permissionName?.includes('edit')) {
+                        <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                    }
                 </div>
             }
 
@@ -84,17 +86,21 @@
             
         </div>
         
-        <button 
-            class="add-nav-button" 
-            matTooltip="Add header" 
-            (click)="openFormToAddOrEditHeader()">
-            +
-        </button>
-
-        <i class="bi bi-pen edit-header-bar auto-margin-left" 
-            (click)="openFormToEditHeaderBar()"
-            matTooltip="Edit menu">
-        </i>
+        @if (headerBarConfig.permissionName?.includes('add')) {
+            <button 
+                class="add-nav-button" 
+                matTooltip="Add header" 
+                (click)="openFormToAddOrEditHeader()">
+                +
+            </button>
+        }
+       
+        @if (headerBarConfig.permissionName?.includes('edit')) {
+            <i class="bi bi-pen edit-header-bar auto-margin-left" 
+                (click)="openFormToEditHeaderBar()"
+                matTooltip="Edit menu">
+            </i>
+        }
 
     </div>
     <router-outlet />
@@ -103,11 +109,13 @@
 <!-- Cards container section -->
 @else {
     <div class="card-container" [style.height]="'calc(100vh - ' + totHeaderHeight + 'px)'">
-        <i class="bi bi-pen edit-header-bar right-align"
-            (click)="openFormToEditHeaderBar()"
-            matTooltip="Edit menu"
-        >
-        </i>
+        @if (headerBarConfig.permissionName?.includes('edit')) {
+            <i class="bi bi-pen edit-header-bar right-align"
+                (click)="openFormToEditHeaderBar()"
+                matTooltip="Edit menu"
+            >
+            </i>
+        }
         
         <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
             cdkDropList
@@ -128,10 +136,12 @@
                         ? headerBarConfig.activeColor 
                         : headerBarConfig.backgroundColor"
                 >
-                    <i class="bi bi-pen edit-icon" 
-                        (click)="openFormToAddOrEditHeader(navigation); $event.stopPropagation();"
-                    >
-                    </i>
+                    @if (navigation.permissionName?.includes('edit')) {
+                        <i class="bi bi-pen edit-icon" 
+                            (click)="openFormToAddOrEditHeader(navigation); $event.stopPropagation();"
+                        >
+                        </i>
+                    }
                     
                     <div class="row gap-1">
                         @if (navigation.icon) {
@@ -181,20 +191,22 @@
             }
 
             <!-- Add header card -->
-            <div class="col-3 m-3 card-div"
-                (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
-                (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
-                (click)="openFormToAddOrEditHeader()"
-                [style.background-color]="isMouseOverCard['addHeaderCard'] 
-                    ? headerBarConfig.activeColor 
-                    : headerBarConfig.backgroundColor"
-            >
-                <span [style.color]="headerBarConfig.color"
-                    [style.font-family]="headerBarConfig.fontFamily"
-                    [style.font-size]="headerBarConfig.fontSize + 'px'">
-                    <i class="bi bi-plus-circle add-card-icon" matTooltip="Add header"></i>
-                </span>
-            </div>
+            @if (headerBarConfig.permissionName?.includes('add')) {
+                <div class="col-3 m-3 card-div"
+                    (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
+                    (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
+                    (click)="openFormToAddOrEditHeader()"
+                    [style.background-color]="isMouseOverCard['addHeaderCard'] 
+                        ? headerBarConfig.activeColor 
+                        : headerBarConfig.backgroundColor"
+                >
+                    <span [style.color]="headerBarConfig.color"
+                        [style.font-family]="headerBarConfig.fontFamily"
+                        [style.font-size]="headerBarConfig.fontSize + 'px'">
+                        <i class="bi bi-plus-circle add-card-icon" matTooltip="Add header"></i>
+                    </span>
+                </div>
+            }
 
         </div>
 

@@ -12,8 +12,9 @@
                     <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
                     <app-navigation
                         [_navigation]="navigation"
-                        [_canEdit]="true"
-                        [_canAdd]="true"
+                        [_canAdd]="navigation.permissionName?.includes('add')"
+                        [_canEdit]="navigation.permissionName?.includes('edit')"
+                        [_canDelete]="navigation.permissionName?.includes('delete')"
                     >
                     </app-navigation>
                 </div>
@@ -21,18 +22,20 @@
         </div>
     }
     
-    <button 
-        matButton 
-        [matMenuTriggerFor]="menu" 
-        class="add-nav-button">
-        +
-    </button>
-    <mat-menu #menu="matMenu">
-        @if (navigations.length === 0) {
-            <button mat-menu-item (click)="openFormToAddHeaderOrComponent('header')">Add header</button>
-        }
-        <button mat-menu-item (click)="openFormToAddHeaderOrComponent('component')">Add component</button>
-    </mat-menu>
+    @if (canAdd) {
+        <button 
+            matButton 
+            [matMenuTriggerFor]="menu" 
+            class="add-nav-button">
+            +
+        </button>
+        <mat-menu #menu="matMenu">
+            @if (navigations.length === 0) {
+                <button mat-menu-item (click)="openFormToAddHeaderOrComponent('header')">Add header</button>
+            }
+            <button mat-menu-item (click)="openFormToAddHeaderOrComponent('component')">Add component</button>
+        </mat-menu>
+    }
     
 </div>
 

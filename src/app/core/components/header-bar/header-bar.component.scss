@@ -62,10 +62,6 @@ a {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.navigation-container:last-child {
-  border: none;
-}
-
 .navigation-container.cdk-drop-list-dragging .navigation-container:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
