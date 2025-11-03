@@ -6,10 +6,16 @@
             class="example-list" 
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
-            cdkDropListOrientation="mixed">
+            cdkDropListOrientation="mixed"
+            [cdkDropListDisabled]="!containerPermissionName.includes('edit')">
+            
             @for (navigation of navigations; track navigation.id) {
                 <div class="example-box" cdkDrag>
-                    <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
+                        
+                    @if (containerPermissionName.includes('edit')) {
+                        <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
+                    }
+                    
                     <app-navigation
                         [_navigation]="navigation"
                         [_canAdd]="navigation.permissionName?.includes('add')"
@@ -22,7 +28,7 @@
         </div>
     }
     
-    @if (canAdd) {
+    @if (containerPermissionName.includes('add')) {
         <button 
             matButton 
             [matMenuTriggerFor]="menu" 

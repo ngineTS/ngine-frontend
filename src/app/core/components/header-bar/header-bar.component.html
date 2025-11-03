@@ -23,12 +23,15 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="horizontal"
+            [cdkDropListDisabled]="!headerBarConfig.permissionName?.includes('edit')"
         >
             
             <!-- List of navigation headers -->
             @for (navigation of navigations; track navigation.id) {
                 <div cdkDrag 
-                    class="d-inline-flex mx-2 p-1 navigation-container" 
+                    [style.cursor]="headerBarConfig.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                    class="d-inline-flex mx-2 p-1 align-items-center" 
+                    [class.drag-item]="headerBarConfig.permissionName?.includes('edit')"
                     matTooltip="{{navigation.description}}"
                 >
                     
@@ -122,6 +125,7 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="mixed"
+            [cdkDropListDisabled]="!headerBarConfig.permissionName?.includes('edit')"
         >
             
             <!-- List of navigation cards -->

@@ -1,7 +1,8 @@
 <div #navigationDiv
     class="navigation-container"
     [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''">
+    [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
+    [style.resize]="_canEdit ? 'both' : ''">
     
     @if (_canEdit) {
         @if (_isEditing) {

@@ -66,7 +66,7 @@ export class AppService {
               totHeaderHeight: totHeaderHeight,
               navigations: navigation.children ?? [],
               parentId: navigation.id,
-              canAdd: navigation.permissionName?.includes('add')
+              containerPermissionName: navigation.permissionName
             },
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           });
