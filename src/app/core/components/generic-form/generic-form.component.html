@@ -19,17 +19,19 @@
         }
 
         <div class="row">
+            @if (_data.hasDeleteButton) {
+                <button 
+                    [style.display]="_data.id ? 'block' : 'none'"
+                    class="form-button text-danger col ms-auto"
+                    matButton="outlined"
+                    type="button" 
+                    (click)="deleteObject()"
+                >
+                    Delete
+                </button>
+            }
             <button 
-                [style.display]="_data.id ? 'block' : 'none'"
-                class="form-button text-danger col ms-auto"
-                matButton="outlined"
-                type="button" 
-                (click)="deleteObject()"
-            >
-                Delete
-            </button>
-            <button 
-                [style.margin-left]="_data.id ? '0px' : 'auto'"
+                [style.margin-left]="_data.hasDeleteButton ? '0px' : 'auto'"
                 class="form-button col"
                 matButton="outlined" 
                 type="submit" 

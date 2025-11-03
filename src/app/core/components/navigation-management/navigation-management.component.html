@@ -50,7 +50,7 @@
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
         <div class="row form-buttons">
-            @if (data.navigation) {
+            @if (data.navigation?.permissionName?.includes('delete')) {
                 <button class="col me-3 text-danger" 
                         matButton="outlined" 
                         type="button"

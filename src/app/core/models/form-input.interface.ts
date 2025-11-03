@@ -52,4 +52,5 @@ export type GenericFormDialogData<T> = {
   formConfig: DeepFormConfig<T>;
   controllerName: string;
   title: string;
+  hasDeleteButton: boolean;
 }
