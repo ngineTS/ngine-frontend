@@ -107,14 +107,13 @@ export class AppService {
    */
   createAppRouting(redirectRouteName?: string): void {
     const $navigations = this._navigationService.getNestedNavigations();
-    const $headerBar = this._headerBarService.getMainHeaderBar();
+    const $mainHeaderBar = this._headerBarService.getMainHeaderBar();
     
-    forkJoin([$navigations, $headerBar]).subscribe({
-      next: ([navigations, headerBar]) => {
-        console.log(navigations);
+    forkJoin([$navigations, $mainHeaderBar]).subscribe({
+      next: ([navigations, mainHeaderBar]) => {
         let route: Route;
         if (navigations && navigations.length > 0) {
-          route = this.createRoutingModule(navigations, headerBar, headerBar.height);
+          route = this.createRoutingModule(navigations, mainHeaderBar, mainHeaderBar.height);
         }
         else {
           route = {
