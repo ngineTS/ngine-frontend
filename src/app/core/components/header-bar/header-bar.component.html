@@ -30,8 +30,8 @@
             @for (navigation of navigations; track navigation.id) {
                 <div cdkDrag 
                     [style.cursor]="headerBarConfig.permissionName?.includes('edit') ? 'move' : 'pointer'"
-                    class="d-inline-flex mx-2 p-1 align-items-center" 
-                    [class.drag-item]="headerBarConfig.permissionName?.includes('edit')"
+                    class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
+                    [class.nav-container]="navigation.permissionName?.includes('edit')"
                     matTooltip="{{navigation.description}}"
                 >
                     

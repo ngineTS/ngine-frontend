@@ -120,7 +120,7 @@ export class AppService {
           route = {
             path: '',
             canActivate: [AuthGuard],
-            data: { 
+            data: {
               navigations: [],
               parentId: null,
             },
