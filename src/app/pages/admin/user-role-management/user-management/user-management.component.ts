@@ -14,6 +14,7 @@ import { Role } from '../../../../core/models/role.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { UserRolePayload } from '../../../../core/models/user-role.interface';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -40,10 +41,12 @@ export class UserManagementComponent implements OnInit {
     isEnabled: boolean;
     roleIds: string[];
   }> = {};
+  permissionName: PermissionName | null = null;
 
   constructor(private _roleService: RoleService,
               private _userService: UserService,
-              private _snackbarService: SnackBarService) { }
+              private _snackbarService: SnackBarService,
+              private _route: ActivatedRoute) { }
 
   /**
    * On init:
@@ -51,6 +54,7 @@ export class UserManagementComponent implements OnInit {
    * Get all users and assign filteredUsers.
    */
   ngOnInit() {
+    this.permissionName = this._route.snapshot.data["permissionName"];
     this._roleService.getAllRoles()
       .pipe(
         retry(2),
@@ -62,19 +66,16 @@ export class UserManagementComponent implements OnInit {
         retry(2),
         take(1),
         tap(users => {
-          console.log(users)
           users.forEach(user => this.userNgModel[user.id] = {
             isEnabled: !user.isDisabled,
             roleIds: user.userRoles?.map(userRole => userRole.roleId) ?? [],
           })
-          console.log(this.userNgModel);
         })
       )
       .subscribe(resp => {
-      this.users = resp;
-      this.filteredUsers = this.users;
-      console.log(this.users);
-    });
+        this.users = resp;
+        this.filteredUsers = this.users;
+      });
   }
 
   /**
@@ -90,7 +91,6 @@ export class UserManagementComponent implements OnInit {
           take(1)
         )
         .subscribe(resp => {
-          console.log(resp);
           this.users = this.users.filter(user => user.id !== userId);
           this.filteredUsers = this.users;
         }); 
@@ -103,7 +103,6 @@ export class UserManagementComponent implements OnInit {
    * @param userId The user id to update.
    */
   async onSaveUserClick(userId: string) {
-    console.log(this.userNgModel[userId]);
     if (confirm("Do you want to update this user?")) {
       this.updateUser(userId)
         .pipe(

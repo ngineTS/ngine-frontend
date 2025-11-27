@@ -4,31 +4,43 @@
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
-    <button class="col-sm-2 ms-auto me-4 mb-3" matButton="outlined" (click)="addRole()">Add Role</button>
+
+    @if (permissionName?.includes('add')) {
+        <button class="col-sm-2 ms-auto me-4 mb-3" matButton="outlined" (click)="addRole()">Add Role</button>
+    }
 
     @for (role of filteredRoles; track role.id) {
         <div class="row my-2 gap-3 align-items-center">
+            
             <span class="col-sm-3 col-6 fw-bold ellipsis" [title]="role.displayLabel">
                 <i class="bi bi-typescript me-2"></i>
                 {{role.displayLabel}}
             </span>
+            
             <span class="col-6 d-none d-sm-block ellipsis" 
                 [title]="role.description"
             >
                 {{role.description}}
             </span>
-            <button class="col-1 ms-auto"
-                matTooltip="Edit role" 
-                matButton="outlined" 
-                (click)="editRole(role)">
-                <i class="bi bi-pen"></i>
-            </button>
-            <button class="col-1 text-danger" 
-                matButton="outlined" 
-                matTooltip="Delete role" 
-                (click)="deleteRole(role.id)">
-                <i class="bi bi-trash"></i>
-            </button>
+
+            @if (permissionName?.includes('edit')) {
+                <button class="col-1 ms-auto"
+                    matTooltip="Edit role" 
+                    matButton="outlined" 
+                    (click)="editRole(role)">
+                    <i class="bi bi-pen"></i>
+                </button>
+            }
+            
+            @if (permissionName?.includes('delete')) {
+                <button class="col-1 text-danger" 
+                    matButton="outlined" 
+                    matTooltip="Delete role" 
+                    (click)="deleteRole(role.id)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            }
+            
         </div>
     }
 </div>

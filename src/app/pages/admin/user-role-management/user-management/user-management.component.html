@@ -21,23 +21,30 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle class="col-1 ms-auto me-4"
-                [(ngModel)]="userNgModel[user.id].isEnabled">
-            </mat-slide-toggle>
-            <button class="col-1" 
-                matButton="outlined" 
-                matTooltip="Save"
-                (click)="onSaveUserClick(user.id)"
-            >
-                <i class="bi bi-check-lg"></i>
-            </button>
-            <button class="col-1 text-danger" 
-                matButton="outlined" 
-                matTooltip="Delete user" 
-                (click)="deleteUser(user.id)"
-            >
-                <i class="bi bi-trash"></i>
-            </button>
+            
+            @if (permissionName?.includes('edit')) {
+                <mat-slide-toggle class="col-1 ms-auto me-4"
+                    [(ngModel)]="userNgModel[user.id].isEnabled">
+                </mat-slide-toggle>
+
+                <button class="col-1" 
+                    matButton="outlined" 
+                    matTooltip="Save"
+                    (click)="onSaveUserClick(user.id)"
+                >
+                    <i class="bi bi-check-lg"></i>
+                </button>
+            }
+
+            @if (permissionName?.includes('delete')) {
+                <button class="col-1 text-danger" 
+                    matButton="outlined" 
+                    matTooltip="Delete user" 
+                    (click)="deleteUser(user.id)"
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+            }
         </div>
     }
 </div>

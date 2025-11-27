@@ -66,7 +66,7 @@
             }
 
             <!-- Admin header -->
-            @if (!navigations[0].parentId) {
+            @if (!navigations[0].parentId && headerBarConfig.permissionName) {
                 <div class="mx-2 p-1">
                     <i  class="bi bi-gear me-1"
                         [style.font-size]="headerBarConfig.fontSize + 'px'"
@@ -167,7 +167,7 @@
             }
 
             <!-- Admin card-->
-            @if (!navigations[0].parentId) {
+            @if (!navigations[0].parentId  && headerBarConfig.permissionName) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['adminCard'] = true"
                     (mouseleave)="isMouseOverCard['adminCard'] = false"

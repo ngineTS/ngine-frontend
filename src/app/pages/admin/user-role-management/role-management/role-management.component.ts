@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleManagementFormComponent } from './role-management-form/role-management-form.component';
 import { SnackBarService } from '../../../../core/services/snackbar.service';
+import { ActivatedRoute } from '@angular/router';
+import { PermissionName } from '../../../../core/models/permission.interface';
 
 
 @Component({
@@ -28,16 +30,19 @@ export class RoleManagementComponent implements OnInit {
 
   filteredRoles!: Array<Role>;
   roles!: Array<Role>;
+  permissionName: PermissionName | null = null;
 
   constructor(private _roleService: RoleService,
               private _matDialog: MatDialog,
-              private _snackbarService: SnackBarService) { }
+              private _snackbarService: SnackBarService,
+              private _route: ActivatedRoute) { }
 
   /**
    * On init, get all roles and assign filteredRoles value.
    */
   ngOnInit() {
     this.getAllRoles();
+    this.permissionName = this._route.snapshot.data["permissionName"];
   }
 
   /**
@@ -73,7 +78,7 @@ export class RoleManagementComponent implements OnInit {
       data: {role: role}
     });
     dialogRef.afterClosed().subscribe(message => {
-      if(message) {
+      if (message) {
         this.getAllRoles();
         this._snackbarService.showSuccessSnackBar(`Role ${message} successfully`);
       }

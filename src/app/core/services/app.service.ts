@@ -25,8 +25,6 @@ export class AppService {
    * - If navigations are part of a header bar module then redirect to first navigation.
    * - If navigations are part of a cards container module then redirect to cards container component.
    * 
-   * Add admin routing module at the end if we are on main navigation.
-   * 
    * @param navigations The array of navigations passed to create either header route or component container.
    * @param isHeaderVisibleDuringNavigation If module is a header bar and not a cards container.
    * @returns The routes set up.
@@ -89,20 +87,17 @@ export class AppService {
           loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         });
       }
-      if (!navigations[0].parentId) {
-        routes.push(this.createAdminRoutingModule());
-      }
     }
     return routes;
   }
 
 
   /**
-   * Create App Routing.
+   * Create App Routing:
+   * - If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
+   * - If user has maximun permission (i.e: All nav - add, edit, delete) then add Admon module.
+   * - Add Unhautorised component route.
    * 
-   * If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
-   * 
-   * Add extra components on main route children (ex: UnhautorisedComponent).
    * @param redirectRouteName 
    */
   createAppRouting(redirectRouteName?: string): void {
@@ -129,6 +124,9 @@ export class AppService {
         const unauthorisedRoute = {
           path: 'unauthorised',
           loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
+        }
+        if (mainHeaderBar.permissionName) {
+          route.children?.push(this.createAdminRoutingModule(mainHeaderBar.permissionName!));
         }
         this._router.resetConfig([route, unauthorisedRoute]);
         this._router.navigateByUrl(redirectRouteName ?? '');
@@ -174,7 +172,7 @@ export class AppService {
           parentId: headerBar.navigationId
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        loadChildren: () => this.createRoutes(navigations, true, totHeaderHeight),
+        children: this.createRoutes(navigations, true, totHeaderHeight),
       };
     }
     else {
@@ -186,7 +184,7 @@ export class AppService {
           navigations: navigations,
           parentId: headerBar.navigationId 
         },
-        loadChildren: () => this.createRoutes(navigations, false, totHeaderHeight),
+        children: this.createRoutes(navigations, false, totHeaderHeight),
       };
     }
     return route;
@@ -196,10 +194,10 @@ export class AppService {
    * Create admin routing module.
    * @returns The main route of admin module.
    */
-  createAdminRoutingModule(): Route {
+  createAdminRoutingModule(permissionName: string): Route {
     return {
       path: 'admin',
-      loadChildren: () => [
+      children: [
         {
           path: '',
           loadComponent: () => import('../../pages/admin/admin.component').then(m => m.AdminComponent)
@@ -212,7 +210,7 @@ export class AppService {
           path: 'analytic',
           loadComponent: () => import('../../pages/admin/analytic/analytic.component').then(m => m.AnalyticComponent)
         },
-        this.createUserRoleManagementRoutingModule(),
+        this.createUserRoleManagementRoutingModule(permissionName),
       ]
     }
   }
@@ -221,22 +219,24 @@ export class AppService {
    * Create user role management routing module.
    * @returns The main route of user role module.
    */
-  createUserRoleManagementRoutingModule(): Route {
+  createUserRoleManagementRoutingModule(permissionName: string): Route {
     return {
       path: 'user-role-management',
       loadComponent: () => import('../../pages/admin/user-role-management/user-role-management.component').then(m => m.UserRoleManagementComponent),
-      loadChildren: () => [
+      children: [
         {
           path: '',
           redirectTo: 'role-management',
-          pathMatch: 'full'
+          pathMatch: 'full',
         },
         {
           path: 'role-management',
+          data: { permissionName: permissionName },
           loadComponent: () => import('../../pages/admin/user-role-management/role-management/role-management.component').then(m => m.RoleManagementComponent),
         },
         {
           path: 'user-management',
+          data: { permissionName: permissionName },
           loadComponent: () => import('../../pages/admin/user-role-management/user-management/user-management.component').then(m => m.UserManagementComponent),
         }
       ]
