@@ -16,8 +16,7 @@ export class AuthService {
     userSignUp(signUpDto: UserSignUpPayload): any {
         return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto, { 
             withCredentials: true 
-        }
-);
+        });
     }
 
     userSignIn(signInDto: UserSignInPayload) {

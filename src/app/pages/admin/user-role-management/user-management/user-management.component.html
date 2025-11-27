@@ -1,0 +1,50 @@
+<div class="row my-4 users-container">
+
+    <mat-form-field class="col-sm-6" appearance="outline">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    </mat-form-field>
+
+    @for (user of filteredUsers; track user.id) {
+        <div class="row my-2 gap-3 align-items-baseline">
+            <span class="col-sm-3 fw-bold ellipsis">
+                <i class="bi bi-typescript me-2"></i>
+                {{user.emailAddress}}
+            </span>
+            <mat-form-field appearance="outline" class="col-sm-4">
+                <mat-label >Roles</mat-label>
+                <mat-select [(ngModel)]="userNgModel[user.id].roleIds" multiple>
+                    @for (role of roles; track role.id) {
+                        <mat-option [value]="role.id">
+                            {{ role.displayLabel }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            
+            @if (permissionName?.includes('edit')) {
+                <mat-slide-toggle class="col-1 ms-auto me-4"
+                    [(ngModel)]="userNgModel[user.id].isEnabled">
+                </mat-slide-toggle>
+
+                <button class="col-1" 
+                    matButton="outlined" 
+                    matTooltip="Save"
+                    (click)="onSaveUserClick(user.id)"
+                >
+                    <i class="bi bi-check-lg"></i>
+                </button>
+            }
+
+            @if (permissionName?.includes('delete')) {
+                <button class="col-1 text-danger" 
+                    matButton="outlined" 
+                    matTooltip="Delete user" 
+                    (click)="deleteUser(user.id)"
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+            }
+        </div>
+    }
+</div>

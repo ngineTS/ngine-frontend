@@ -1,3 +1,5 @@
+import { UserRole } from "./user-role.interface";
+
 export interface User {
     id: string;
     name: string;
@@ -11,6 +13,7 @@ export interface User {
     updatedBy: string;
     deletedDate: Date;
     deletedBy: string;
+    userRoles?: Array<UserRole>
 }
 
 export type UserSignUpPayload = Pick<User, 

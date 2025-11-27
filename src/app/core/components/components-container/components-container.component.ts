@@ -39,10 +39,12 @@ export class ComponentsContainer implements OnInit {
 
   navigations!: Array<Navigation>;
   totHeaderHeight!: number;
+  containerPermissionName!: string;
 
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
     this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
+    this.containerPermissionName = this._route.snapshot.data["containerPermissionName"] ?? '';
   }
 
   /**

@@ -1,0 +1,72 @@
+@if (headerBarConfig) {
+    <div class="card-container" >
+            
+        <div class="row py-4 mx-1 justify-content-center align-items-center">
+            
+                <div class="col-3 m-3 card-div"
+                    [style.background-color]="isUserRoleManagementHovered 
+                        ? headerBarConfig.activeColor 
+                        : headerBarConfig.backgroundColor"
+                    (mouseenter)="isUserRoleManagementHovered = true"
+                    (mouseleave)="isUserRoleManagementHovered = false"
+                    (click)="navigateToCardUrl('user-role-management')">                                   
+                    
+                    <div class="row gap-1">
+                        <i class="bi bi-person-gear text-center" 
+                            [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
+                            [style.color]="headerBarConfig.color"></i>
+                        <span class="text-center" 
+                            [style.color]="headerBarConfig.color"
+                            [style.font-family]="headerBarConfig.fontFamily"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            User Role Management
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-3 m-3 card-div"
+                    [style.background-color]="isAnalyticHovered 
+                        ? headerBarConfig.activeColor 
+                        : headerBarConfig.backgroundColor"
+                    (mouseenter)="isAnalyticHovered = true"
+                    (mouseleave)="isAnalyticHovered = false"
+                    (click)="navigateToCardUrl('analytic')">                                   
+                    
+                    <div class="row gap-1">
+                        <i class="bi bi-graph-up text-center" 
+                            [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
+                            [style.color]="headerBarConfig.color"></i>
+                        <span class="text-center" 
+                            [style.color]="headerBarConfig.color"
+                            [style.font-family]="headerBarConfig.fontFamily"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            Analytic
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-3 m-3 card-div"
+                    [style.background-color]="isFileManagementHovered 
+                        ? headerBarConfig.activeColor 
+                        : headerBarConfig.backgroundColor"
+                    (mouseenter)="isFileManagementHovered = true"
+                    (mouseleave)="isFileManagementHovered = false"
+                    (click)="navigateToCardUrl('file-management')">                                   
+                    
+                    <div class="row gap-1">
+                        <i class="bi bi-card-image text-center" 
+                            [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
+                            [style.color]="headerBarConfig.color"></i>
+                        <span class="text-center" 
+                            [style.color]="headerBarConfig.color"
+                            [style.font-family]="headerBarConfig.fontFamily"
+                            [style.font-size]="headerBarConfig.fontSize + 'px'">
+                            File Management
+                        </span>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+}

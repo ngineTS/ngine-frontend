@@ -1,3 +1,5 @@
+import { PermissionName } from "./permission.interface";
+
 export interface HeaderBar {
     id: string;
     navigationId: string;
@@ -17,6 +19,7 @@ export interface HeaderBar {
     updatedDate: Date;
     deletedBy: string;
     deletedDate: Date;
+    permissionName?: PermissionName;
 }
 
 export type HeaderBarPayload = Omit<HeaderBar,
