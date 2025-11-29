@@ -1,1 +1,50 @@
-<p>media-library works!</p>
+<div class="row m-4">
+    @for (file of files; track file.id) {
+
+        @if (fileIdS3UrlMap[file.name]) {
+
+            @if (file.type.includes('image')) {
+                <div class="col m-2 file-box">
+                    <img
+                        height="auto"
+                        width="120px"
+                        [src]="fileIdS3UrlMap[file.name] | async"
+                    />
+                </div>
+            }
+            @if (file.type.includes('video')) {
+                <div class="col m-2 file-box">
+                    <video
+                        height="auto" 
+                        width="120px" 
+                        controls
+                        [src]="fileIdS3UrlMap[file.name] | async"
+                    >
+                    </video>
+                </div>
+            }
+            @if (file.type.includes('audio')) {
+                <div class="col m-2 file-box">
+                    <audio
+                        height="auto" 
+                        width="120px" 
+                        controls
+                        [src]="fileIdS3UrlMap[file.name] | async"
+                    >
+                    </audio>
+                </div>
+            }
+
+        }
+        @else {
+            <div class="col m-2 file-box" (mouseenter)="onDefaultImageMouseEnter(file.name)">
+                <img
+                    height="auto"
+                    width="120px"
+                    src="../../../../assets/images/media_default_image.png"
+                />
+            </div>
+        }
+
+    }
+</div>
