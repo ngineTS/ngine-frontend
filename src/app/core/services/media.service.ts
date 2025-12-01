@@ -12,8 +12,8 @@ export class MediaService {
   baseURL = environment.APIURL;
   constructor(private _http: HttpClient) {}
 
-  getS3ObjectSignedUrl(fileId: string): Observable<string> {
-    return this._http.get<string>(`${this.baseURL}file-management/${fileId}`)
+  getS3ObjectSignedUrl(fileName: string): Observable<string> {
+    return this._http.get<string>(`${this.baseURL}file-management/${fileName}`)
       .pipe(
         retry(2),
         take(1)
@@ -36,8 +36,8 @@ export class MediaService {
       );
   }
 
-  deleteMedia(mediaId: string) {
-    return this._http.delete(`${this.baseURL}media/${mediaId}`)
+  deleteMedia(fileName: string) {
+    return this._http.delete(`${this.baseURL}file-management/${fileName}`)
       .pipe(
         retry(2),
         take(1)

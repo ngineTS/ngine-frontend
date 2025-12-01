@@ -36,9 +36,8 @@ export class MediaLibraryComponent {
   }
 
   onDeleteClick(media: Media) {
-    console.log(media.id);
     if (confirm(`Are you sure to delete ${media.name} ?`)) { 
-      this._mediaService.deleteMedia(media.id).subscribe(() => {
+      this._mediaService.deleteMedia(media.name).subscribe(() => {
         this._snackbarService.showSuccessSnackBar(`Media ${media.name} has been deleted successfully.`);
         this.files = this.files.filter(obj => obj.id !== media.id);
       });
