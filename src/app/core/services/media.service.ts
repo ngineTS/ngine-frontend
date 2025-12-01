@@ -36,4 +36,12 @@ export class MediaService {
       );
   }
 
+  deleteMedia(mediaId: string) {
+    return this._http.delete(`${this.baseURL}media/${mediaId}`)
+      .pipe(
+        retry(2),
+        take(1)
+      );
+  }
+
 }
