@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, retry, take } from "rxjs";
 import { Media } from "../models/media.interface";
 
@@ -20,7 +20,17 @@ export class MediaService {
       );
   }
 
-  getAllMedias(): Observable<Array<Media>> {
+  getAllMedias(orderBy?: keyof Media, order?: 'ASC' | 'DESC'): Observable<Array<Media>> {
+    if(orderBy && order) {
+      const params = new HttpParams()
+        .set('orderBy', orderBy)
+        .set('order', order);
+      return this._http.get<Array<Media>>(`${this.baseURL}media`, { params })
+      .pipe(
+        retry(2),
+        take(1)
+      );
+    }
     return this._http.get<Array<Media>>(`${this.baseURL}media`)
       .pipe(
         retry(2),

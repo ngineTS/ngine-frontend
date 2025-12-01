@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SorterComponent } from '../../../core/components/sorter/sorter.component';
 
 @Component({
   selector: 'app-media-library',
@@ -14,7 +15,8 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     MatTooltipModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    SorterComponent
   ],
   templateUrl: './media-library.component.html',
   styleUrl: './media-library.component.scss'
@@ -71,4 +73,10 @@ export class MediaLibraryComponent {
     }
   }
 
+  onSort(event: { key: keyof Media; sortDirection: 'ASC' | 'DESC'} ) {
+    this._mediaService.getAllMedias(event.key, event.sortDirection).subscribe(resp => {
+      this.files = resp;
+      this.filteredFiles = resp;
+    });
+  }
 }

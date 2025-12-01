@@ -4,6 +4,7 @@
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
+    <app-sorter class="col-sm-2" [obj]="files[0]" (sortEvent)="onSort($event)"></app-sorter>
 </div>
 
 <div class="row mx-2 files-container">

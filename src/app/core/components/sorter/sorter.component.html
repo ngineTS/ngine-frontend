@@ -1,0 +1,22 @@
+<button matButton="outlined" [matMenuTriggerFor]="menu">
+    <div>
+        <span>Sort by</span>
+        <i class="bi bi-chevron-down ms-2"></i>
+    </div>
+</button>
+<mat-menu #menu="matMenu">
+    @for (objectkeyValue of obj | keyvalue; track objectkeyValue.key) {
+        <div class="row mx-2" [style.cursor]="'pointer'">
+            <span class="my-1" 
+                [style.font-weight]="valueSelected === objectkeyValue.key + 'ASC' ? '700' : '400'"
+                (click)="onSelectionChange(objectkeyValue.key, 'ASC')">
+                {{ objectkeyValue.key }} <i class="bi bi-arrow-up"></i>
+            </span>
+            <span class="my-1" 
+                [style.font-weight]="valueSelected === objectkeyValue.key + 'DESC' ? '700' : '400'"
+                (click)="onSelectionChange(objectkeyValue.key, 'DESC')">
+                {{ objectkeyValue.key }} <i class="bi bi-arrow-down"></i>
+            </span>
+        </div>
+    }
+</mat-menu>
