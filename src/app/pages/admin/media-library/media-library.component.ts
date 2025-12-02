@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { MediaService } from '../../../core/services/media.service';
 import { Media } from '../../../core/models/media.interface';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SorterComponent } from '../../../core/components/sorter/sorter.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-media-library',
@@ -16,21 +17,29 @@ import { SorterComponent } from '../../../core/components/sorter/sorter.componen
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
-    SorterComponent
+    SorterComponent,
+    MatDialogModule
   ],
   templateUrl: './media-library.component.html',
   styleUrl: './media-library.component.scss'
 })
 export class MediaLibraryComponent {
 
+  /* List of medias. */
   files: Array<Media> = [];
+  /* Filtered list of medias. Used for search engine. */
   filteredFiles: Array<Media> = [];
+  /* Mapping object of media id and his S3 URL. */
   fileIdS3UrlMap: Record<string, Observable<string>> = {};
 
   constructor(private _mediaService: MediaService,
-              private _snackbarService: SnackBarService
-  ) { }
+              private _snackbarService: SnackBarService,
+              private _matDialog: MatDialog) { }
 
+  /**
+   * Lifecycle hook called after the component has been initialized.
+   * Retrieve all medias.
+   */
   ngOnInit() {
     this._mediaService.getAllMedias().subscribe(resp => {
       this.files = resp;
@@ -38,16 +47,32 @@ export class MediaLibraryComponent {
     });
   }
 
+  /**
+   * Methods triggred on media mouseenter.
+   * Get S3 temporary URL and assign it to mapping object.
+   * @param fileName The name of the media hovered.
+   */
   onDefaultImageMouseEnter(fileName: string) {
     if (!this.fileIdS3UrlMap[fileName]) {
       this.fileIdS3UrlMap[fileName] = this._mediaService.getS3ObjectSignedUrl(fileName);
     }
   }
 
-  onFullSizeClick(media: Media) {
-    console.log(media);
+  /**
+   * Methods triggered on "full size" top left corner icon click.
+   * Open media in full size.
+   * @param media The media to open in full size.
+   * @param template The template used to display full size.
+   */
+  onFullSizeClick(media: Media, template: TemplateRef<unknown>) {
+    this._matDialog.open(template, { data: media });
   }
 
+  /**
+   * Methods triggered on "trash" top right corner icon click.
+   * Delete file from S3 and soft delete media record.
+   * @param media The media to delete.
+   */
   onDeleteClick(media: Media) {
     if (confirm(`Are you sure to delete ${media.name} ?`)) { 
       this._mediaService.deleteMedia(media.name).subscribe(() => {
@@ -73,6 +98,11 @@ export class MediaLibraryComponent {
     }
   }
 
+  /**
+   * Sort event. Methods triggered on sort value selection.
+   * Get sort selection and call API to retrieve medias sorted by this selection.
+   * @param event 
+   */
   onSort(event: { key: keyof Media; sortDirection: 'ASC' | 'DESC'} ) {
     this._mediaService.getAllMedias(event.key, event.sortDirection).subscribe(resp => {
       this.files = resp;

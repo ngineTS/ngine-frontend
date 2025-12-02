@@ -13,7 +13,7 @@
         <div class="col-sm-2 col-11 m-3 p-2 file-box">
 
             <i class="bi bi-fullscreen fullsize-icon"
-                (click)="onFullSizeClick(file)"
+                (click)="onFullSizeClick(file, fullSizeMedia)"
             >
             </i>
             <i class="bi bi-trash-fill delete-icon"
@@ -47,3 +47,19 @@
     }
 
 </div>
+
+
+<!-- Full size media template -->
+ <ng-template #fullSizeMedia let-data>
+    @if (data.type.includes('image')) {
+        <img height="auto" width="500px" [src]="fileIdS3UrlMap[data.name] | async" />
+    }
+
+    @if (data.type.includes('video')) {
+        <video height="auto" width="500px" controls [src]="fileIdS3UrlMap[data.name] | async"></video>
+    }
+
+    @if (data.type.includes('audio')) {
+        <audio height="auto" width="500px" controls [src]="fileIdS3UrlMap[data.name] | async"></audio>
+    }
+ </ng-template>
