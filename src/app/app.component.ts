@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
+import { UserEventService } from './core/services/user-event.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +15,16 @@ export class AppComponent implements OnInit {
 
   constructor(private _appService: AppService,
               private _router: Router,
-              private _authService: AuthService
+              private _authService: AuthService,
+              private _userEventService: UserEventService
              ) { }
 
   title = 'my-app-frontend';
   refreshInterval = 60; //seconds
 
   ngOnInit() {
+    /* Track user event */
+    this._userEventService.traceUserUrlChanges();
     /* Wait for initial routing to be loaded before checking url. */
     setTimeout(() => {
       if (!this._router.url.includes('password-recovery')) {
