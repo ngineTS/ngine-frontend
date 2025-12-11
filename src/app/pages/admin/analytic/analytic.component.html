@@ -1,1 +1,49 @@
-<p>analytic works!</p>
+<div class="page-container">
+
+    <h4 class="ms-3">
+        Application analytic 
+        <i class="bi bi-info-circle ms-1" 
+            matTooltip="You can find here the KPIs related to your application."
+        ></i>
+    </h4>
+
+    @if (connectionChartData.length > 0) {
+        <div class="graph-container">
+            <h5 class="mb-3">Daily Visits</h5>
+            <ngx-charts-line-chart
+                [view]="connectionChartDimensions"
+                [scheme]="colorScheme"
+                [xAxis]="true"
+                [yAxis]="true"
+                [results]="connectionChartData">
+            </ngx-charts-line-chart>
+        </div>
+    }
+
+    @if (mauChartData.length > 0) {
+        <div class="graph-container">
+            <h5 class="mb-3">Montly Active Users</h5>
+            <ngx-charts-bar-vertical
+                [view]="connectionChartDimensions"
+                [scheme]="colorScheme"
+                [results]="mauChartData"
+                [xAxis]="true"
+                [yAxis]="true">
+            </ngx-charts-bar-vertical>
+        </div>
+    }
+
+    @if (urlVisitCharData.length > 0) {
+        <div class="graph-container">
+            <h5 class="mb-3">URL Visits</h5>
+            <ngx-charts-bar-vertical
+                [view]="connectionChartDimensions"
+                [scheme]="colorScheme"
+                [results]="urlVisitCharData"
+                [xAxis]="true"
+                [yAxis]="true">
+            </ngx-charts-bar-vertical>
+        </div>
+    }
+
+</div>

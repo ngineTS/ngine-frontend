@@ -26,6 +26,7 @@
     "@fullcalendar/core": "^6.1.18",
     "@fullcalendar/daygrid": "^6.1.18",
     "@fullcalendar/interaction": "^6.1.18",
+    "@swimlane/ngx-charts": "^23.1.0",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "express": "^4.18.2",

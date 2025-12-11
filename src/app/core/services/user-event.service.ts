@@ -36,4 +36,16 @@ export class UserEventService {
     });
   }
 
+  getSessionCountByDay() {
+    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/session-count-by-day`);
+  }
+
+  getMonthlyActiveUsers() {
+    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/mau`);
+  }
+
+  getNumberOfVisitByUrl() {
+    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/visit-by-url`);
+  }
+
 }
