@@ -95,8 +95,9 @@ export class AppService {
   /**
    * Create App Routing:
    * - If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
-   * - If user has maximun permission (i.e: All nav - add, edit, delete) then add Admon module.
+   * - If user has maximun permission (i.e: All nav - add, edit, delete) then add Admin module.
    * - Add Unhautorised component route.
+   * - Redirect to route name passed if one else initiate initial navigation.
    * 
    * @param redirectRouteName 
    */
@@ -121,15 +122,24 @@ export class AppService {
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           }
         }
+
         const unauthorisedRoute = {
           path: 'unauthorised',
           loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
         }
+
         if (mainHeaderBar.permissionName) {
           route.children?.push(this.createAdminRoutingModule(mainHeaderBar.permissionName!));
         }
+
         this._router.resetConfig([route, unauthorisedRoute]);
-        this._router.navigateByUrl(redirectRouteName ?? '');
+        
+        if (redirectRouteName) {
+          this._router.navigateByUrl(redirectRouteName ?? '');
+        }
+        else {
+          this._router.initialNavigation();
+        }
       },
       error: (err) => {
         console.error("Error loading data", err);
