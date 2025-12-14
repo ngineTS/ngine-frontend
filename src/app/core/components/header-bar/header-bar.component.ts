@@ -72,7 +72,8 @@ export class HeaderBarComponent implements OnInit {
    * @returns true or false.
    */
   isRouteActive(navigationName: string) {
-    return this._router.url.includes(navigationName);
+    const urlList = this._router.url.split('/');
+    return urlList.includes(navigationName);
   }
 
   /**
