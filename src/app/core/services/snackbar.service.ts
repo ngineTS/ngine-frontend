@@ -14,5 +14,12 @@ export class SnackBarService {
       duration: 10000
     });
   }
+
+  showErrorSnackBar(message: string) {
+    this._snackBar.open(message, 'Close', {
+      verticalPosition: 'top',
+      duration: 5000
+    });
+  }
   
  }

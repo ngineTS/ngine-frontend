@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-navigation-management',
@@ -38,7 +39,8 @@ export class NavigationManagementComponent implements OnInit {
               private _navigationService: NavigationService,
               private _dialogRef: MatDialogRef<NavigationManagementComponent>,
               private _appService: AppService,
-              public _headerBarService: HeaderBarService) {}
+              public _headerBarService: HeaderBarService,
+              private _snackbarService: SnackBarService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -88,12 +90,12 @@ export class NavigationManagementComponent implements OnInit {
    * Define and return Parent menu values and store flat navigations.
    * 
    * Rules:
-   * 
    * * Parent can only be header.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
    * * If form is a header: parent can't have component children.
    * * If form is a component: parent can't have header children.
+   * 
    * @returns An observable of assignable parent navigations.
    */
   getParentMenuValues(): Observable<Navigation[]> {
@@ -216,7 +218,10 @@ export class NavigationManagementComponent implements OnInit {
           retry(2),
           take(1)
         )
-        .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+        .subscribe({
+          next: () => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value),
+          error: (err /* NestJS error type */) => this._snackbarService.showErrorSnackBar(err.message)
+        });
     }
   }
 
