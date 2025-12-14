@@ -107,28 +107,14 @@ export class AppService {
     
     forkJoin([$navigations, $mainHeaderBar]).subscribe({
       next: ([navigations, mainHeaderBar]) => {
-        let route: Route;
-        if (navigations && navigations.length > 0) {
-          route = this.createRoutingModule(navigations, mainHeaderBar, mainHeaderBar.height);
-        }
-        else {
-          route = {
-            path: '',
-            canActivate: [AuthGuard],
-            data: {
-              navigations: [],
-              parentId: null,
-            },
-            loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
-          }
-        }
+        let route = this.createRoutingModule(navigations ?? [], mainHeaderBar, mainHeaderBar.height);
 
         const unauthorisedRoute = {
           path: 'unauthorised',
           loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
         }
 
-        if (mainHeaderBar.permissionName) {
+        if (mainHeaderBar?.permissionName) {
           route.children?.push(this.createAdminRoutingModule(mainHeaderBar.permissionName!));
         }
 
