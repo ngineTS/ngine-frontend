@@ -35,9 +35,9 @@
             }
             
             @if (permissionName?.includes('delete')) {
-                <button class="col-1 text-danger" 
-                    matButton="outlined" 
-                    matTooltip="Delete role" 
+                <button class="col-1 text-danger"
+                    matButton="outlined"
+                    matTooltip="Delete role"
                     (click)="deleteRole(role.id)"
                     [disabled]="role.name === 'super-admin'"
                 >
