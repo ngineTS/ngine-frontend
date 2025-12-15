@@ -55,7 +55,7 @@ export class SignInComponent {
     }).subscribe({
       next: (resp: any) => {
         localStorage.setItem('access_token', resp['access_token']);
-        this._appService.createAppRouting();
+        this._appService.createAppRouting('/');
         this._dialogRef.close();
       },
       error: (err /*NestJS error type*/) => {

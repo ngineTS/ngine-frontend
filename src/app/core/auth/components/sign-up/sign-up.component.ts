@@ -72,7 +72,7 @@ export class SignUpComponent {
             localStorage.setItem('access_token', result['access_token']);
             this._snackbarService.showSuccessSnackBar("Welcome!");
             this._dialogRef.close();
-            this._appService.createAppRouting();
+            this._appService.createAppRouting('/');
           }
         },
         error: err => console.log(err)
