@@ -24,7 +24,11 @@
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput formControlName="displayLabel">
+            <span class="name-length">
+                {{ navigationForm.get('displayLabel')?.value?.length ?? 0 }} / 50
+            </span>
         </mat-form-field>
+        
 
         <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>

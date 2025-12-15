@@ -68,13 +68,16 @@ export class NavigationManagementComponent implements OnInit {
     this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? this.data.parentId],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
-      displayLabel: [this.data.navigation?.displayLabel ?? null, Validators.required],
+      displayLabel: [this.data.navigation?.displayLabel ?? null, [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
       description: [this.data.navigation?.description ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
     if (this.data.type === 'component') {
       this.navigationForm.get('parentId')?.addValidators([Validators.required]);
-      if (!this.data.navigation?.id) {     
+      if (!this.data.navigation?.id) {
         this.navigationForm.addControl('width', this._formBuilder.control(50));
         this.navigationForm.addControl('height', this._formBuilder.control(50));
       }
