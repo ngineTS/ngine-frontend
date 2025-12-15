@@ -155,7 +155,7 @@ export class UserManagementComponent implements OnInit {
     }
     else {
       this.filteredUsers = this.users.filter(obj => 
-        obj.name.trim().toLocaleLowerCase().includes(filterValue)
+        obj.emailAddress.trim().toLocaleLowerCase().includes(filterValue)
       );
     }
   }
