@@ -27,7 +27,9 @@
                 <button class="col-1 ms-auto"
                     matTooltip="Edit role" 
                     matButton="outlined" 
-                    (click)="editRole(role)">
+                    (click)="editRole(role)"
+                    [disabled]="role.name === 'super-admin'"
+                >
                     <i class="bi bi-pen"></i>
                 </button>
             }
@@ -36,7 +38,9 @@
                 <button class="col-1 text-danger" 
                     matButton="outlined" 
                     matTooltip="Delete role" 
-                    (click)="deleteRole(role.id)">
+                    (click)="deleteRole(role.id)"
+                    [disabled]="role.name === 'super-admin'"
+                >
                     <i class="bi bi-trash"></i>
                 </button>
             }
