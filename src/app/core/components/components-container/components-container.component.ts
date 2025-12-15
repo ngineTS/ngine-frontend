@@ -61,43 +61,11 @@ export class ComponentsContainer implements OnInit {
   /**
    * Methods triggered on '+' button click.
    * 
-   * If type is 'header' and it is the first header 
-   * then open header bar form first then open header form
-   * else open navigation form to add header.
-   * 
-   * If type is 'component' then open navigation form to add component.
+   * Open Navigation form to create navigation.
    * 
    * @param type The type ('header' or 'component').
    */
   openFormToAddHeaderOrComponent(type: 'header' | 'component'): void {
-    const headerBar = this._headerBarService.setUpHeaderBarForm();
-
-    if (type === 'header' && this.navigations.length === 0) {
-      const headerBarDialogRef = this._matDialog.open(
-        GenericFormComponent<HeaderBarPayload>,
-        { 
-          maxWidth: '700px',
-          data: {
-            formConfig: headerBar,
-            id: null,
-            navigationId: this._route.snapshot.data["parentId"],
-            controllerName: 'header-bar',
-          }
-        }
-      );
-      headerBarDialogRef.afterClosed().subscribe(resp => {
-        if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-          this._matDialog.open(NavigationManagementComponent, {
-            data: {
-              navigation: undefined,
-              type: type,
-              parentId: this._route.snapshot.data["parentId"]
-            }
-          });
-        }
-      });
-    }
-    else {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,
@@ -105,7 +73,6 @@ export class ComponentsContainer implements OnInit {
           parentId: this._route.snapshot.data["parentId"]
         }
       });
-    }
   }
 
 }
