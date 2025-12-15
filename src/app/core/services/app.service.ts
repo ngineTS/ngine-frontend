@@ -121,7 +121,7 @@ export class AppService {
         this._router.resetConfig([route, unauthorisedRoute]);
         
         if (redirectRouteName) {
-          this._router.navigateByUrl(redirectRouteName ?? '');
+          this._router.navigateByUrl(redirectRouteName);
         }
         else {
           this._router.initialNavigation();

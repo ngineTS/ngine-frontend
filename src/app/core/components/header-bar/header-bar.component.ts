@@ -129,7 +129,7 @@ export class HeaderBarComponent implements OnInit {
 
     matDialogRef.afterClosed().subscribe(resp => {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting();
+        this._appService.createAppRouting(this._router.url.slice(0, this._router.url.lastIndexOf('/')));
       }
     });
   }

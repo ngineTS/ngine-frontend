@@ -278,7 +278,7 @@ export class NavigationManagementComponent implements OnInit {
    * @param navigation The navigation we want to know the children.
    */
   storeNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
-    if(navigation.children) {
+    if (navigation.children) {
       this.navigationChildrenAndGrandChildren.push(...navigation.children);
       for (const child of navigation.children) {
         this.storeNavigationChildrenAndOldChildrenAsArray(child);
