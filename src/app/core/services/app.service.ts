@@ -109,16 +109,21 @@ export class AppService {
       next: ([navigations, mainHeaderBar]) => {
         let route = this.createRoutingModule(navigations ?? [], mainHeaderBar, mainHeaderBar.height);
 
-        const unauthorisedRoute = {
+        const unauthorisedRoute: Route = {
           path: 'unauthorised',
           loadComponent: () => import('../auth/components/unauthorised/unauthorised.component').then(m => m.UnauthorisedComponent)
+        }
+
+        const notFoundRoute: Route = {
+          path: '**',
+          redirectTo: ''
         }
 
         if (mainHeaderBar?.permissionName) {
           route.children?.push(this.createAdminRoutingModule(mainHeaderBar.permissionName!));
         }
 
-        this._router.resetConfig([route, unauthorisedRoute]);
+        this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
         
         if (redirectRouteName) {
           this._router.navigateByUrl(redirectRouteName);
