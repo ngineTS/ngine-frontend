@@ -296,4 +296,11 @@ export class NavigationManagementComponent implements OnInit {
     return this.navigationForm.get('icon')!;
   }
 
+  /**
+   * Clear icon selection
+   */
+  clearIcon(event: Event) {
+    event.stopPropagation();
+    this.iconFormControl?.setValue(null);
+  }
 }
