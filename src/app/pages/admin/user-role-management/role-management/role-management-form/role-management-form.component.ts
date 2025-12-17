@@ -11,9 +11,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { PermissionService } from '../../../../../core/services/permission.service';
 import { NavigationService } from '../../../../../core/services/navigation.service';
 import { RoleService } from '../../../../../core/services/role.service';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, throwError } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SnackBarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-role-management-form',
@@ -37,7 +38,8 @@ export class RoleManagementFormComponent implements OnInit{
               private _permissionService: PermissionService,
               private _navigationService: NavigationService,
               private _roleService: RoleService,
-              private _dialogRef: MatDialogRef<RoleManagementFormComponent>
+              private _dialogRef: MatDialogRef<RoleManagementFormComponent>,
+              private _snackbarService: SnackBarService
              ) { }
 
   roleForm!: FormGroup;
@@ -126,7 +128,13 @@ export class RoleManagementFormComponent implements OnInit{
    */
   async saveRole() {
     const { roleNavigationPermissions, ...rolePayload } = this.roleForm.value;
-    return (await firstValueFrom(this._roleService.saveRole(rolePayload))).id;
+    return (await firstValueFrom(this._roleService.saveRole(rolePayload)
+      .pipe(catchError(err => {
+        this._snackbarService.showErrorSnackBar(err.message);
+        this.isSaving = false;
+        return throwError(() => err.error);
+      }))
+    )).id;
   }
 
   /**
@@ -144,7 +152,13 @@ export class RoleManagementFormComponent implements OnInit{
    */
   async updateRole() {
     const { roleNavigationPermissions, ...rolePayload } = this.roleForm.value;
-    await firstValueFrom(this._roleService.updateRole(this._data.role.id, rolePayload));
+    await firstValueFrom(this._roleService.updateRole(this._data.role.id, rolePayload)
+      .pipe(catchError(err => {
+        this._snackbarService.showErrorSnackBar(err.message);
+        this.isSaving = false;
+        return throwError(() => err.error);
+      }))
+    );
   }
 
 
