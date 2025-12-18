@@ -2,12 +2,14 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from
 import { inject } from "@angular/core";
 import { catchError, throwError } from "rxjs";
 import { Router } from "@angular/router";
+import { SnackBarService } from "../../services/snackbar.service";
 
 export const tokenInterceptior: HttpInterceptorFn = (
   req: HttpRequest<unknown>, 
   next: HttpHandlerFn
 ) => {
   const _router = inject(Router);
+  const _snackbarService = inject(SnackBarService);
 
   let token: string | null = null;
   if (typeof localStorage !== 'undefined') {
@@ -24,6 +26,7 @@ export const tokenInterceptior: HttpInterceptorFn = (
       if (err.status === 401) {
         _router.navigateByUrl('/unauthorised');
       }
+      _snackbarService.showErrorSnackBar(err.error.message);
       return throwError(() => err.error);
     })
   );

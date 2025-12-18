@@ -130,7 +130,6 @@ export class RoleManagementFormComponent implements OnInit{
     const { roleNavigationPermissions, ...rolePayload } = this.roleForm.value;
     return (await firstValueFrom(this._roleService.saveRole(rolePayload)
       .pipe(catchError(err => {
-        this._snackbarService.showErrorSnackBar(err.message);
         this.isSaving = false;
         return throwError(() => err.error);
       }))
@@ -154,7 +153,6 @@ export class RoleManagementFormComponent implements OnInit{
     const { roleNavigationPermissions, ...rolePayload } = this.roleForm.value;
     await firstValueFrom(this._roleService.updateRole(this._data.role.id, rolePayload)
       .pipe(catchError(err => {
-        this._snackbarService.showErrorSnackBar(err.message);
         this.isSaving = false;
         return throwError(() => err.error);
       }))

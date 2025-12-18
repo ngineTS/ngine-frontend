@@ -221,10 +221,7 @@ export class NavigationManagementComponent implements OnInit {
           retry(2),
           take(1)
         )
-        .subscribe({
-          next: () => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value),
-          error: (err /* NestJS error type */) => this._snackbarService.showErrorSnackBar(err.message)
-        });
+        .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
     }
   }
 
