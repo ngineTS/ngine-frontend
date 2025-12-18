@@ -73,6 +73,7 @@ export class CalendarComponent extends NavigationBaseComponent {
                       start: event.startDate,
                       end: event.endDate,
                       url: event.url,
+                      allDay: event.allDay,
                       extendedProps: {
                         description: event.description,
                         category: event.category,
