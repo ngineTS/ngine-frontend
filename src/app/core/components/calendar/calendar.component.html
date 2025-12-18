@@ -7,7 +7,9 @@
     let-mediaType="mediaType"
     let-title="title"
     let-description="description"
-    let-date="date"
+    let-startDate="startDate"
+    let-endDate="endDate"
+    let-allDay="allDay"
 >
     <div>
         <h5 class="mb-3">{{ title }}</h5>
@@ -50,6 +52,22 @@
         }
 
         <div class="mb-3">{{ description }}</div>
-        <div class="mb-2">{{ date }}</div>
+        
+        <div class="tooltip-date-div mb-2">
+            @if (allDay) {
+                <div>{{ startDate |  date: 'mediumDate' }}</div>         
+                @if (endDate) {
+                    <span class="mx-2"> - </span>
+                    <div>{{ endDate |  date: 'mediumDate' }}</div>
+                }
+            }
+            @else {
+                <div>{{ startDate |  date: 'short' }}</div>
+                @if (endDate) {
+                    <span class="mx-2"> - </span>
+                    <div>{{ endDate |  date: 'short' }}</div>
+                }
+            }
+        </div>
     </div>
 </ng-template>

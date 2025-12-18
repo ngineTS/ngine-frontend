@@ -16,8 +16,8 @@ export interface Calendar {
 
 export type CalendarPayload = {
     title: string;
-    startDate: Date;
-    endDate?: Date;
+    startDate: Date | null;
+    endDate?: Date | null;
     description: string;
     category: string;
     url: string;

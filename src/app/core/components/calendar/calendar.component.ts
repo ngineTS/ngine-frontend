@@ -5,7 +5,7 @@ import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveri
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
-import { DeepFormConfig } from '../../models/form-input.interface';
+import { DeepFormConfig, GenericFormDialogData } from '../../models/form-input.interface';
 import { Validators } from '@angular/forms';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HttpClient } from '@angular/common/http';
@@ -70,8 +70,8 @@ export class CalendarComponent extends NavigationBaseComponent {
                     calendarEvents.push({
                       id: event.id,
                       title: event.url ? event.title + ' 🌐' : event.title,
-                      start: event.allDay ? this._datePipe.transform(event.startDate, 'yyyy-MM-dd') ?? undefined : event.startDate,
-                      end: event.allDay ? this._datePipe.transform(event.endDate, 'yyyy-MM-dd') ?? undefined : event.endDate,
+                      start: event.startDate,
+                      end: event.endDate,
                       url: event.url,
                       extendedProps: {
                         description: event.description,
@@ -103,7 +103,9 @@ export class CalendarComponent extends NavigationBaseComponent {
         mediaType: arg.event.extendedProps["mediaType"],
         title: arg.event.title,
         description: arg.event.extendedProps["description"],
-        date: `${arg.event.startStr} - ${arg.event.endStr}`
+        startDate: `${arg.event.startStr}`,
+        endDate: `${arg.event.endStr}`,
+        allDay: arg.event.extendedProps['allDay']
       }
     );
     view.detectChanges();
@@ -200,14 +202,14 @@ export class CalendarComponent extends NavigationBaseComponent {
       arg.jsEvent.preventDefault(); // don't let the browser navigate
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
-          value: arg.event.start ?? new Date(),
+          value: arg.event.start,
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
-          value: arg.event.end ?? new Date(),
+          value: arg.event.end,
           type: 'date-and-time',
-          validators: [Validators.required]
+          validators: []
         },
         description: {
           value: arg.event.extendedProps["description"],
@@ -241,16 +243,20 @@ export class CalendarComponent extends NavigationBaseComponent {
         }
       }
 
+      const dialogData: GenericFormDialogData<CalendarPayload> = {
+        title: 'Edit event',
+        formConfig: calendarForm,
+        id: arg.event.id,
+        navigationId: this._navigation.id,
+        controllerName: 'calendar',
+        hasDeleteButton: true 
+      }
+
       const matDialogRef = this._matDialog.open(
         GenericFormComponent<CalendarPayload>,
         { 
           maxWidth: '700px',
-          data: {
-            formConfig: calendarForm,
-            id: arg.event.id,
-            navigationId: this._navigation.id,
-            controllerName: 'calendar',
-          }
+          data: dialogData
         }
       );
 

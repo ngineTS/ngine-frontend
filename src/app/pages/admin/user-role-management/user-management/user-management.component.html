@@ -12,7 +12,7 @@
                 {{user.emailAddress}}
             </span>
             <mat-form-field appearance="outline" class="col-sm-4">
-                <mat-label >Roles</mat-label>
+                <mat-label>Roles</mat-label>
                 <mat-select [(ngModel)]="userNgModel[user.id].roleIds" multiple>
                     @for (role of roles; track role.id) {
                         <mat-option [value]="role.id">
