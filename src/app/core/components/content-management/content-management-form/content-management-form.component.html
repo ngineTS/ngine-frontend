@@ -10,7 +10,7 @@
         
         <div formArrayName="formInputs">
 
-            @for (formInputGroup of formInputs.controls; track $index; let i = $index) {
+            @for (formInputGroup of formInputs.controls; track formInputGroup; let i = $index) {
                 <div [formGroupName]="i" class="row mb-4">
                     <div class="row align-items-baseline">
                         <span class="col-1">{{ i + 1 }}.</span>
