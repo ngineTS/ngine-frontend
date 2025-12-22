@@ -9,7 +9,9 @@
                         : headerBarConfig.backgroundColor"
                     (mouseenter)="isUserRoleManagementHovered = true"
                     (mouseleave)="isUserRoleManagementHovered = false"
-                    (click)="navigateToCardUrl('user-role-management')">                                   
+                    (click)="navigateToCardUrl('user-role-management')"
+                    [matTooltip]="'Manage users, roles and permissions.'"
+                >                                   
                     
                     <div class="row gap-1">
                         <i class="bi bi-person-gear text-center" 
@@ -30,7 +32,9 @@
                         : headerBarConfig.backgroundColor"
                     (mouseenter)="isAnalyticHovered = true"
                     (mouseleave)="isAnalyticHovered = false"
-                    (click)="navigateToCardUrl('analytic')">                                   
+                    (click)="navigateToCardUrl('analytic')"
+                    [matTooltip]="'Find relevant KPIs about the app.'"
+                >                                   
                     
                     <div class="row gap-1">
                         <i class="bi bi-graph-up text-center" 
@@ -51,7 +55,9 @@
                         : headerBarConfig.backgroundColor"
                     (mouseenter)="isFileManagementHovered = true"
                     (mouseleave)="isFileManagementHovered = false"
-                    (click)="navigateToCardUrl('file-management')">                                   
+                    (click)="navigateToCardUrl('file-management')"
+                    [matTooltip]="'Manage files uploaded.'"
+                >                                   
                     
                     <div class="row gap-1">
                         <i class="bi bi-card-image text-center" 
@@ -71,7 +77,9 @@
                         ? headerBarConfig.activeColor 
                         : headerBarConfig.backgroundColor"
                     (mouseenter)="isAuthenticationManagementHovered = true"
-                    (mouseleave)="isAuthenticationManagementHovered = false">                                   
+                    (mouseleave)="isAuthenticationManagementHovered = false"
+                    [matTooltip]="'Custom the user authentification popup.'"
+                >                                   
                     
                     <div class="row gap-1">
                         <i class="bi bi-shield-lock text-center" 
