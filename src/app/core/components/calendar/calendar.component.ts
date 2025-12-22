@@ -45,6 +45,7 @@ export class CalendarComponent extends NavigationBaseComponent {
     eventClick: (arg: EventClickArg) => this.handleEventClick(arg),
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
+  fileIdUrlMapping: Record<string, Observable<string>> = {};
 
   ngOnInit () {
     this.getCalendarEvent();
@@ -94,8 +95,14 @@ export class CalendarComponent extends NavigationBaseComponent {
   handleEventMouseEnter(arg: EventHoveringArg) {
     let mediaUrl$!: Observable<string>;
     
-    if (arg.event.extendedProps["fileId"]) { 
-      mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps["fileId"]);
+    if (arg.event.extendedProps["fileId"]) {
+      if (this.fileIdUrlMapping[arg.event.extendedProps["fileId"]]) {
+        mediaUrl$ = this.fileIdUrlMapping[arg.event.extendedProps["fileId"]];
+      }
+      else {
+        mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps["fileId"]);
+        this.fileIdUrlMapping[arg.event.extendedProps["fileId"]] = mediaUrl$;
+      }
     }
 
     const contentElement = document.createElement('div');
