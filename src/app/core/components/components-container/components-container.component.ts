@@ -65,7 +65,7 @@ export class ComponentsContainer implements OnInit {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index })});
-    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
+    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
   }
 
   /**

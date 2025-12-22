@@ -3,7 +3,7 @@ import { QuillModule } from 'ngx-quill'
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { take } from 'rxjs';
+import { retry, take } from 'rxjs';
 import { QuillEditorContent } from '../../models/quill-editor.interface';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -42,10 +42,16 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
   }
   
   ngOnInit() {
-    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`).pipe(take(1)).subscribe(resp => {
-      this.myQuillEditor = resp;
-      this.content = resp?.content;
-    });
+    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
+      .pipe(
+        retry(2),
+        take(1)
+      )
+      .subscribe(resp => {
+        this.myQuillEditor = resp;
+        this.content = resp?.content;
+      }
+    );
     
   }
 
@@ -55,7 +61,11 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
       this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
         navigationId: this._navigation.id,
         content: this.content
-      }).subscribe(() => {
+      }).pipe(
+        retry(2),
+        take(1)
+      )
+      .subscribe(() => {
         this.showSuccessSnackBar('updated');
         this._stopEditing.emit(true);
       });
@@ -65,7 +75,11 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
       this._http.post(`${environment.APIURL}quill-editor`, {
         navigationId: this._navigation.id,
         content: this.content
-      }).subscribe(() => {
+      }).pipe(
+        retry(2),
+        take(1)
+      )
+      .subscribe(() => {
         this._stopEditing.emit(true);
         this.showSuccessSnackBar('saved');
       });

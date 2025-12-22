@@ -10,7 +10,7 @@ import { Validators } from '@angular/forms';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, retry, Subject, take, takeUntil } from 'rxjs';
 import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
@@ -46,6 +46,7 @@ export class CalendarComponent extends NavigationBaseComponent {
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
   };
   fileIdUrlMapping: Record<string, Observable<string>> = {};
+  calendarUnsubscribe = new Subject<void>();
 
   ngOnInit () {
     this.getCalendarEvent();
@@ -64,7 +65,8 @@ export class CalendarComponent extends NavigationBaseComponent {
   getCalendarEvent() {
     this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this._navigation.id}`)
               .pipe(
-                take(1),
+                retry(this._retryCount),
+                take(this._takeCount),
                 map<Calendar[], CalendarOptions["events"]>(dbEvents => {
                   const calendarEvents: CalendarOptions["events"] = [];
                   dbEvents.forEach(event => {
@@ -120,7 +122,7 @@ export class CalendarComponent extends NavigationBaseComponent {
     contentElement.appendChild(view.rootNodes[0]);
     
     if (arg.event.extendedProps["fileId"]) {
-      mediaUrl$.subscribe(() => view.detectChanges());
+      mediaUrl$.pipe(takeUntil(this.calendarUnsubscribe)).subscribe(() => view.detectChanges());
     }
 
     if (this.tooltipInstance) {
@@ -273,8 +275,12 @@ export class CalendarComponent extends NavigationBaseComponent {
           this.getCalendarEvent();
         }
       });
-
     }
+  }
+
+  ngOnDestroy() {
+    this.calendarUnsubscribe.next();
+    this.calendarUnsubscribe.complete();
   }
 
 }

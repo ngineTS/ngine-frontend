@@ -86,7 +86,7 @@ export class GenericFormComponent<
           retry(2),
           take(1),
         )
-        .subscribe(resp => {
+        .subscribe(() => {
           this.isSaving = false;
           this.showSuccessSnackBar('edited');
           this._dialogRef.close('edited');
@@ -106,7 +106,7 @@ export class GenericFormComponent<
           retry(2),
           take(1),
         )
-        .subscribe(resp => {
+        .subscribe(() => {
           this.isSaving = false;
           this.showSuccessSnackBar('added');
           this._dialogRef.close('added');
@@ -121,7 +121,7 @@ export class GenericFormComponent<
         retry(2),
         take(1),
       )
-      .subscribe(resp => {
+      .subscribe(() => {
         this.showSuccessSnackBar('deleted');
         this._dialogRef.close('deleted');
       });

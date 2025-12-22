@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { distinctUntilChanged, filter, Observable } from "rxjs";
+import { distinctUntilChanged, filter, Observable, retry, take } from "rxjs";
 import { v4 as uuidv4 } from 'uuid'
 import { environment } from "../../../environments/environment";
 
@@ -37,15 +37,30 @@ export class UserEventService {
   }
 
   getSessionCountByDay() {
-    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/session-count-by-day`);
+    return this._http.get<
+      Array<{name: string; value: number;}>
+    >(`${environment.APIURL}user-event/session-count-by-day`).pipe(
+      retry(2),
+      take(1),
+    );
   }
 
   getMonthlyActiveUsers() {
-    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/mau`);
+    return this._http.get<
+      Array<{name: string; value: number;}>
+    >(`${environment.APIURL}user-event/mau`).pipe(
+      retry(2),
+      take(1)
+    );
   }
 
   getNumberOfVisitByUrl() {
-    return this._http.get<Array<{name: string; value: number;}>>(`${environment.APIURL}user-event/visit-by-url`);
+    return this._http.get<
+      Array<{name: string; value: number;}>
+    >(`${environment.APIURL}user-event/visit-by-url`).pipe(
+      retry(2),
+      take(1)
+    );;
   }
 
 }

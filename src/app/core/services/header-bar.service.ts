@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HeaderBar, HeaderBarPayload } from "../models/header-bar.interface";
 import { HttpClient } from "@angular/common/http";
-import { Observable, take } from "rxjs";
+import { Observable, retry, take } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { DeepFormConfig } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
@@ -39,7 +39,7 @@ export class HeaderBarService {
     ];
 
     getMainHeaderBar(): Observable<HeaderBar> {
-        return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`);
+        return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`).pipe(retry(2), take(1));
     }
 
     /**

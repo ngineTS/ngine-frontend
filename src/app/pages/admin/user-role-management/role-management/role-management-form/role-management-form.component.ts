@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { PermissionService } from '../../../../../core/services/permission.service';
 import { NavigationService } from '../../../../../core/services/navigation.service';
 import { RoleService } from '../../../../../core/services/role.service';
-import { catchError, firstValueFrom, throwError } from 'rxjs';
+import { catchError, firstValueFrom, retry, take, throwError } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SnackBarService } from '../../../../../core/services/snackbar.service';
@@ -49,7 +49,7 @@ export class RoleManagementFormComponent implements OnInit{
   title: string = 'Add Role';
 
   /**
-   * On init,
+   * Lifecycle hook called after component has been initialized,
    * - Setup title up to form status (add or edit).
    * - Create form model.
    * - Get navigation dropdown items and add "All navigations" item.
@@ -58,8 +58,15 @@ export class RoleManagementFormComponent implements OnInit{
   ngOnInit(): void {
     if(this._data.role.id) this.title = 'Edit Role';
 
-    this._permissionService.getPermissions().subscribe(resp => this.permissions = resp);
-    this._navigationService.getFlatNavigations().subscribe(resp => {
+    this._permissionService.getPermissions().pipe(
+      retry(2),
+      take(1)
+    ).subscribe(resp => this.permissions = resp);
+
+    this._navigationService.getFlatNavigations().pipe(
+      retry(2),
+      take(1)
+    ).subscribe(resp => {
       this.navigations = resp;
       this.navigations.unshift({id: '00000000-0000-0000-0000-000000000000', displayLabel: 'All'});
     });

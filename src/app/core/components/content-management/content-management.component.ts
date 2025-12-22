@@ -60,7 +60,10 @@ export class ContentManagementComponent extends NavigationBaseComponent implemen
           else {
             this.tableConfig = tableViz;
             return this._http.get<Array<object>>(`${environment.APIURL}custom-table/table/${tableViz.tableName}`)
-              .pipe(take(1))
+              .pipe(
+                retry(2),
+                take(1)
+              )
           }
         })
       )

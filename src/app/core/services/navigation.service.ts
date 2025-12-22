@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
 import { NavigationType } from "../models/navigation-type.interface";
-import { take } from "rxjs";
+import { retry, take } from "rxjs";
 
 export type UpdateReturnType = {
     affected: number;
@@ -23,7 +23,7 @@ export class NavigationService {
      * @returns An observable of navigations.
      */
     getNestedNavigations() {
-        return this._http.get<Navigation[]>(`${environment.APIURL}navigation`);
+        return this._http.get<Navigation[]>(`${environment.APIURL}navigation`).pipe(retry(2), take(1));
     }
 
     /**
@@ -67,7 +67,8 @@ export class NavigationService {
      * @returns Array of navigation properties updated.
      */
     bulkUpdateNavigations(navigationsProps: Array<Partial<Navigation>>) {
-        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps).pipe(take(1));
+        return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps)
+            .pipe(retry(2), take(1));
     }
 
     /**
