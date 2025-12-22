@@ -1,5 +1,5 @@
 <!-- Header Bar section -->
-@if (!isCardContainer) {
+@if (headerBarConfig.isVisibleDuringNavigation) {
     <div class="d-flex flex-row align-items-center"
         [style.background-color]="headerBarConfig.backgroundColor"
         [style.height]="headerBarConfig.height + 'px'"

@@ -12,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
-import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-navigation-management',
@@ -39,8 +38,7 @@ export class NavigationManagementComponent implements OnInit {
               private _navigationService: NavigationService,
               private _dialogRef: MatDialogRef<NavigationManagementComponent>,
               private _appService: AppService,
-              public _headerBarService: HeaderBarService,
-              private _snackbarService: SnackBarService) {}
+              public _headerBarService: HeaderBarService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -269,8 +267,8 @@ export class NavigationManagementComponent implements OnInit {
    */
   refreshRoutingAndRedirect(parentId: Navigation["parentId"]) {
     const redirectName = this.getParentName(parentId);
-    this._dialogRef.close();
     this._appService.createAppRouting(redirectName);
+    this._dialogRef.close();
   }
 
   /**

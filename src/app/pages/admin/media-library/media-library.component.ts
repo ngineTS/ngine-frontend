@@ -38,7 +38,7 @@ export class MediaLibraryComponent {
 
   /**
    * Lifecycle hook called after the component has been initialized.
-   * Retrieve all medias.
+   * Retrieve all media metadata.
    */
   ngOnInit() {
     this._mediaService.getAllMedias().subscribe(resp => {
@@ -48,8 +48,8 @@ export class MediaLibraryComponent {
   }
 
   /**
-   * Methods triggred on media mouseenter.
-   * Get S3 temporary URL and assign it to mapping object.
+   * Methods triggered on default image mouseenter.
+   * Get file temporary URL and assign it to mapping object.
    * @param fileName The name of the media hovered.
    */
   onDefaultImageMouseEnter(fileName: string) {

@@ -11,8 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { HeaderBarService } from '../../services/header-bar.service';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { HeaderBarPayload } from '../../models/header-bar.interface';
 
 
 @Component({
@@ -34,13 +32,25 @@ export class ComponentsContainer implements OnInit {
 
   constructor(private _route: ActivatedRoute,
               private _navigationService: NavigationService,
-              private _matDialog: MatDialog,
-              private _headerBarService: HeaderBarService) {}
+              private _matDialog: MatDialog) {}
 
+  /** 
+   * The navigations that contain our components.
+   */
   navigations!: Array<Navigation>;
+  /**
+   * The total height of the application headers. Used to calculate component height .
+   */
   totHeaderHeight!: number;
+  /**
+   * The user permission.
+   */
   containerPermissionName!: string;
 
+  /**
+   * Lifecyle hook called after the component has been initialized.
+   * Retrieve route snapshot data properties.
+   */
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
     this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
@@ -48,7 +58,7 @@ export class ComponentsContainer implements OnInit {
   }
 
   /**
-   * Drop a component and update position of all navigations.
+   * Drop a navigation and update position of all navigations.
    * @param event The CdkDragDrop event containing navigation positions.
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
@@ -62,7 +72,6 @@ export class ComponentsContainer implements OnInit {
    * Methods triggered on '+' button click.
    * 
    * Open Navigation form to create navigation.
-   * 
    * @param type The type ('header' or 'component').
    */
   openFormToAddHeaderOrComponent(type: 'header' | 'component'): void {

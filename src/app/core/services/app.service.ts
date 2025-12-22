@@ -80,10 +80,7 @@ export class AppService {
       else {
         routes.unshift({
           path: '',
-          data: { 
-            isCardContainer: true,
-            totHeaderHeight: totHeaderHeight,
-          },
+          data: { totHeaderHeight: totHeaderHeight },
           loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         });
       }

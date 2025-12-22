@@ -30,8 +30,8 @@ import { Observable } from 'rxjs';
 })
 /**
  * HeaderBar Component is either a header bar or a cards container.
- * If isCardContainer prop is equal to true then it's a cards container
- * else it is a header bar .
+ * If headerBarConfig.isVisiblieDuringNavigation is equal to true then it's a cards container
+ * else it is a header bar.
  */
 export class HeaderBarComponent implements OnInit {
   
@@ -46,19 +46,18 @@ export class HeaderBarComponent implements OnInit {
   navigations!: Navigation[];
   headerBarConfig! : HeaderBar;
   isMouseOverCard: Record<string, boolean> = {};
-  isCardContainer!: boolean;
   totHeaderHeight!: number;
   headerBarImgUrl$: Observable<string> | undefined;
 
   /**
-   * On init:
-   * - Assign header bar config and headers.
+   * Lifecycle hook called after the component has been initialized.
+   * - Retrieve route snapshot data properties.
    * - Create MouseOverNavigation object used to display background color of cards dynamically.
+   * - Get logo from file repository if exists.
    */
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    this.isCardContainer = this._route.snapshot.data["isCardContainer"];
     this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
     this.createMouseOverObject();
     if (this.headerBarConfig.imageName) {
@@ -77,7 +76,7 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Drop a header and update position of all navigations.
+   * Drop a navigation and update position of all navigations.
    * @param event The CdkDragDrop event containing navigation positions. 
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
@@ -129,7 +128,7 @@ export class HeaderBarComponent implements OnInit {
 
     matDialogRef.afterClosed().subscribe(resp => {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url.slice(0, this._router.url.lastIndexOf('/')));
+        this._appService.createAppRouting(this._router.url);
       }
     });
   }
