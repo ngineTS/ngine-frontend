@@ -77,18 +77,7 @@ export class NavigationService {
      * @returns An observable of UpdateReturnType object.
      */
     deleteNavigationAndChildren(navigation: Navigation) {
-        const ids: string[] = [];
-        const getChildrenIds = (children?: Navigation[]) => {
-            if (children) {
-                for (const navigation of children) {
-                    ids.push(navigation.id);
-                    getChildrenIds(navigation.children);
-                }
-            }
-        } 
-        ids.push(navigation.id);
-        getChildrenIds(navigation.children);
-        return this._http.post(`${environment.APIURL}navigation/bulk-delete`, ids);
+        return this._http.post(`${environment.APIURL}navigation/delete`, navigation);
     }
 
 }

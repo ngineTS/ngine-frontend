@@ -117,7 +117,7 @@ export class HeaderBarComponent implements OnInit {
       { 
         maxWidth: '700px',
         data: {
-          hasDeleteButton: this.headerBarConfig.permissionName?.includes('delete'),
+          hasDeleteButton: false,
           formConfig: headerBarForm,
           id: this.headerBarConfig.id,
           navigationId: this.navigations[0]?.parentId,
