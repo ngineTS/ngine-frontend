@@ -39,7 +39,7 @@ export class HeaderBarService {
     ];
 
     getMainHeaderBar(): Observable<HeaderBar> {
-        return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`).pipe(retry(2), take(1));
+        return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`).pipe(take(1));
     }
 
     /**
