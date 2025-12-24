@@ -120,14 +120,12 @@ export class ContentManagementFormComponent implements OnInit {
     }
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableVizPayload)
       .pipe(
-        retry(2),
         take(1),
         switchMap(resp => {
           const customInputFormPayload = this.formInputs.value as Array<Omit<CustomFormInput, "id">>;
           customInputFormPayload.forEach(input => input.tableId = resp.id!);
           return this._http.post(`${environment.APIURL}custom-form-input/${resp.tableName}`, customInputFormPayload)
             .pipe(
-              retry(2),
               take(1)
             )
         })

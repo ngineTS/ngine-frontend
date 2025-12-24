@@ -83,7 +83,6 @@ export class GenericFormComponent<
     if (this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
         .pipe(
-          retry(2),
           take(1),
         )
         .subscribe(() => {
@@ -103,7 +102,6 @@ export class GenericFormComponent<
       }
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
         .pipe(
-          retry(2),
           take(1),
         )
         .subscribe(() => {
@@ -118,7 +116,6 @@ export class GenericFormComponent<
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
       .pipe(
-        retry(2),
         take(1),
       )
       .subscribe(() => {

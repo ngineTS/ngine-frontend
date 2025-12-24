@@ -41,7 +41,6 @@ export class MediaService {
   uploadFileToS3(formData: FormData): Observable<Media> {
     return this._http.post<Media>(`${this.baseURL}file-management/upload`, formData)
       .pipe(
-        retry(2),
         take(1)
       );
   }

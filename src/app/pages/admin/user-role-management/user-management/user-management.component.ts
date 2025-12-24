@@ -83,11 +83,9 @@ export class UserManagementComponent implements OnInit {
    * @param userId The user id to delete.
    */
   deleteUser(userId: string) {
-    console.log(userId);
     if (confirm("Are you sure to delete this user?")) {
       this._userService.deleteUser(userId)
         .pipe(
-          retry(2),
           take(1)
         )
         .subscribe(resp => {
@@ -106,12 +104,10 @@ export class UserManagementComponent implements OnInit {
     if (confirm("Do you want to update this user?")) {
       this.updateUser(userId)
         .pipe(
-          retry(2),
           take(1),
           switchMap(x => this.saveUserRoles(userId))
         )
         .subscribe(userRolesSaved => {
-          console.log(userRolesSaved);
           this._snackbarService.showSuccessSnackBar('User updated successfully.')
         })
       
@@ -140,7 +136,6 @@ export class UserManagementComponent implements OnInit {
         roleId: roleId
       })
     });
-    console.log(userRolesPayload);
     return this._userService.bulksaveUserRoles(userId, userRolesPayload);
   }
 

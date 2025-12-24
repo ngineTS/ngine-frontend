@@ -126,7 +126,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     };
     this._navigationService.updateNavigation(this._navigation.id, navigationSize)
       .pipe(
-        retry(this._retryCount),
         take(this._takeCount)
       )
       .subscribe(() => {

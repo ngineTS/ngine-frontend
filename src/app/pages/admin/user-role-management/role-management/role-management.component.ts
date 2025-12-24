@@ -93,7 +93,6 @@ export class RoleManagementComponent implements OnInit {
     if (confirm("Are you sure to delete this role and his dependencies?")) {
       this._roleService.deleteRole(roleId)
         .pipe(
-          retry(2),
           take(1)
         )
         .subscribe(() => {

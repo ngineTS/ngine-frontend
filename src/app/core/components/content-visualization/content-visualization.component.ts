@@ -136,7 +136,6 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
     let {customFormInputs, ...tableConfigPayload} = this.tableConfig;
     this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableConfigPayload)
     .pipe(
-      retry(2),
       take(1),
       tap(() => this.getContentInformation())
     )

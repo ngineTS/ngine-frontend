@@ -169,7 +169,6 @@ export class NavigationManagementComponent implements OnInit {
       if (this.data.navigation?.id) {
         this._navigationService.deleteNavigationAndChildren(this.data.navigation)
           .pipe(
-            retry(2),
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
@@ -192,7 +191,6 @@ export class NavigationManagementComponent implements OnInit {
           obj.parentId === this.navigationForm.get('parentId')?.value).length;
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
-            retry(2),
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
@@ -203,7 +201,6 @@ export class NavigationManagementComponent implements OnInit {
         this._navigationService
           .updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
-            retry(2),
             take(1)
           )
           .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
@@ -216,7 +213,6 @@ export class NavigationManagementComponent implements OnInit {
       this._navigationService
         .saveNavigation(this.navigationForm.value)
         .pipe(
-          retry(2),
           take(1)
         )
         .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));

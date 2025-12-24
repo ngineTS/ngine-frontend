@@ -68,7 +68,7 @@ export class NavigationService {
      */
     bulkUpdateNavigations(navigationsProps: Array<Partial<Navigation>>) {
         return this._http.post<Partial<Navigation>[]>(`${environment.APIURL}navigation/bulk-update`, navigationsProps)
-            .pipe(retry(2), take(1));
+            .pipe(take(1));
     }
 
     /**

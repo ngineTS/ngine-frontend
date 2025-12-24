@@ -62,7 +62,6 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         navigationId: this._navigation.id,
         content: this.content
       }).pipe(
-        retry(2),
         take(1)
       )
       .subscribe(() => {
@@ -76,7 +75,6 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         navigationId: this._navigation.id,
         content: this.content
       }).pipe(
-        retry(2),
         take(1)
       )
       .subscribe(() => {
