@@ -14,7 +14,6 @@
         <mat-form-field appearance="outline">
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
-                    <mat-option [value]="null" style="color: #b3b3b3">None</mat-option>
                 @for (parent of parentNavigations; track parent.name) {
                     <mat-option [value]="parent.id">{{ parent.displayLabel }}</mat-option>
                 }
