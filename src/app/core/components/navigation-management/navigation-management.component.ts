@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-navigation-management',
@@ -38,7 +39,8 @@ export class NavigationManagementComponent implements OnInit {
               private _navigationService: NavigationService,
               private _dialogRef: MatDialogRef<NavigationManagementComponent>,
               private _appService: AppService,
-              public _headerBarService: HeaderBarService) {}
+              public _headerBarService: HeaderBarService,
+              private _snackbarService: SnackBarService) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
@@ -172,7 +174,10 @@ export class NavigationManagementComponent implements OnInit {
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
-          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+          .subscribe(() => {
+            this._snackbarService.showSuccessSnackBar('Element deleted successfully.');
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          });
       }
     }
   }
@@ -194,7 +199,10 @@ export class NavigationManagementComponent implements OnInit {
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
-          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+          .subscribe(() => {
+            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          });
       }
       //Parent has not changed
       else {
@@ -203,7 +211,10 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(
             take(1)
           )
-          .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+          .subscribe(() => {
+            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          });
       }
     }
     //ADD
@@ -215,7 +226,10 @@ export class NavigationManagementComponent implements OnInit {
         .pipe(
           take(1)
         )
-        .subscribe(() => this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value));
+        .subscribe(() => {
+          this._snackbarService.showSuccessSnackBar('Element added successfully.');
+          this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+        });
     }
   }
 

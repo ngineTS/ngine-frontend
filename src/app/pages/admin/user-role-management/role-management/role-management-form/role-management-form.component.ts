@@ -38,8 +38,7 @@ export class RoleManagementFormComponent implements OnInit{
               private _permissionService: PermissionService,
               private _navigationService: NavigationService,
               private _roleService: RoleService,
-              private _dialogRef: MatDialogRef<RoleManagementFormComponent>,
-              private _snackbarService: SnackBarService
+              private _dialogRef: MatDialogRef<RoleManagementFormComponent>
              ) { }
 
   roleForm!: FormGroup;
