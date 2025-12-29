@@ -64,14 +64,14 @@ export class GenericFormComponent<
   hidePassword = signal(true);
   dateAndTimeRecord: Record<string, Date> = {};
   formFileSettings: Array<FormFile> = [];
-  isSaving = false;
+  isSaving = signal(false);
     
   ngOnInit() {
     this.formContent = this.buildFormGroup(this._data.formConfig);
   }
 
   async submitForm() {
-    this.isSaving = true;
+    this.isSaving.set(true);
     //if new file uploaded then post it to S3 and assign file key to related form control
     for (const formFileSetting of this.formFileSettings) {
       if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
@@ -82,13 +82,16 @@ export class GenericFormComponent<
     //edit
     if (this._data.id) {
       this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
-        .pipe(
-          take(1),
-        )
-        .subscribe(() => {
-          this.isSaving = false;
-          this.showSuccessSnackBar('edited');
-          this._dialogRef.close('edited');
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.isSaving.set(false);
+            this.showSuccessSnackBar('edited');
+            this._dialogRef.close('edited');
+          },
+          error: () => {
+            this.isSaving.set(false);
+          }
         });
     }
     //add
@@ -101,13 +104,16 @@ export class GenericFormComponent<
         );
       }
       this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
-        .pipe(
-          take(1),
-        )
-        .subscribe(() => {
-          this.isSaving = false;
-          this.showSuccessSnackBar('added');
-          this._dialogRef.close('added');
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.isSaving.set(false);
+            this.showSuccessSnackBar('added');
+            this._dialogRef.close('added');
+          },
+          error: () => {
+            this.isSaving.set(false);
+          }
         });
     }
   }
@@ -115,13 +121,17 @@ export class GenericFormComponent<
   deleteObject() {
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
-      .pipe(
-        take(1),
-      )
-      .subscribe(() => {
-        this.showSuccessSnackBar('deleted');
-        this._dialogRef.close('deleted');
-      });
+      .pipe(take(1))
+      .subscribe({
+          next: () => {
+            this.isSaving.set(false);
+            this.showSuccessSnackBar('deleted');
+            this._dialogRef.close('deleted');
+          },
+          error: () => {
+            this.isSaving.set(false);
+          }
+        });
     }
 
   }

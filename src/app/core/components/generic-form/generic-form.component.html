@@ -1,6 +1,6 @@
 <!-- Main level form template-->
 <div class="main-container">
-    @if (isSaving) {
+    @if (isSaving()) {
         <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
     }
 
@@ -35,7 +35,7 @@
                 class="form-button col"
                 matButton="outlined" 
                 type="submit" 
-                [disabled]="!formContent.valid || isSaving"
+                [disabled]="!formContent.valid || isSaving()"
             >
                 Submit
             </button>
