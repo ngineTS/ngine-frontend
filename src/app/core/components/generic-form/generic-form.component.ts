@@ -121,8 +121,8 @@ export class GenericFormComponent<
   deleteObject() {
     if (confirm("Are you sure to delete this element?")) { 
       this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
-      .pipe(take(1))
-      .subscribe({
+        .pipe(take(1))
+        .subscribe({
           next: () => {
             this.isSaving.set(false);
             this.showSuccessSnackBar('deleted');

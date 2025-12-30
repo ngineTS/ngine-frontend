@@ -20,7 +20,7 @@ export class NavigationBaseComponent {
   @Input({required: false}) _height!: number;
   @Input({required: false}) _isEditing: boolean = false;
   @Output() _stopEditing: EventEmitter<boolean> = new EventEmitter(false);
-  protected readonly _retryCount = 2;
+  protected readonly _retryCount = 1;
   protected readonly _takeCount = 1;
   //_content: T | undefined;
 

@@ -43,10 +43,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
   
   ngOnInit() {
     this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
-      .pipe(
-        retry(2),
-        take(1)
-      )
+      .pipe(take(this._takeCount))
       .subscribe(resp => {
         this.myQuillEditor = resp;
         this.content = resp?.content;
@@ -61,26 +58,22 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
       this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
         navigationId: this._navigation.id,
         content: this.content
-      }).pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this.showSuccessSnackBar('updated');
-        this._stopEditing.emit(true);
-      });
+      }).pipe(take(this._takeCount))
+        .subscribe(() => {
+          this.showSuccessSnackBar('updated');
+          this._stopEditing.emit(true);
+        });
     }
     //add
     else {
       this._http.post(`${environment.APIURL}quill-editor`, {
         navigationId: this._navigation.id,
         content: this.content
-      }).pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this._stopEditing.emit(true);
-        this.showSuccessSnackBar('saved');
-      });
+      }).pipe(take(this._takeCount))
+        .subscribe(() => {
+          this._stopEditing.emit(true);
+          this.showSuccessSnackBar('saved');
+        });
     }
   }
 
