@@ -15,7 +15,9 @@
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
                 @for (parent of parentNavigations; track parent.name) {
-                    <mat-option [value]="parent.id">{{ parent.displayLabel }}</mat-option>
+                    <mat-option [value]="parent.id" [style.color]="parent.id ? '' : 'grey'">
+                        {{ parent.displayLabel }}
+                    </mat-option>
                 }
             </mat-select>
         </mat-form-field>
