@@ -23,7 +23,10 @@ export class NavigationService {
      * @returns An observable of navigations.
      */
     getNestedNavigations() {
-        return this._http.get<Navigation[]>(`${environment.APIURL}navigation`).pipe(take(1));
+        return this._http.get<{
+            navigations: Array<Navigation>,
+            access_token: string,
+        }>(`${environment.APIURL}navigation`).pipe(take(1));
     }
 
     /**

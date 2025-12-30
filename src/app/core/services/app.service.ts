@@ -99,12 +99,13 @@ export class AppService {
    * @param redirectRouteName 
    */
   createAppRouting(redirectRouteName?: string): void {
-    const $navigations = this._navigationService.getNestedNavigations();
+    const $result = this._navigationService.getNestedNavigations();
     const $mainHeaderBar = this._headerBarService.getMainHeaderBar();
     
-    forkJoin([$navigations, $mainHeaderBar]).subscribe({
-      next: ([navigations, mainHeaderBar]) => {
-        let route = this.createRoutingModule(navigations ?? [], mainHeaderBar, mainHeaderBar.height);
+    forkJoin([$result, $mainHeaderBar]).subscribe({
+      next: ([result, mainHeaderBar]) => {
+        localStorage.setItem('access_token', result.access_token);
+        let route = this.createRoutingModule(result.navigations ?? [], mainHeaderBar, mainHeaderBar.height);
 
         const unauthorisedRoute: Route = {
           path: 'unauthorised',
