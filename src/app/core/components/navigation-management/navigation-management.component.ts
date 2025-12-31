@@ -109,7 +109,7 @@ export class NavigationManagementComponent implements OnInit {
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
           return flatNavigations.filter(flatNav => {
-            if (flatNav.name === this.data.navigation?.name) {
+            if (flatNav.id === this.data.navigation?.id) {
               return false;
             }
             if (flatNav.navigationType.name !== 'header') {
