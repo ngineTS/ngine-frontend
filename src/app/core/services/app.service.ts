@@ -156,7 +156,7 @@ export class AppService {
    * - Lazy load nothing on main route.
    * - Lazy load sister navigation routes as children.
    * 
-   * @param navigations The array of sisters navigations.
+   * @param navigations The array of sister navigations.
    * @param headerBar The routing module settings.
    * @param parentName The parent name of sister navigations.
    * @param totHeaderHeight The total header bar height (in px) accumulated from the chain.
