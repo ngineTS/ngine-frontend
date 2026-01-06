@@ -24,7 +24,7 @@ export class NavigationService {
      */
     getNestedNavigations() {
         return this._http.get<{
-            navigations: Array<Navigation>,
+            navigation: Navigation,
             access_token: string,
         }>(`${environment.APIURL}navigation`).pipe(take(1));
     }

@@ -65,10 +65,7 @@ export class RoleManagementFormComponent implements OnInit{
     this._navigationService.getFlatNavigations().pipe(
       retry(2),
       take(1)
-    ).subscribe(resp => {
-      this.navigations = resp;
-      this.navigations.unshift({id: '00000000-0000-0000-0000-000000000000', displayLabel: 'All'});
-    });
+    ).subscribe(resp => this.navigations = resp);
     
     this.roleForm = this._formBuilder.group({
       displayLabel: new FormControl(this._data.role.displayLabel ?? '', Validators.required),

@@ -48,6 +48,7 @@ export class HeaderBarComponent implements OnInit {
   isMouseOverCard: Record<string, boolean> = {};
   totHeaderHeight!: number;
   headerBarImgUrl$: Observable<string> | undefined;
+  permissionName!: string;
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -59,6 +60,7 @@ export class HeaderBarComponent implements OnInit {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
+    this.permissionName = this._route.snapshot.data["permissionName"] + 5;
     this.createMouseOverObject();
     if (this.headerBarConfig.imageName) {
       this.headerBarImgUrl$ = this._mediaService.getS3ObjectSignedUrl(this.headerBarConfig.imageName);

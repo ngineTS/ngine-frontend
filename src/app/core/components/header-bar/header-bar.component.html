@@ -20,16 +20,16 @@
         <div cdkDropList 
             class="example-list" 
             [style.gap]="headerBarConfig.gap + 'px'"
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="drop($event)"permissionName
             [cdkDropListData]="navigations"
             cdkDropListOrientation="horizontal"
-            [cdkDropListDisabled]="!headerBarConfig.permissionName?.includes('edit')"
+            [cdkDropListDisabled]="!permissionName.includes('edit')"
         >
             
             <!-- List of navigation headers -->
             @for (navigation of navigations; track navigation.id) {
                 <div cdkDrag 
-                    [style.cursor]="headerBarConfig.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                    [style.cursor]="permissionName.includes('edit') ? 'move' : 'pointer'"
                     class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
                     [class.nav-container]="navigation.permissionName?.includes('edit')"
                     matTooltip="{{navigation.description}}"
@@ -65,8 +65,8 @@
                 </div>
             }
 
-            <!-- Admin header -->
-            @if (!headerBarConfig.navigationId && headerBarConfig.permissionName) {
+            <!-- Admin header (only on global nav and if permission) -->
+            @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
                 <div class="mx-2 p-1">
                     <i  class="bi bi-gear me-1"
                         [style.font-size]="headerBarConfig.fontSize + 'px'"
@@ -90,7 +90,7 @@
             
         </div>
         
-        @if (headerBarConfig.permissionName?.includes('add')) {
+        @if (permissionName.includes('add')) {
             <button 
                 class="add-nav-button" 
                 matTooltip="Add header" 
@@ -99,7 +99,7 @@
             </button>
         }
        
-        @if (headerBarConfig.permissionName?.includes('edit')) {
+        @if (permissionName.includes('edit')) {
             <i class="bi bi-pen edit-header-bar auto-margin-left" 
                 (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu">
@@ -113,7 +113,7 @@
 <!-- Cards container section -->
 @else {
     <div class="card-container" [style.height]="'calc(100vh - ' + totHeaderHeight + 'px)'">
-        @if (headerBarConfig.permissionName?.includes('edit')) {
+        @if (permissionName.includes('edit')) {
             <i class="bi bi-pen edit-header-bar right-align"
                 (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu"
@@ -126,7 +126,7 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="mixed"
-            [cdkDropListDisabled]="!headerBarConfig.permissionName?.includes('edit')"
+            [cdkDropListDisabled]="!permissionName.includes('edit')"
         >
             
             <!-- List of navigation cards -->
@@ -168,7 +168,7 @@
             }
 
             <!-- Admin card-->
-            @if (!headerBarConfig.navigationId  && headerBarConfig.permissionName) {
+            @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['adminCard'] = true"
                     (mouseleave)="isMouseOverCard['adminCard'] = false"
@@ -197,7 +197,7 @@
             }
 
             <!-- Add header card -->
-            @if (headerBarConfig.permissionName?.includes('add')) {
+            @if (permissionName.includes('add')) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
                     (mouseleave)="isMouseOverCard['addHeaderCard'] = false"

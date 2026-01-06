@@ -98,6 +98,7 @@ export class NavigationManagementComponent implements OnInit {
    * * Parent can't be one of the children or grandchildren of current navigation.
    * * If form is a header: parent can't have component children.
    * * If form is a component: parent can't have header children.
+   * * User has to have at least 'add' permission on value.
    * 
    * @returns An observable of assignable parent navigations.
    */
@@ -108,7 +109,7 @@ export class NavigationManagementComponent implements OnInit {
         take(1),
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
-          return flatNavigations.filter(flatNav => {
+          return flatNavigations.filter(flatNav => {            
             if (flatNav.id === this.data.navigation?.id) {
               return false;
             }
@@ -129,6 +130,9 @@ export class NavigationManagementComponent implements OnInit {
                   return false;
                 }
               }
+            }
+            if (!flatNav.permissionName?.includes('add')) {
+              return false;
             }
             return true;
           });
@@ -241,7 +245,7 @@ export class NavigationManagementComponent implements OnInit {
   getParentName(navigationId: string): string {
     let name = '/';
     const parent = this.flatNavigations.find(obj => obj.id === navigationId);
-    if (parent) {
+    if (parent && parent.name !== 'global') {
       name = parent.name;
       if (parent?.parentId) {
         name = this.getParentName(parent.parentId) + '/' + name;

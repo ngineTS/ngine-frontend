@@ -51,6 +51,7 @@ export class AppService {
               navigation.children,
               navigation.headerBar,
               headerHeight + totHeaderHeight,
+              navigation.permissionName!,
               navigation.name
             )
           );
@@ -99,13 +100,15 @@ export class AppService {
    * @param redirectRouteName 
    */
   createAppRouting(redirectRouteName?: string): void {
-    const $result = this._navigationService.getNestedNavigations();
-    const $mainHeaderBar = this._headerBarService.getMainHeaderBar();
-    
-    forkJoin([$result, $mainHeaderBar]).subscribe({
-      next: ([result, mainHeaderBar]) => {
+    this._navigationService.getNestedNavigations().subscribe({
+      next: result => {
         localStorage.setItem('access_token', result.access_token);
-        let route = this.createRoutingModule(result.navigations ?? [], mainHeaderBar, mainHeaderBar.height);
+        let route = this.createRoutingModule(
+          result.navigation.children ?? [],
+          result.navigation.headerBar,
+          result.navigation.headerBar.height,
+          result.navigation.permissionName!
+        );
 
         const unauthorisedRoute: Route = {
           path: 'unauthorised',
@@ -117,8 +120,13 @@ export class AppService {
           redirectTo: ''
         }
 
-        if (mainHeaderBar?.permissionName) {
-          route.children?.push(this.createAdminRoutingModule(mainHeaderBar.permissionName!));
+        if (result.navigation.permissionName) {
+          route.children?.push(
+            this.createAdminRoutingModule(
+              result.navigation.permissionName,
+              result.navigation.headerBar
+            )
+          );
         }
 
         this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
@@ -158,6 +166,7 @@ export class AppService {
     navigations: Array<Navigation>,
     headerBar: HeaderBar,
     totHeaderHeight: number,
+    permissionName: string,
     parentName: string = ''
   ): Route {
     let route: Route;
@@ -168,20 +177,22 @@ export class AppService {
         data: {
           headerBarConfig: headerBar,
           navigations: navigations,
-          parentId: headerBar.navigationId
+          parentId: headerBar.navigationId,
+          permissionName: permissionName
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         children: this.createRoutes(navigations, true, totHeaderHeight),
       };
     }
     else {
-      route = { 
-        path: parentName, 
+      route = {
+        path: parentName,
         canActivate: [AuthGuard],
         data: {
           headerBarConfig: headerBar,
           navigations: navigations,
-          parentId: headerBar.navigationId 
+          parentId: headerBar.navigationId,
+          permissionName: permissionName
         },
         children: this.createRoutes(navigations, false, totHeaderHeight),
       };
@@ -193,9 +204,10 @@ export class AppService {
    * Create admin routing module.
    * @returns The main route of admin module.
    */
-  createAdminRoutingModule(permissionName: string): Route {
+  createAdminRoutingModule(permissionName: string, headerBar: HeaderBar): Route {
     return {
       path: 'admin',
+      data: { headerBarConfig: headerBar },
       children: [
         {
           path: '',

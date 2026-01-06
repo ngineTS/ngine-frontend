@@ -23,9 +23,7 @@ export class AdminComponent {
   isAuthenticationManagementHovered = false;
 
   ngOnInit() {
-    this._headerBarService.getMainHeaderBar().subscribe(resp => {
-      this.headerBarConfig = resp;
-    });
+    this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
   }
 
   navigateToCardUrl(navigationName: string) {
