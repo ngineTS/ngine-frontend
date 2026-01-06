@@ -12,10 +12,10 @@ import { AuthGuard } from "../auth/guards/auth-guard.service";
 })
 export class AppService {
 
-  constructor(private _router: Router,
-              private _navigationService: NavigationService,
-              private _headerBarService: HeaderBarService) {}
-
+  constructor(
+    private _router: Router,
+    private _navigationService: NavigationService,
+  ) {}
 
   /**
    * Create route for each navigation passed and return array of routes.
@@ -93,8 +93,8 @@ export class AppService {
   /**
    * Create App Routing:
    * - If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
-   * - If user has maximun permission (i.e: All nav - add, edit, delete) then add Admin module.
-   * - Add Unhautorised component route.
+   * - If user has maximun permission (i.e: global) then add Admin module.
+   * - Add Unhautorised and Not found route.
    * - Redirect to route name passed if one else initiate initial navigation.
    * 
    * @param redirectRouteName 
@@ -128,7 +128,7 @@ export class AppService {
             )
           );
         }
-
+        
         this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
         
         if (redirectRouteName) {
