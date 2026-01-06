@@ -98,7 +98,7 @@ export class NavigationManagementComponent implements OnInit {
    * * Parent can't be one of the children or grandchildren of current navigation.
    * * If form is a header: parent can't have component children.
    * * If form is a component: parent can't have header children.
-   * * User has to have at least 'add' permission on value.
+   * * User requires 'add' permission on navigation.
    * 
    * @returns An observable of assignable parent navigations.
    */
