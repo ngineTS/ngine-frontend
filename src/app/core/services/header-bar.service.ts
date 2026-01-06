@@ -38,10 +38,6 @@ export class HeaderBarService {
         'database', 'cloud', 'film', 'rocket-takeoff', 'fork-knife', 'suitcase', 'globe-americas', 'geo'
     ];
 
-    getMainHeaderBar(): Observable<HeaderBar> {
-        return this._http.get<HeaderBar>(`${environment.APIURL}header-bar/main`).pipe(take(1));
-    }
-
     /**
      * Set up header bar form.
      * @param headerBar The header bar object to edit. If nothing is passed it means we are in addition mode.
