@@ -20,16 +20,16 @@
         <div cdkDropList 
             class="example-list" 
             [style.gap]="headerBarConfig.gap + 'px'"
-            (cdkDropListDropped)="drop($event)"permissionName
+            (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="horizontal"
-            [cdkDropListDisabled]="!permissionName.includes('edit')"
+            [cdkDropListDisabled]="!permissionName?.includes('edit')"
         >
             
             <!-- List of navigation headers -->
             @for (navigation of navigations; track navigation.id) {
                 <div cdkDrag 
-                    [style.cursor]="permissionName.includes('edit') ? 'move' : 'pointer'"
+                    [style.cursor]="permissionName?.includes('edit') ? 'move' : 'pointer'"
                     class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
                     [class.nav-container]="navigation.permissionName?.includes('edit')"
                     matTooltip="{{navigation.description}}"
@@ -90,7 +90,7 @@
             
         </div>
         
-        @if (permissionName.includes('add')) {
+        @if (permissionName?.includes('add')) {
             <button 
                 class="add-nav-button" 
                 matTooltip="Add header" 
@@ -99,7 +99,7 @@
             </button>
         }
        
-        @if (permissionName.includes('edit')) {
+        @if (permissionName?.includes('edit')) {
             <i class="bi bi-pen edit-header-bar auto-margin-left" 
                 (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu">
@@ -113,7 +113,7 @@
 <!-- Cards container section -->
 @else {
     <div class="card-container" [style.height]="'calc(100vh - ' + totHeaderHeight + 'px)'">
-        @if (permissionName.includes('edit')) {
+        @if (permissionName?.includes('edit')) {
             <i class="bi bi-pen edit-header-bar right-align"
                 (click)="openFormToEditHeaderBar()"
                 matTooltip="Edit menu"
@@ -126,7 +126,7 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="mixed"
-            [cdkDropListDisabled]="!permissionName.includes('edit')"
+            [cdkDropListDisabled]="!permissionName?.includes('edit')"
         >
             
             <!-- List of navigation cards -->
@@ -197,7 +197,7 @@
             }
 
             <!-- Add header card -->
-            @if (permissionName.includes('add')) {
+            @if (permissionName?.includes('add')) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
                     (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
