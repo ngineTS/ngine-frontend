@@ -46,7 +46,6 @@ export class HeaderBarComponent implements OnInit {
   navigations!: Navigation[];
   headerBarConfig! : HeaderBar;
   isMouseOverCard: Record<string, boolean> = {};
-  totHeaderHeight!: number;
   headerBarImgUrl$: Observable<string> | undefined;
   permissionName: string | undefined;
 
@@ -59,7 +58,6 @@ export class HeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
     this.permissionName = this._route.snapshot.data["permissionName"];
     this.createMouseOverObject();
     if (this.headerBarConfig.imageName) {

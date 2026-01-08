@@ -112,7 +112,7 @@
 
 <!-- Cards container section -->
 @else {
-    <div class="card-container" [style.height]="'calc(100vh - ' + totHeaderHeight + 'px)'">
+    <div class="card-container">
         @if (permissionName?.includes('edit')) {
             <i class="bi bi-pen edit-header-bar right-align"
                 (click)="openFormToEditHeaderBar()"

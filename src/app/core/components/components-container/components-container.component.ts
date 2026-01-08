@@ -39,10 +39,6 @@ export class ComponentsContainer implements OnInit {
    */
   navigations!: Array<Navigation>;
   /**
-   * The total height of the application headers. Used to calculate component height .
-   */
-  totHeaderHeight!: number;
-  /**
    * The user permission.
    */
   containerPermissionName!: string;
@@ -53,7 +49,6 @@ export class ComponentsContainer implements OnInit {
    */
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
-    this.totHeaderHeight = this._route.snapshot.data["totHeaderHeight"] + 5;
     this.containerPermissionName = this._route.snapshot.data["containerPermissionName"] ?? '';
   }
 

@@ -32,7 +32,6 @@ export class AppService {
   createRoutes(
     navigations: Navigation[], 
     isHeaderVisibleDuringNavigation: boolean, 
-    totHeaderHeight: number
   ): Routes {
     const routes: Routes = [];
     if (navigations && navigations.length > 0) {
@@ -43,14 +42,11 @@ export class AppService {
           && navigation.children.length > 0
           && navigation.children[0].navigationType.name === 'header'
         ) {
-          //if menu not visible (i.e cards) then don't add his height to total height.
-          const headerHeight = navigation.headerBar.isVisibleDuringNavigation ? navigation.headerBar.height : 0;
           navigation.headerBar.permissionName = navigation.permissionName;
           routes.push(
             this.createRoutingModule(
               navigation.children,
               navigation.headerBar,
-              headerHeight + totHeaderHeight,
               navigation.permissionName!,
               navigation.name
             )
@@ -62,7 +58,6 @@ export class AppService {
           routes.push({
             path: navigation.name,
             data: {
-              totHeaderHeight: totHeaderHeight,
               navigations: navigation.children ?? [],
               parentId: navigation.id,
               containerPermissionName: navigation.permissionName
@@ -81,7 +76,6 @@ export class AppService {
       else {
         routes.unshift({
           path: '',
-          data: { totHeaderHeight: totHeaderHeight },
           loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         });
       }
@@ -106,7 +100,6 @@ export class AppService {
         let route = this.createRoutingModule(
           result.navigation.children ?? [],
           result.navigation.headerBar,
-          result.navigation.headerBar.height,
           result.navigation.permissionName!
         );
 
@@ -158,14 +151,13 @@ export class AppService {
    * 
    * @param navigations The array of sister navigations.
    * @param headerBar The routing module settings.
+   * @param permissionName The user permission on module.
    * @param parentName The parent name of sister navigations.
-   * @param totHeaderHeight The total header bar height (in px) accumulated from the chain.
    * @returns The main route of routing module.
    */
   createRoutingModule(
     navigations: Array<Navigation>,
     headerBar: HeaderBar,
-    totHeaderHeight: number,
     permissionName: string,
     parentName: string = ''
   ): Route {
@@ -181,7 +173,7 @@ export class AppService {
           permissionName: permissionName
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        children: this.createRoutes(navigations, true, totHeaderHeight),
+        children: this.createRoutes(navigations, true),
       };
     }
     else {
@@ -194,7 +186,7 @@ export class AppService {
           parentId: headerBar.navigationId,
           permissionName: permissionName
         },
-        children: this.createRoutes(navigations, false, totHeaderHeight),
+        children: this.createRoutes(navigations, false),
       };
     }
     return route;
