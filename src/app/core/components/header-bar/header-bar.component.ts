@@ -112,7 +112,7 @@ export class HeaderBarComponent implements OnInit {
    * Open header bar form to edit header bar configuration.
    */
   openFormToEditHeaderBar() {
-    /*const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
+    const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
 
     const matDialogRef = this._matDialog.open(
       GenericFormComponent<HeaderBarPayload>,
@@ -123,7 +123,7 @@ export class HeaderBarComponent implements OnInit {
           formConfig: headerBarForm,
           id: this.headerBarConfig.id,
           navigationId: this.navigations[0]?.parentId,
-          controllerName: 'header-bar',
+          controllerName: 'menu',
         }
       }
     );
@@ -132,7 +132,7 @@ export class HeaderBarComponent implements OnInit {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
         this._appService.createAppRouting(this._router.url);
       }
-    });*/
+    });
   }
 
   /**

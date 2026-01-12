@@ -30,6 +30,7 @@ export type HeaderBarPayload = Omit<HeaderBar,
     "updatedBy" |
     "updatedDate" |
     "deletedBy" |
-    "deletedDate"
+    "deletedDate" |
+    "permissionName"
 >
  

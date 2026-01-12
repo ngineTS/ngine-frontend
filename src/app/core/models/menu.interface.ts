@@ -10,3 +10,9 @@ export interface Menu {
     typographyStyle: TypographyStyle;
     permissionName?: string;  
 }
+
+export type MenuPayload = {
+    containerLayout: Omit<ContainerLayout, 'id' | 'refId'>;
+    containerStyle: Omit<ContainerStyle, 'id' | 'refId'>;
+    typographyStyle: Omit<TypographyStyle, 'id' |'refId'>;
+}
