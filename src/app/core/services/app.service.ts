@@ -20,23 +20,15 @@ export class AppService {
    * Create route for each navigation passed and return array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
-   * Once all routes have been created, add route with path "" at the start of the array with this config:
-   * - If navigations are part of a header bar module then redirect to first navigation.
-   * - If navigations are part of a cards container module then redirect to cards container component.
-   * 
    * @param navigations The array of navigations passed to create either header route or component container.
-   * @param isHeaderVisibleDuringNavigation If module is a header bar and not a cards container.
    * @returns The routes set up.
    */
-  createRoutes(
-    navigations: Navigation[], 
-    isHeaderVisibleDuringNavigation: boolean, 
-  ): Routes {
+  createRoutes(navigations: Navigation[]): Routes {
     const routes: Routes = [];
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-        //Case 1: Children of navigation are headers (this is assuming children[0] sisters are only of type 'header')
-        //--> Create header route
+        /* Case 1: Children of navigation are headers (this is assuming children[0] sisters are only of type 'header')
+           --> Create routing module */
         if (navigation.children
           && navigation.children.length > 0
           && navigation.children[0].navigationType.name === 'header'
@@ -51,8 +43,8 @@ export class AppService {
             )
           );
         }
-        //Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'header')
-        //--> Create Component container
+        /* Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'header')
+           --> Load components container. */
         else {
           routes.push({
             path: navigation.name,
@@ -65,20 +57,14 @@ export class AppService {
           });
         }
       }
-      if (isHeaderVisibleDuringNavigation) {
-        routes.unshift({
-          path: '',
-          redirectTo: navigations[0].name,
-          pathMatch: 'full'
-        });
-      }
-      else {
-        routes.unshift({
-          path: '',
-          loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        });
-      }
+      /* Add '' route to redirect to first navigation */
+      routes.unshift({
+        path: '',
+        redirectTo: navigations[0].name,
+        pathMatch: 'full'
+      });
     }
+
     return routes;
   }
 
@@ -140,17 +126,11 @@ export class AppService {
 
   /**
    * Create routing module and return his main route.
-   * 
-   * If routing settings specifies header bar then:
    * - Lazy load header bar component on main route.
    * - Lazy load sister navigation routes as children.
-   * 
-   * If routing settings specifies cards container then:
-   * - Lazy load nothing on main route.
-   * - Lazy load sister navigation routes as children.
-   * 
+   
    * @param navigations The array of sister navigations.
-   * @param headerBar The routing module settings.
+   * @param menu The header bar style configuration.
    * @param permissionName The user permission on module.
    * @param parentName The parent name of sister navigations.
    * @returns The main route of routing module.
@@ -161,9 +141,7 @@ export class AppService {
     permissionName: string,
     parentName: string = ''
   ): Route {
-    let route: Route;
-    //if (headerBar.isVisibleDuringNavigation) {
-      route = {
+    const route: Route = {
         path: parentName,
         canActivate: [AuthGuard],
         data: {
@@ -173,22 +151,9 @@ export class AppService {
           permissionName: permissionName
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        children: this.createRoutes(navigations, true),
+        children: this.createRoutes(navigations),
       };
-    /*}
-    else {
-      route = {
-        path: parentName,
-        canActivate: [AuthGuard],
-        data: {
-          headerBarConfig: headerBar,
-          navigations: navigations,
-          parentId: headerBar.navigationId,
-          permissionName: permissionName
-        },
-        children: this.createRoutes(navigations, false),
-      };
-    }*/
+    
     return route;
   }
 
