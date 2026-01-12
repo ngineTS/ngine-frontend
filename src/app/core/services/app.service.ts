@@ -2,8 +2,6 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { Route, Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
-import { forkJoin } from "rxjs";
-import { HeaderBarService } from "./header-bar.service";
 import { HeaderBar } from "../models/header-bar.interface";
 import { AuthGuard } from "../auth/guards/auth-guard.service";
 
