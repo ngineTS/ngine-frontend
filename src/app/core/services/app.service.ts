@@ -4,6 +4,7 @@ import { Route, Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
 import { HeaderBar } from "../models/header-bar.interface";
 import { AuthGuard } from "../auth/guards/auth-guard.service";
+import { Menu } from "../models/menu.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -40,11 +41,11 @@ export class AppService {
           && navigation.children.length > 0
           && navigation.children[0].navigationType.name === 'header'
         ) {
-          navigation.headerBar.permissionName = navigation.permissionName;
+          navigation.menu.permissionName = navigation.permissionName;
           routes.push(
             this.createRoutingModule(
               navigation.children,
-              navigation.headerBar,
+              navigation.menu,
               navigation.permissionName!,
               navigation.name
             )
@@ -95,9 +96,10 @@ export class AppService {
     this._navigationService.getNestedNavigations().subscribe({
       next: result => {
         localStorage.setItem('access_token', result.access_token);
+        console.log(result.navigation);
         let route = this.createRoutingModule(
           result.navigation.children ?? [],
-          result.navigation.headerBar,
+          result.navigation.menu,
           result.navigation.permissionName!
         );
 
@@ -115,7 +117,7 @@ export class AppService {
           route.children?.push(
             this.createAdminRoutingModule(
               result.navigation.permissionName,
-              result.navigation.headerBar
+              result.navigation.menu
             )
           );
         }
@@ -155,25 +157,25 @@ export class AppService {
    */
   createRoutingModule(
     navigations: Array<Navigation>,
-    headerBar: HeaderBar,
+    menu: Menu,
     permissionName: string,
     parentName: string = ''
   ): Route {
     let route: Route;
-    if (headerBar.isVisibleDuringNavigation) {
+    //if (headerBar.isVisibleDuringNavigation) {
       route = {
         path: parentName,
         canActivate: [AuthGuard],
         data: {
-          headerBarConfig: headerBar,
+          headerBarConfig: menu,
           navigations: navigations,
-          parentId: headerBar.navigationId,
+          parentId: menu.navigationId,
           permissionName: permissionName
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
         children: this.createRoutes(navigations, true),
       };
-    }
+    /*}
     else {
       route = {
         path: parentName,
@@ -186,7 +188,7 @@ export class AppService {
         },
         children: this.createRoutes(navigations, false),
       };
-    }
+    }*/
     return route;
   }
 
@@ -194,10 +196,10 @@ export class AppService {
    * Create admin routing module.
    * @returns The main route of admin module.
    */
-  createAdminRoutingModule(permissionName: string, headerBar: HeaderBar): Route {
+  createAdminRoutingModule(permissionName: string, menu: Menu): Route {
     return {
       path: 'admin',
-      data: { headerBarConfig: headerBar },
+      data: { headerBarConfig: menu },
       children: [
         {
           path: '',

@@ -13,6 +13,7 @@ import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
 import { MediaService } from '../../services/media.service';
 import { Observable } from 'rxjs';
+import { Menu } from '../../models/menu.interface';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class HeaderBarComponent implements OnInit {
               private _mediaService: MediaService) { }
 
   navigations!: Navigation[];
-  headerBarConfig! : HeaderBar;
+  headerBarConfig! : Menu;
   isMouseOverCard: Record<string, boolean> = {};
   headerBarImgUrl$: Observable<string> | undefined;
   permissionName: string | undefined;
@@ -60,9 +61,10 @@ export class HeaderBarComponent implements OnInit {
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.permissionName = this._route.snapshot.data["permissionName"];
     this.createMouseOverObject();
-    if (this.headerBarConfig.imageName) {
+    /*if (this.headerBarConfig.imageName) {
       this.headerBarImgUrl$ = this._mediaService.getS3ObjectSignedUrl(this.headerBarConfig.imageName);
-    }
+    }*/
+    console.log(this.headerBarConfig);
   }
 
   /**
@@ -110,7 +112,7 @@ export class HeaderBarComponent implements OnInit {
    * Open header bar form to edit header bar configuration.
    */
   openFormToEditHeaderBar() {
-    const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
+    /*const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
 
     const matDialogRef = this._matDialog.open(
       GenericFormComponent<HeaderBarPayload>,
@@ -130,7 +132,7 @@ export class HeaderBarComponent implements OnInit {
       if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
         this._appService.createAppRouting(this._router.url);
       }
-    });
+    });*/
   }
 
   /**

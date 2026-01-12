@@ -8,4 +8,5 @@ export interface Menu {
     containerLayout: ContainerLayout;
     containerStyle: ContainerStyle;
     typographyStyle: TypographyStyle;
+    permissionName?: string;  
 }

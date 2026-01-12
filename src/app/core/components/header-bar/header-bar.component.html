@@ -1,25 +1,34 @@
 <!-- Header Bar section -->
-@if (headerBarConfig.isVisibleDuringNavigation) {
+<!--@if (headerBarConfig.isVisibleDuringNavigation) {-->
     <div class="d-flex flex-row align-items-center"
-        [style.background-color]="headerBarConfig.backgroundColor"
-        [style.height]="headerBarConfig.height + 'px'"
-        [style.border-bottom]="headerBarConfig.borderBottom 
-            ? headerBarConfig.borderBottom + 'px solid ' + headerBarConfig.activeColor 
-            : 'none'"
+        [style.background-color]="headerBarConfig.containerStyle.backgroundColor"
+        [style.height]="headerBarConfig.containerLayout.height + 'px'"
+        [style.border]="headerBarConfig.containerStyle.borderWidth + 'px ' +
+            headerBarConfig.containerStyle.borderStyle + ' ' +
+            headerBarConfig.containerStyle.borderColor"
+        [style.border-top-style]="headerBarConfig.containerStyle.isBorderTopHidden ?
+            'none' : headerBarConfig.containerStyle.borderStyle"
+        [style.border-right-style]="headerBarConfig.containerStyle.isBorderRightHidden ?
+            'none' : headerBarConfig.containerStyle.borderStyle"
+        [style.border-bottom-style]="headerBarConfig.containerStyle.isBorderBottomHidden ?
+            'none' : headerBarConfig.containerStyle.borderStyle"
+        [style.border-left-style]="headerBarConfig.containerStyle.isBorderLeftHidden ?
+            'none' : headerBarConfig.containerStyle.borderStyle"
+
     >
     
         <!-- Top left image -->
-        @if (headerBarConfig.imageName) {
+        <!--@if (headerBarConfig.imageName) {
             <img class="mx-2"
                 [src]="headerBarImgUrl$ | async"
                 [style.height]="0.7 * headerBarConfig.height + 'px'"
                 [style.margin-right]="2.5 * headerBarConfig.gap + 'px'"
             />
-        }
+        }-->
 
         <div cdkDropList 
             class="example-list" 
-            [style.gap]="headerBarConfig.gap + 'px'"
+            [style.gap]="headerBarConfig.containerLayout.gap + 'px'"
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="horizontal"
@@ -38,11 +47,11 @@
                     @if (navigation.icon) {
                         <i  class="me-2"
                             [class]="'bi bi-' + navigation.icon"
-                            [style.font-size]="headerBarConfig.fontSize + 'px'"
+                            [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
                             [style.color]="navigation.isDisabled ? '#ccc' 
-                                : isRouteActive(navigation.name) 
-                                ? headerBarConfig.activeColor
-                                : headerBarConfig.color"
+                                : isRouteActive(navigation.name)
+                                ? headerBarConfig.typographyStyle.activeColor
+                                : headerBarConfig.typographyStyle.color"
                         >
                         </i>
                     }
@@ -51,10 +60,10 @@
                         [class.active]="isRouteActive(navigation.name)"
                         [style.color]="navigation.isDisabled ? '#ccc' 
                             : isRouteActive(navigation.name) 
-                            ? headerBarConfig.activeColor
-                            : headerBarConfig.color"
-                        [style.font-family]="headerBarConfig.fontFamily"
-                        [style.font-size]="headerBarConfig.fontSize + 'px'"
+                            ? headerBarConfig.typographyStyle.activeColor
+                            : headerBarConfig.typographyStyle.color"
+                        [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
+                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
                     >
                         {{ navigation.displayLabel }}
                     </a>
@@ -69,19 +78,19 @@
             @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
                 <div class="mx-2 p-1">
                     <i  class="bi bi-gear me-1"
-                        [style.font-size]="headerBarConfig.fontSize + 'px'"
+                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
                         [style.color]="isRouteActive('admin') 
-                            ? headerBarConfig.activeColor
-                            : headerBarConfig.color"
+                            ? headerBarConfig.typographyStyle.activeColor
+                            : headerBarConfig.typographyStyle.color"
                     >
                     </i>
                     <a [routerLink]="'admin'"
                         [class.active]="isRouteActive('admin')"
                         [style.color]="isRouteActive('admin') 
-                            ? headerBarConfig.activeColor
-                            : headerBarConfig.color"
-                        [style.font-family]="headerBarConfig.fontFamily"
-                        [style.font-size]="headerBarConfig.fontSize + 'px'"
+                            ? headerBarConfig.typographyStyle.activeColor
+                            : headerBarConfig.typographyStyle.color"
+                        [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
+                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
                     >
                         ADMIN
                     </a>
@@ -108,9 +117,9 @@
 
     </div>
     <router-outlet />
-}
+<!-- }
 
-<!-- Cards container section -->
+ Cards container section 
 @else {
     <div class="card-container">
         @if (permissionName?.includes('edit')) {
@@ -129,7 +138,7 @@
             [cdkDropListDisabled]="!permissionName?.includes('edit')"
         >
             
-            <!-- List of navigation cards -->
+            List of navigation cards
             @for (navigation of navigations; track navigation.id) {
                 <div class="col-3 m-3 card-div"
                     cdkDrag
@@ -167,7 +176,7 @@
                 </div>
             }
 
-            <!-- Admin card-->
+             Admin card
             @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['adminCard'] = true"
@@ -196,7 +205,7 @@
                 </div>
             }
 
-            <!-- Add header card -->
+             Add header card
             @if (permissionName?.includes('add')) {
                 <div class="col-3 m-3 card-div"
                     (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
@@ -217,4 +226,4 @@
         </div>
 
     </div>
-}
+} -->
