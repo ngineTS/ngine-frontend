@@ -2,6 +2,8 @@
 <!--@if (headerBarConfig.isVisibleDuringNavigation) {-->
     <div class="d-flex flex-row align-items-center"
         [style.background-color]="headerBarConfig.containerStyle.backgroundColor"
+        [style.width]="headerBarConfig.containerLayout.width ?
+            headerBarConfig.containerLayout.width + 'px' : ''"
         [style.height]="headerBarConfig.containerLayout.height + 'px'"
         [style.border]="headerBarConfig.containerStyle.borderWidth + 'px ' +
             headerBarConfig.containerStyle.borderStyle + ' ' +
@@ -14,7 +16,18 @@
             'none' : headerBarConfig.containerStyle.borderStyle"
         [style.border-left-style]="headerBarConfig.containerStyle.isBorderLeftHidden ?
             'none' : headerBarConfig.containerStyle.borderStyle"
-
+        [style.border-top-left-radius]="headerBarConfig.containerStyle.borderTopLeftRadius + 'px'"
+        [style.border-top-right-radius]="headerBarConfig.containerStyle.borderTopRightRadius + 'px'"
+        [style.border-bottom-right-radius]="headerBarConfig.containerStyle.borderBottomRightRadius + 'px'"
+        [style.border-bottom-left-radius]="headerBarConfig.containerStyle.borderBottomLeftRadius + 'px'"
+        [style.margin-top]="headerBarConfig.containerLayout.marginTop + 'px'"
+        [style.margin-right]="headerBarConfig.containerLayout.marginRight + 'px'"
+        [style.margin-bottom]="headerBarConfig.containerLayout.marginBottom + 'px'"
+        [style.margin-left]="headerBarConfig.containerLayout.marginLeft + 'px'"
+        [style.padding-top]="headerBarConfig.containerLayout.paddingTop + 'px'"
+        [style.padding-right]="headerBarConfig.containerLayout.paddingRight + 'px'"
+        [style.padding-bottom]="headerBarConfig.containerLayout.paddingBottom + 'px'"
+        [style.padding-left]="headerBarConfig.containerLayout.paddingLeft + 'px'"
     >
     
         <!-- Top left image -->
@@ -64,6 +77,7 @@
                             : headerBarConfig.typographyStyle.color"
                         [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
                         [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                        [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
                     >
                         {{ navigation.displayLabel }}
                     </a>
@@ -91,6 +105,7 @@
                             : headerBarConfig.typographyStyle.color"
                         [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
                         [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                        [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
                     >
                         ADMIN
                     </a>
