@@ -122,7 +122,6 @@ export class HeaderBarComponent implements OnInit {
           hasDeleteButton: false,
           formConfig: headerBarForm,
           id: this.headerBarConfig.id,
-          navigationId: this.navigations[0]?.parentId,
           controllerName: 'menu',
         }
       }

@@ -46,7 +46,6 @@ export class HeaderBarService {
      */
     setUpHeaderBarForm(menu?: Menu): DeepFormConfig<MenuPayload> {
         return {
-
             containerLayout: {
                 width: {
                     value: menu?.containerLayout.width ?? null,
