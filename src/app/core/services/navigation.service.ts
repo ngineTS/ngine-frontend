@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
 import { NavigationType } from "../models/navigation-type.interface";
-import { retry, take } from "rxjs";
+import { take } from "rxjs";
 
 export type UpdateReturnType = {
     affected: number;

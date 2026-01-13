@@ -1,8 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HeaderBar, HeaderBarPayload } from "../models/header-bar.interface";
 import { HttpClient } from "@angular/common/http";
-import { Observable, retry, take } from "rxjs";
-import { environment } from "../../../environments/environment";
 import { DeepFormConfig } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
 import { Menu, MenuPayload } from "../models/menu.interface";
@@ -40,11 +37,11 @@ export class HeaderBarService {
     ];
 
     /**
-     * Set up header bar form.
-     * @param headerBar The header bar object to edit. If nothing is passed it means we are in addition mode.
+     * Set up menu form.
+     * @param menu The menu object to edit. If nothing is passed it means we are in addition mode.
      * @returns 
      */
-    setUpHeaderBarForm(menu?: Menu): DeepFormConfig<MenuPayload> {
+    setupMenuForm(menu?: Menu): DeepFormConfig<MenuPayload> {
         return {
             containerLayout: {
                 width: {

@@ -1,244 +1,132 @@
-<!-- Header Bar section -->
-<!--@if (headerBarConfig.isVisibleDuringNavigation) {-->
-    <div class="d-flex flex-row align-items-center"
-        [style.background-color]="headerBarConfig.containerStyle.backgroundColor"
-        [style.width]="headerBarConfig.containerLayout.width ?
-            headerBarConfig.containerLayout.width + 'px' : ''"
-        [style.height]="headerBarConfig.containerLayout.height + 'px'"
-        [style.border]="headerBarConfig.containerStyle.borderWidth + 'px ' +
-            headerBarConfig.containerStyle.borderStyle + ' ' +
-            headerBarConfig.containerStyle.borderColor"
-        [style.border-top-style]="headerBarConfig.containerStyle.isBorderTopHidden ?
-            'none' : headerBarConfig.containerStyle.borderStyle"
-        [style.border-right-style]="headerBarConfig.containerStyle.isBorderRightHidden ?
-            'none' : headerBarConfig.containerStyle.borderStyle"
-        [style.border-bottom-style]="headerBarConfig.containerStyle.isBorderBottomHidden ?
-            'none' : headerBarConfig.containerStyle.borderStyle"
-        [style.border-left-style]="headerBarConfig.containerStyle.isBorderLeftHidden ?
-            'none' : headerBarConfig.containerStyle.borderStyle"
-        [style.border-top-left-radius]="headerBarConfig.containerStyle.borderTopLeftRadius + 'px'"
-        [style.border-top-right-radius]="headerBarConfig.containerStyle.borderTopRightRadius + 'px'"
-        [style.border-bottom-right-radius]="headerBarConfig.containerStyle.borderBottomRightRadius + 'px'"
-        [style.border-bottom-left-radius]="headerBarConfig.containerStyle.borderBottomLeftRadius + 'px'"
-        [style.margin-top]="headerBarConfig.containerLayout.marginTop + 'px'"
-        [style.margin-right]="headerBarConfig.containerLayout.marginRight + 'px'"
-        [style.margin-bottom]="headerBarConfig.containerLayout.marginBottom + 'px'"
-        [style.margin-left]="headerBarConfig.containerLayout.marginLeft + 'px'"
-        [style.padding-top]="headerBarConfig.containerLayout.paddingTop + 'px'"
-        [style.padding-right]="headerBarConfig.containerLayout.paddingRight + 'px'"
-        [style.padding-bottom]="headerBarConfig.containerLayout.paddingBottom + 'px'"
-        [style.padding-left]="headerBarConfig.containerLayout.paddingLeft + 'px'"
+<div class="d-flex flex-row align-items-center"
+    [style.background-color]="headerBarConfig.containerStyle.backgroundColor"
+    [style.width]="headerBarConfig.containerLayout.width ?
+        headerBarConfig.containerLayout.width + 'px' : ''"
+    [style.height]="headerBarConfig.containerLayout.height + 'px'"
+    [style.border]="headerBarConfig.containerStyle.borderWidth + 'px ' +
+        headerBarConfig.containerStyle.borderStyle + ' ' +
+        headerBarConfig.containerStyle.borderColor"
+    [style.border-top-style]="headerBarConfig.containerStyle.isBorderTopHidden ?
+        'none' : headerBarConfig.containerStyle.borderStyle"
+    [style.border-right-style]="headerBarConfig.containerStyle.isBorderRightHidden ?
+        'none' : headerBarConfig.containerStyle.borderStyle"
+    [style.border-bottom-style]="headerBarConfig.containerStyle.isBorderBottomHidden ?
+        'none' : headerBarConfig.containerStyle.borderStyle"
+    [style.border-left-style]="headerBarConfig.containerStyle.isBorderLeftHidden ?
+        'none' : headerBarConfig.containerStyle.borderStyle"
+    [style.border-top-left-radius]="headerBarConfig.containerStyle.borderTopLeftRadius + 'px'"
+    [style.border-top-right-radius]="headerBarConfig.containerStyle.borderTopRightRadius + 'px'"
+    [style.border-bottom-right-radius]="headerBarConfig.containerStyle.borderBottomRightRadius + 'px'"
+    [style.border-bottom-left-radius]="headerBarConfig.containerStyle.borderBottomLeftRadius + 'px'"
+    [style.margin-top]="headerBarConfig.containerLayout.marginTop + 'px'"
+    [style.margin-right]="headerBarConfig.containerLayout.marginRight + 'px'"
+    [style.margin-bottom]="headerBarConfig.containerLayout.marginBottom + 'px'"
+    [style.margin-left]="headerBarConfig.containerLayout.marginLeft + 'px'"
+    [style.padding-top]="headerBarConfig.containerLayout.paddingTop + 'px'"
+    [style.padding-right]="headerBarConfig.containerLayout.paddingRight + 'px'"
+    [style.padding-bottom]="headerBarConfig.containerLayout.paddingBottom + 'px'"
+    [style.padding-left]="headerBarConfig.containerLayout.paddingLeft + 'px'"
+>
+
+    <!-- Top left image -->
+    <!--@if (headerBarConfig.imageName) {
+        <img class="mx-2"
+            [src]="headerBarImgUrl$ | async"
+            [style.height]="0.7 * headerBarConfig.height + 'px'"
+            [style.margin-right]="2.5 * headerBarConfig.gap + 'px'"
+        />
+    }-->
+
+    <div cdkDropList 
+        class="example-list" 
+        [style.gap]="headerBarConfig.containerLayout.gap + 'px'"
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="navigations"
+        cdkDropListOrientation="horizontal"
+        [cdkDropListDisabled]="!permissionName?.includes('edit')"
     >
-    
-        <!-- Top left image -->
-        <!--@if (headerBarConfig.imageName) {
-            <img class="mx-2"
-                [src]="headerBarImgUrl$ | async"
-                [style.height]="0.7 * headerBarConfig.height + 'px'"
-                [style.margin-right]="2.5 * headerBarConfig.gap + 'px'"
-            />
-        }-->
-
-        <div cdkDropList 
-            class="example-list" 
-            [style.gap]="headerBarConfig.containerLayout.gap + 'px'"
-            (cdkDropListDropped)="drop($event)"
-            [cdkDropListData]="navigations"
-            cdkDropListOrientation="horizontal"
-            [cdkDropListDisabled]="!permissionName?.includes('edit')"
-        >
-            
-            <!-- List of navigation headers -->
-            @for (navigation of navigations; track navigation.id) {
-                <div cdkDrag 
-                    [style.cursor]="permissionName?.includes('edit') ? 'move' : 'pointer'"
-                    class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
-                    [class.nav-container]="navigation.permissionName?.includes('edit')"
-                    matTooltip="{{navigation.description}}"
-                >
-                    
-                    @if (navigation.icon) {
-                        <i  class="me-2"
-                            [class]="'bi bi-' + navigation.icon"
-                            [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                            [style.color]="navigation.isDisabled ? '#ccc' 
-                                : isRouteActive(navigation.name)
-                                ? headerBarConfig.typographyStyle.activeColor
-                                : headerBarConfig.typographyStyle.color"
-                        >
-                        </i>
-                    }
-                    
-                    <a [routerLink]="navigation.name"
-                        [class.active]="isRouteActive(navigation.name)"
+        
+        <!-- List of navigation headers -->
+        @for (navigation of navigations; track navigation.id) {
+            <div cdkDrag 
+                [style.cursor]="permissionName?.includes('edit') ? 'move' : 'pointer'"
+                class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
+                [class.nav-container]="navigation.permissionName?.includes('edit')"
+                matTooltip="{{navigation.description}}"
+            >
+                
+                @if (navigation.icon) {
+                    <i  class="me-2"
+                        [class]="'bi bi-' + navigation.icon"
+                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
                         [style.color]="navigation.isDisabled ? '#ccc' 
-                            : isRouteActive(navigation.name) 
-                            ? headerBarConfig.typographyStyle.activeColor
-                            : headerBarConfig.typographyStyle.color"
-                        [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
-                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                        [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
-                    >
-                        {{ navigation.displayLabel }}
-                    </a>
-
-                    @if (navigation.permissionName?.includes('edit')) {
-                        <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
-                    }
-                </div>
-            }
-
-            <!-- Admin header (only on global nav and if permission) -->
-            @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
-                <div class="mx-2 p-1">
-                    <i  class="bi bi-gear me-1"
-                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                        [style.color]="isRouteActive('admin') 
+                            : isRouteActive(navigation.name)
                             ? headerBarConfig.typographyStyle.activeColor
                             : headerBarConfig.typographyStyle.color"
                     >
                     </i>
-                    <a [routerLink]="'admin'"
-                        [class.active]="isRouteActive('admin')"
-                        [style.color]="isRouteActive('admin') 
-                            ? headerBarConfig.typographyStyle.activeColor
-                            : headerBarConfig.typographyStyle.color"
-                        [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
-                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                        [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
-                    >
-                        ADMIN
-                    </a>
-                </div>
-            }
-            
-        </div>
-        
-        @if (permissionName?.includes('add')) {
-            <button 
-                class="add-nav-button" 
-                matTooltip="Add header" 
-                (click)="openFormToAddOrEditHeader()">
-                +
-            </button>
-        }
-       
-        @if (permissionName?.includes('edit')) {
-            <i class="bi bi-pen edit-header-bar auto-margin-left" 
-                (click)="openFormToEditHeaderBar()"
-                matTooltip="Edit menu">
-            </i>
+                }
+                
+                <a [routerLink]="navigation.name"
+                    [class.active]="isRouteActive(navigation.name)"
+                    [style.color]="navigation.isDisabled ? '#ccc' 
+                        : isRouteActive(navigation.name) 
+                        ? headerBarConfig.typographyStyle.activeColor
+                        : headerBarConfig.typographyStyle.color"
+                    [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
+                    [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                    [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
+                >
+                    {{ navigation.displayLabel }}
+                </a>
+
+                @if (navigation.permissionName?.includes('edit')) {
+                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                }
+            </div>
         }
 
-    </div>
-    <router-outlet />
-<!-- }
-
- Cards container section 
-@else {
-    <div class="card-container">
-        @if (permissionName?.includes('edit')) {
-            <i class="bi bi-pen edit-header-bar right-align"
-                (click)="openFormToEditHeaderBar()"
-                matTooltip="Edit menu"
-            >
-            </i>
+        <!-- Admin header (only on global nav and if permission) -->
+        @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
+            <div class="mx-2 p-1">
+                <i  class="bi bi-gear me-1"
+                    [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                    [style.color]="isRouteActive('admin') 
+                        ? headerBarConfig.typographyStyle.activeColor
+                        : headerBarConfig.typographyStyle.color"
+                >
+                </i>
+                <a [routerLink]="'admin'"
+                    [class.active]="isRouteActive('admin')"
+                    [style.color]="isRouteActive('admin') 
+                        ? headerBarConfig.typographyStyle.activeColor
+                        : headerBarConfig.typographyStyle.color"
+                    [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
+                    [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                    [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
+                >
+                    ADMIN
+                </a>
+            </div>
         }
         
-        <div class="row py-4 mx-1 justify-content-center align-items-center example-list"
-            cdkDropList
-            (cdkDropListDropped)="drop($event)"
-            [cdkDropListData]="navigations"
-            cdkDropListOrientation="mixed"
-            [cdkDropListDisabled]="!permissionName?.includes('edit')"
-        >
-            
-            List of navigation cards
-            @for (navigation of navigations; track navigation.id) {
-                <div class="col-3 m-3 card-div"
-                    cdkDrag
-                    matTooltip="{{navigation.description}}"
-                    (mouseenter)="isMouseOverCard[navigation.id] = true"
-                    (mouseleave)="isMouseOverCard[navigation.id] = false"
-                    (click)="navigateToCardUrl(navigation.name)"
-                    [style.background-color]="isMouseOverCard[navigation.id] 
-                        ? headerBarConfig.activeColor 
-                        : headerBarConfig.backgroundColor"
-                >
-                    @if (navigation.permissionName?.includes('edit')) {
-                        <i class="bi bi-pen edit-icon" 
-                            (click)="openFormToAddOrEditHeader(navigation); $event.stopPropagation();"
-                        >
-                        </i>
-                    }
-                    
-                    <div class="row gap-1">
-                        @if (navigation.icon) {
-                            <i  class="text-center"
-                                [class]="'bi bi-' + navigation.icon"
-                                [style.font-size]="headerBarConfig.fontSize + 2 + 'px'"
-                                [style.color]="headerBarConfig.color">
-                            </i>
-                        }
-
-                        <span class="text-center"
-                            [style.color]="headerBarConfig.color"
-                            [style.font-family]="headerBarConfig.fontFamily"
-                            [style.font-size]="headerBarConfig.fontSize + 'px'">
-                            {{ navigation.displayLabel }}
-                        </span>
-                    </div>
-                </div>
-            }
-
-             Admin card
-            @if (headerBarConfig.navigationId === '00000000-0000-0000-0000-000000000000' && permissionName) {
-                <div class="col-3 m-3 card-div"
-                    (mouseenter)="isMouseOverCard['adminCard'] = true"
-                    (mouseleave)="isMouseOverCard['adminCard'] = false"
-                    [style.background-color]="isMouseOverCard['adminCard'] 
-                        ? headerBarConfig.activeColor 
-                        : headerBarConfig.backgroundColor"
-                    (click)="navigateToCardUrl('admin')"
-                >
-                    <div class="row gap-1">
-                        <i  class="bi bi-gear text-center"
-                            [style.font-size]="headerBarConfig.fontSize + 'px'"
-                            [style.color]="isRouteActive('admin') 
-                                ? headerBarConfig.activeColor
-                                : headerBarConfig.color"
-                        >
-                        </i>
-                        <span class="text-center"
-                            [style.color]="headerBarConfig.color"
-                            [style.font-family]="headerBarConfig.fontFamily"
-                            [style.font-size]="headerBarConfig.fontSize + 'px'"
-                        >
-                            ADMIN
-                        </span>
-                    </div>
-                </div>
-            }
-
-             Add header card
-            @if (permissionName?.includes('add')) {
-                <div class="col-3 m-3 card-div"
-                    (mouseenter)="isMouseOverCard['addHeaderCard'] = true"
-                    (mouseleave)="isMouseOverCard['addHeaderCard'] = false"
-                    (click)="openFormToAddOrEditHeader()"
-                    [style.background-color]="isMouseOverCard['addHeaderCard'] 
-                        ? headerBarConfig.activeColor 
-                        : headerBarConfig.backgroundColor"
-                >
-                    <span [style.color]="headerBarConfig.color"
-                        [style.font-family]="headerBarConfig.fontFamily"
-                        [style.font-size]="headerBarConfig.fontSize + 'px'">
-                        <i class="bi bi-plus-circle add-card-icon" matTooltip="Add header"></i>
-                    </span>
-                </div>
-            }
-
-        </div>
-
     </div>
-} -->
+    
+    @if (permissionName?.includes('add')) {
+        <button 
+            class="add-nav-button" 
+            matTooltip="Add header" 
+            (click)="openFormToAddOrEditHeader()">
+            +
+        </button>
+    }
+    
+    @if (permissionName?.includes('edit')) {
+        <i class="bi bi-pen edit-header-bar auto-margin-left" 
+            (click)="openFormToEditHeaderBar()"
+            matTooltip="Edit menu">
+        </i>
+    }
+
+</div>
+<router-outlet />

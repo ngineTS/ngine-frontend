@@ -77,7 +77,7 @@ export class ComponentsContainer implements OnInit {
    * Open Navigation form to create navigation.
    * @param type The type ('header' or 'component').
    */
-  openFormToAddHeaderBarOrComponent(type: 'header-bar' | 'component'): void {
+  openFormToAddNavigationBarOrComponent(type: 'header-bar' | 'component'): void {
     if (type === 'component') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {

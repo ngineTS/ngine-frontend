@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderBarService } from '../../core/services/header-bar.service';
-import { HeaderBar } from '../../core/models/header-bar.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Menu } from '../../core/models/menu.interface';
 
 @Component({
   selector: 'app-admin',
@@ -16,7 +16,7 @@ export class AdminComponent {
               private _route: ActivatedRoute,
               private _headerBarService: HeaderBarService) { }
 
-  headerBarConfig: HeaderBar | undefined;
+  headerBarConfig: Menu | undefined;
   isUserRoleManagementHovered = false;
   isAnalyticHovered = false;
   isFileManagementHovered = false;

@@ -1,5 +1,4 @@
 import { NavigationType } from "./navigation-type.interface";
-import { HeaderBar } from "./header-bar.interface";
 import { PermissionName } from "./permission.interface";
 import { ContainerLayout } from "./container-layout.interface";
 import { TypographyStyle } from "./typography-style.interface";

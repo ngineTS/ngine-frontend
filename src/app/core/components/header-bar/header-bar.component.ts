@@ -7,13 +7,12 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-import { HeaderBar, HeaderBarPayload } from '../../models/header-bar.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
 import { MediaService } from '../../services/media.service';
 import { Observable } from 'rxjs';
-import { Menu } from '../../models/menu.interface';
+import { Menu, MenuPayload } from '../../models/menu.interface';
 
 
 @Component({
@@ -29,11 +28,6 @@ import { Menu } from '../../models/menu.interface';
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
 })
-/**
- * HeaderBar Component is either a header bar or a cards container.
- * If headerBarConfig.isVisiblieDuringNavigation is equal to true then it's a cards container
- * else it is a header bar.
- */
 export class HeaderBarComponent implements OnInit {
   
   constructor(public _router: Router,
@@ -109,13 +103,13 @@ export class HeaderBarComponent implements OnInit {
   /**
    * Methods triggered on 'Edit menu' button click.
    * 
-   * Open header bar form to edit header bar configuration.
+   * Open menu form to edit navigation bar configuration.
    */
   openFormToEditHeaderBar() {
-    const headerBarForm = this._headerBarService.setUpHeaderBarForm(this.headerBarConfig);
+    const headerBarForm = this._headerBarService.setupMenuForm(this.headerBarConfig);
 
     const matDialogRef = this._matDialog.open(
-      GenericFormComponent<HeaderBarPayload>,
+      GenericFormComponent<MenuPayload>,
       { 
         maxWidth: '700px',
         data: {
