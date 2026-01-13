@@ -36,9 +36,9 @@
         </button>
         <mat-menu #menu="matMenu">
             @if (navigations.length === 0) {
-                <button mat-menu-item (click)="openFormToAddHeaderOrComponent('header')">Add header</button>
+                <button mat-menu-item (click)="openFormToAddHeaderBarOrComponent('header-bar')">Add header bar</button>
             }
-            <button mat-menu-item (click)="openFormToAddHeaderOrComponent('component')">Add component</button>
+            <button mat-menu-item (click)="openFormToAddHeaderBarOrComponent('component')">Add component</button>
         </mat-menu>
     }
     

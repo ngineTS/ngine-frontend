@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { HeaderBarService } from '../../services/header-bar.service';
+import { MenuService } from '../../services/menu.service';
+import { AppService } from '../../services/app.service';
+import { SnackBarService } from '../../services/snackbar.service';
 
 
 @Component({
@@ -30,9 +32,15 @@ import { HeaderBarService } from '../../services/header-bar.service';
 })
 export class ComponentsContainer implements OnInit {
 
-  constructor(private _route: ActivatedRoute,
-              private _navigationService: NavigationService,
-              private _matDialog: MatDialog) {}
+  constructor(
+    private _route: ActivatedRoute,
+    private _navigationService: NavigationService,
+    private _matDialog: MatDialog,
+    private _menuService: MenuService,
+    private _appService: AppService,
+    private _snackbarService: SnackBarService,
+    private _router: Router
+  ) {}
 
   /** 
    * The navigations that contain our components.
@@ -69,7 +77,8 @@ export class ComponentsContainer implements OnInit {
    * Open Navigation form to create navigation.
    * @param type The type ('header' or 'component').
    */
-  openFormToAddHeaderOrComponent(type: 'header' | 'component'): void {
+  openFormToAddHeaderBarOrComponent(type: 'header-bar' | 'component'): void {
+    if (type === 'component') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,
@@ -77,6 +86,14 @@ export class ComponentsContainer implements OnInit {
           parentId: this._route.snapshot.data["parentId"]
         }
       });
+    }
+    else {
+      this._menuService.createNavigationBar(this._route.snapshot.data["parentId"])
+        .subscribe(resp => {
+          this._snackbarService.showSuccessSnackBar(resp);
+          this._appService.createAppRouting(this._router.url);
+        });
+    }
   }
 
 }

@@ -32,10 +32,7 @@ export class MediaService {
       );
     }
     return this._http.get<Array<Media>>(`${this.baseURL}media`)
-      .pipe(
-        retry(2),
-        take(1)
-      );
+      .pipe(retry(1), take(1));
   }
 
   uploadFileToS3(formData: FormData): Observable<Media> {
