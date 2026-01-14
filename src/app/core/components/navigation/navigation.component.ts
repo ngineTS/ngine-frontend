@@ -1,14 +1,12 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, Input, inputBinding, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Navigation } from '../../models/navigation.interface';
-import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
-import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { retry, take } from 'rxjs';
+import { take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { ContainerLayoutService } from '../../services/container-layout.service';
 
 @Component({
   selector: 'app-navigation',
@@ -32,9 +30,12 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   initialWindowheight!: number;
   observer: MutationObserver | undefined;
 
-  constructor(private _componentContainerService: ComponentsContainerService) { 
-                super(); 
-              }
+  constructor(
+    private _componentContainerService: ComponentsContainerService,
+    private _containerLayoutService: ContainerLayoutService
+  ) { 
+    super(); 
+  }
 
   /**
    * Initialize width, previousWidth and initialWindowSize properties.
@@ -42,10 +43,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   ngOnInit(): void {
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowheight = window.innerHeight;
-    this.previousWidth = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
-    this.previousheight = this._navigation.height.valueOf() * this.initialWindowheight / 100;
-    this._width = this._navigation.width.valueOf() * this.initialWindowWidth / 100;
-    this._height = this._navigation.height.valueOf() * this.initialWindowheight / 100;
+    this.previousWidth = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
+    this.previousheight = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
+    this._width = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
+    this._height = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
   }
 
   /**
@@ -120,19 +121,17 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * - Assign new value to previousWidth and previousHeight properties.
    */
   onSaveSizeClick(): void {
-    const navigationSize: Partial<Navigation> = {
+    const navigationSize = {
       width: Math.round((this._width! / window.innerWidth * 100)),
       height: Math.round((this._height! / window.innerHeight * 100))
     };
-    this._navigationService.updateNavigation(this._navigation.id, navigationSize)
-      .pipe(
-        take(this._takeCount)
-      )
+    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
+      .pipe(take(this._takeCount))
       .subscribe(() => {
-        this._navigation.width = navigationSize.width!;
-        this._navigation.height = navigationSize.height!;
-        this.previousWidth = this._width!.valueOf();
-        this.previousheight = this._height!.valueOf();
+        this._navigation.containerLayout.width = navigationSize.width;
+        this._navigation.containerLayout.height = navigationSize.height;
+        this.previousWidth = this._width.valueOf();
+        this.previousheight = this._height.valueOf();
       });
   }
 

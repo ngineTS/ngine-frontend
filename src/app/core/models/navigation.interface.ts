@@ -19,9 +19,9 @@ export interface Navigation {
     navigationType: NavigationType;
     icon: string;
     menu: Menu;
-    containerLayout?: ContainerLayout;
-    containerStyle?: ContainerStyle;
-    typographyStyle?: TypographyStyle;
+    containerLayout: ContainerLayout;
+    containerStyle: ContainerStyle;
+    typographyStyle: TypographyStyle;
     children?: Navigation[];
     parent?: Navigation;
     permissionName?: PermissionName;

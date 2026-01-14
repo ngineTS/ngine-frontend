@@ -58,7 +58,6 @@ export class HeaderBarComponent implements OnInit {
     /*if (this.headerBarConfig.imageName) {
       this.headerBarImgUrl$ = this._mediaService.getS3ObjectSignedUrl(this.headerBarConfig.imageName);
     }*/
-    console.log(this.headerBarConfig);
   }
 
   /**

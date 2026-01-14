@@ -2,7 +2,7 @@ export interface ContainerLayout {
     id: string;
     refId: string;
 	width: number | null;
-	height: number;
+	height: number | null;
 	marginTop: number | null;
 	marginRight: number | null;
 	marginBottom: number | null;
