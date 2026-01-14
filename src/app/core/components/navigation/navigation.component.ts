@@ -7,6 +7,11 @@ import { take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
+import { MenuService } from '../../services/menu.service';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { StylePayload } from '../../models/menu.interface';
+import { AppService } from '../../services/app.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -32,7 +37,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
-    private _containerLayoutService: ContainerLayoutService
+    private _containerLayoutService: ContainerLayoutService,
+    private _menuService: MenuService,
+    private _appService: AppService,
+    private _router: Router
   ) { 
     super(); 
   }
@@ -156,6 +164,38 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
         navigation: this._navigation,
         type: 'component',
         parentId: this._navigation.parentId,
+      }
+    });
+  }
+
+  /**
+   * Methods triggered on market button click.
+   * 
+   * Open generic form to edit navigation style.
+   */
+  openFormToEditStyle() {
+    const navigationStyleForm = this._menuService.setupStyleForm({
+      containerLayout: this._navigation.containerLayout,
+      containerStyle: this._navigation.containerStyle,
+      typographyStyle: this._navigation.typographyStyle
+    });
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<StylePayload>,
+      { 
+        maxWidth: '700px',
+        data: {
+          hasDeleteButton: false,
+          formConfig: navigationStyleForm,
+          id: this._navigation.id,
+          controllerName: 'menu',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
       }
     });
   }

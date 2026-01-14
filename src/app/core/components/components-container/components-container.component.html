@@ -12,7 +12,11 @@
                 <div class="example-box" cdkDrag>
                         
                     @if (containerPermissionName.includes('edit')) {
-                        <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
+                        <i class="bi bi-arrows-move drag-icon" 
+                           cdkDragHandle
+                           [style.margin-top]="navigation.containerLayout.marginTop + 'px'"
+                           [style.margin-left]="navigation.containerLayout.marginLeft + 'px'"
+                        ></i>
                     }
                     
                     <app-navigation

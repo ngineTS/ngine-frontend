@@ -12,7 +12,8 @@ import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
 import { MediaService } from '../../services/media.service';
 import { Observable } from 'rxjs';
-import { Menu, MenuPayload } from '../../models/menu.interface';
+import { Menu, StylePayload } from '../../models/menu.interface';
+import { MenuService } from '../../services/menu.service';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class HeaderBarComponent implements OnInit {
               private _route: ActivatedRoute,
               private _navigationService: NavigationService,
               private _matDialog: MatDialog,
-              private _headerBarService: HeaderBarService,
+              private _menuService: MenuService,
               private _appService: AppService,
               private _mediaService: MediaService) { }
 
@@ -104,11 +105,16 @@ export class HeaderBarComponent implements OnInit {
    * 
    * Open menu form to edit navigation bar configuration.
    */
-  openFormToEditHeaderBar() {
-    const headerBarForm = this._headerBarService.setupMenuForm(this.headerBarConfig);
+  openFormToEditHeaderBarStyle() {
+    const styleInformation = {
+      containerLayout: this.headerBarConfig.containerLayout,
+      containerStyle: this.headerBarConfig.containerStyle,
+      typographyStyle: this.headerBarConfig.typographyStyle
+    }
+    const headerBarForm = this._menuService.setupStyleForm(styleInformation);
 
     const matDialogRef = this._matDialog.open(
-      GenericFormComponent<MenuPayload>,
+      GenericFormComponent<StylePayload>,
       { 
         maxWidth: '700px',
         data: {

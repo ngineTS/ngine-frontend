@@ -11,7 +11,7 @@ export interface Menu {
     permissionName?: string;  
 }
 
-export type MenuPayload = {
+export type StylePayload = {
     containerLayout: Omit<ContainerLayout, 'id' | 'refId'>;
     containerStyle: Omit<ContainerStyle, 'id' | 'refId'>;
     typographyStyle: Omit<TypographyStyle, 'id' |'refId'>;
