@@ -32,7 +32,7 @@ export class NavigationManagementComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
                 navigation: Navigation | undefined, 
-                type: 'header' | 'component',
+                type: 'redirect-button' | 'component',
                 parentId: Navigation["parentId"],
               },
               private _formBuilder: FormBuilder,
@@ -60,8 +60,6 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Create Navigation form based on navigation passed in this component.
    * 
-   * If navigation is a header then add color form control.
-   * 
    * If navigation is a component then make parent as mandatory and set up initial size.
    */
   createForm() {
@@ -82,7 +80,7 @@ export class NavigationManagementComponent implements OnInit {
         this.navigationForm.addControl('height', this._formBuilder.control(50));
       }
     }
-    if (this.data.type === 'header') {
+    if (this.data.type === 'redirect-button') {
       this.navigationForm.addControl('icon', this._formBuilder.control(
         this.data.navigation?.icon ?? null
       ));
@@ -93,11 +91,11 @@ export class NavigationManagementComponent implements OnInit {
    * Define and return Parent menu values and store flat navigations.
    * 
    * Rules:
-   * * Parent can only be header.
+   * * Parent can only be redirect-button.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
-   * * If form is a header: parent can't have component children.
-   * * If form is a component: parent can't have header children.
+   * * If form is a redirect-button: parent can't have component children.
+   * * If form is a component: parent can't have redirect-button children.
    * * User requires 'add' permission on navigation.
    * 
    * @returns An observable of assignable parent navigations.
@@ -109,24 +107,25 @@ export class NavigationManagementComponent implements OnInit {
         take(1),
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
+          console.log(flatNavigations);
           return flatNavigations.filter(flatNav => {            
             if (flatNav.id === this.data.navigation?.id) {
               return false;
             }
-            if (flatNav.navigationType.name !== 'header') {
+            if (flatNav.navigationType.name !== 'redirect-button') {
               return false;
             }
             if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
               return false;
             }
             if (flatNav.children && flatNav.children.length > 0) {
-              if (this.data.type === 'header') {
-                if (flatNav.children[0].navigationType.name !== 'header') {
+              if (this.data.type === 'redirect-button') {
+                if (flatNav.children[0].navigationType.name !== 'redirect-button') {
                   return false;
                 }
               }
               else {
-                if (flatNav.children[0].navigationType.name === 'header') {
+                if (flatNav.children[0].navigationType.name === 'redirect-button') {
                   return false;
                 }
               }
@@ -143,9 +142,9 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Define and return Navigation Type menu values.
    * 
-   * If form is a component: exclude "header" type.
+   * If form is a component: exclude "redirect-button" type.
    * 
-   * If form is a header: keep only "header" type. 
+   * If form is a redirect-button: keep only "redirect-button" type. 
    * @returns An observable of assignable navigation types.
    */
   getNavigationTypeMenuValues(): Observable<NavigationType[]> {
@@ -155,12 +154,12 @@ export class NavigationManagementComponent implements OnInit {
         take(1),
         map(
           navigationTypes => {
-            if (this.data.type === 'header') {
-              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'header')?.id);
-              return navigationTypes.filter(obj => obj.name === 'header');
+            if (this.data.type === 'redirect-button') {
+              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'redirect-button')?.id);
+              return navigationTypes.filter(obj => obj.name === 'redirect-button');
             }
             else {
-              return navigationTypes.filter(obj => obj.name !== 'header');
+              return navigationTypes.filter(obj => obj.name !== 'redirect-button');
             }
           }
         )

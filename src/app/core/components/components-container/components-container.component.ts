@@ -75,9 +75,9 @@ export class ComponentsContainer implements OnInit {
    * Methods triggered on '+' button click.
    * 
    * Open Navigation form to create navigation.
-   * @param type The type ('header' or 'component').
+   * @param type The type ('navigation-bar' or 'component').
    */
-  openFormToAddNavigationBarOrComponent(type: 'header-bar' | 'component'): void {
+  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component'): void {
     if (type === 'component') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {

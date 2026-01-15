@@ -94,7 +94,7 @@ export class HeaderBarComponent implements OnInit {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: 'header',
+        type: 'redirect-button',
         parentId: this._route.snapshot.data["parentId"]
       },
     });

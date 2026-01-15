@@ -19,18 +19,18 @@ export class AppService {
    * Create route for each navigation passed and return array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
-   * @param navigations The array of navigations passed to create either header route or component container.
+   * @param navigations The array of navigations passed to create either redirect-button route or component container.
    * @returns The routes set up.
    */
   createRoutes(navigations: Navigation[]): Routes {
     const routes: Routes = [];
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
-        /* Case 1: Children of navigation are headers (this is assuming children[0] sisters are only of type 'header')
+        /* Case 1: Children of navigation are headers (this is assuming children[0] sisters are only of type 'redirect-button')
            --> Create routing module */
         if (navigation.children
           && navigation.children.length > 0
-          && navigation.children[0].navigationType.name === 'header'
+          && navigation.children[0].navigationType.name === 'redirect-button'
         ) {
           navigation.menu.permissionName = navigation.permissionName;
           routes.push(
@@ -42,7 +42,7 @@ export class AppService {
             )
           );
         }
-        /* Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'header')
+        /* Case 2: No children or children are components (this is assuming children[0] sisters are not of type 'redirect-button')
            --> Load components container. */
         else {
           routes.push({
