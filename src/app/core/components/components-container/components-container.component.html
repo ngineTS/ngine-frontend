@@ -6,12 +6,12 @@
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="navigations"
             cdkDropListOrientation="mixed"
-            [cdkDropListDisabled]="!containerPermissionName.includes('edit')">
+            [cdkDropListDisabled]="!permissionName.includes('edit')">
             
             @for (navigation of navigations; track navigation.id) {
                 <div class="example-box" cdkDrag>
                         
-                    @if (containerPermissionName.includes('edit')) {
+                    @if (permissionName.includes('edit')) {
                         <i class="bi bi-arrows-move drag-icon" 
                            cdkDragHandle
                            [style.margin-top]="navigation.containerLayout.marginTop + 'px'"
@@ -31,7 +31,7 @@
         </div>
     }
     
-    @if (containerPermissionName.includes('add')) {
+    @if (permissionName.includes('add')) {
         <button 
             matButton 
             [matMenuTriggerFor]="menu" 
@@ -43,6 +43,7 @@
                 <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('navigation-bar')">Add navigation bar</button>
             }
             <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('component')">Add component</button>
+            <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('redirect-button')">Add redirect button</button>
         </mat-menu>
     }
     

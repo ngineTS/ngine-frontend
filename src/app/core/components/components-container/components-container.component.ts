@@ -49,7 +49,7 @@ export class ComponentsContainer implements OnInit {
   /**
    * The user permission.
    */
-  containerPermissionName!: string;
+  permissionName!: string;
 
   /**
    * Lifecyle hook called after the component has been initialized.
@@ -57,7 +57,7 @@ export class ComponentsContainer implements OnInit {
    */
   ngOnInit(): void {
     this.navigations = this._route.snapshot.data["navigations"];
-    this.containerPermissionName = this._route.snapshot.data["containerPermissionName"] ?? '';
+    this.permissionName = this._route.snapshot.data["permissionName"] ?? '';
   }
 
   /**
@@ -77,8 +77,8 @@ export class ComponentsContainer implements OnInit {
    * Open Navigation form to create navigation.
    * @param type The type ('navigation-bar' or 'component').
    */
-  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component'): void {
-    if (type === 'component') {
+  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | 'redirect-button'): void {
+    if (type === 'component' || type === 'redirect-button') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,

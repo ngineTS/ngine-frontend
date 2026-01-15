@@ -29,14 +29,16 @@
 >
     
     @if (_canEdit) {
-        @if (_isEditing) {
-            <i class="bi bi-x-circle edit-icon"  (click)="switchEditMode()"></i>
-        }
-        @else {
-            <i class="bi bi-pen edit-icon"  (click)="switchEditMode()"></i>
+        @if (_navigation.navigationType.name !== 'redirect-button') {
+            @if (_isEditing) {
+                <i class="bi bi-x-circle edit-icon"  (click)="switchEditMode()"></i>
+            }
+            @else {
+                <i class="bi bi-pen edit-icon"  (click)="switchEditMode()"></i>
+            }
         }
         <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditStyle()"></i>
-        <i class="bi bi-gear gear-icon" (click)="openFormToEditNavigation()"></i>
+        <i class="bi bi-gear gear-icon" (click)="openFormToEditNavigation(_navigation.navigationType.name === 'redirect-button' ? 'redirect-button' : 'component')"></i>
 
         @if (
             _width - previousWidth > 1 
@@ -50,5 +52,18 @@
         }
     }
 
-    <ng-template #container></ng-template>
+    @if (_navigation.navigationType.name === 'redirect-button') {
+        <div class="redirect-button-div" (click)="navigateTo(_navigation.name)">
+            @if (_navigation.icon) {
+                <i class="text-center"
+                   [class]="'bi bi-' + _navigation.icon"
+                >
+                </i>
+            }
+            <span class="text-center">{{ _navigation.displayLabel }}</span>
+        </div>
+    }
+    @else {
+        <ng-template #container></ng-template>
+    }
 </div>

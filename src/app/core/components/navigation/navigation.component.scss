@@ -88,3 +88,11 @@
     font-size: 18px;
     cursor: pointer;
 }
+
+.redirect-button-div {
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

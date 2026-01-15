@@ -94,8 +94,7 @@ export class NavigationManagementComponent implements OnInit {
    * * Parent can only be redirect-button.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
-   * * If form is a redirect-button: parent can't have component children.
-   * * If form is a component: parent can't have redirect-button children.
+   * * If form type is a component: parent can't have a menu.
    * * User requires 'add' permission on navigation.
    * 
    * @returns An observable of assignable parent navigations.
@@ -118,16 +117,9 @@ export class NavigationManagementComponent implements OnInit {
             if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
               return false;
             }
-            if (flatNav.children && flatNav.children.length > 0) {
-              if (this.data.type === 'redirect-button') {
-                if (flatNav.children[0].navigationType.name !== 'redirect-button') {
-                  return false;
-                }
-              }
-              else {
-                if (flatNav.children[0].navigationType.name === 'redirect-button') {
-                  return false;
-                }
+            if (this.data.type === 'component') {
+              if (flatNav.menu) {
+                return false;
               }
             }
             if (!flatNav.permissionName?.includes('add')) {

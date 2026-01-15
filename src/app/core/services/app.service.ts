@@ -30,9 +30,11 @@ export class AppService {
            --> Create routing module */
         if (navigation.children
           && navigation.children.length > 0
-          && navigation.children[0].navigationType.name === 'redirect-button'
+          && navigation.children.find(child => child.navigationType.name === 'redirect-button')
         ) {
-          navigation.menu.permissionName = navigation.permissionName;
+          if (navigation.menu) {
+            navigation.menu.permissionName = navigation.permissionName;
+          }
           routes.push(
             this.createRoutingModule(
               navigation.children,
@@ -50,7 +52,7 @@ export class AppService {
             data: {
               navigations: navigation.children ?? [],
               parentId: navigation.id,
-              containerPermissionName: navigation.permissionName
+              permissionName: navigation.permissionName
             },
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           });
@@ -140,7 +142,18 @@ export class AppService {
     permissionName: string,
     parentName: string = ''
   ): Route {
-    const route: Route = {
+    let route: Route;
+    const childrenRoutes = this.createRoutes(navigations);
+
+    if (menu) {
+      /* Add redirect route at the beginning of the array of routes. */
+      childrenRoutes.unshift({
+        path: '',
+        redirectTo: navigations[0].name,
+        pathMatch: 'full'
+      });
+      /* Create routing module main route. */
+      route = {
         path: parentName,
         canActivate: [AuthGuard],
         data: {
@@ -150,9 +163,28 @@ export class AppService {
           permissionName: permissionName
         },
         loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        children: this.createRoutes(navigations),
+        children: childrenRoutes,
       };
-    
+    }
+    else {
+      /* Add landing page route at the beginning of the array of routes. */
+      childrenRoutes.unshift({
+        path: '',
+        loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
+      })
+      /* Create routing module main route. */
+      route = {
+        path: parentName,
+        canActivate: [AuthGuard],
+        data: {
+          navigations: navigations,
+          parentId: navigations[0].parentId,
+          permissionName: permissionName,
+        },
+        children: childrenRoutes
+      };
+    }
+
     return route;
   }
 

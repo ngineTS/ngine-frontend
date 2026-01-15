@@ -11,7 +11,7 @@ import { MenuService } from '../../services/menu.service';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -40,7 +40,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _containerLayoutService: ContainerLayoutService,
     private _menuService: MenuService,
     private _appService: AppService,
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) { 
     super(); 
   }
@@ -62,7 +63,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * load component and create size observer.
    */
   ngAfterViewInit(): void {
-    this.loadComponent();
+    if (this._navigation.navigationType.name !== 'redirect-button') {
+      this.loadComponent();
+    }
     this.createSizeObserver();
   }
 
@@ -112,8 +115,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.observer = new MutationObserver(() => {
       this._width = this.navigationDiv.nativeElement.offsetWidth;
       this._height = this.navigationDiv.nativeElement.offsetHeight;
-      this.containerRef.setInput('_width', this._width);
-      this.containerRef.setInput('_height', this._height);
+      if (this._navigation.navigationType.name !== 'redirect-button') {
+        this.containerRef.setInput('_width', this._width);
+        this.containerRef.setInput('_height', this._height);
+      }
     });
     this.observer.observe(
       this.navigationDiv.nativeElement,
@@ -158,11 +163,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(): void {
+  openFormToEditNavigation(type: 'redirect-button' | 'component'): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
-        type: 'component',
+        type: type,
         parentId: this._navigation.parentId,
       }
     });
@@ -208,6 +213,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   switchEditMode() {
     this._isEditing = !this._isEditing;
     this.containerRef.setInput('_isEditing', this._isEditing);
+  }
+
+  /**
+   * Navigate to given route name.
+   * @param navigationName The name of the route.
+   */
+  navigateTo(navigationName: string) {
+    this._router.navigate([navigationName], { relativeTo: this._route });
   }
   
 }
