@@ -149,7 +149,7 @@ export class AppService {
       /* Add redirect route at the beginning of the array of routes. */
       childrenRoutes.unshift({
         path: '',
-        redirectTo: navigations[0].name,
+        redirectTo: navigations[0]?.name ?? '',
         pathMatch: 'full'
       });
       /* Create routing module main route. */
