@@ -30,10 +30,6 @@ export class MenuButtonComponent {
   @Input() navigation!: Navigation;
   isButtonHoveredRecord: Record<string, boolean> = {};
 
-  ngOnInit() {
-    console.log('NAAAAV', this.navigation);
-  }
-
   /**
    * Navigate to given route name.
    * @param navigationName The name of the route.
@@ -44,9 +40,9 @@ export class MenuButtonComponent {
   }
 
   /**
-   * Methods triggered on '+' menu option click.
+   * Methods triggered on 'add' menu option click.
    * 
-   * Open form to add a redirect-button.
+   * Open form to add navigation.
    */
   openFormToAddButton(navigationId: string, type: 'redirect-button' | 'menu-button') {
     this._matDialog.open(NavigationManagementComponent, {
@@ -54,6 +50,23 @@ export class MenuButtonComponent {
         navigation: undefined, // undefined as it is 'add' case.
         type: type,
         parentId: navigationId,
+      }
+    });
+  }
+
+  /**
+   * Methods triggered on 'edit' menu option click.
+   * 
+   * Open form to edit navigation.
+   */
+  openFormToEditButton(event: MouseEvent, navigation: Navigation) {
+    event.stopPropagation();
+
+    this._matDialog.open(NavigationManagementComponent, {
+      data: {
+        navigation: navigation,
+        type: navigation.navigationType.name,
+        parentId: navigation.parentId,
       }
     });
   }

@@ -53,7 +53,8 @@
                 <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child, parentMenu: navigation.menu }"></ng-container>
             }
             @else {
-                <button mat-menu-item 
+                <button mat-menu-item
+                    class="menu-option"
                     (click)="navigateTo(child.name)"
                     [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                     [style.color]="isButtonHoveredRecord[child.id] ?
@@ -64,13 +65,15 @@
                     (mouseleave)="isButtonHoveredRecord[child.id] = false"
                 >
                     {{ child.displayLabel }}
+
+                    <i class="bi bi-pen edit-icon" (click)="openFormToEditButton($event, child)"></i>
                 </button>
             }
         }
 
         <!-- Main menu 'Add option' option -->
-        <button mat-menu-item 
-            [matMenuTriggerFor]="optionMenu" 
+        <button mat-menu-item
+            [matMenuTriggerFor]="optionMenu"
             class="menu-button"
             [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
             [style.color]="isButtonHoveredRecord['add-option'] ?
@@ -191,6 +194,7 @@
                     <!-- Deep menu options -->
                     @for (child of navigation.children; track child.id) {
                         <button mat-menu-item 
+                            class="menu-option"
                             (click)="navigateTo(child.name)"
                             [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                             [style.color]="isButtonHoveredRecord[child.id] ?
@@ -201,6 +205,8 @@
                             (mouseleave)="isButtonHoveredRecord[child.id] = false"
                         >
                             {{ child.displayLabel }}
+
+                            <i class="bi bi-pen edit-icon" (click)="openFormToEditButton($event, child)"></i>
                         </button>
                     }
                     <button mat-menu-item

@@ -33,3 +33,21 @@
 ::ng-deep .mat-mdc-menu-content {
     padding: 0px;
 }
+
+.edit-icon {
+  font-size: 12px;
+  border: 1px solid #636363;
+  border-radius: 3px;
+  background-color: #dee2e6;
+  padding: 4px 6px;
+  color: #636363;
+  margin-left: 6px;
+  cursor: pointer;
+  display: none;
+}
+
+.menu-option:hover {
+    .edit-icon {
+        display: inline;
+    }
+}

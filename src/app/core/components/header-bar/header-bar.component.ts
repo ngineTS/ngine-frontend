@@ -14,6 +14,8 @@ import { MediaService } from '../../services/media.service';
 import { Observable } from 'rxjs';
 import { Menu, StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
+import { MenuButtonComponent } from '../menu-button/menu-button.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
@@ -25,6 +27,8 @@ import { MenuService } from '../../services/menu.service';
     MatTooltipModule,
     CdkDropList, 
     CdkDrag,
+    MenuButtonComponent,
+    MatMenuModule
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
@@ -90,11 +94,11 @@ export class HeaderBarComponent implements OnInit {
    * If navigation is passed edit header else add header.
    * @param navigation Navigation to edit (optional).
    */
-  openFormToAddOrEditHeader(navigation?: Navigation): void {
+  openFormToAddOrEditNavigation(type: string, navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: 'redirect-button',
+        type: type,
         parentId: this._route.snapshot.data["parentId"]
       },
     });

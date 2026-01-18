@@ -37,8 +37,8 @@
         />
     }-->
 
-    <div cdkDropList 
-        class="example-list" 
+    <div cdkDropList
+        class="example-list"
         [style.gap]="headerBarConfig.containerLayout.gap + 'px'"
         (cdkDropListDropped)="drop($event)"
         [cdkDropListData]="navigations"
@@ -48,9 +48,9 @@
         
         <!-- List of navigation headers -->
         @for (navigation of navigations; track navigation.id) {
-            <div cdkDrag 
+            <div cdkDrag
                 [style.cursor]="permissionName?.includes('edit') ? 'move' : 'pointer'"
-                class="d-inline-flex mx-2 p-1 align-items-center nav-container" 
+                class="d-inline-flex mx-2 p-1 align-items-center nav-container"
                 [class.nav-container]="navigation.permissionName?.includes('edit')"
                 matTooltip="{{navigation.description}}"
             >
@@ -59,7 +59,7 @@
                     <i  class="me-2"
                         [class]="'bi bi-' + navigation.icon"
                         [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                        [style.color]="navigation.isDisabled ? '#ccc' 
+                        [style.color]="navigation.isDisabled ? '#ccc'
                             : isRouteActive(navigation.name)
                             ? headerBarConfig.typographyStyle.activeColor
                             : headerBarConfig.typographyStyle.color"
@@ -67,21 +67,29 @@
                     </i>
                 }
                 
-                <a [routerLink]="navigation.name"
-                    [class.active]="isRouteActive(navigation.name)"
-                    [style.color]="navigation.isDisabled ? '#ccc' 
-                        : isRouteActive(navigation.name) 
-                        ? headerBarConfig.typographyStyle.activeColor
-                        : headerBarConfig.typographyStyle.color"
-                    [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
-                    [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
-                    [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
-                >
-                    {{ navigation.displayLabel }}
-                </a>
+                @if (navigation.navigationType.name === 'redirect-button') {
+                    <a [routerLink]="navigation.name"
+                        [class.active]="isRouteActive(navigation.name)"
+                        [style.color]="navigation.isDisabled ? '#ccc'
+                            : isRouteActive(navigation.name)
+                            ? headerBarConfig.typographyStyle.activeColor
+                            : headerBarConfig.typographyStyle.color"
+                        [style.font-family]="headerBarConfig.typographyStyle.fontFamily"
+                        [style.font-size]="headerBarConfig.typographyStyle.fontSize + 'px'"
+                        [style.font-weight]="headerBarConfig.typographyStyle.fontWeight"
+                    >
+                        {{ navigation.displayLabel }}
+                    </a>
+                }
+                @else {
+                    <app-menu-button class="button-div" [navigation]="navigation"></app-menu-button>
+                }
 
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="bi bi-pen edit-icon" (click)="openFormToAddOrEditHeader(navigation)"></i>
+                    <i class="bi bi-pen edit-icon"
+                        (click)="openFormToAddOrEditNavigation(navigation.navigationType.name, navigation)"
+                    >
+                    </i>
                 }
             </div>
         }
@@ -114,11 +122,16 @@
     
     @if (permissionName?.includes('add')) {
         <button 
-            class="add-nav-button" 
-            matTooltip="Add header" 
-            (click)="openFormToAddOrEditHeader()">
+            matButton
+            matTooltip="Add button"
+            [matMenuTriggerFor]="menu" 
+            class="add-nav-button">
             +
         </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openFormToAddOrEditNavigation('redirect-button')">Add redirect button</button>
+            <button mat-menu-item (click)="openFormToAddOrEditNavigation('menu-button')">Add menu button</button>
+        </mat-menu>
     }
     
     @if (permissionName?.includes('edit')) {
