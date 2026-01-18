@@ -3,6 +3,7 @@
     [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
     [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
     [style.resize]="_canEdit ? 'both' : ''"
+    [style.backgroundColor]="_navigation.containerStyle.backgroundColor"
     [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
         _navigation.containerStyle.borderStyle + ' ' +
         _navigation.containerStyle.borderColor"
@@ -29,7 +30,7 @@
 >
     
     @if (_canEdit) {
-        @if (_navigation.navigationType.name !== 'redirect-button') {
+        @if (_navigation.navigationType.name !== 'redirect-button' && _navigation.navigationType.name !== 'menu-button') {
             @if (_isEditing) {
                 <i class="bi bi-x-circle edit-icon"  (click)="switchEditMode()"></i>
             }
@@ -53,15 +54,38 @@
     }
 
     @if (_navigation.navigationType.name === 'redirect-button') {
-        <div class="redirect-button-div" (click)="navigateTo(_navigation.name)">
+        <div class="button-div" 
+            (click)="navigateTo(_navigation.name)"
+            (mouseenter)="isMouseOver = true"
+            (mouseleave)="isMouseOver = false"
+        >
             @if (_navigation.icon) {
                 <i class="text-center"
-                   [class]="'bi bi-' + _navigation.icon"
+                    [class]="'bi bi-' + _navigation.icon"
+                    [style.color]="isMouseOver ? 
+                        _navigation.typographyStyle.activeColor : 
+                        _navigation.typographyStyle.color"
+                    [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                    [style.font-weight]="_navigation.typographyStyle.fontWeight"
+                    [style.font-family]="_navigation.typographyStyle.fontFamily"
+
                 >
                 </i>
             }
-            <span class="text-center">{{ _navigation.displayLabel }}</span>
+            <span class="text-center"
+                [style.color]="isMouseOver ? 
+                    _navigation.typographyStyle.activeColor : 
+                    _navigation.typographyStyle.color"
+                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                [style.font-weight]="_navigation.typographyStyle.fontWeight"
+                [style.font-family]="_navigation.typographyStyle.fontFamily"
+            >
+                {{ _navigation.displayLabel }}
+            </span>
         </div>
+    }
+    @else if (_navigation.navigationType.name === 'menu-button') {
+        <app-menu-button class="button-div" [navigation]="_navigation"></app-menu-button>
     }
     @else {
         <ng-template #container></ng-template>

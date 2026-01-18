@@ -32,7 +32,7 @@ export class NavigationManagementComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
                 navigation: Navigation | undefined, 
-                type: 'redirect-button' | 'component',
+                type: 'redirect-button' | 'component' | 'menu-button',
                 parentId: Navigation["parentId"],
               },
               private _formBuilder: FormBuilder,
@@ -91,10 +91,10 @@ export class NavigationManagementComponent implements OnInit {
    * Define and return Parent menu values and store flat navigations.
    * 
    * Rules:
-   * * Parent can only be redirect-button.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
-   * * If form type is a component: parent can't have a menu.
+   * * If form type is a component: parent can only be a redirect-button without navigation bar.
+   * * If form type is a redirect-button or a menu-button: parent can only be a redirect-button or a menu-button
    * * User requires 'add' permission on navigation.
    * 
    * @returns An observable of assignable parent navigations.
@@ -111,14 +111,16 @@ export class NavigationManagementComponent implements OnInit {
             if (flatNav.id === this.data.navigation?.id) {
               return false;
             }
-            if (flatNav.navigationType.name !== 'redirect-button') {
-              return false;
-            }
             if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
               return false;
             }
             if (this.data.type === 'component') {
-              if (flatNav.menu) {
+              if (flatNav.menu || flatNav.navigationType.name !== 'redirect-button') {
+                return false;
+              }
+            }
+            if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
+              if (flatNav.navigationType.name !== 'menu-button' && flatNav.navigationType.name !== 'redirect-button') {
                 return false;
               }
             }
@@ -150,8 +152,12 @@ export class NavigationManagementComponent implements OnInit {
               this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'redirect-button')?.id);
               return navigationTypes.filter(obj => obj.name === 'redirect-button');
             }
+            else if (this.data.type === 'menu-button') {
+              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'menu-button')?.id);
+              return navigationTypes.filter(obj => obj.name === 'menu-button');
+            }
             else {
-              return navigationTypes.filter(obj => obj.name !== 'redirect-button');
+              return navigationTypes.filter(obj => obj.name !== 'redirect-button' && obj.name !== 'menu-button');
             }
           }
         )

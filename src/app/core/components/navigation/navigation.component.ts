@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, Input, inputBinding, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
@@ -12,13 +12,15 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MenuButtonComponent } from '../menu-button/menu-button.component';
 
 @Component({
   selector: 'app-navigation',
   imports: [
     MatProgressSpinnerModule,
     CommonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MenuButtonComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -34,6 +36,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   initialWindowWidth!: number;
   initialWindowheight!: number;
   observer: MutationObserver | undefined;
+  isMouseOver = false;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
@@ -63,7 +66,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * load component and create size observer.
    */
   ngAfterViewInit(): void {
-    if (this._navigation.navigationType.name !== 'redirect-button') {
+    if (
+      this._navigation.navigationType.name !== 'redirect-button' &&
+      this._navigation.navigationType.name !== 'menu-button'
+    ) {
       this.loadComponent();
     }
     this.createSizeObserver();
@@ -78,7 +84,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Load component from component dictionnary.  
+   * Load component from component dictionnary.
    */
   async loadComponent() {
     const component = await this._componentContainerService
@@ -222,5 +228,5 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   navigateTo(navigationName: string) {
     this._router.navigate([navigationName], { relativeTo: this._route });
   }
-  
+
 }

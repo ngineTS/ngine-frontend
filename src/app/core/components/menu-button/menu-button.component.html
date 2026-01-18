@@ -1,0 +1,42 @@
+<button [matMenuTriggerFor]="mainMenu" class="menu-button">
+    {{ navigation.displayLabel }}
+</button>
+
+<mat-menu #mainMenu="matMenu">
+    <div [style.backgroundColor]="'green'">
+    @for (child of navigation.children; track child.id) {
+        @if (child.navigationType.name === 'menu-button') {
+            <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child }"></ng-container>
+        }
+        @else {
+            <button mat-menu-item (click)="navigateTo(child.name)">{{ child.displayLabel }}</button>
+        }
+    }
+
+    <button mat-menu-item [matMenuTriggerFor]="optionMenu" class="menu-button">
+        Add option
+    </button>
+    <mat-menu #optionMenu="matMenu">
+        <button mat-menu-item (click)="openFormToAddButton(navigation.id, 'redirect-button')">Add redirect button</button>
+        <button mat-menu-item (click)="openFormToAddButton(navigation.id, 'menu-button')">Add menu button</button>
+    </mat-menu>
+
+    <ng-template #deepMenu let-navigation>
+        <button mat-menu-item [matMenuTriggerFor]="subMenu" class="menu-button">
+            {{ navigation.displayLabel }}
+        </button>
+        
+        <mat-menu #subMenu="matMenu">
+            @for (child of navigation.children; track child.id) {
+                <button mat-menu-item (click)="navigateTo(child.name)">{{ child.displayLabel }}</button>
+            }
+            <button mat-menu-item
+                class="menu-button"
+                (click)="openFormToAddButton(navigation.id, 'redirect-button')"
+            >
+                Add redirect button
+            </button>
+        </mat-menu>
+    </ng-template>
+    </div>
+</mat-menu>
