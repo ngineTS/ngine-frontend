@@ -39,7 +39,12 @@
             }
         }
         <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditStyle()"></i>
-        <i class="bi bi-gear gear-icon" (click)="openFormToEditNavigation(_navigation.navigationType.name === 'redirect-button' ? 'redirect-button' : 'component')"></i>
+        <i class="bi bi-gear gear-icon" 
+            (click)="openFormToEditNavigation(
+                (_navigation.navigationType.name === 'redirect-button' || _navigation.navigationType.name === 'menu-button') ? 
+                _navigation.navigationType.name : 'component'
+            )"
+        ></i>
 
         @if (
             _width - previousWidth > 1 

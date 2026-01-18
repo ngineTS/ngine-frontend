@@ -6,6 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NgTemplateOutlet } from '@angular/common';
+import { MenuService } from '../../services/menu.service';
+import { Menu, StylePayload } from '../../models/menu.interface';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-menu-button',
@@ -19,9 +23,12 @@ export class MenuButtonComponent {
     private _router: Router,
     private _route: ActivatedRoute,
     private _matDialog: MatDialog,
+    private _menuService: MenuService,
+    private _appService: AppService
   ) {}
 
   @Input() navigation!: Navigation;
+  isButtonHoveredRecord: Record<string, boolean> = {};
 
   ngOnInit() {
     console.log('NAAAAV', this.navigation);
@@ -47,6 +54,38 @@ export class MenuButtonComponent {
         navigation: undefined, // undefined as it is 'add' case.
         type: type,
         parentId: navigationId,
+      }
+    });
+  }
+
+  /**
+   * Methods triggered on marker button click.
+   * 
+   * Open generic form to edit menu style.
+   */
+  openFormToEditMenuStyle(menu: Menu) {
+    const menuStyleForm = this._menuService.setupStyleForm({
+      containerLayout: menu.containerLayout,
+      containerStyle: menu.containerStyle,
+      typographyStyle: menu.typographyStyle
+    });
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<StylePayload>,
+      { 
+        maxWidth: '700px',
+        data: {
+          hasDeleteButton: false,
+          formConfig: menuStyleForm,
+          id: menu.id,
+          controllerName: 'menu',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
       }
     });
   }

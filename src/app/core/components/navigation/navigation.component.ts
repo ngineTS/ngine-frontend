@@ -121,7 +121,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.observer = new MutationObserver(() => {
       this._width = this.navigationDiv.nativeElement.offsetWidth;
       this._height = this.navigationDiv.nativeElement.offsetHeight;
-      if (this._navigation.navigationType.name !== 'redirect-button') {
+      if (
+        this._navigation.navigationType.name !== 'redirect-button' &&
+        this._navigation.navigationType.name !== 'menu-button'
+      ) {
         this.containerRef.setInput('_width', this._width);
         this.containerRef.setInput('_height', this._height);
       }
@@ -169,7 +172,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(type: 'redirect-button' | 'component'): void {
+  openFormToEditNavigation(type: 'redirect-button' | 'component' | 'menu-button'): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
@@ -180,7 +183,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on market button click.
+   * Methods triggered on marker button click.
    * 
    * Open generic form to edit navigation style.
    */
