@@ -106,7 +106,6 @@ export class NavigationManagementComponent implements OnInit {
         take(1),
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
-          console.log(flatNavigations);
           return flatNavigations.filter(flatNav => {            
             if (flatNav.id === this.data.navigation?.id) {
               return false;
@@ -235,7 +234,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Recursively retrieve parent name until the last parent
+   * Recursively retrieve parent name until the last parent.
    * @param navigationId The navigation id of the wished navigation name.
    * @returns The navigation parent name with "/" prefix.
    */
@@ -243,7 +242,9 @@ export class NavigationManagementComponent implements OnInit {
     let name = '/';
     const parent = this.flatNavigations.find(obj => obj.id === navigationId);
     if (parent && parent.name !== 'global') {
-      name = parent.name;
+      if (parent.navigationType.name === 'redirect-button') {
+        name = parent.name;
+      }
       if (parent?.parentId) {
         name = this.getParentName(parent.parentId) + '/' + name;
       }

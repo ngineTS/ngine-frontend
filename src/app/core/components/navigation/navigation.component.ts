@@ -55,10 +55,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   ngOnInit(): void {
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowheight = window.innerHeight;
-    this.previousWidth = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
-    this.previousheight = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
-    this._width = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
-    this._height = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
+    this.previousWidth = this._navigation.containerLayout.width ? 
+      this._navigation.containerLayout.width * this.initialWindowWidth / 100 :
+      20 * this.initialWindowWidth / 100;
+    this.previousheight = this._navigation.containerLayout.height ?
+      this._navigation.containerLayout.height * this.initialWindowheight / 100 :
+      20 * this.initialWindowheight / 100;
+    this._width = this.previousWidth;
+    this._height = this.previousheight;
   }
 
   /**
