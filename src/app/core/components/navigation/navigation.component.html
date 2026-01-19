@@ -63,6 +63,7 @@
             (click)="navigateTo(_navigation.name)"
             (mouseenter)="isMouseOver = true"
             (mouseleave)="isMouseOver = false"
+            matTooltip="{{_navigation.description}}"
         >
             @if (_navigation.icon) {
                 <i class="text-center"

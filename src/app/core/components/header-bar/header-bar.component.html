@@ -86,7 +86,7 @@
                 }
 
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="bi bi-pen edit-icon"
+                    <i class="bi bi-gear edit-icon"
                         (click)="openFormToAddOrEditNavigation(navigation.navigationType.name, navigation)"
                     >
                     </i>
@@ -137,7 +137,7 @@
     @if (permissionName?.includes('edit')) {
         <i class="bi bi-marker-tip edit-header-bar auto-margin-left" 
             (click)="openFormToEditHeaderBarStyle()"
-            matTooltip="Edit menu">
+            matTooltip="Edit menu style">
         </i>
     }
 

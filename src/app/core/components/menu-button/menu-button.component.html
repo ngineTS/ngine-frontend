@@ -10,6 +10,7 @@
     "
     (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
     (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
+    matTooltip="{{navigation.description}}"
 >
     {{ navigation.displayLabel }}
 </button>
@@ -63,10 +64,11 @@
                     "
                     (mouseenter)="isButtonHoveredRecord[child.id] = true"
                     (mouseleave)="isButtonHoveredRecord[child.id] = false"
+                    matTooltip="{{child.description}}"
                 >
                     {{ child.displayLabel }}
 
-                    <i class="bi bi-pen edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                    <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
                 </button>
             }
         }
@@ -146,7 +148,7 @@
             <!-- Deep menu button -->
             <button mat-menu-item 
                 [matMenuTriggerFor]="subMenu" 
-                class="menu-button"
+                class="menu-button menu-option"
                 [style.font-weight]="parentMenu.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
                     parentMenu.typographyStyle.activeColor :
@@ -154,8 +156,11 @@
                 "
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
+                matTooltip="{{navigation.description}}"
             >
                 {{ navigation.displayLabel }}
+
+                <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, navigation)"></i>
             </button>
             
             <!-- Deep menu -->
@@ -203,10 +208,11 @@
                             "
                             (mouseenter)="isButtonHoveredRecord[child.id] = true"
                             (mouseleave)="isButtonHoveredRecord[child.id] = false"
+                            matTooltip="{{child.description}}"
                         >
                             {{ child.displayLabel }}
 
-                            <i class="bi bi-pen edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                            <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
                         </button>
                     }
                     <button mat-menu-item

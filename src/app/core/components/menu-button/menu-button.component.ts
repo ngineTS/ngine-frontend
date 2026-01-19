@@ -10,10 +10,16 @@ import { MenuService } from '../../services/menu.service';
 import { Menu, StylePayload } from '../../models/menu.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-menu-button',
-  imports: [MatMenuModule, MatButtonModule, NgTemplateOutlet],
+  imports: [
+    MatMenuModule,
+    MatButtonModule,
+    NgTemplateOutlet,
+    MatTooltipModule
+  ],
   templateUrl: './menu-button.component.html',
   styleUrl: './menu-button.component.scss'
 })
