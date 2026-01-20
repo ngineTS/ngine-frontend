@@ -5,6 +5,15 @@
     width: 100%;
 }
 
+.main-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
 .menu-panel {
     position: relative;
 }

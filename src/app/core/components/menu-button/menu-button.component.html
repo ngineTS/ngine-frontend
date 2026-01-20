@@ -1,6 +1,6 @@
 <!-- Main button -->
-<button [matMenuTriggerFor]="mainMenu"
-    class="menu-button"
+<div [matMenuTriggerFor]="mainMenu"
+    class="menu-button main-button"
     [style.font-size]="navigation.typographyStyle.fontSize + 'px'"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
@@ -12,8 +12,11 @@
     (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
     matTooltip="{{navigation.description}}"
 >
-    {{ navigation.displayLabel }}
-</button>
+    @if (navigation.icon) {
+        <i [class]="'bi bi-' + navigation.icon"></i>
+    }
+    <span>{{ navigation.displayLabel }}</span>
+</div>
 
 <!-- Main menu -->
 <mat-menu #mainMenu="matMenu">
@@ -155,6 +158,9 @@
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
                 matTooltip="{{navigation.description}}"
             >
+                @if (navigation.icon) {
+                    <i [class]="'bi bi-' + navigation.icon" style="margin-right: 4px;"></i>
+                }
                 {{ navigation.displayLabel }}
 
                 <!-- Deep Menu edit navigation button-->
