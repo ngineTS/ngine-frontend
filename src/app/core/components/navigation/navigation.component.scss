@@ -1,10 +1,7 @@
 .navigation-container {
     position: relative;
-    border: solid 1px #ccc;
-    border-radius: 4px;
-    overflow: auto;
+    overflow: visible;
     max-width: -webkit-fill-available;
-    padding: 20px;
 }
 
 .edit-icon {

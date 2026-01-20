@@ -52,8 +52,8 @@ export class NavigationManagementComponent implements OnInit {
     if (this.data.navigation) {
       this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
     }
-    this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
-    this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
+    this.getParentDropdownValues().subscribe(resp => this.parentNavigations = resp);
+    this.getNavigationTypeDropdownValues().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
   }
 
@@ -88,9 +88,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Define and return Parent menu values and store flat navigations.
-   * 
-   * Rules:
+   * Define and return Parent dropdown values and store flat navigations.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
    * * If form type is a component: parent can only be a redirect-button without navigation bar.
@@ -99,7 +97,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * @returns An observable of assignable parent navigations.
    */
-  getParentMenuValues(): Observable<Navigation[]> {
+  getParentDropdownValues(): Observable<Navigation[]> {
     return this._navigationService.getFlatNavigations()
       .pipe(
         retry(2),
@@ -133,14 +131,13 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Define and return Navigation Type menu values.
-   * 
-   * If form is a component: exclude "redirect-button" type.
-   * 
-   * If form is a redirect-button: keep only "redirect-button" type. 
+   * Define and return Navigation Type dropdown values.
+   * * If form is a redirect-button: keep only "redirect-button" type. 
+   * * If form is a menu-button: keep only "menu-button" type. 
+   * * If form is a component: exclude "redirect-button" and "menu-button" types.
    * @returns An observable of assignable navigation types.
    */
-  getNavigationTypeMenuValues(): Observable<NavigationType[]> {
+  getNavigationTypeDropdownValues(): Observable<NavigationType[]> {
     return this._navigationService.getNavigationTypes()
       .pipe(
         retry(2),
