@@ -67,41 +67,16 @@
 
         <!-- Redirect button case -->
         @if (_navigation.navigationType.name === 'redirect-button') {
-            <div class="button-div" 
-                (click)="navigateTo(_navigation.name)"
-                (mouseenter)="isMouseOver = true"
-                (mouseleave)="isMouseOver = false"
-                matTooltip="{{_navigation.description}}"
-            >
-                @if (_navigation.icon) {
-                    <i class="text-center"
-                        [class]="'bi bi-' + _navigation.icon"
-                        [style.color]="isMouseOver ? 
-                            _navigation.typographyStyle.activeColor : 
-                            _navigation.typographyStyle.color"
-                        [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
-                        [style.font-weight]="_navigation.typographyStyle.fontWeight"
-                        [style.font-family]="_navigation.typographyStyle.fontFamily"
-
-                    >
-                    </i>
-                }
-                <span class="text-center"
-                    [style.color]="isMouseOver ? 
-                        _navigation.typographyStyle.activeColor : 
-                        _navigation.typographyStyle.color"
-                    [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
-                    [style.font-weight]="_navigation.typographyStyle.fontWeight"
-                    [style.font-family]="_navigation.typographyStyle.fontFamily"
-                >
-                    {{ _navigation.displayLabel }}
-                </span>
-            </div>
+            <app-redirect-button 
+                [iconOnTop]="true"
+                [navigation]="_navigation" 
+                [typographyStyle]="_navigation.typographyStyle"
+            ></app-redirect-button>
         }
 
         <!-- Menu button case -->
         @else if (_navigation.navigationType.name === 'menu-button') {
-            <app-menu-button class="button-div" [navigation]="_navigation"></app-menu-button>
+            <app-menu-button [navigation]="_navigation"></app-menu-button>
         }
 
         <!-- Component case -->

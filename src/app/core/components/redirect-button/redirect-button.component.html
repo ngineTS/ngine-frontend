@@ -1,0 +1,25 @@
+<div class="button-div"
+    [style.flex-direction]="iconOnTop ? 'column' : 'row'"
+    (click)="navigateTo(navigation.name)"
+    (mouseenter)="isMouseOver = true"
+    (mouseleave)="isMouseOver = false"
+    matTooltip="{{ navigation.description }}"
+>
+    @if (navigation.icon) {
+        <i [class]="'bi bi-' + navigation.icon"
+            [style.color]="isMouseOver || isRouteActive(navigation.name) ? typographyStyle.activeColor : typographyStyle.color"
+            [style.font-size]="typographyStyle.fontSize + 'px'"
+            [style.font-weight]="typographyStyle.fontWeight"
+            [style.font-family]="typographyStyle.fontFamily"
+        >
+        </i>
+    }
+
+    <span [style.color]="isMouseOver || isRouteActive(navigation.name) ? typographyStyle.activeColor : typographyStyle.color"
+        [style.font-size]="typographyStyle.fontSize + 'px'"
+        [style.font-weight]="typographyStyle.fontWeight"
+        [style.font-family]="typographyStyle.fontFamily"
+    >
+        {{ navigation.displayLabel }}
+    </span>
+</div>

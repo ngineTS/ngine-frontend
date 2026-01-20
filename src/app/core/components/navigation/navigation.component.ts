@@ -13,6 +13,7 @@ import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
+import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
 
 @Component({
   selector: 'app-navigation',
@@ -20,7 +21,8 @@ import { MenuButtonComponent } from '../menu-button/menu-button.component';
     MatProgressSpinnerModule,
     CommonModule,
     MatTooltipModule,
-    MenuButtonComponent
+    MenuButtonComponent,
+    RedirectButtonComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -226,14 +228,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   switchEditMode() {
     this._isEditing = !this._isEditing;
     this.containerRef.setInput('_isEditing', this._isEditing);
-  }
-
-  /**
-   * Navigate to given route name.
-   * @param navigationName The name of the route.
-   */
-  navigateTo(navigationName: string) {
-    this._router.navigate([navigationName], { relativeTo: this._route });
   }
 
 }

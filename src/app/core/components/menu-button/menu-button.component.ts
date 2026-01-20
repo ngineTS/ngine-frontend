@@ -11,6 +11,7 @@ import { Menu, StylePayload } from '../../models/menu.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
 
 @Component({
   selector: 'app-menu-button',
@@ -18,7 +19,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatMenuModule,
     MatButtonModule,
     NgTemplateOutlet,
-    MatTooltipModule
+    MatTooltipModule,
+    RedirectButtonComponent
   ],
   templateUrl: './menu-button.component.html',
   styleUrl: './menu-button.component.scss'
@@ -50,7 +52,7 @@ export class MenuButtonComponent {
    * 
    * Open form to add navigation.
    */
-  openFormToAddButton(navigationId: string, type: 'redirect-button' | 'menu-button') {
+  openFormToAddNavigation(navigationId: string, type: 'redirect-button' | 'menu-button') {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: undefined, // undefined as it is 'add' case.
@@ -65,7 +67,7 @@ export class MenuButtonComponent {
    * 
    * Open form to edit navigation.
    */
-  openFormToEditButton(event: MouseEvent, navigation: Navigation) {
+  openFormToEditNavigation(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
 
     this._matDialog.open(NavigationManagementComponent, {

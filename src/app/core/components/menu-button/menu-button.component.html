@@ -50,34 +50,30 @@
             <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
         } 
 
-        <!-- Main menu options -->
+        <!-- Main menu items -->
         @for (child of navigation.children; track child.id) {
+            
+            <!-- Menu button case -->
             @if (child.navigationType.name === 'menu-button') {
                 <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child, parentMenu: navigation.menu }"></ng-container>
             }
+            
+            <!-- Redirect button case -->
             @else {
-                <button mat-menu-item
-                    class="menu-option"
-                    (click)="navigateTo(child.name)"
-                    [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-                    [style.color]="isButtonHoveredRecord[child.id] ?
-                        navigation.menu.typographyStyle.activeColor :
-                        navigation.menu.typographyStyle.color
-                    "
-                    (mouseenter)="isButtonHoveredRecord[child.id] = true"
-                    (mouseleave)="isButtonHoveredRecord[child.id] = false"
-                    matTooltip="{{child.description}}"
-                >
-                    {{ child.displayLabel }}
+                <div mat-menu-item class="menu-option">
+                    <app-redirect-button
+                        [navigation]="child" 
+                        [typographyStyle]="navigation.menu.typographyStyle"
+                    ></app-redirect-button>
 
                     @if (child.permissionName?.includes('edit')) {
-                        <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                        <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, child)"></i>
                     }
-                </button>
+                </div>
             }
         }
 
-        <!-- Main menu 'Add option' option -->
+        <!-- Main menu 'Add option' item -->
         @if (navigation.permissionName?.includes('add')) {
             <button mat-menu-item
                 [matMenuTriggerFor]="optionMenu"
@@ -110,19 +106,11 @@
                     [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
                     [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
                     [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-                    [style.margin-top]="navigation.menu.containerLayout.marginTop + 'px'"
-                    [style.margin-right]="navigation.menu.containerLayout.marginRight + 'px'"
-                    [style.margin-bottom]="navigation.menu.containerLayout.marginBottom + 'px'"
-                    [style.margin-left]="navigation.menu.containerLayout.marginLeft + 'px'"
-                    [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
-                    [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
-                    [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
-                    [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
                     [style.font-family]="navigation.menu.typographyStyle.fontFamily"
                     [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
                 >
                     <button mat-menu-item 
-                        (click)="openFormToAddButton(navigation.id, 'redirect-button')"
+                        (click)="openFormToAddNavigation(navigation.id, 'redirect-button')"
                         [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                         [style.color]="isButtonHoveredRecord['add-redirect-button'] ?
                             navigation.menu.typographyStyle.activeColor :
@@ -134,7 +122,7 @@
                         Add redirect button
                     </button>
                     <button mat-menu-item 
-                        (click)="openFormToAddButton(navigation.id, 'menu-button')"
+                        (click)="openFormToAddNavigation(navigation.id, 'menu-button')"
                         [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                         [style.color]="isButtonHoveredRecord['add-menu-button'] ?
                             navigation.menu.typographyStyle.activeColor :
@@ -148,6 +136,7 @@
                 </div>
             </mat-menu>
         }
+
 
         <!-- Deep Menu template-->
         <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
@@ -167,7 +156,7 @@
                 {{ navigation.displayLabel }}
 
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, navigation)"></i>
+                    <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, navigation)"></i>
                 }
             </button>
             
@@ -206,32 +195,25 @@
                         <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
                     }
 
-                    <!-- Deep menu options -->
+                    <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
-                        <button mat-menu-item 
-                            class="menu-option"
-                            (click)="navigateTo(child.name)"
-                            [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-                            [style.color]="isButtonHoveredRecord[child.id] ?
-                                navigation.menu.typographyStyle.activeColor :
-                                navigation.menu.typographyStyle.color
-                            "
-                            (mouseenter)="isButtonHoveredRecord[child.id] = true"
-                            (mouseleave)="isButtonHoveredRecord[child.id] = false"
-                            matTooltip="{{child.description}}"
-                        >
-                            {{ child.displayLabel }}
+                        <div mat-menu-item class="menu-option">
+                            <app-redirect-button
+                                [navigation]="child" 
+                                [typographyStyle]="navigation.menu.typographyStyle"
+                            ></app-redirect-button>
 
                             @if (child.permissionName?.includes('edit')) {
-                                <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                                <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, child)"></i>
                             }
-                        </button>
+                        </div>
                     }
 
+                    <!-- Deep menu 'Add redirect button' item -->
                     @if (navigation.permissionName?.includes('add')) {
                         <button mat-menu-item
                             class="menu-button"
-                            (click)="openFormToAddButton(navigation.id, 'redirect-button')"
+                            (click)="openFormToAddNavigation(navigation.id, 'redirect-button')"
                             [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                             [style.color]="isButtonHoveredRecord['redirect-button-single'] ?
                                 navigation.menu.typographyStyle.activeColor :
