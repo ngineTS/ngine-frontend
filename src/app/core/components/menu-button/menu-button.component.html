@@ -46,7 +46,9 @@
         [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
     >
         <!-- Main menu edit style icon -->
-        <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
+        @if (navigation.permissionName?.includes('edit')) {
+            <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
+        } 
 
         <!-- Main menu options -->
         @for (child of navigation.children; track child.id) {
@@ -68,80 +70,84 @@
                 >
                     {{ child.displayLabel }}
 
-                    <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                    @if (child.permissionName?.includes('edit')) {
+                        <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                    }
                 </button>
             }
         }
 
         <!-- Main menu 'Add option' option -->
-        <button mat-menu-item
-            [matMenuTriggerFor]="optionMenu"
-            class="menu-button"
-            [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-            [style.color]="isButtonHoveredRecord['add-option'] ?
-                navigation.menu.typographyStyle.activeColor :
-                navigation.menu.typographyStyle.color
-            "
-            (mouseenter)="isButtonHoveredRecord['add-option'] = true"
-            (mouseleave)="isButtonHoveredRecord['add-option'] = false"
-        >
-            Add option
-        </button>
-        <mat-menu #optionMenu="matMenu">
-            <div class="menu-panel"
-                [style.background-color]="navigation.menu.containerStyle.backgroundColor"
-                [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
-                    navigation.menu.containerStyle.borderStyle + ' ' +
-                    navigation.menu.containerStyle.borderColor"
-                [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
-                    'none' : navigation.menu.containerStyle.borderStyle"
-                [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
-                    'none' : navigation.menu.containerStyle.borderStyle"
-                [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
-                    'none' : navigation.menu.containerStyle.borderStyle"
-                [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
-                    'none' : navigation.menu.containerStyle.borderStyle"
-                [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
-                [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
-                [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
-                [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-                [style.margin-top]="navigation.menu.containerLayout.marginTop + 'px'"
-                [style.margin-right]="navigation.menu.containerLayout.marginRight + 'px'"
-                [style.margin-bottom]="navigation.menu.containerLayout.marginBottom + 'px'"
-                [style.margin-left]="navigation.menu.containerLayout.marginLeft + 'px'"
-                [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
-                [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
-                [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
-                [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
-                [style.font-family]="navigation.menu.typographyStyle.fontFamily"
-                [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
+        @if (navigation.permissionName?.includes('add')) {
+            <button mat-menu-item
+                [matMenuTriggerFor]="optionMenu"
+                class="menu-button"
+                [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                [style.color]="isButtonHoveredRecord['add-option'] ?
+                    navigation.menu.typographyStyle.activeColor :
+                    navigation.menu.typographyStyle.color
+                "
+                (mouseenter)="isButtonHoveredRecord['add-option'] = true"
+                (mouseleave)="isButtonHoveredRecord['add-option'] = false"
             >
-                <button mat-menu-item 
-                    (click)="openFormToAddButton(navigation.id, 'redirect-button')"
-                    [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-                    [style.color]="isButtonHoveredRecord['add-redirect-button'] ?
-                        navigation.menu.typographyStyle.activeColor :
-                        navigation.menu.typographyStyle.color
-                    "
-                    (mouseenter)="isButtonHoveredRecord['add-redirect-button'] = true"
-                    (mouseleave)="isButtonHoveredRecord['add-redirect-button'] = false"
-                >   
-                    Add redirect button
-                </button>
-                <button mat-menu-item 
-                    (click)="openFormToAddButton(navigation.id, 'menu-button')"
-                    [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-                    [style.color]="isButtonHoveredRecord['add-menu-button'] ?
-                        navigation.menu.typographyStyle.activeColor :
-                        navigation.menu.typographyStyle.color
-                    "
-                    (mouseenter)="isButtonHoveredRecord['add-menu-button'] = true"
-                    (mouseleave)="isButtonHoveredRecord['add-menu-button'] = false"
-                >   
-                    Add menu
-                </button>
-            </div>
-        </mat-menu>
+                Add option
+            </button>
+            <mat-menu #optionMenu="matMenu">
+                <div class="menu-panel"
+                    [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+                    [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+                        navigation.menu.containerStyle.borderStyle + ' ' +
+                        navigation.menu.containerStyle.borderColor"
+                    [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
+                    [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
+                    [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
+                    [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
+                    [style.margin-top]="navigation.menu.containerLayout.marginTop + 'px'"
+                    [style.margin-right]="navigation.menu.containerLayout.marginRight + 'px'"
+                    [style.margin-bottom]="navigation.menu.containerLayout.marginBottom + 'px'"
+                    [style.margin-left]="navigation.menu.containerLayout.marginLeft + 'px'"
+                    [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
+                    [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
+                    [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
+                    [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
+                    [style.font-family]="navigation.menu.typographyStyle.fontFamily"
+                    [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
+                >
+                    <button mat-menu-item 
+                        (click)="openFormToAddButton(navigation.id, 'redirect-button')"
+                        [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                        [style.color]="isButtonHoveredRecord['add-redirect-button'] ?
+                            navigation.menu.typographyStyle.activeColor :
+                            navigation.menu.typographyStyle.color
+                        "
+                        (mouseenter)="isButtonHoveredRecord['add-redirect-button'] = true"
+                        (mouseleave)="isButtonHoveredRecord['add-redirect-button'] = false"
+                    >   
+                        Add redirect button
+                    </button>
+                    <button mat-menu-item 
+                        (click)="openFormToAddButton(navigation.id, 'menu-button')"
+                        [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                        [style.color]="isButtonHoveredRecord['add-menu-button'] ?
+                            navigation.menu.typographyStyle.activeColor :
+                            navigation.menu.typographyStyle.color
+                        "
+                        (mouseenter)="isButtonHoveredRecord['add-menu-button'] = true"
+                        (mouseleave)="isButtonHoveredRecord['add-menu-button'] = false"
+                    >   
+                        Add menu
+                    </button>
+                </div>
+            </mat-menu>
+        }
 
         <!-- Deep Menu template-->
         <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
@@ -160,7 +166,9 @@
             >
                 {{ navigation.displayLabel }}
 
-                <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, navigation)"></i>
+                @if (navigation.permissionName?.includes('edit')) {
+                    <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, navigation)"></i>
+                }
             </button>
             
             <!-- Deep menu -->
@@ -193,8 +201,10 @@
                     [style.font-family]="navigation.menu.typographyStyle.fontFamily"
                     [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
                 >
-                    <!-- Main menu edit style icon -->
-                    <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
+                    <!-- Deep menu edit style icon -->                    
+                    @if (navigation.permissionName?.includes('edit')) {
+                        <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditMenuStyle(navigation.menu)"></i>
+                    }
 
                     <!-- Deep menu options -->
                     @for (child of navigation.children; track child.id) {
@@ -212,22 +222,27 @@
                         >
                             {{ child.displayLabel }}
 
-                            <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                            @if (child.permissionName?.includes('edit')) {
+                                <i class="bi bi-gear edit-icon" (click)="openFormToEditButton($event, child)"></i>
+                            }
                         </button>
                     }
-                    <button mat-menu-item
-                        class="menu-button"
-                        (click)="openFormToAddButton(navigation.id, 'redirect-button')"
-                        [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
-                        [style.color]="isButtonHoveredRecord['redirect-button-single'] ?
-                            navigation.menu.typographyStyle.activeColor :
-                            navigation.menu.typographyStyle.color
-                        "
-                        (mouseenter)="isButtonHoveredRecord['redirect-button-single'] = true"
-                        (mouseleave)="isButtonHoveredRecord['redirect-button-single'] = false"
-                    >
-                        Add redirect button
-                    </button>
+
+                    @if (navigation.permissionName?.includes('add')) {
+                        <button mat-menu-item
+                            class="menu-button"
+                            (click)="openFormToAddButton(navigation.id, 'redirect-button')"
+                            [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                            [style.color]="isButtonHoveredRecord['redirect-button-single'] ?
+                                navigation.menu.typographyStyle.activeColor :
+                                navigation.menu.typographyStyle.color
+                            "
+                            (mouseenter)="isButtonHoveredRecord['redirect-button-single'] = true"
+                            (mouseleave)="isButtonHoveredRecord['redirect-button-single'] = false"
+                        >
+                            Add redirect button
+                        </button>
+                    }
                 </div>
             </mat-menu>
         </ng-template>
