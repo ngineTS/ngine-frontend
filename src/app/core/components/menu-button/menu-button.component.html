@@ -66,6 +66,7 @@
                         [typographyStyle]="navigation.menu.typographyStyle"
                     ></app-redirect-button>
 
+                    <!-- Edit navigation button-->
                     @if (child.permissionName?.includes('edit')) {
                         <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, child)"></i>
                     }
@@ -138,8 +139,9 @@
         }
 
 
-        <!-- Deep Menu template-->
+        <!-- Deep menu template-->
         <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
+            
             <!-- Deep menu button -->
             <button mat-menu-item 
                 [matMenuTriggerFor]="subMenu" 
@@ -155,6 +157,7 @@
             >
                 {{ navigation.displayLabel }}
 
+                <!-- Deep Menu edit navigation button-->
                 @if (navigation.permissionName?.includes('edit')) {
                     <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, navigation)"></i>
                 }
