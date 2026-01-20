@@ -80,7 +80,7 @@ export class NavigationManagementComponent implements OnInit {
         this.navigationForm.addControl('height', this._formBuilder.control(50));
       }
     }
-    if (this.data.type === 'redirect-button') {
+    if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
       this.navigationForm.addControl('icon', this._formBuilder.control(
         this.data.navigation?.icon ?? null
       ));
