@@ -39,14 +39,6 @@
     }
 }
 
-::ng-deep .mat-mdc-menu-content {
-    padding: 0px !important;
-}
-
-::ng-deep .mat-mdc-menu-item-text {
-    display: flex !important;
-}
-
 .edit-icon {
   font-size: 12px;
   border: 1px solid #636363;
@@ -63,4 +55,17 @@
     .edit-icon {
         display: block;
     }
+}
+
+::ng-deep .mat-mdc-menu-content {
+    padding: 0px !important;
+}
+
+::ng-deep .mat-mdc-menu-item-text {
+    display: flex !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
