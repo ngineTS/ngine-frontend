@@ -1,7 +1,5 @@
 .navigation-container {
     position: relative;
-    overflow: visible;
-    max-width: -webkit-fill-available;
 }
 
 .edit-icon {
@@ -17,7 +15,6 @@
     color: #636363;
     display: none;
     cursor: pointer;
-    z-index: 999;
 }
 
 .gear-icon {
@@ -32,7 +29,6 @@
     color: #636363;
     display: none;
     cursor: pointer;
-    z-index: 999;
 }
 
 .marker-icon {
@@ -47,7 +43,6 @@
     color: #636363;
     display: none;
     cursor: pointer;
-    z-index: 999;
 }
 
 .navigation-container:hover .edit-icon {

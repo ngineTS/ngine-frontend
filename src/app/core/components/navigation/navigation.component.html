@@ -1,34 +1,6 @@
-<div #navigationDiv
-    class="navigation-container"
-    [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
-    [style.resize]="_canEdit ? 'both' : ''"
-    [style.backgroundColor]="_navigation.containerStyle.backgroundColor"
-    [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
-        _navigation.containerStyle.borderStyle + ' ' +
-        _navigation.containerStyle.borderColor"
-    [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-bottom-style]="_navigation.containerStyle.isBorderBottomHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-top-left-radius]="_navigation.containerStyle.borderTopLeftRadius + 'px'"
-    [style.border-top-right-radius]="_navigation.containerStyle.borderTopRightRadius + 'px'"
-    [style.border-bottom-right-radius]="_navigation.containerStyle.borderBottomRightRadius + 'px'"
-    [style.border-bottom-left-radius]="_navigation.containerStyle.borderBottomLeftRadius + 'px'"
-    [style.margin-top]="_navigation.containerLayout.marginTop + 'px'"
-    [style.margin-right]="_navigation.containerLayout.marginRight + 'px'"
-    [style.margin-bottom]="_navigation.containerLayout.marginBottom + 'px'"
-    [style.margin-left]="_navigation.containerLayout.marginLeft + 'px'"
-    [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
-    [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
-    [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
-    [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
->
-    
+
+<div class="navigation-container">
+    <!-- Top right icons -->
     @if (_canEdit) {
         @if (_navigation.navigationType.name !== 'redirect-button' && _navigation.navigationType.name !== 'menu-button') {
             @if (_isEditing) {
@@ -45,55 +17,97 @@
                 _navigation.navigationType.name : 'component'
             )"
         ></i>
-
-        @if (
-            _width - previousWidth > 1 
-            || previousWidth - _width > 1 
-            || _height - previousheight > 1 
-            || previousheight - _height > 1) {
-            <div class="size-icons-div" >
-                <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
-                <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
-            </div>
-        }
     }
 
-    @if (_navigation.navigationType.name === 'redirect-button') {
-        <div class="button-div" 
-            (click)="navigateTo(_navigation.name)"
-            (mouseenter)="isMouseOver = true"
-            (mouseleave)="isMouseOver = false"
-            matTooltip="{{_navigation.description}}"
-        >
-            @if (_navigation.icon) {
-                <i class="text-center"
-                    [class]="'bi bi-' + _navigation.icon"
+    <!-- Navigation shape -->
+    <div #navigationDiv
+        [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
+        [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
+        [style.resize]="_canEdit ? 'both' : ''"
+        [style.overflow]="'auto'"
+        [style.backgroundColor]="_navigation.containerStyle.backgroundColor"
+        [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
+            _navigation.containerStyle.borderStyle + ' ' +
+            _navigation.containerStyle.borderColor"
+        [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-bottom-style]="_navigation.containerStyle.isBorderBottomHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-top-left-radius]="_navigation.containerStyle.borderTopLeftRadius + 'px'"
+        [style.border-top-right-radius]="_navigation.containerStyle.borderTopRightRadius + 'px'"
+        [style.border-bottom-right-radius]="_navigation.containerStyle.borderBottomRightRadius + 'px'"
+        [style.border-bottom-left-radius]="_navigation.containerStyle.borderBottomLeftRadius + 'px'"
+        [style.margin-top]="_navigation.containerLayout.marginTop + 'px'"
+        [style.margin-right]="_navigation.containerLayout.marginRight + 'px'"
+        [style.margin-bottom]="_navigation.containerLayout.marginBottom + 'px'"
+        [style.margin-left]="_navigation.containerLayout.marginLeft + 'px'"
+        [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
+        [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
+        [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
+        [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
+    >
+        <!-- Accept or Reject size change icons -->
+        @if (_canEdit) {
+            @if (
+                _width - previousWidth > 1 
+                || previousWidth - _width > 1 
+                || _height - previousheight > 1 
+                || previousheight - _height > 1
+            ) {
+                <div class="size-icons-div" >
+                    <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
+                    <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
+                </div>
+            }
+        }
+
+        <!-- Redirect button case -->
+        @if (_navigation.navigationType.name === 'redirect-button') {
+            <div class="button-div" 
+                (click)="navigateTo(_navigation.name)"
+                (mouseenter)="isMouseOver = true"
+                (mouseleave)="isMouseOver = false"
+                matTooltip="{{_navigation.description}}"
+            >
+                @if (_navigation.icon) {
+                    <i class="text-center"
+                        [class]="'bi bi-' + _navigation.icon"
+                        [style.color]="isMouseOver ? 
+                            _navigation.typographyStyle.activeColor : 
+                            _navigation.typographyStyle.color"
+                        [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                        [style.font-weight]="_navigation.typographyStyle.fontWeight"
+                        [style.font-family]="_navigation.typographyStyle.fontFamily"
+
+                    >
+                    </i>
+                }
+                <span class="text-center"
                     [style.color]="isMouseOver ? 
                         _navigation.typographyStyle.activeColor : 
                         _navigation.typographyStyle.color"
                     [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
                     [style.font-weight]="_navigation.typographyStyle.fontWeight"
                     [style.font-family]="_navigation.typographyStyle.fontFamily"
-
                 >
-                </i>
-            }
-            <span class="text-center"
-                [style.color]="isMouseOver ? 
-                    _navigation.typographyStyle.activeColor : 
-                    _navigation.typographyStyle.color"
-                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
-                [style.font-weight]="_navigation.typographyStyle.fontWeight"
-                [style.font-family]="_navigation.typographyStyle.fontFamily"
-            >
-                {{ _navigation.displayLabel }}
-            </span>
-        </div>
-    }
-    @else if (_navigation.navigationType.name === 'menu-button') {
-        <app-menu-button class="button-div" [navigation]="_navigation"></app-menu-button>
-    }
-    @else {
-        <ng-template #container></ng-template>
-    }
+                    {{ _navigation.displayLabel }}
+                </span>
+            </div>
+        }
+
+        <!-- Menu button case -->
+        @else if (_navigation.navigationType.name === 'menu-button') {
+            <app-menu-button class="button-div" [navigation]="_navigation"></app-menu-button>
+        }
+
+        <!-- Component case -->
+        @else {
+            <ng-template #container></ng-template>
+        }
+        
+    </div>
 </div>
