@@ -1,35 +1,8 @@
-<div #navigationDiv
-    class="navigation-container"
-    [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
-    [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
-    [style.resize]="_canEdit ? 'both' : ''"
-    [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
-        _navigation.containerStyle.borderStyle + ' ' +
-        _navigation.containerStyle.borderColor"
-    [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-bottom-style]="_navigation.containerStyle.isBorderBottomHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
-        'none' : _navigation.containerStyle.borderStyle"
-    [style.border-top-left-radius]="_navigation.containerStyle.borderTopLeftRadius + 'px'"
-    [style.border-top-right-radius]="_navigation.containerStyle.borderTopRightRadius + 'px'"
-    [style.border-bottom-right-radius]="_navigation.containerStyle.borderBottomRightRadius + 'px'"
-    [style.border-bottom-left-radius]="_navigation.containerStyle.borderBottomLeftRadius + 'px'"
-    [style.margin-top]="_navigation.containerLayout.marginTop + 'px'"
-    [style.margin-right]="_navigation.containerLayout.marginRight + 'px'"
-    [style.margin-bottom]="_navigation.containerLayout.marginBottom + 'px'"
-    [style.margin-left]="_navigation.containerLayout.marginLeft + 'px'"
-    [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
-    [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
-    [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
-    [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
->
-    
+
+<div class="navigation-container">
+    <!-- Top right icons -->
     @if (_canEdit) {
-        @if (_navigation.navigationType.name !== 'redirect-button') {
+        @if (_navigation.navigationType.name !== 'redirect-button' && _navigation.navigationType.name !== 'menu-button') {
             @if (_isEditing) {
                 <i class="bi bi-x-circle edit-icon"  (click)="switchEditMode()"></i>
             }
@@ -38,32 +11,78 @@
             }
         }
         <i class="bi bi-marker-tip marker-icon" (click)="openFormToEditStyle()"></i>
-        <i class="bi bi-gear gear-icon" (click)="openFormToEditNavigation(_navigation.navigationType.name === 'redirect-button' ? 'redirect-button' : 'component')"></i>
-
-        @if (
-            _width - previousWidth > 1 
-            || previousWidth - _width > 1 
-            || _height - previousheight > 1 
-            || previousheight - _height > 1) {
-            <div class="size-icons-div" >
-                <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
-                <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
-            </div>
-        }
+        <i class="bi bi-gear gear-icon" 
+            (click)="openFormToEditNavigation(
+                (_navigation.navigationType.name === 'redirect-button' || _navigation.navigationType.name === 'menu-button') ? 
+                _navigation.navigationType.name : 'component'
+            )"
+        ></i>
     }
 
-    @if (_navigation.navigationType.name === 'redirect-button') {
-        <div class="redirect-button-div" (click)="navigateTo(_navigation.name)">
-            @if (_navigation.icon) {
-                <i class="text-center"
-                   [class]="'bi bi-' + _navigation.icon"
-                >
-                </i>
+    <!-- Navigation shape -->
+    <div #navigationDiv
+        [style.width]="initialWindowWidth > 500 ? _width + 'px' : '-webkit-fill-available'"
+        [style.height]="initialWindowWidth > 500 ? _height + 'px' : ''"
+        [style.resize]="_canEdit ? 'both' : ''"
+        [style.overflow]="'auto'"
+        [style.backgroundColor]="_navigation.containerStyle.backgroundColor"
+        [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
+            _navigation.containerStyle.borderStyle + ' ' +
+            _navigation.containerStyle.borderColor"
+        [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-bottom-style]="_navigation.containerStyle.isBorderBottomHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-top-left-radius]="_navigation.containerStyle.borderTopLeftRadius + 'px'"
+        [style.border-top-right-radius]="_navigation.containerStyle.borderTopRightRadius + 'px'"
+        [style.border-bottom-right-radius]="_navigation.containerStyle.borderBottomRightRadius + 'px'"
+        [style.border-bottom-left-radius]="_navigation.containerStyle.borderBottomLeftRadius + 'px'"
+        [style.margin-top]="_navigation.containerLayout.marginTop + 'px'"
+        [style.margin-right]="_navigation.containerLayout.marginRight + 'px'"
+        [style.margin-bottom]="_navigation.containerLayout.marginBottom + 'px'"
+        [style.margin-left]="_navigation.containerLayout.marginLeft + 'px'"
+        [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
+        [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
+        [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
+        [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
+    >
+        <!-- Accept or Reject size change icons -->
+        @if (_canEdit) {
+            @if (
+                _width - previousWidth > 1 
+                || previousWidth - _width > 1 
+                || _height - previousheight > 1 
+                || previousheight - _height > 1
+            ) {
+                <div class="size-icons-div" >
+                    <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
+                    <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
+                </div>
             }
-            <span class="text-center">{{ _navigation.displayLabel }}</span>
-        </div>
-    }
-    @else {
-        <ng-template #container></ng-template>
-    }
+        }
+
+        <!-- Redirect button case -->
+        @if (_navigation.navigationType.name === 'redirect-button') {
+            <app-redirect-button 
+                [iconOnTop]="true"
+                [navigation]="_navigation" 
+                [typographyStyle]="_navigation.typographyStyle"
+            ></app-redirect-button>
+        }
+
+        <!-- Menu button case -->
+        @else if (_navigation.navigationType.name === 'menu-button') {
+            <app-menu-button [navigation]="_navigation"></app-menu-button>
+        }
+
+        <!-- Component case -->
+        @else {
+            <ng-template #container></ng-template>
+        }
+        
+    </div>
 </div>

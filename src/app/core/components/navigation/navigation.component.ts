@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, Input, inputBinding, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
@@ -12,13 +12,17 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MenuButtonComponent } from '../menu-button/menu-button.component';
+import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
 
 @Component({
   selector: 'app-navigation',
   imports: [
     MatProgressSpinnerModule,
     CommonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MenuButtonComponent,
+    RedirectButtonComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -34,6 +38,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   initialWindowWidth!: number;
   initialWindowheight!: number;
   observer: MutationObserver | undefined;
+  isMouseOver = false;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
@@ -52,10 +57,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   ngOnInit(): void {
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowheight = window.innerHeight;
-    this.previousWidth = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
-    this.previousheight = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
-    this._width = this._navigation.containerLayout.width!.valueOf() * this.initialWindowWidth / 100;
-    this._height = this._navigation.containerLayout.height!.valueOf() * this.initialWindowheight / 100;
+    this.previousWidth = this._navigation.containerLayout.width ? 
+      this._navigation.containerLayout.width * this.initialWindowWidth / 100 :
+      20 * this.initialWindowWidth / 100;
+    this.previousheight = this._navigation.containerLayout.height ?
+      this._navigation.containerLayout.height * this.initialWindowheight / 100 :
+      20 * this.initialWindowheight / 100;
+    this._width = this.previousWidth;
+    this._height = this.previousheight;
   }
 
   /**
@@ -63,7 +72,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * load component and create size observer.
    */
   ngAfterViewInit(): void {
-    if (this._navigation.navigationType.name !== 'redirect-button') {
+    if (
+      this._navigation.navigationType.name !== 'redirect-button' &&
+      this._navigation.navigationType.name !== 'menu-button'
+    ) {
       this.loadComponent();
     }
     this.createSizeObserver();
@@ -78,7 +90,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Load component from component dictionnary.  
+   * Load component from component dictionnary.
    */
   async loadComponent() {
     const component = await this._componentContainerService
@@ -115,7 +127,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.observer = new MutationObserver(() => {
       this._width = this.navigationDiv.nativeElement.offsetWidth;
       this._height = this.navigationDiv.nativeElement.offsetHeight;
-      if (this._navigation.navigationType.name !== 'redirect-button') {
+      if (
+        this._navigation.navigationType.name !== 'redirect-button' &&
+        this._navigation.navigationType.name !== 'menu-button'
+      ) {
         this.containerRef.setInput('_width', this._width);
         this.containerRef.setInput('_height', this._height);
       }
@@ -163,7 +178,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(type: 'redirect-button' | 'component'): void {
+  openFormToEditNavigation(type: 'redirect-button' | 'component' | 'menu-button'): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
@@ -174,7 +189,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on market button click.
+   * Methods triggered on marker button click.
    * 
    * Open generic form to edit navigation style.
    */
@@ -215,12 +230,4 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_isEditing', this._isEditing);
   }
 
-  /**
-   * Navigate to given route name.
-   * @param navigationName The name of the route.
-   */
-  navigateTo(navigationName: string) {
-    this._router.navigate([navigationName], { relativeTo: this._route });
-  }
-  
 }

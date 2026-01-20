@@ -8,12 +8,14 @@ import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { HeaderBarService } from '../../services/header-bar.service';
 import { AppService } from '../../services/app.service';
 import { MediaService } from '../../services/media.service';
 import { Observable } from 'rxjs';
 import { Menu, StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
+import { MenuButtonComponent } from '../menu-button/menu-button.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
 
 
 @Component({
@@ -25,6 +27,9 @@ import { MenuService } from '../../services/menu.service';
     MatTooltipModule,
     CdkDropList, 
     CdkDrag,
+    MenuButtonComponent,
+    RedirectButtonComponent,
+    MatMenuModule,
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
@@ -62,16 +67,6 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Check wether the user is on this header or not.
-   * @param navigationName The navigation name to check.
-   * @returns true or false.
-   */
-  isRouteActive(navigationName: string) {
-    const urlList = this._router.url.split('/');
-    return urlList.includes(navigationName);
-  }
-
-  /**
    * Drop a navigation and update position of all navigations.
    * @param event The CdkDragDrop event containing navigation positions. 
    */
@@ -90,11 +85,11 @@ export class HeaderBarComponent implements OnInit {
    * If navigation is passed edit header else add header.
    * @param navigation Navigation to edit (optional).
    */
-  openFormToAddOrEditHeader(navigation?: Navigation): void {
+  openFormToAddOrEditNavigation(type: string, navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: 'redirect-button',
+        type: type,
         parentId: this._route.snapshot.data["parentId"]
       },
     });
@@ -105,7 +100,7 @@ export class HeaderBarComponent implements OnInit {
    * 
    * Open menu form to edit navigation bar configuration.
    */
-  openFormToEditHeaderBarStyle() {
+  openFormToEditMenuStyle() {
     const styleInformation = {
       containerLayout: this.headerBarConfig.containerLayout,
       containerStyle: this.headerBarConfig.containerStyle,

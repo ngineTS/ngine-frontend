@@ -36,7 +36,7 @@
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
-        @if (data.type === 'redirect-button') {
+        @if (data.type === 'redirect-button' || data.type === 'menu-button') {
             <mat-form-field appearance="outline">
                 <mat-label>Icon</mat-label>
                 <mat-select formControlName="icon">

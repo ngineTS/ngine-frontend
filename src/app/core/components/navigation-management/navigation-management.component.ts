@@ -32,7 +32,7 @@ export class NavigationManagementComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
                 navigation: Navigation | undefined, 
-                type: 'redirect-button' | 'component',
+                type: 'redirect-button' | 'component' | 'menu-button',
                 parentId: Navigation["parentId"],
               },
               private _formBuilder: FormBuilder,
@@ -52,8 +52,8 @@ export class NavigationManagementComponent implements OnInit {
     if (this.data.navigation) {
       this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
     }
-    this.getParentMenuValues().subscribe(resp => this.parentNavigations = resp);
-    this.getNavigationTypeMenuValues().subscribe(resp => this.navigationTypes = resp);
+    this.getParentDropdownValues().subscribe(resp => this.parentNavigations = resp);
+    this.getNavigationTypeDropdownValues().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
   }
 
@@ -80,7 +80,7 @@ export class NavigationManagementComponent implements OnInit {
         this.navigationForm.addControl('height', this._formBuilder.control(50));
       }
     }
-    if (this.data.type === 'redirect-button') {
+    if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
       this.navigationForm.addControl('icon', this._formBuilder.control(
         this.data.navigation?.icon ?? null
       ));
@@ -88,37 +88,36 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Define and return Parent menu values and store flat navigations.
-   * 
-   * Rules:
-   * * Parent can only be redirect-button.
+   * Define and return Parent dropdown values and store flat navigations.
    * * Parent can't be current navigation.
    * * Parent can't be one of the children or grandchildren of current navigation.
-   * * If form type is a component: parent can't have a menu.
+   * * If form type is a component: parent can only be a redirect-button without navigation bar.
+   * * If form type is a redirect-button or a menu-button: parent can only be a redirect-button or a menu-button
    * * User requires 'add' permission on navigation.
    * 
    * @returns An observable of assignable parent navigations.
    */
-  getParentMenuValues(): Observable<Navigation[]> {
+  getParentDropdownValues(): Observable<Navigation[]> {
     return this._navigationService.getFlatNavigations()
       .pipe(
         retry(2),
         take(1),
         map(flatNavigations => {
           this.flatNavigations = flatNavigations;
-          console.log(flatNavigations);
           return flatNavigations.filter(flatNav => {            
             if (flatNav.id === this.data.navigation?.id) {
-              return false;
-            }
-            if (flatNav.navigationType.name !== 'redirect-button') {
               return false;
             }
             if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
               return false;
             }
             if (this.data.type === 'component') {
-              if (flatNav.menu) {
+              if (flatNav.menu || flatNav.navigationType.name !== 'redirect-button') {
+                return false;
+              }
+            }
+            if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
+              if (flatNav.navigationType.name !== 'menu-button' && flatNav.navigationType.name !== 'redirect-button') {
                 return false;
               }
             }
@@ -132,14 +131,13 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Define and return Navigation Type menu values.
-   * 
-   * If form is a component: exclude "redirect-button" type.
-   * 
-   * If form is a redirect-button: keep only "redirect-button" type. 
+   * Define and return Navigation Type dropdown values.
+   * * If form is a redirect-button: keep only "redirect-button" type. 
+   * * If form is a menu-button: keep only "menu-button" type. 
+   * * If form is a component: exclude "redirect-button" and "menu-button" types.
    * @returns An observable of assignable navigation types.
    */
-  getNavigationTypeMenuValues(): Observable<NavigationType[]> {
+  getNavigationTypeDropdownValues(): Observable<NavigationType[]> {
     return this._navigationService.getNavigationTypes()
       .pipe(
         retry(2),
@@ -150,8 +148,12 @@ export class NavigationManagementComponent implements OnInit {
               this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'redirect-button')?.id);
               return navigationTypes.filter(obj => obj.name === 'redirect-button');
             }
+            else if (this.data.type === 'menu-button') {
+              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'menu-button')?.id);
+              return navigationTypes.filter(obj => obj.name === 'menu-button');
+            }
             else {
-              return navigationTypes.filter(obj => obj.name !== 'redirect-button');
+              return navigationTypes.filter(obj => obj.name !== 'redirect-button' && obj.name !== 'menu-button');
             }
           }
         )
@@ -229,7 +231,7 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Recursively retrieve parent name until the last parent
+   * Recursively retrieve parent name until the last parent.
    * @param navigationId The navigation id of the wished navigation name.
    * @returns The navigation parent name with "/" prefix.
    */
@@ -237,7 +239,9 @@ export class NavigationManagementComponent implements OnInit {
     let name = '/';
     const parent = this.flatNavigations.find(obj => obj.id === navigationId);
     if (parent && parent.name !== 'global') {
-      name = parent.name;
+      if (parent.navigationType.name === 'redirect-button') {
+        name = parent.name;
+      }
       if (parent?.parentId) {
         name = this.getParentName(parent.parentId) + '/' + name;
       }

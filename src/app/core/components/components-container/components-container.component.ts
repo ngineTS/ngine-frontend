@@ -77,8 +77,8 @@ export class ComponentsContainer implements OnInit {
    * Open Navigation form to create navigation.
    * @param type The type ('navigation-bar' or 'component').
    */
-  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | 'redirect-button'): void {
-    if (type === 'component' || type === 'redirect-button') {
+  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | 'redirect-button' | 'menu-button'): void {
+    if (type === 'component' || type === 'redirect-button' || type === 'menu-button') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,
