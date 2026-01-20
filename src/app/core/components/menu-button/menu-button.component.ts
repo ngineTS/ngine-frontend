@@ -39,15 +39,6 @@ export class MenuButtonComponent {
   isButtonHoveredRecord: Record<string, boolean> = {};
 
   /**
-   * Navigate to given route name.
-   * @param navigationName The name of the route.
-   */
-  navigateTo(navigationName: string) {
-    console.log('navName', navigationName);
-    this._router.navigate([navigationName], { relativeTo: this._route });
-  }
-
-  /**
    * Methods triggered on 'add' menu option click.
    * 
    * Open form to add navigation.
