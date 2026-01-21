@@ -9,8 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
-import { MediaService } from '../../services/media.service';
-import { Observable } from 'rxjs';
 import { Menu, StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
@@ -36,18 +34,17 @@ import { RedirectButtonComponent } from '../redirect-button/redirect-button.comp
 })
 export class HeaderBarComponent implements OnInit {
   
-  constructor(public _router: Router,
-              private _route: ActivatedRoute,
-              private _navigationService: NavigationService,
-              private _matDialog: MatDialog,
-              private _menuService: MenuService,
-              private _appService: AppService,
-              private _mediaService: MediaService) { }
+  constructor(
+    public _router: Router,
+    private _route: ActivatedRoute,
+    private _navigationService: NavigationService,
+    private _matDialog: MatDialog,
+    private _menuService: MenuService,
+    private _appService: AppService
+  ) {}
 
   navigations!: Navigation[];
   headerBarConfig! : Menu;
-  isMouseOverCard: Record<string, boolean> = {};
-  headerBarImgUrl$: Observable<string> | undefined;
   permissionName: string | undefined;
 
   /**
@@ -60,10 +57,6 @@ export class HeaderBarComponent implements OnInit {
     this.navigations = this._route.snapshot.data["navigations"];
     this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
     this.permissionName = this._route.snapshot.data["permissionName"];
-    this.createMouseOverObject();
-    /*if (this.headerBarConfig.imageName) {
-      this.headerBarImgUrl$ = this._mediaService.getS3ObjectSignedUrl(this.headerBarConfig.imageName);
-    }*/
   }
 
   /**
@@ -126,24 +119,6 @@ export class HeaderBarComponent implements OnInit {
         this._appService.createAppRouting(this._router.url);
       }
     });
-  }
-
-  /**
-   * Store navigation hover status.
-   * Used to change background and color on header mouse over.
-   */
-  createMouseOverObject() {
-    for (let navigation of this.navigations) {
-      this.isMouseOverCard[navigation.id] = false;
-    }
-  }
-
-  /**
-   * Navigate to given route name.
-   * @param navigationName The name of the route.
-   */
-  navigateToCardUrl(navigationName: string) {
-    this._router.navigate([navigationName], { relativeTo: this._route });
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Navigation } from '../../models/navigation.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NgTemplateOutlet } from '@angular/common';
@@ -29,7 +29,6 @@ export class MenuButtonComponent {
 
   constructor(
     private _router: Router,
-    private _route: ActivatedRoute,
     private _matDialog: MatDialog,
     private _menuService: MenuService,
     private _appService: AppService

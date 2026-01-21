@@ -11,7 +11,7 @@ import { MenuService } from '../../services/menu.service';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
 
@@ -45,8 +45,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _containerLayoutService: ContainerLayoutService,
     private _menuService: MenuService,
     private _appService: AppService,
-    private _router: Router,
-    private _route: ActivatedRoute
+    private _router: Router
   ) { 
     super(); 
   }
