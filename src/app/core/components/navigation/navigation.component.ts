@@ -14,6 +14,7 @@ import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
+import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-navigation',
@@ -177,7 +178,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * 
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(type: 'redirect-button' | 'component' | 'menu-button'): void {
+  openFormToEditNavigation(type: 'component' | CustomButtonType): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,

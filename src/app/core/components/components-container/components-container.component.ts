@@ -13,6 +13,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { MenuService } from '../../services/menu.service';
 import { AppService } from '../../services/app.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { CustomButtonType } from '../../models/custom-button.interface';
 
 
 @Component({
@@ -77,8 +78,8 @@ export class ComponentsContainer implements OnInit {
    * Open Navigation form to create navigation.
    * @param type The type ('navigation-bar' or 'component').
    */
-  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | 'redirect-button' | 'menu-button'): void {
-    if (type === 'component' || type === 'redirect-button' || type === 'menu-button') {
+  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | CustomButtonType): void {
+    if (type !== 'navigation-bar') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,

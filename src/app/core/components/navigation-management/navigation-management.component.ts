@@ -13,6 +13,7 @@ import { map, Observable, retry, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-navigation-management',
@@ -32,7 +33,7 @@ export class NavigationManagementComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
                 navigation: Navigation | undefined, 
-                type: 'redirect-button' | 'component' | 'menu-button',
+                type: 'component' | CustomButtonType,
                 parentId: Navigation["parentId"],
               },
               private _formBuilder: FormBuilder,

@@ -12,6 +12,7 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
+import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-menu-button',
@@ -42,7 +43,7 @@ export class MenuButtonComponent {
    * 
    * Open form to add navigation.
    */
-  openFormToAddNavigation(navigationId: string, type: 'redirect-button' | 'menu-button') {
+  openFormToAddNavigation(navigationId: string, type: CustomButtonType) {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: undefined, // undefined as it is 'add' case.

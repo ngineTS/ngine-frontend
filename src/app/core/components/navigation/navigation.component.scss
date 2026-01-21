@@ -15,6 +15,7 @@
     color: #636363;
     display: none;
     cursor: pointer;
+    z-index: 999;
 }
 
 .gear-icon {
@@ -29,6 +30,7 @@
     color: #636363;
     display: none;
     cursor: pointer;
+    z-index: 999;
 }
 
 .marker-icon {
@@ -43,6 +45,7 @@
     color: #636363;
     display: none;
     cursor: pointer;
+    z-index: 999;
 }
 
 .navigation-container:hover .edit-icon {
