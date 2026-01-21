@@ -13,7 +13,7 @@ import { StylePayload } from '../../models/menu.interface';
 import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
-import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
+import { CustomButtonComponent } from '../custom-button/custom-button.component';
 
 @Component({
   selector: 'app-navigation',
@@ -22,7 +22,7 @@ import { RedirectButtonComponent } from '../redirect-button/redirect-button.comp
     CommonModule,
     MatTooltipModule,
     MenuButtonComponent,
-    RedirectButtonComponent
+    CustomButtonComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'

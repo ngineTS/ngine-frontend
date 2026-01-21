@@ -64,10 +64,10 @@
             <!-- Redirect button case -->
             @else {
                 <div mat-menu-item class="menu-option">
-                    <app-redirect-button
+                    <app-custom-button
                         [navigation]="child" 
                         [typographyStyle]="navigation.menu.typographyStyle"
-                    ></app-redirect-button>
+                    ></app-custom-button>
 
                     <!-- Edit navigation button-->
                     @if (child.permissionName?.includes('edit')) {
@@ -207,10 +207,10 @@
                     <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
                         <div mat-menu-item class="menu-option">
-                            <app-redirect-button
+                            <app-custom-button
                                 [navigation]="child" 
                                 [typographyStyle]="navigation.menu.typographyStyle"
-                            ></app-redirect-button>
+                            ></app-custom-button>
 
                             @if (child.permissionName?.includes('edit')) {
                                 <i class="bi bi-gear edit-icon" (click)="openFormToEditNavigation($event, child)"></i>

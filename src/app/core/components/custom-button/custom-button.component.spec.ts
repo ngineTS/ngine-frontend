@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CustomButtonComponent } from './custom-button.component';
 
-import { RedirectButtonComponent } from './redirect-button.component';
-
-describe('RedirectButtonComponent', () => {
-  let component: RedirectButtonComponent;
-  let fixture: ComponentFixture<RedirectButtonComponent>;
+describe('CustomButtonComponent', () => {
+  let component: CustomButtonComponent;
+  let fixture: ComponentFixture<CustomButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RedirectButtonComponent]
+      imports: [CustomButtonComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RedirectButtonComponent);
+    fixture = TestBed.createComponent(CustomButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

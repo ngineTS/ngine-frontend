@@ -11,7 +11,7 @@ import { Menu, StylePayload } from '../../models/menu.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
+import { CustomButtonComponent } from '../custom-button/custom-button.component';
 
 @Component({
   selector: 'app-menu-button',
@@ -20,7 +20,7 @@ import { RedirectButtonComponent } from '../redirect-button/redirect-button.comp
     MatButtonModule,
     NgTemplateOutlet,
     MatTooltipModule,
-    RedirectButtonComponent
+    CustomButtonComponent
   ],
   templateUrl: './menu-button.component.html',
   styleUrl: './menu-button.component.scss'

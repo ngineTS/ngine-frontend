@@ -5,12 +5,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 
 @Component({
-  selector: 'app-redirect-button',
+  selector: 'app-custom-button',
   imports: [MatTooltipModule],
-  templateUrl: './redirect-button.component.html',
-  styleUrl: './redirect-button.component.scss'
+  templateUrl: './custom-button.component.html',
+  styleUrl: './custom-button.component.scss'
 })
-export class RedirectButtonComponent {
+export class CustomButtonComponent {
 
   constructor(
     private _router: Router,

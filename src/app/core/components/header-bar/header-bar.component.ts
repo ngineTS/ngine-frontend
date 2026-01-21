@@ -13,7 +13,7 @@ import { Menu, StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { RedirectButtonComponent } from '../redirect-button/redirect-button.component';
+import { CustomButtonComponent } from '../custom-button/custom-button.component';
 
 
 @Component({
@@ -26,7 +26,7 @@ import { RedirectButtonComponent } from '../redirect-button/redirect-button.comp
     CdkDropList, 
     CdkDrag,
     MenuButtonComponent,
-    RedirectButtonComponent,
+    CustomButtonComponent,
     MatMenuModule,
   ],
   templateUrl: './header-bar.component.html',

@@ -46,10 +46,10 @@
             >
                 <!-- Redirect button case -->
                 @if (navigation.navigationType.name === 'redirect-button') {
-                    <app-redirect-button 
+                    <app-custom-button 
                         [navigation]="navigation" 
                         [typographyStyle]="headerBarConfig.typographyStyle"
-                    ></app-redirect-button>
+                    ></app-custom-button>
                 }
 
                 <!-- Menu button case -->
