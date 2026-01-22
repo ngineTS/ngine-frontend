@@ -65,7 +65,7 @@ export class NavigationManagementComponent implements OnInit {
    */
   createForm() {
     this.navigationForm = this._formBuilder.group({
-      parentId: [this.data.navigation?.parentId ?? this.data.parentId],
+      parentId: [this.data.navigation?.parentId ?? this.data.parentId, [Validators.required]],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
@@ -75,7 +75,6 @@ export class NavigationManagementComponent implements OnInit {
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
     if (this.data.type === 'component') {
-      this.navigationForm.get('parentId')?.addValidators([Validators.required]);
       if (!this.data.navigation?.id) {
         this.navigationForm.addControl('width', this._formBuilder.control(50));
         this.navigationForm.addControl('height', this._formBuilder.control(50));

@@ -1,6 +1,6 @@
 <div class="button-div"
     [style.flex-direction]="iconOnTop ? 'column' : 'row'"
-    (click)="navigateTo(navigation.name)"
+    (click)="actionClick(navigation)"
     (mouseenter)="isMouseOver = true"
     (mouseleave)="isMouseOver = false"
     matTooltip="{{ navigation.description }}"

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TypographyStyle } from '../../models/typography-style.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
 
 @Component({
   selector: 'app-custom-button',
@@ -15,6 +17,7 @@ export class CustomButtonComponent {
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
+    private _matDialog: MatDialog
   ) {}
 
   @Input() navigation!: Navigation
@@ -23,12 +26,24 @@ export class CustomButtonComponent {
   isMouseOver = false;
 
   /**
-   * Navigate to given route name.
-   * @param navigationName The name of the route.
+   * Trigger an action on button click depending of the navigation type.
+   * @param navigation The navigation.
    */
-  navigateTo(navigationName: string) {
-    console.log('navName', navigationName);
-    this._router.navigate([navigationName], { relativeTo: this._route });
+  actionClick(navigation: Navigation) {
+    console.log('nav', navigation);
+
+    switch (navigation.navigationType.name) {
+      /* redirect to navigation url */
+      case 'redirect-button':
+        this._router.navigate([navigation.name], { relativeTo: this._route });
+        break;
+      /* open mat dialog */
+      case 'dialog-button':
+        console.log('dialog-button');
+        this._matDialog.open(EmptyDialogComponent);
+        break;
+    }
+
   }
 
   /**

@@ -143,10 +143,11 @@ export class AppService {
     parentName: string = ''
   ): Route {
     let route: Route;
+    /* Create children routes. */
     const childrenRoutes = this.createRoutes(redirectButtonNavigations);
 
     if (menu) {
-      /* Add redirect route at the beginning of the array of routes. */
+      /* Add redirect route at the beginning of the array of children routes. */
       childrenRoutes.unshift({
         path: '',
         redirectTo: navigations[0]?.name ?? '',
@@ -167,7 +168,7 @@ export class AppService {
       };
     }
     else {
-      /* Add landing page route at the beginning of the array of routes. */
+      /* Add landing page route at the beginning of the array of children routes. */
       childrenRoutes.unshift({
         path: '',
         loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
