@@ -45,12 +45,14 @@ export class NavigationManagementComponent implements OnInit {
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
   flatNavigations: Navigation[] = [];
-  parentNavigations: Navigation[] = [];
   navigationTypeSelected: NavigationType | undefined;
 
+  /**
+   * Lifecycle hook called after the component has been initialized.
+   */
   ngOnInit() {
-    this.getParentDropdownValues().subscribe(resp => this.parentNavigations = resp);
-    this.getNavigationTypeDropdownValues().subscribe(resp => this.navigationTypes = resp);
+    this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
+    this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
   }
 
@@ -62,6 +64,7 @@ export class NavigationManagementComponent implements OnInit {
     this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? this.data.parentId, [Validators.required]],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
+      icon: [this.data.navigation?.icon ?? null],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
         Validators.maxLength(50)
@@ -69,32 +72,6 @@ export class NavigationManagementComponent implements OnInit {
       description: [this.data.navigation?.description ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
-  }
-
-  /**
-   * Get dropdown values and store flat navigations.
-   * @returns An observable of assignable parent navigations.
-   */
-  getParentDropdownValues(): Observable<Navigation[]> {
-    return this._navigationService.getFlatNavigations()
-      .pipe(
-        retry(2),
-        take(1),
-        map(flatNavigations => {
-          this.flatNavigations = flatNavigations;
-          return flatNavigations;
-        })
-      )
-  }
-
-  /**
-   * GetNavigation Type dropdown values.
-   * In case of edit the options are disabled (logic applied on html template).
-   * @returns An observable of assignable navigation types.
-   */
-  getNavigationTypeDropdownValues(): Observable<NavigationType[]> {
-    return this._navigationService.getNavigationTypes()
-      .pipe(retry(2), take(1));
   }
 
   /**
@@ -127,27 +104,32 @@ export class NavigationManagementComponent implements OnInit {
       //Parent has changed
       if (this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value) {
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
-          obj.parentId === this.navigationForm.get('parentId')?.value).length;
+          obj.parentId === this.navigationForm.get('parentId')?.value
+        ).length;
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
-          .subscribe(() => {
-            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          .subscribe({
+            next: () => {
+              console.log('edit parent change  NEXT');
+              this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            }
           });
       }
       //Parent has not changed
       else {
         this._navigationService
           .updateNavigation(this.data.navigation.id, this.navigationForm.value)
-          .pipe(
-            take(1)
-          )
-          .subscribe(() => {
-            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          .pipe(take(1))
+          .subscribe({
+            next: () => {
+              console.log('edit parent not changed NEXT');
+              this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            }
           });
       }
     }
@@ -157,11 +139,10 @@ export class NavigationManagementComponent implements OnInit {
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
       this._navigationService
         .saveNavigation(this.navigationForm.value)
-        .pipe(
-          take(1)
-        )
+        .pipe(take(1))
         .subscribe({
           next: () => {
+            console.log('ADD NEXT');
             this._snackbarService.showSuccessSnackBar('Element added successfully.');
             this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
           }
@@ -235,25 +216,13 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Method triggered on Navigation Type selection change.
-   * * if navigation type is a custom button then add icon input
-   * * if navigation type is a component then setup default size (/!\ Only in case of adding navigation)
+   * Method called on Navigation Type selection change.
+   * If navigation type is a component then setup default size (/!\ Only in case of adding navigation)
+   * 
+   * @param event The MatSelectChange event.
    */
   onNavigationTypeChange(event: MatSelectChange) {
     console.log(event);
     this.navigationTypeSelected = this.navigationTypes.find(obj => obj.id === event.value);
-    if (
-      this.navigationTypeSelected?.name === 'redirect-button' || 
-      this.navigationTypeSelected?.name  === 'menu-button' ||
-      this.navigationTypeSelected?.name  === 'dialog-button'
-    ) {
-      this.navigationForm.addControl('icon', this._formBuilder.control(this.data.navigation?.icon ?? null));
-    }
-    else{
-      if (!this.data.navigation?.id) {
-        this.navigationForm.addControl('width', this._formBuilder.control(50));
-        this.navigationForm.addControl('height', this._formBuilder.control(50));
-      }
-    }
   }
 }

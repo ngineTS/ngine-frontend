@@ -16,10 +16,10 @@ export class AppService {
   ) {}
 
   /**
-   * Create route for each navigation passed and return final array of routes.
+   * Create route for each navigation and return final array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
-   * @param navigations The array of navigations passed to create routing module or component container.
+   * @param navigations The array of navigations used to create routes.
    * @returns The routes set up.
    */
   createRoutes(navigations: Navigation[]): Routes {
@@ -27,7 +27,7 @@ export class AppService {
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
         const redirectButtonChildren = this.retrieveRedirectButtonChildren(navigation);
-        /* Case 1: One of the children at least is a redirect-button --> Create routing module */
+        /* case 1: one of the children at least is a redirect-button --> create routing module */
         if (redirectButtonChildren && redirectButtonChildren.length > 0) {
           routes.push(
             this.createRoutingModule(
@@ -36,7 +36,7 @@ export class AppService {
             )
           );
         }
-        /* Case 2: No redirect-button in children or no children at all --> Load components container. */
+        /* case 2: no redirect-button in children or no children at all --> load components container */
         else {
           routes.push({
             path: navigation.name,
@@ -105,8 +105,9 @@ export class AppService {
 
   /**
    * Create routing module and return his main route.
-   * @param redirectButtonNavigations The array of redirect-button navigations used as children routes of the routing module.
-   * @param navigation The navigation associated to the routing module.
+   * 
+   * @param redirectButtonNavigations - The array of redirect-button navigations used as children routes of the routing module.
+   * @param navigation - The navigation associated to the routing module.
    * @returns The main route of routing module.
    */
   createRoutingModule(
@@ -126,10 +127,10 @@ export class AppService {
 
     /* if navigation has a nav bar */
     if (navigation.menu) {
-      /* add redirect route at the beginning of children routes. */
+      /* add redirect route at the beginning of children routes */
       childrenRoutes.unshift({
         path: '',
-        redirectTo: navigation.children?.[0].name ?? '',
+        redirectTo: navigation.children?.[0]?.name ?? '',
         pathMatch: 'full'
       });
       /* lazy load header bar component on main route */
@@ -149,6 +150,7 @@ export class AppService {
 
   /**
    * Create admin routing module.
+   * 
    * @returns The main route of admin module.
    */
   createAdminRoutingModule(permissionName: string, menu: Menu): Route {

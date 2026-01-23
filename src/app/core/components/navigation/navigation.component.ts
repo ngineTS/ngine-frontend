@@ -143,10 +143,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Methods called on 'Save size' button click.
-   * 
-   * - Calcul width and height % based on screen size.
-   * - Call API to update navigation width and height.
-   * - Assign new value to previousWidth and previousHeight properties.
+   * * calcul width and height % based on screen size.
+   * * call API to update navigation width and height.
+   * * assign new value to previousWidth and previousHeight properties.
    */
   onSaveSizeClick(): void {
     const navigationSize = {

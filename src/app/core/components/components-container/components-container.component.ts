@@ -82,7 +82,7 @@ export class ComponentsContainer implements OnInit {
       });
     }
     else {
-      this._menuService.createNavigationBar(this._route.snapshot.data["parentId"])
+      this._menuService.createNavigationBar(this.navigation.id)
         .subscribe(resp => {
           this._snackbarService.showSuccessSnackBar(resp);
           this._appService.createAppRouting(this._router.url);
