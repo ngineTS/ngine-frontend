@@ -67,9 +67,12 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Methods triggered on '+' or 'gear' button click.
+   * Methods called on '+' or 'gear' button click.
    * Open navigation management form to add or edit navigation properties.
+   * 
    * @param navigation The navigation to edit (optional).
+   * @description
+   * If navigation is undefined then add navigation else edit navigation.
    */
   manageNavigation(navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
@@ -81,7 +84,7 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Methods triggered on 'Edit menu' button click.
+   * Methods called on 'Edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
   editNavigationMenu() {

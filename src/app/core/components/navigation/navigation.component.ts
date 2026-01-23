@@ -144,7 +144,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /**
    * Methods called on 'Save size' button click.
    * * calcul width and height % based on screen size.
-   * * call API to update navigation width and height.
+   * * call API to update container layout width and height.
    * * assign new value to previousWidth and previousHeight properties.
    */
   onSaveSizeClick(): void {
@@ -164,7 +164,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Methods called on 'Reset size' button click.
-   * 
    * Reset width and height to their previous value.
    */
   onResetSizeClick(): void {

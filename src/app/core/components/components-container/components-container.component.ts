@@ -58,6 +58,7 @@ export class ComponentsContainer implements OnInit {
 
   /**
    * Drop a navigation and update position of all navigations.
+   * 
    * @param event The CdkDragDrop event containing navigation positions.
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
@@ -68,8 +69,9 @@ export class ComponentsContainer implements OnInit {
   }
 
   /**
-   * Methods triggered on '+' button click.
-   * Open navigation form to create navigation or create navigation bar.
+   * Methods called on '+' button click.
+   * Open navigation form to create navigation or navigation bar.
+   * 
    * @param type The type ('navigation-bar' or 'navigation').
    */
   openFormToAddNavigationBarOrNavigation(type: 'navigation-bar' | 'navigation'): void {
