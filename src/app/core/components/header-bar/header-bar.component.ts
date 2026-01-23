@@ -87,7 +87,7 @@ export class HeaderBarComponent implements OnInit {
    * Methods called on 'Edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
-  editNavigationMenu() {
+  editMenuStyle() {
     const styleInformation = {
       containerLayout: this.navigation.menu.containerLayout,
       containerStyle: this.navigation.menu.containerStyle,

@@ -35,47 +35,55 @@ export class MenuButtonComponent {
     private _appService: AppService
   ) {}
 
+  /**
+   * The main menu button.
+   */
   @Input() navigation!: Navigation;
+  /**
+   * Object which stores navigation hovered status.
+   */
   isButtonHoveredRecord: Record<string, boolean> = {};
 
   /**
-   * Methods triggered on 'add' menu option click.
-   * 
+   * Methods called on 'add navigation' button click.
    * Open form to add navigation.
+   * 
+   * @param parentId The parent id where to add a navigation.
    */
-  openFormToAddNavigation(navigationId: string, type: CustomButtonType) {
+  addNavigation(parentId: string) {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
-        navigation: undefined, // undefined as it is 'add' case.
-        type: type,
-        parentId: navigationId,
+        navigation: undefined,
+        parentId: parentId,
       }
     });
   }
 
   /**
-   * Methods triggered on 'edit' menu option click.
-   * 
+   * Methods called on 'edit navigation' button click.
    * Open form to edit navigation.
+   * 
+   * @param event The click event.
+   * @param navigation The navigation to edit.
    */
-  openFormToEditNavigation(event: MouseEvent, navigation: Navigation) {
+  editNavigation(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
 
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: navigation.navigationType.name,
         parentId: navigation.parentId,
       }
     });
   }
 
   /**
-   * Methods triggered on marker button click.
-   * 
+   * Methods called on 'marker' button click.
    * Open generic form to edit menu style.
+   * 
+   * @param menu The menu to edit.
    */
-  openFormToEditMenuStyle(menu: Menu) {
+  editMenuStyle(menu: Menu) {
     const menuStyleForm = this._menuService.setupStyleForm({
       containerLayout: menu.containerLayout,
       containerStyle: menu.containerStyle,
