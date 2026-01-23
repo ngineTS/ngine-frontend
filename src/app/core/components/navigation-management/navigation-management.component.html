@@ -2,15 +2,17 @@
     <h4>Navigation Management</h4>
     <form [formGroup]="navigationForm" class="row navigation-form" (ngSubmit)="submitForm()">
 
+        <!-- Navigation Type dropdown -->
         <mat-form-field appearance="outline">
             <mat-label>Navigation Type </mat-label>
-            <mat-select formControlName="navigationTypeId">
+            <mat-select formControlName="navigationTypeId" (selectionChange)="onNavigationTypeChange($event)">
                 @for (navigationType of navigationTypes; track navigationType.name) {
                     <mat-option [disabled]="data.navigation?.id" [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
 
+        <!-- Parent dropdown -->
         <mat-form-field appearance="outline">
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
@@ -22,6 +24,7 @@
             </mat-select>
         </mat-form-field>
 
+        <!-- Name input -->
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput formControlName="displayLabel">
@@ -30,13 +33,14 @@
             </span>
         </mat-form-field>
         
-
+        <!-- Description input -->
         <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
-        @if (data.type === 'redirect-button' || data.type === 'menu-button') {
+        <!-- Icon dropdown -->
+        @if (navigationTypeSelected?.name === 'redirect-button' || navigationTypeSelected?.name === 'menu-button') {
             <mat-form-field appearance="outline">
                 <mat-label>Icon</mat-label>
                 <mat-select formControlName="icon">
@@ -61,9 +65,11 @@
             </mat-form-field>
         }
 
+        <!-- Disable checkbox -->
         <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
         
         <div class="row form-buttons">
+            <!-- Delete navigation button -->
             @if (data.navigation?.permissionName?.includes('delete')) {
                 <button class="col me-3 text-danger" 
                         matButton="outlined" 
@@ -72,6 +78,8 @@
                         Delete
                 </button>
             }
+
+            <!-- Sumbit form button -->
             <button class="col me-3" 
                     matButton="outlined" 
                     type="submit"

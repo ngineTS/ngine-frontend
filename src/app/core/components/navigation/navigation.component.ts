@@ -174,26 +174,23 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on gear button click.
-   * 
+   * Methods triggered on top right 'gear' button click.
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(type: 'component' | CustomButtonType): void {
+  manageNavigation(): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
-        type: type,
         parentId: this._navigation.parentId,
       }
     });
   }
 
   /**
-   * Methods triggered on marker button click.
-   * 
+   * Methods triggered on top right 'marker' button click.
    * Open generic form to edit navigation style.
    */
-  openFormToEditStyle() {
+  manageNavigationStyle() {
     const navigationStyleForm = this._menuService.setupStyleForm({
       containerLayout: this._navigation.containerLayout,
       containerStyle: this._navigation.containerStyle,
@@ -221,8 +218,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on "edit" or "x" button click.
-   * 
+   * Methods triggered on 'edit' or 'x' button click.
    * Switch edit mode.
    */
   switchEditMode() {

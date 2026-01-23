@@ -1,29 +1,32 @@
 <div class="m-1">
     
-    @if (navigations && navigations.length > 0) {
+    @if (navigation.children && navigation.children.length > 0) {
         <div cdkDropList 
             class="example-list" 
             (cdkDropListDropped)="drop($event)"
-            [cdkDropListData]="navigations"
+            [cdkDropListData]="navigation.children"
             cdkDropListOrientation="mixed"
-            [cdkDropListDisabled]="!permissionName.includes('edit')">
+            [cdkDropListDisabled]="!navigation.permissionName?.includes('edit')">
             
-            @for (navigation of navigations; track navigation.id) {
+            <!-- List of navigations -->
+            @for (child of navigation.children; track child.id) {
                 <div class="example-box" cdkDrag>
-                        
-                    @if (permissionName.includes('edit')) {
+                    
+                    <!-- Top left drag icon -->
+                    @if (navigation.permissionName?.includes('edit')) {
                         <i class="bi bi-arrows-move drag-icon" 
                            cdkDragHandle
-                           [style.margin-top]="navigation.containerLayout.marginTop + 'px'"
-                           [style.margin-left]="navigation.containerLayout.marginLeft + 'px'"
+                           [style.margin-top]="child.containerLayout.marginTop + 'px'"
+                           [style.margin-left]="child.containerLayout.marginLeft + 'px'"
                         ></i>
                     }
                     
+                    <!-- Navigation object -->
                     <app-navigation
-                        [_navigation]="navigation"
-                        [_canAdd]="navigation.permissionName?.includes('add')"
-                        [_canEdit]="navigation.permissionName?.includes('edit')"
-                        [_canDelete]="navigation.permissionName?.includes('delete')"
+                        [_navigation]="child"
+                        [_canAdd]="child.permissionName?.includes('add')"
+                        [_canEdit]="child.permissionName?.includes('edit')"
+                        [_canDelete]="child.permissionName?.includes('delete')"
                     >
                     </app-navigation>
                 </div>
@@ -31,7 +34,8 @@
         </div>
     }
     
-    @if (permissionName.includes('add')) {
+    <!-- Add navigation button -->
+    @if (navigation.permissionName?.includes('add')) {
         <button 
             matButton 
             [matMenuTriggerFor]="menu" 
@@ -39,12 +43,10 @@
             +
         </button>
         <mat-menu #menu="matMenu">
-            @if (navigations.length === 0) {
-                <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('navigation-bar')">Add navigation bar</button>
+            @if (navigation.children?.length === 0) {
+                <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation-bar')">Add navigation bar</button>
             }
-            <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('component')">Add component</button>
-            <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('redirect-button')">Add redirect button</button>
-            <button mat-menu-item (click)="openFormToAddNavigationBarOrComponent('menu-button')">Add menu</button>
+            <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation')">Add navigation</button>
         </mat-menu>
     }
     
