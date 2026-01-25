@@ -1,20 +1,19 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Role } from '../../../../../core/models/role.interface';
+import { Role } from '../../../models/role.interface';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { Navigation } from '../../../../../core/models/navigation.interface';
-import { Permission } from '../../../../../core/models/permission.interface';
+import { Navigation } from '../../../models/navigation.interface';
+import { Permission } from '../../../models/permission.interface';
 import { MatSelectModule } from '@angular/material/select';
-import { PermissionService } from '../../../../../core/services/permission.service';
-import { NavigationService } from '../../../../../core/services/navigation.service';
-import { RoleService } from '../../../../../core/services/role.service';
+import { PermissionService } from '../../../services/permission.service';
+import { NavigationService } from '../../../services/navigation.service';
+import { RoleService } from '../../../services/role.service';
 import { catchError, firstValueFrom, retry, take, throwError } from 'rxjs';
-import { RoleNavigationPermissionPayload } from '../../../../../core/models/role-navigation-permission.interface';
+import { RoleNavigationPermissionPayload } from '../../../models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SnackBarService } from '../../../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-role-management-form',

@@ -15,6 +15,10 @@ export class ComponentsContainerService {
     "calendar": () => import('../components/calendar/calendar.component'),
     "content-management": () => import('../components/content-management/content-management.component'),
     "content-visualization": () => import('../components/content-visualization/content-visualization.component'),
+    "analytic": () => import('../components/analytic/analytic.component'),
+    "media-library": () => import('../components/media-library/media-library.component'),
+    "user-management": () => import('../components/user-management/user-management.component'),
+    "role-management": () => import('../components/role-management/role-management.component')
   };
 
   /**

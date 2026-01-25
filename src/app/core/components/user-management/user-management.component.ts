@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleService } from '../../../../core/services/role.service';
-import { firstValueFrom, of, retry, switchMap, take, tap } from 'rxjs';
+import { RoleService } from '../../services/role.service';
+import { retry, switchMap, take, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SnackBarService } from '../../../../core/services/snackbar.service';
-import { UserService } from '../../../../core/services/user.service';
-import { User } from '../../../../core/models/user.interface';
-import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { Role } from '../../../../core/models/role.interface';
+import { SnackBarService } from '../../services/snackbar.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.interface';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { Role } from '../../models/role.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { UserRolePayload } from '../../../../core/models/user-role.interface';
+import { UserRolePayload } from '../../models/user-role.interface';
 import { ActivatedRoute } from '@angular/router';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 
 @Component({
@@ -32,7 +33,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss'
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent extends NavigationBaseComponent implements OnInit {
 
   filteredUsers!: Array<User>;
   users!: Array<User>;
@@ -41,12 +42,11 @@ export class UserManagementComponent implements OnInit {
     isEnabled: boolean;
     roleIds: string[];
   }> = {};
-  permissionName: PermissionName | null = null;
 
   constructor(private _roleService: RoleService,
               private _userService: UserService,
               private _snackbarService: SnackBarService,
-              private _route: ActivatedRoute) { }
+              private _route: ActivatedRoute) { super(); }
 
   /**
    * On init:
@@ -54,7 +54,6 @@ export class UserManagementComponent implements OnInit {
    * Get all users and assign filteredUsers.
    */
   ngOnInit() {
-    this.permissionName = this._route.snapshot.data["permissionName"];
     this._roleService.getAllRoles()
       .pipe(
         retry(2),
