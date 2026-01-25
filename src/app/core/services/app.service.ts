@@ -51,9 +51,10 @@ export class AppService {
 
   /**
    * Create App Routing:
-   * * load global navigation and create main routing module
-   * * add Unhautorised and Not found route
-   * * redirect to route name passed if one else initiate initial navigation
+   * - load global navigation and create main routing module
+   * - add Unhautorised and Not found route
+   * - redirect to route name passed if one else initiate initial navigation
+   * 
    * @param redirectRouteName The name of the route to redirect after app routing creation.
    */
   createAppRouting(redirectRouteName?: string): void {
@@ -135,7 +136,6 @@ export class AppService {
 
   /**
    * Recursively retrieve redirect button children inside menu button.
-   * 
    * This method is used to create the navigation routes because only redirect-button can be routes.
    * 
    * @param navigation The navigation where we want to filter the children on redirect-button type only.
