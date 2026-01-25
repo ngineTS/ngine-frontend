@@ -12,8 +12,6 @@ export interface Navigation {
     displayLabel: string;
     description: string;
     order: number;
-    width: number;
-    height: number;
     isDisabled: boolean;
     navigationTypeId: string;
     navigationType: NavigationType;

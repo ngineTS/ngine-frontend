@@ -143,10 +143,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Methods called on 'Save size' button click.
-   * 
-   * - Calcul width and height % based on screen size.
-   * - Call API to update navigation width and height.
-   * - Assign new value to previousWidth and previousHeight properties.
+   * * calcul width and height % based on screen size.
+   * * call API to update container layout width and height.
+   * * assign new value to previousWidth and previousHeight properties.
    */
   onSaveSizeClick(): void {
     const navigationSize = {
@@ -165,7 +164,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Methods called on 'Reset size' button click.
-   * 
    * Reset width and height to their previous value.
    */
   onResetSizeClick(): void {
@@ -174,26 +172,23 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on gear button click.
-   * 
+   * Methods triggered on top right 'gear' button click.
    * Open navigation management form to edit navigation properties.
    */
-  openFormToEditNavigation(type: 'component' | CustomButtonType): void {
+  manageNavigation(): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: this._navigation,
-        type: type,
         parentId: this._navigation.parentId,
       }
     });
   }
 
   /**
-   * Methods triggered on marker button click.
-   * 
+   * Methods triggered on top right 'marker' button click.
    * Open generic form to edit navigation style.
    */
-  openFormToEditStyle() {
+  manageNavigationStyle() {
     const navigationStyleForm = this._menuService.setupStyleForm({
       containerLayout: this._navigation.containerLayout,
       containerStyle: this._navigation.containerStyle,
@@ -221,8 +216,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on "edit" or "x" button click.
-   * 
+   * Methods triggered on 'edit' or 'x' button click.
    * Switch edit mode.
    */
   switchEditMode() {

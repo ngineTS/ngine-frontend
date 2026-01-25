@@ -16,10 +16,10 @@ export class AppService {
   ) {}
 
   /**
-   * Create route for each navigation passed and return array of routes.
+   * Create route for each navigation and return final array of routes.
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
-   * @param navigations The array of navigations passed to create either redirect-button route or component container.
+   * @param navigations The array of navigations used to create routes.
    * @returns The routes set up.
    */
   createRoutes(navigations: Navigation[]): Routes {
@@ -27,40 +27,24 @@ export class AppService {
     if (navigations && navigations.length > 0) {
       for (const navigation of navigations) {
         const redirectButtonChildren = this.retrieveRedirectButtonChildren(navigation);
-        /* Case 1: One of the children at least is a redirect-button --> Create routing module */
+        /* case 1: one of the children at least is a redirect-button --> create routing module */
         if (redirectButtonChildren && redirectButtonChildren.length > 0) {
-          if (navigation.menu) {
-            navigation.menu.permissionName = navigation.permissionName;
-          }
           routes.push(
             this.createRoutingModule(
               redirectButtonChildren,
-              navigation.children!,
-              navigation.menu,
-              navigation.permissionName!,
-              navigation.name
+              navigation
             )
           );
         }
-        /* Case 2: No redirect-button in children or no children at all --> Load components container. */
+        /* case 2: no redirect-button in children or no children at all --> load components container */
         else {
           routes.push({
             path: navigation.name,
-            data: {
-              navigations: navigation.children ?? [],
-              parentId: navigation.id,
-              permissionName: navigation.permissionName
-            },
+            data: { navigation: navigation },
             loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
           });
         }
       }
-      /* Add '' route to redirect to first navigation */
-      routes.unshift({
-        path: '',
-        redirectTo: navigations[0].name,
-        pathMatch: 'full'
-      });
     }
 
     return routes;
@@ -69,12 +53,10 @@ export class AppService {
 
   /**
    * Create App Routing:
-   * - If no navigations are found (i.e nothing has been created yet) then load component container else generate routing.
-   * - If user has maximun permission (i.e: global) then add Admin module.
-   * - Add Unhautorised and Not found route.
-   * - Redirect to route name passed if one else initiate initial navigation.
-   * 
-   * @param redirectRouteName 
+   * * load global navigation and create main routing module
+   * * add Unhautorised and Not found route
+   * * redirect to route name passed if one else initiate initial navigation
+   * @param redirectRouteName The name of the route to redirect after app routing creation.
    */
   createAppRouting(redirectRouteName?: string): void {
     this._navigationService.getNestedNavigations().subscribe({
@@ -83,9 +65,7 @@ export class AppService {
         console.log(result.navigation);
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
-          result.navigation.children ?? [],
-          result.navigation.menu,
-          result.navigation.permissionName!
+          result.navigation
         );
 
         const unauthorisedRoute: Route = {
@@ -125,65 +105,44 @@ export class AppService {
 
   /**
    * Create routing module and return his main route.
-   * - Lazy load header bar component on main route.
-   * - Lazy load sister navigation routes as children.
-   *
-   * @param redirectButtonNavigations The array of redirect-button navigations used as routes of the routing module.
-   * @param navigations The array of navigations used to pass as data of the routing module.
-   * @param menu The header bar style configuration.
-   * @param permissionName The user permission on module.
-   * @param parentName The parent name of sister navigations.
+   * 
+   * @param redirectButtonNavigations - The array of redirect-button navigations used as children routes of the routing module.
+   * @param navigation - The navigation associated to the routing module.
    * @returns The main route of routing module.
    */
   createRoutingModule(
     redirectButtonNavigations: Array<Navigation>,
-    navigations: Array<Navigation>,
-    menu: Menu,
-    permissionName: string,
-    parentName: string = ''
+    navigation: Navigation
   ): Route {
-    let route: Route;
-    /* Create children routes. */
+    /* create children routes */
     const childrenRoutes = this.createRoutes(redirectButtonNavigations);
 
-    if (menu) {
-      /* Add redirect route at the beginning of the array of children routes. */
+    /* create main route */
+    let route: Route  = {
+      path: navigation.name === 'global' ? '' : navigation.name,
+      canActivate: [AuthGuard],
+      data: { navigation: navigation },
+      children: childrenRoutes
+    }
+
+    /* if navigation has a nav bar */
+    if (navigation.menu) {
+      /* add redirect route at the beginning of children routes */
       childrenRoutes.unshift({
         path: '',
-        redirectTo: navigations[0]?.name ?? '',
+        redirectTo: navigation.children?.[0]?.name ?? '',
         pathMatch: 'full'
       });
-      /* Create routing module main route. */
-      route = {
-        path: parentName,
-        canActivate: [AuthGuard],
-        data: {
-          headerBarConfig: menu,
-          navigations: navigations,
-          parentId: menu.navigationId,
-          permissionName: permissionName
-        },
-        loadComponent: () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent),
-        children: childrenRoutes,
-      };
+      /* lazy load header bar component on main route */
+      route.loadComponent = () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent);
     }
+    /* if navigation has no nav bar */
     else {
-      /* Add landing page route at the beginning of the array of children routes. */
+      /* lazy load page components container at the beginning of children routes */
       childrenRoutes.unshift({
         path: '',
         loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
       });
-      /* Create routing module main route. */
-      route = {
-        path: parentName,
-        canActivate: [AuthGuard],
-        data: {
-          navigations: navigations,
-          parentId: navigations[0].parentId,
-          permissionName: permissionName,
-        },
-        children: childrenRoutes
-      };
     }
 
     return route;
@@ -191,6 +150,7 @@ export class AppService {
 
   /**
    * Create admin routing module.
+   * 
    * @returns The main route of admin module.
    */
   createAdminRoutingModule(permissionName: string, menu: Menu): Route {

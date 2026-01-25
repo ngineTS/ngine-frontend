@@ -1,66 +1,66 @@
 <div class="d-flex flex-row align-items-center"
-    [style.background-color]="headerBarConfig.containerStyle.backgroundColor"
-    [style.width]="headerBarConfig.containerLayout.width ?
-        headerBarConfig.containerLayout.width + 'px' : ''"
-    [style.height]="headerBarConfig.containerLayout.height + 'px'"
-    [style.border]="headerBarConfig.containerStyle.borderWidth + 'px ' +
-        headerBarConfig.containerStyle.borderStyle + ' ' +
-        headerBarConfig.containerStyle.borderColor"
-    [style.border-top-style]="headerBarConfig.containerStyle.isBorderTopHidden ?
-        'none' : headerBarConfig.containerStyle.borderStyle"
-    [style.border-right-style]="headerBarConfig.containerStyle.isBorderRightHidden ?
-        'none' : headerBarConfig.containerStyle.borderStyle"
-    [style.border-bottom-style]="headerBarConfig.containerStyle.isBorderBottomHidden ?
-        'none' : headerBarConfig.containerStyle.borderStyle"
-    [style.border-left-style]="headerBarConfig.containerStyle.isBorderLeftHidden ?
-        'none' : headerBarConfig.containerStyle.borderStyle"
-    [style.border-top-left-radius]="headerBarConfig.containerStyle.borderTopLeftRadius + 'px'"
-    [style.border-top-right-radius]="headerBarConfig.containerStyle.borderTopRightRadius + 'px'"
-    [style.border-bottom-right-radius]="headerBarConfig.containerStyle.borderBottomRightRadius + 'px'"
-    [style.border-bottom-left-radius]="headerBarConfig.containerStyle.borderBottomLeftRadius + 'px'"
-    [style.margin-top]="headerBarConfig.containerLayout.marginTop + 'px'"
-    [style.margin-right]="headerBarConfig.containerLayout.marginRight + 'px'"
-    [style.margin-bottom]="headerBarConfig.containerLayout.marginBottom + 'px'"
-    [style.margin-left]="headerBarConfig.containerLayout.marginLeft + 'px'"
-    [style.padding-top]="headerBarConfig.containerLayout.paddingTop + 'px'"
-    [style.padding-right]="headerBarConfig.containerLayout.paddingRight + 'px'"
-    [style.padding-bottom]="headerBarConfig.containerLayout.paddingBottom + 'px'"
-    [style.padding-left]="headerBarConfig.containerLayout.paddingLeft + 'px'"
+    [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+    [style.width]="navigation.menu.containerLayout.width ?
+        navigation.menu.containerLayout.width + 'px' : ''"
+    [style.height]="navigation.menu.containerLayout.height + 'px'"
+    [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+        navigation.menu.containerStyle.borderStyle + ' ' +
+        navigation.menu.containerStyle.borderColor"
+    [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
+    [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
+    [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
+    [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
+    [style.margin-top]="navigation.menu.containerLayout.marginTop + 'px'"
+    [style.margin-right]="navigation.menu.containerLayout.marginRight + 'px'"
+    [style.margin-bottom]="navigation.menu.containerLayout.marginBottom + 'px'"
+    [style.margin-left]="navigation.menu.containerLayout.marginLeft + 'px'"
+    [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
+    [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
+    [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
+    [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
 >
 
     <div cdkDropList
         class="example-list"
-        [style.gap]="headerBarConfig.containerLayout.gap + 'px'"
+        [style.gap]="navigation.menu.containerLayout.gap + 'px'"
         (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="navigations"
+        [cdkDropListData]="navigation.children ?? []"
         cdkDropListOrientation="horizontal"
-        [cdkDropListDisabled]="!permissionName?.includes('edit')"
+        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit')"
     >
         
-        <!-- List of navigation headers -->
-        @for (navigation of navigations; track navigation.id) {
+        <!-- List of navigations -->
+        @for (child of navigation.children; track child.id) {
             <div cdkDrag
-                [style.cursor]="permissionName?.includes('edit') ? 'move' : 'pointer'"
+                [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                 class="d-inline-flex mx-2 p-1 align-items-center nav-container"
-                [class.nav-container]="navigation.permissionName?.includes('edit')"
+                [class.nav-container]="child.permissionName?.includes('edit')"
             >
-                <!-- Redirect button case -->
-                @if (navigation.navigationType.name === 'redirect-button') {
+                <!-- Custom button -->
+                @if (child.navigationType.name === 'redirect-button') {
                     <app-custom-button 
-                        [navigation]="navigation" 
-                        [typographyStyle]="headerBarConfig.typographyStyle"
+                        [navigation]="child" 
+                        [typographyStyle]="navigation.menu.typographyStyle"
                     ></app-custom-button>
                 }
 
-                <!-- Menu button case -->
+                <!-- Menu button -->
                 @else {
-                    <app-menu-button [navigation]="navigation"></app-menu-button>
+                    <app-menu-button [navigation]="child"></app-menu-button>
                 }
                 
                 <!-- Edit navigation button -->
-                @if (navigation.permissionName?.includes('edit')) {
+                @if (child.permissionName?.includes('edit')) {
                     <i class="bi bi-gear edit-icon"
-                        (click)="openFormToAddOrEditNavigation(navigation.navigationType.name, navigation)"
+                        (click)="manageNavigation(child)"
                     >
                     </i>
                 }
@@ -70,24 +70,14 @@
     </div>
     
     <!-- Add navigation button -->
-    @if (permissionName?.includes('add')) {
-        <button 
-            matButton
-            matTooltip="Add button"
-            [matMenuTriggerFor]="menu" 
-            class="add-nav-button">
-            +
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openFormToAddOrEditNavigation('redirect-button')">Add redirect button</button>
-            <button mat-menu-item (click)="openFormToAddOrEditNavigation('menu-button')">Add menu</button>
-        </mat-menu>
+    @if (navigation.permissionName?.includes('add')) {
+        <button class="add-nav-button" (click)="manageNavigation()">+</button>
     }
     
     <!-- Edit menu style button -->
-    @if (permissionName?.includes('edit')) {
+    @if (navigation.permissionName?.includes('edit')) {
         <i class="bi bi-marker-tip edit-header-bar auto-margin-left" 
-            (click)="openFormToEditMenuStyle()"
+            (click)="editMenuStyle()"
             matTooltip="Edit menu style">
         </i>
     }

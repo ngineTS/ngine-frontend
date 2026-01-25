@@ -6,7 +6,7 @@ import { NavigationService } from '../../services/navigation.service';
 import { NavigationType } from '../../models/navigation-type.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { map, Observable, retry, switchMap, take } from 'rxjs';
@@ -32,9 +32,8 @@ export class NavigationManagementComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) 
               public data: { 
-                navigation: Navigation | undefined, 
-                type: 'component' | CustomButtonType,
-                parentId: Navigation["parentId"],
+                navigation: Navigation | undefined,
+                parentId: string,
               },
               private _formBuilder: FormBuilder,
               private _navigationService: NavigationService,
@@ -46,27 +45,26 @@ export class NavigationManagementComponent implements OnInit {
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
   flatNavigations: Navigation[] = [];
-  parentNavigations: Navigation[] = [];
-  navigationChildrenAndGrandChildren: Navigation[] = [];
+  navigationTypeSelected: NavigationType | undefined;
 
+  /**
+   * Lifecycle hook called after the component has been initialized.
+   */
   ngOnInit() {
-    if (this.data.navigation) {
-      this.storeNavigationChildrenAndOldChildrenAsArray(this.data.navigation);
-    }
-    this.getParentDropdownValues().subscribe(resp => this.parentNavigations = resp);
-    this.getNavigationTypeDropdownValues().subscribe(resp => this.navigationTypes = resp);
+    this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
+    this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
   }
 
   /**
    * Create Navigation form based on navigation passed in this component.
-   * 
    * If navigation is a component then make parent as mandatory and set up initial size.
    */
   createForm() {
     this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? this.data.parentId, [Validators.required]],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
+      icon: [this.data.navigation?.icon ?? null],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
         Validators.maxLength(50)
@@ -74,90 +72,6 @@ export class NavigationManagementComponent implements OnInit {
       description: [this.data.navigation?.description ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
     });
-    if (this.data.type === 'component') {
-      if (!this.data.navigation?.id) {
-        this.navigationForm.addControl('width', this._formBuilder.control(50));
-        this.navigationForm.addControl('height', this._formBuilder.control(50));
-      }
-    }
-    if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
-      this.navigationForm.addControl('icon', this._formBuilder.control(
-        this.data.navigation?.icon ?? null
-      ));
-    }
-  }
-
-  /**
-   * Define and return Parent dropdown values and store flat navigations.
-   * * Parent can't be current navigation.
-   * * Parent can't be one of the children or grandchildren of current navigation.
-   * * If form type is a component: parent can only be a redirect-button without navigation bar.
-   * * If form type is a redirect-button or a menu-button: parent can only be a redirect-button or a menu-button
-   * * User requires 'add' permission on navigation.
-   * 
-   * @returns An observable of assignable parent navigations.
-   */
-  getParentDropdownValues(): Observable<Navigation[]> {
-    return this._navigationService.getFlatNavigations()
-      .pipe(
-        retry(2),
-        take(1),
-        map(flatNavigations => {
-          this.flatNavigations = flatNavigations;
-          return flatNavigations.filter(flatNav => {            
-            if (flatNav.id === this.data.navigation?.id) {
-              return false;
-            }
-            if (this.navigationChildrenAndGrandChildren.find(obj => obj.id === flatNav.id)) {
-              return false;
-            }
-            if (this.data.type === 'component') {
-              if (flatNav.menu || flatNav.navigationType.name !== 'redirect-button') {
-                return false;
-              }
-            }
-            if (this.data.type === 'redirect-button' || this.data.type === 'menu-button') {
-              if (flatNav.navigationType.name !== 'menu-button' && flatNav.navigationType.name !== 'redirect-button') {
-                return false;
-              }
-            }
-            if (!flatNav.permissionName?.includes('add')) {
-              return false;
-            }
-            return true;
-          });
-        })
-      );
-  }
-
-  /**
-   * Define and return Navigation Type dropdown values.
-   * * If form is a redirect-button: keep only "redirect-button" type. 
-   * * If form is a menu-button: keep only "menu-button" type. 
-   * * If form is a component: exclude "redirect-button" and "menu-button" types.
-   * @returns An observable of assignable navigation types.
-   */
-  getNavigationTypeDropdownValues(): Observable<NavigationType[]> {
-    return this._navigationService.getNavigationTypes()
-      .pipe(
-        retry(2),
-        take(1),
-        map(
-          navigationTypes => {
-            if (this.data.type === 'redirect-button') {
-              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'redirect-button')?.id);
-              return navigationTypes.filter(obj => obj.name === 'redirect-button');
-            }
-            else if (this.data.type === 'menu-button') {
-              this.navigationForm.controls['navigationTypeId'].setValue(navigationTypes.find(obj => obj.name === 'menu-button')?.id);
-              return navigationTypes.filter(obj => obj.name === 'menu-button');
-            }
-            else {
-              return navigationTypes.filter(obj => obj.name !== 'redirect-button' && obj.name !== 'menu-button');
-            }
-          }
-        )
-      );
   }
 
   /**
@@ -190,27 +104,32 @@ export class NavigationManagementComponent implements OnInit {
       //Parent has changed
       if (this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value) {
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
-          obj.parentId === this.navigationForm.get('parentId')?.value).length;
+          obj.parentId === this.navigationForm.get('parentId')?.value
+        ).length;
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
-          .subscribe(() => {
-            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          .subscribe({
+            next: () => {
+              console.log('edit parent change  NEXT');
+              this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            }
           });
       }
       //Parent has not changed
       else {
         this._navigationService
           .updateNavigation(this.data.navigation.id, this.navigationForm.value)
-          .pipe(
-            take(1)
-          )
-          .subscribe(() => {
-            this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          .pipe(take(1))
+          .subscribe({
+            next: () => {
+              console.log('edit parent not changed NEXT');
+              this._snackbarService.showSuccessSnackBar('Element edited successfully.');
+              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            }
           });
       }
     }
@@ -220,12 +139,13 @@ export class NavigationManagementComponent implements OnInit {
         obj.parentId === this.navigationForm.get('parentId')?.value).length;
       this._navigationService
         .saveNavigation(this.navigationForm.value)
-        .pipe(
-          take(1)
-        )
-        .subscribe(() => {
-          this._snackbarService.showSuccessSnackBar('Element added successfully.');
-          this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            console.log('ADD NEXT');
+            this._snackbarService.showSuccessSnackBar('Element added successfully.');
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+          }
         });
     }
   }
@@ -281,19 +201,6 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Store navigation children and grandchildren inside `this.navigationChildrenAndGrandChildren` array.
-   * @param navigation The navigation we want to know the children.
-   */
-  storeNavigationChildrenAndOldChildrenAsArray(navigation: Navigation) {
-    if (navigation.children) {
-      this.navigationChildrenAndGrandChildren.push(...navigation.children);
-      for (const child of navigation.children) {
-        this.storeNavigationChildrenAndOldChildrenAsArray(child);
-      }
-    }
-  }
-
-  /**
    * Getter used in icon dropdown to display icon as selected value.
    */
   get iconFormControl() {
@@ -301,10 +208,21 @@ export class NavigationManagementComponent implements OnInit {
   }
 
   /**
-   * Clear icon selection
+   * Clear icon selection.
    */
   clearIcon(event: Event) {
     event.stopPropagation();
     this.iconFormControl?.setValue(null);
+  }
+
+  /**
+   * Method called on Navigation Type selection change.
+   * If navigation type is a component then setup default size (/!\ Only in case of adding navigation)
+   * 
+   * @param event The MatSelectChange event.
+   */
+  onNavigationTypeChange(event: MatSelectChange) {
+    console.log(event);
+    this.navigationTypeSelected = this.navigationTypes.find(obj => obj.id === event.value);
   }
 }

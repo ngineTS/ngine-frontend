@@ -44,52 +44,47 @@ export class ComponentsContainer implements OnInit {
   ) {}
 
   /** 
-   * The navigations that contain our components.
+   * The components container.
    */
-  navigations!: Array<Navigation>;
-  /**
-   * The user permission.
-   */
-  permissionName!: string;
+  navigation!: Navigation;
 
   /**
    * Lifecyle hook called after the component has been initialized.
    * Retrieve route snapshot data properties.
    */
   ngOnInit(): void {
-    this.navigations = this._route.snapshot.data["navigations"];
-    this.permissionName = this._route.snapshot.data["permissionName"] ?? '';
+    this.navigation = this._route.snapshot.data["navigation"];
   }
 
   /**
    * Drop a navigation and update position of all navigations.
+   * 
    * @param event The CdkDragDrop event containing navigation positions.
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
-    moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.navigation.children!, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index })});
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
   }
 
   /**
-   * Methods triggered on '+' button click.
+   * Methods called on '+' button click.
+   * Open navigation form to create navigation or navigation bar.
    * 
-   * Open Navigation form to create navigation.
-   * @param type The type ('navigation-bar' or 'component').
+   * @param type The type ('navigation-bar' or 'navigation').
    */
-  openFormToAddNavigationBarOrComponent(type: 'navigation-bar' | 'component' | CustomButtonType): void {
+  openFormToAddNavigationBarOrNavigation(type: 'navigation-bar' | 'navigation'): void {
     if (type !== 'navigation-bar') {
       this._matDialog.open(NavigationManagementComponent, {
         data: {
           navigation: undefined,
-          type: type,
-          parentId: this._route.snapshot.data["parentId"]
+          parentId: this.navigation.id
         }
       });
     }
     else {
-      this._menuService.createNavigationBar(this._route.snapshot.data["parentId"])
+      this._menuService.createNavigationBar(this.navigation.id)
         .subscribe(resp => {
           this._snackbarService.showSuccessSnackBar(resp);
           this._appService.createAppRouting(this._router.url);

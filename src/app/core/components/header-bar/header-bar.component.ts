@@ -43,20 +43,16 @@ export class HeaderBarComponent implements OnInit {
     private _appService: AppService
   ) {}
 
-  navigations!: Navigation[];
-  headerBarConfig! : Menu;
-  permissionName: string | undefined;
+  /**
+   * The navigations container.
+   */
+  navigation!: Navigation;
 
   /**
    * Lifecycle hook called after the component has been initialized.
-   * - Retrieve route snapshot data properties.
-   * - Create MouseOverNavigation object used to display background color of cards dynamically.
-   * - Get logo from file repository if exists.
    */
   ngOnInit() {
-    this.navigations = this._route.snapshot.data["navigations"];
-    this.headerBarConfig = this._route.snapshot.data["headerBarConfig"];
-    this.permissionName = this._route.snapshot.data["permissionName"];
+    this.navigation = this._route.snapshot.data["navigation"];
   }
 
   /**
@@ -65,39 +61,37 @@ export class HeaderBarComponent implements OnInit {
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
-    moveItemInArray(this.navigations, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.navigation.children!, event.previousIndex, event.currentIndex);
     event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index })); 
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
   /**
-   * Methods triggered on 'Add header' or 'Edit header' button click.
+   * Methods called on '+' or 'gear' button click.
+   * Open navigation management form to add or edit navigation properties.
    * 
-   * Open navigation management form to add or edit header.
-   * 
-   * If navigation is passed edit header else add header.
-   * @param navigation Navigation to edit (optional).
+   * @param navigation The navigation to edit (optional).
+   * @description
+   * If navigation is undefined then add navigation else edit navigation.
    */
-  openFormToAddOrEditNavigation(type: string, navigation?: Navigation): void {
+  manageNavigation(navigation?: Navigation): void {
     this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
-        type: type,
-        parentId: this._route.snapshot.data["parentId"]
+        parentId: this.navigation.id
       },
     });
   }
 
   /**
-   * Methods triggered on 'Edit menu' button click.
-   * 
+   * Methods called on 'Edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
-  openFormToEditMenuStyle() {
+  editMenuStyle() {
     const styleInformation = {
-      containerLayout: this.headerBarConfig.containerLayout,
-      containerStyle: this.headerBarConfig.containerStyle,
-      typographyStyle: this.headerBarConfig.typographyStyle
+      containerLayout: this.navigation.menu.containerLayout,
+      containerStyle: this.navigation.menu.containerStyle,
+      typographyStyle: this.navigation.menu.typographyStyle
     }
     const headerBarForm = this._menuService.setupStyleForm(styleInformation);
 
@@ -108,7 +102,7 @@ export class HeaderBarComponent implements OnInit {
         data: {
           hasDeleteButton: false,
           formConfig: headerBarForm,
-          id: this.headerBarConfig.id,
+          id: this.navigation.menu.id,
           controllerName: 'menu',
         }
       }
