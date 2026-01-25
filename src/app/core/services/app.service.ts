@@ -12,14 +12,17 @@ export class AppService {
   constructor(
     private _router: Router,
     private _navigationService: NavigationService,
-  ) {}
+  ) { }
 
   /**
    * Create route for each navigation and return final array of routes.
-   * Each route can redirect either to a routing module or to ComponentsContainer component.
    * 
    * @param navigations The array of navigations used to create routes.
    * @returns The routes set up.
+   * @description
+   * Each route can redirect either to a routing module or to ComponentsContainer component.
+   * If the navigation has at least one redirect-button in chidlren then create routing module,
+   * else load ComponentsContainer component.
    */
   createRoutes(navigations: Navigation[]): Routes {
     const routes: Routes = [];
