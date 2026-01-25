@@ -3,7 +3,6 @@ import { Navigation } from "../models/navigation.interface";
 import { Route, Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
 import { AuthGuard } from "../auth/guards/auth-guard.service";
-import { Menu } from "../models/menu.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +49,6 @@ export class AppService {
     return routes;
   }
 
-
   /**
    * Create App Routing:
    * * load global navigation and create main routing module
@@ -77,15 +75,6 @@ export class AppService {
           path: '**',
           redirectTo: ''
         }
-
-        if (result.navigation.permissionName) {
-          route.children?.push(
-            this.createAdminRoutingModule(
-              result.navigation.permissionName,
-              result.navigation.menu
-            )
-          );
-        }
         
         this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
         
@@ -95,13 +84,9 @@ export class AppService {
         else {
           this._router.initialNavigation();
         }
-      },
-      error: (err) => {
-        console.error("Error loading data", err);
       }
     });
   }
-
 
   /**
    * Create routing module and return his main route.
@@ -147,62 +132,6 @@ export class AppService {
 
     return route;
   }
-
-  /**
-   * Create admin routing module.
-   * 
-   * @returns The main route of admin module.
-   */
-  createAdminRoutingModule(permissionName: string, menu: Menu): Route {
-    return {
-      path: 'admin',
-      data: { headerBarConfig: menu },
-      children: [
-        {
-          path: '',
-          loadComponent: () => import('../../pages/admin/admin.component').then(m => m.AdminComponent)
-        },
-        {
-          path: 'file-management',
-          loadComponent: () => import('../../pages/admin/media-library/media-library.component').then(m => m.MediaLibraryComponent)
-        },
-        {
-          path: 'analytic',
-          loadComponent: () => import('../../pages/admin/analytic/analytic.component').then(m => m.AnalyticComponent)
-        },
-        this.createUserRoleManagementRoutingModule(permissionName),
-      ]
-    }
-  }
-
-  /**
-   * Create user role management routing module.
-   * @returns The main route of user role module.
-   */
-  createUserRoleManagementRoutingModule(permissionName: string): Route {
-    return {
-      path: 'user-role-management',
-      loadComponent: () => import('../../pages/admin/user-role-management/user-role-management.component').then(m => m.UserRoleManagementComponent),
-      children: [
-        {
-          path: '',
-          redirectTo: 'role-management',
-          pathMatch: 'full',
-        },
-        {
-          path: 'role-management',
-          data: { permissionName: permissionName },
-          loadComponent: () => import('../../pages/admin/user-role-management/role-management/role-management.component').then(m => m.RoleManagementComponent),
-        },
-        {
-          path: 'user-management',
-          data: { permissionName: permissionName },
-          loadComponent: () => import('../../pages/admin/user-role-management/user-management/user-management.component').then(m => m.UserManagementComponent),
-        }
-      ]
-    }
-  }
-
 
   /**
    * Recursively retrieve redirect button children inside menu button.

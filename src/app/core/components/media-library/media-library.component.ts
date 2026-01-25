@@ -1,14 +1,15 @@
 import { Component, TemplateRef } from '@angular/core';
-import { MediaService } from '../../../core/services/media.service';
-import { Media } from '../../../core/models/media.interface';
+import { MediaService } from '../../services/media.service';
+import { Media } from '../../models/media.interface';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SnackBarService } from '../../../core/services/snackbar.service';
+import { SnackBarService } from '../../services/snackbar.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SorterComponent } from '../../../core/components/sorter/sorter.component';
+import { SorterComponent } from '../sorter/sorter.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-media-library',
@@ -23,7 +24,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   templateUrl: './media-library.component.html',
   styleUrl: './media-library.component.scss'
 })
-export class MediaLibraryComponent {
+export class MediaLibraryComponent extends NavigationBaseComponent {
 
   /* List of medias. */
   files: Array<Media> = [];
@@ -32,9 +33,12 @@ export class MediaLibraryComponent {
   /* Mapping object of media id and his S3 URL. */
   fileIdS3UrlMap: Record<string, Observable<string>> = {};
 
-  constructor(private _mediaService: MediaService,
-              private _snackbarService: SnackBarService,
-              private _matDialog: MatDialog) { }
+  constructor(
+    private _mediaService: MediaService,
+    private _snackbarService: SnackBarService,
+  ) { 
+    super(); 
+  }
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -50,6 +54,7 @@ export class MediaLibraryComponent {
   /**
    * Methods triggered on default image mouseenter.
    * Get file temporary URL and assign it to mapping object.
+   * 
    * @param fileName The name of the media hovered.
    */
   onDefaultImageMouseEnter(fileName: string) {
@@ -61,6 +66,7 @@ export class MediaLibraryComponent {
   /**
    * Methods triggered on "full size" top left corner icon click.
    * Open media in full size.
+   * 
    * @param media The media to open in full size.
    * @param template The template used to display full size.
    */
@@ -71,6 +77,7 @@ export class MediaLibraryComponent {
   /**
    * Methods triggered on "trash" top right corner icon click.
    * Delete file from S3 and soft delete media record.
+   * 
    * @param media The media to delete.
    */
   onDeleteClick(media: Media) {
@@ -84,6 +91,7 @@ export class MediaLibraryComponent {
 
   /**
    * Apply filter on file name on search input keyup.
+   * 
    * @param event The keyup event.
    */
   applyFilter(event: Event) {
@@ -101,6 +109,7 @@ export class MediaLibraryComponent {
   /**
    * Sort event. Methods triggered on sort value selection.
    * Get sort selection and call API to retrieve medias sorted by this selection.
+   * 
    * @param event 
    */
   onSort(event: { key: keyof Media; sortDirection: 'ASC' | 'DESC'} ) {

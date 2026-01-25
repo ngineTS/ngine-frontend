@@ -16,10 +16,13 @@
                 (click)="onFullSizeClick(file, fullSizeMedia)"
             >
             </i>
+            
+            @if (_canDelete) {
             <i class="bi bi-trash-fill delete-icon"
                 (click)="onDeleteClick(file)"
             >
             </i>
+            }
             
             @if (fileIdS3UrlMap[file.name]) {         
                 @if (file.type.includes('image')) {

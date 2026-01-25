@@ -5,7 +5,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
 
-    @if (permissionName?.includes('add')) {
+    @if (_canAdd) {
         <button class="col-sm-2 ms-auto me-4 mb-3" matButton="outlined" (click)="addRole()">Add Role</button>
     }
 
@@ -23,7 +23,7 @@
                 {{role.description}}
             </span>
 
-            @if (permissionName?.includes('edit')) {
+            @if (_canEdit) {
                 <button class="col-1 ms-auto"
                     matTooltip="Edit role" 
                     matButton="outlined" 
@@ -34,7 +34,7 @@
                 </button>
             }
             
-            @if (permissionName?.includes('delete')) {
+            @if (_canDelete) {
                 <button class="col-1 text-danger"
                     matButton="outlined"
                     matTooltip="Delete role"

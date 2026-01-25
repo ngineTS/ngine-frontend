@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { UserEventService } from '../../../core/services/user-event.service';
+import { UserEventService } from '../../services/user-event.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 
 @Component({
@@ -10,9 +11,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './analytic.component.html',
   styleUrl: './analytic.component.scss'
 })
-export class AnalyticComponent {
+export class AnalyticComponent extends NavigationBaseComponent {
 
-  constructor(public _userEventService: UserEventService) { }
+  constructor(public _userEventService: UserEventService) { super(); }
 
   connectionChartData: Array<{
     name: string; 
