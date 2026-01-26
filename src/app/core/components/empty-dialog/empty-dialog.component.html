@@ -1,6 +1,7 @@
 <div class="m-4 row justify-content-center">
     @if (navigationToLoad) {
-        <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
+        @if (navigationToLoad.permissionName?.includes('edit')) {
+            <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
             @if (_isEditing) {
                 <i class="bi bi-x-circle edit-icon" [matTooltip]="'Stop editing'"></i>
             }
@@ -8,6 +9,7 @@
                 <i class="bi bi-pen edit-icon" [matTooltip]="'Edit content'"></i>
             }
         </button>
+        }
         <ng-template #container></ng-template>
     }
     @else {
