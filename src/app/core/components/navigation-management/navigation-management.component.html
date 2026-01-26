@@ -40,7 +40,11 @@
         </mat-form-field>
 
         <!-- Icon dropdown -->
-        @if (navigationTypeSelected?.name === 'redirect-button' || navigationTypeSelected?.name === 'menu-button') {
+        @if (
+            navigationTypeSelected?.name === 'redirect-button' ||
+            navigationTypeSelected?.name === 'dialog-button' ||
+            navigationTypeSelected?.name === 'menu-button'
+        ) {
             <mat-form-field appearance="outline">
                 <mat-label>Icon</mat-label>
                 <mat-select formControlName="icon">

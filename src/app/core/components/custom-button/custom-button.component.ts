@@ -27,11 +27,10 @@ export class CustomButtonComponent {
 
   /**
    * Trigger an action on button click depending of the navigation type.
+   * 
    * @param navigation The navigation.
    */
   actionClick(navigation: Navigation) {
-    console.log('nav', navigation);
-
     switch (navigation.navigationType.name) {
       /* redirect to navigation url */
       case 'redirect-button':
@@ -39,15 +38,16 @@ export class CustomButtonComponent {
         break;
       /* open mat dialog */
       case 'dialog-button':
-        console.log('dialog-button');
-        this._matDialog.open(EmptyDialogComponent);
+        this._matDialog.open(EmptyDialogComponent, {
+          data: { navigation: navigation }
+        });
         break;
     }
-
   }
 
   /**
-   * Check wether the user is in this navigation or not (used in case button is in navigation bar).
+   * Check if user is in this navigation or not (used in case button is in navigation bar).
+   * 
    * @param navigationName The navigation name to check.
    * @returns true or false.
    */

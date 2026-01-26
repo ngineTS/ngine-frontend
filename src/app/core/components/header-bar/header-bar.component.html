@@ -45,7 +45,10 @@
                 [class.nav-container]="child.permissionName?.includes('edit')"
             >
                 <!-- Custom button -->
-                @if (child.navigationType.name === 'redirect-button') {
+                @if (
+                    child.navigationType.name === 'redirect-button' ||
+                    child.navigationType.name === 'dialog-button'
+                ) {
                     <app-custom-button 
                         [navigation]="child" 
                         [typographyStyle]="navigation.menu.typographyStyle"

@@ -14,7 +14,6 @@ import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
-import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-navigation',
@@ -68,12 +67,12 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * After view init, 
-   * load component and create size observer.
+   * After view init, load component and create size observer.
    */
   ngAfterViewInit(): void {
     if (
       this._navigation.navigationType.name !== 'redirect-button' &&
+      this._navigation.navigationType.name !== 'dialog-button' &&
       this._navigation.navigationType.name !== 'menu-button'
     ) {
       this.loadComponent();
@@ -129,6 +128,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._height = this.navigationDiv.nativeElement.offsetHeight;
       if (
         this._navigation.navigationType.name !== 'redirect-button' &&
+        this._navigation.navigationType.name !== 'dialog-button' &&
         this._navigation.navigationType.name !== 'menu-button'
       ) {
         this.containerRef.setInput('_width', this._width);
@@ -216,7 +216,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on 'edit' or 'x' button click.
+   * Methods called on 'edit' or 'x' button click.
    * Switch edit mode.
    */
   switchEditMode() {

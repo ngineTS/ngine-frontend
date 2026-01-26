@@ -9,11 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { map, Observable, retry, switchMap, take } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { SnackBarService } from '../../services/snackbar.service';
-import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-navigation-management',

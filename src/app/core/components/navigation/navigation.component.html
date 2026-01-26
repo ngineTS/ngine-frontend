@@ -1,7 +1,11 @@
 <div class="navigation-container">
     <!-- Top right icons -->
     @if (_canEdit) {
-        @if (_navigation.navigationType.name !== 'redirect-button' && _navigation.navigationType.name !== 'menu-button') {
+        @if (
+            _navigation.navigationType.name !== 'redirect-button' && 
+            _navigation.navigationType.name !== 'dialog-button' && 
+            _navigation.navigationType.name !== 'menu-button'
+        ) {
             @if (_isEditing) {
                 <i class="bi bi-x-circle edit-icon"  (click)="switchEditMode()"></i>
             }
@@ -59,8 +63,11 @@
             }
         }
 
-        <!-- Redirect button case -->
-        @if (_navigation.navigationType.name === 'redirect-button') {
+        <!-- Custom button case -->
+        @if (
+            _navigation.navigationType.name === 'redirect-button' ||
+            _navigation.navigationType.name === 'dialog-button'
+        ) {
             <app-custom-button 
                 [iconOnTop]="true"
                 [navigation]="_navigation" 
