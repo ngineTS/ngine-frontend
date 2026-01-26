@@ -47,6 +47,7 @@
                 <!-- Custom button -->
                 @if (
                     child.navigationType.name === 'redirect-button' ||
+                    child.navigationType.name === 'external-link-button' ||
                     child.navigationType.name === 'dialog-button'
                 ) {
                     <app-custom-button 

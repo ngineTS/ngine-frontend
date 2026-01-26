@@ -43,6 +43,7 @@
         @if (
             navigationTypeSelected?.name === 'redirect-button' ||
             navigationTypeSelected?.name === 'dialog-button' ||
+            navigationTypeSelected?.name === 'external-link-button' ||
             navigationTypeSelected?.name === 'menu-button'
         ) {
             <mat-form-field appearance="outline">
@@ -66,6 +67,14 @@
                 >
                     <i class="bi bi-x-lg menu-cross-icon"></i>
                 </button>
+            </mat-form-field>
+        }
+
+        <!-- URL input -->
+        @if (navigationTypeSelected?.name === 'external-link-button') {
+            <mat-form-field appearance="outline">
+                <mat-label>URL</mat-label>
+                <input matInput formControlName="url">
             </mat-form-field>
         }
 

@@ -3,6 +3,7 @@
     @if (_canEdit) {
         @if (
             _navigation.navigationType.name !== 'redirect-button' && 
+            _navigation.navigationType.name !== 'external-link-button' && 
             _navigation.navigationType.name !== 'dialog-button' && 
             _navigation.navigationType.name !== 'menu-button'
         ) {
@@ -66,6 +67,7 @@
         <!-- Custom button case -->
         @if (
             _navigation.navigationType.name === 'redirect-button' ||
+            _navigation.navigationType.name === 'external-link-button' ||
             _navigation.navigationType.name === 'dialog-button'
         ) {
             <app-custom-button 

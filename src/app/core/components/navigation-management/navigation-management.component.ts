@@ -53,6 +53,9 @@ export class NavigationManagementComponent implements OnInit {
     this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
     this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
+    if (this.data.navigation) {
+      this.navigationTypeSelected = this.data.navigation.navigationType;
+    }
   }
 
   /**
@@ -63,6 +66,7 @@ export class NavigationManagementComponent implements OnInit {
     this.navigationForm = this._formBuilder.group({
       parentId: [this.data.navigation?.parentId ?? this.data.parentId, [Validators.required]],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
+      url: [this.data.navigation?.url ?? null],
       icon: [this.data.navigation?.icon ?? null],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
@@ -223,5 +227,13 @@ export class NavigationManagementComponent implements OnInit {
   onNavigationTypeChange(event: MatSelectChange) {
     console.log(event);
     this.navigationTypeSelected = this.navigationTypes.find(obj => obj.id === event.value);
+    if(this.navigationTypeSelected?.name === 'external-link-button') {
+      this.navigationForm.get('url')?.addValidators(Validators.required);
+    }
+    else {
+      this.navigationForm.get('url')?.removeValidators(Validators.required);
+    }
+    this.navigationForm.get('url')?.updateValueAndValidity();
+
   }
 }

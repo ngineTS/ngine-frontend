@@ -73,6 +73,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     if (
       this._navigation.navigationType.name !== 'redirect-button' &&
       this._navigation.navigationType.name !== 'dialog-button' &&
+      this._navigation.navigationType.name !== 'external-link-button' &&
       this._navigation.navigationType.name !== 'menu-button'
     ) {
       this.loadComponent();
@@ -129,6 +130,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       if (
         this._navigation.navigationType.name !== 'redirect-button' &&
         this._navigation.navigationType.name !== 'dialog-button' &&
+        this._navigation.navigationType.name !== 'external-link-button' &&
         this._navigation.navigationType.name !== 'menu-button'
       ) {
         this.containerRef.setInput('_width', this._width);

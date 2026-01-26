@@ -31,16 +31,23 @@ export class EmptyDialogComponent {
 
   /**
    * Lifecycle hook called after component has been initialized.
-   * Check if navigation exists. If yes load component, else display no component template.
+   * Check if navigation exists for template condition.
    */
   ngOnInit() {
     if (this.data.navigation.children && this.data.navigation.children.length > 0) {
       this.navigationToLoad = this.data.navigation.children[0];
-      this.loadComponent(this.navigationToLoad);
     }
     else {
       this.navigationToLoad = undefined;
     }
+  }
+
+  /**
+   * Lifecycle hook called after component view has been initialized.
+   * Check if navigation exists. If yes load component, else display no component template.
+   */
+  ngAfterViewInit() {
+    if (this.navigationToLoad) this.loadComponent(this.navigationToLoad);
   }
 
   /**
