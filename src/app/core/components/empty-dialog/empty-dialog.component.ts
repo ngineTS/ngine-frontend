@@ -44,6 +44,14 @@ export class EmptyDialogComponent {
   }
 
   /**
+   * Lifecycle hook called when component is destroyed.
+   * Destroy containerRef
+   */
+  ngOnDestroy() {
+    this.containerRef?.destroy();
+  }
+
+  /**
    * Load component on the fly.
    * 
    * @param navigation The navigation with type used to lookup component library.
