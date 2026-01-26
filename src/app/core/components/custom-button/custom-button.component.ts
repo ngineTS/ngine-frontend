@@ -42,6 +42,10 @@ export class CustomButtonComponent {
           data: { navigation: navigation }
         });
         break;
+      /* open url on new tab */
+      case 'external-link-button':
+        window.open(navigation.url, '_blank', 'noopener,noreferrer');
+        break;
     }
   }
 
