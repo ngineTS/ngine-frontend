@@ -81,16 +81,23 @@ export class EmptyDialogComponent {
     this.containerRef.setInput('_width', 0);
     this.containerRef.setInput('_height', 0);
     this.containerRef.setInput('_isEditing', this._isEditing);
+    this.containerRef.instance._stopEditing.subscribe(resp => {
+      this._isEditing = !resp;
+      this.containerRef.setInput('_isEditing', this._isEditing);
+    })
   }
 
   /**
-   * Open navigation managenement form to add component.
+   * Open navigation managenement form to add or edit navigation.
+   * If navigation is passed then edit navigation else add navigation.
+   * 
+   * @param navigation The navigation to edit.
    */
-  addComponent() {
+  manageNavigation(navigation?: Navigation) {
     this._dialogRef.close();
     this._matDialog.open(NavigationManagementComponent, {
       data: {
-        navigation: undefined,
+        navigation: navigation,
         parentId: this.data.navigation.id
       }
     });

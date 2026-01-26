@@ -2,21 +2,25 @@
     @if (navigationToLoad) {
         @if (navigationToLoad.permissionName?.includes('edit')) {
             <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
-            @if (_isEditing) {
-                <i class="bi bi-x-circle edit-icon" [matTooltip]="'Stop editing'"></i>
-            }
-            @else {
-                <i class="bi bi-pen edit-icon" [matTooltip]="'Edit content'"></i>
-            }
-        </button>
+                @if (_isEditing) {
+                    <i class="bi bi-x-circle" [matTooltip]="'Edit content'"></i>
+                }
+                @else {
+                    <i class="bi bi-pen" [matTooltip]="'Stop editing'"></i>
+                }
+            </button>
+            <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
+                <i class="bi bi-gear" [matTooltip]="'Edit properties'"></i>
+            </button>
         }
+        
         <ng-template #container></ng-template>
     }
     @else {
         <span class="text-center mb-4">
             There is not yet component attached to this dialog button.
         </span>
-        <button matButton="outlined" class="w-50" (click)="addComponent()">
+        <button matButton="outlined" class="w-50" (click)="manageNavigation()">
             Add component
         </button>
     }
