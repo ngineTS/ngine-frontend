@@ -40,10 +40,14 @@ export class MenuButtonComponent {
    */
   @Input() navigation!: Navigation;
   /**
+   * Define if icon should be on top or name or on the left.
+   */
+  @Input() iconOnTop? = false;
+  /**
    * Object which stores navigation hovered status.
    */
   isButtonHoveredRecord: Record<string, boolean> = {};
-
+  
   /**
    * Methods called on 'add navigation' button click.
    * Open form to add navigation.

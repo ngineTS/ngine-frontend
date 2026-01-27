@@ -1,6 +1,7 @@
 <!-- Main button -->
 <div [matMenuTriggerFor]="mainMenu"
     class="menu-button main-button"
+    [style.flex-direction]="iconOnTop ? 'column' : 'row'"
     [style.font-size]="navigation.typographyStyle.fontSize + 'px'"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
@@ -101,7 +102,8 @@
         <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
             
             <!-- Deep menu button -->
-            <button mat-menu-item 
+            <div mat-menu-item 
+                style="flex-direction: row;"
                 [matMenuTriggerFor]="subMenu" 
                 class="menu-button menu-option"
                 [style.font-weight]="parentMenu.typographyStyle.fontWeight"
@@ -125,7 +127,7 @@
                 @if (navigation.permissionName?.includes('edit')) {
                     <i class="bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
                 }
-            </button>
+            </div>
             
             <!-- Deep menu -->
             <mat-menu #subMenu="matMenu">

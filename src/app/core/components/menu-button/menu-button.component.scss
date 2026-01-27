@@ -6,12 +6,11 @@
 }
 
 .main-button {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     text-align: center;
     cursor: pointer;
     gap: 6px;
+    display: flex;
 }
 
 .menu-panel {
@@ -63,6 +62,7 @@
 
 ::ng-deep .mat-mdc-menu-item-text {
     display: flex !important;
+    gap: 3px !important
 }
 
 ::ng-deep .mat-mdc-menu-panel {

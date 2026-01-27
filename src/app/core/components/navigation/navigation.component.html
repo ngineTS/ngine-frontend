@@ -79,7 +79,10 @@
 
         <!-- Menu button case -->
         @else if (_navigation.navigationType.name === 'menu-button') {
-            <app-menu-button [navigation]="_navigation"></app-menu-button>
+            <app-menu-button 
+                [navigation]="_navigation"
+                [iconOnTop]="true"
+            ></app-menu-button>
         }
 
         <!-- Component case -->
