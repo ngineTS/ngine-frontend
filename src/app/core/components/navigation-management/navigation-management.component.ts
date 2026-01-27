@@ -13,6 +13,7 @@ import { Observable, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-navigation-management',
@@ -23,6 +24,7 @@ import { SnackBarService } from '../../services/snackbar.service';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatTooltipModule
   ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
@@ -68,6 +70,7 @@ export class NavigationManagementComponent implements OnInit {
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       url: [this.data.navigation?.url ?? null],
       icon: [this.data.navigation?.icon ?? null],
+      showIconOnly: [this.data.navigation?.showIconOnly ?? null],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
         Validators.maxLength(50)

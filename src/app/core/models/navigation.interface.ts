@@ -16,6 +16,7 @@ export interface Navigation {
     navigationTypeId: string;
     navigationType: NavigationType;
     icon: string;
+    showIconOnly: boolean;
     url: string;
     menu: Menu;
     containerLayout: ContainerLayout;

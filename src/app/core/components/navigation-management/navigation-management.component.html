@@ -39,35 +39,45 @@
             <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
-        <!-- Icon dropdown -->
+        <!-- Icon dropdown and checkbox -->
         @if (
             navigationTypeSelected?.name === 'redirect-button' ||
             navigationTypeSelected?.name === 'dialog-button' ||
             navigationTypeSelected?.name === 'external-link-button' ||
             navigationTypeSelected?.name === 'menu-button'
         ) {
-            <mat-form-field appearance="outline">
-                <mat-label>Icon</mat-label>
-                <mat-select formControlName="icon">
-                    <mat-select-trigger>
-                        <i [class]="'bi bi-' + iconFormControl.value"></i>
-                    </mat-select-trigger>
-                    @for (iconName of _headerBarService.boostrapIconNamesList; track iconName) {
-                        <mat-option [value]="iconName">
-                            <i [class]="'bi bi-' + iconName"></i>
-                        </mat-option>
-                    }
-                </mat-select>
+            <div class="row align-items-baseline">
+                <mat-form-field appearance="outline" class="col">
+                    <mat-label>Icon</mat-label>
+                    <mat-select formControlName="icon">
+                        <mat-select-trigger>
+                            <i [class]="'bi bi-' + iconFormControl.value"></i>
+                        </mat-select-trigger>
+                        @for (iconName of _headerBarService.boostrapIconNamesList; track iconName) {
+                            <mat-option [value]="iconName">
+                                <i [class]="'bi bi-' + iconName"></i>
+                            </mat-option>
+                        }
+                    </mat-select>
 
-                <button
-                    mat-icon-button
-                    matSuffix
-                    type="button"
-                    (click)="clearIcon($event)"
-                >
-                    <i class="bi bi-x-lg menu-cross-icon"></i>
-                </button>
-            </mat-form-field>
+                    <button
+                        mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="clearIcon($event)"
+                    >
+                        <i class="bi bi-x-lg menu-cross-icon"></i>
+                    </button>
+                </mat-form-field>
+
+                <mat-checkbox 
+                    formControlName="showIconOnly"
+                    class="col"
+                    [matTooltip]="`By checking it, the name won't appear on the button.`"
+                >   
+                    Show icon only
+                </mat-checkbox>
+            </div>
         }
 
         <!-- URL input -->

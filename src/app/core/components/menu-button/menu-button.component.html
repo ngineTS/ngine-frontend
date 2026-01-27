@@ -15,7 +15,10 @@
     @if (navigation.icon) {
         <i [class]="'bi bi-' + navigation.icon"></i>
     }
-    <span>{{ navigation.displayLabel }}</span>
+
+    @if (!navigation.showIconOnly) {
+        <span>{{ navigation.displayLabel }}</span>
+    }
 </div>
 
 <!-- Main menu -->
@@ -113,7 +116,10 @@
                 @if (navigation.icon) {
                     <i [class]="'bi bi-' + navigation.icon" style="margin-right: 4px;"></i>
                 }
-                {{ navigation.displayLabel }}
+
+                @if (!navigation.showIconOnly) {
+                    <span>{{ navigation.displayLabel }}</span>
+                }
 
                 <!-- Deep Menu edit navigation button -->
                 @if (navigation.permissionName?.includes('edit')) {

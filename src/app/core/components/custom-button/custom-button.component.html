@@ -13,5 +13,7 @@
         <i [class]="'bi bi-' + navigation.icon"></i>
     }
 
-    <span> {{ navigation.displayLabel }} </span>
+    @if (!navigation.showIconOnly) {
+        <span> {{ navigation.displayLabel }} </span>
+    }
 </div>
