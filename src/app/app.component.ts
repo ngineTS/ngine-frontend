@@ -4,6 +4,7 @@ import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -23,13 +24,17 @@ export class AppComponent implements OnInit {
   refreshInterval = 60; //seconds
 
   ngOnInit() {
-    /* Track user event */
-    this._userEventService.traceUserUrlChanges();
     /* Wait for initial routing to be loaded before checking url. */
-    setTimeout(() => {
+    setTimeout(async () => {
       if (!this._router.url.includes('password-recovery')) {
+        if (!this.isTokenValid()) {
+          const guestSignInResponse: any = await firstValueFrom(this._authService.guestSignIn());
+          localStorage.setItem('access_token', guestSignInResponse['access_token']);
+        }
         this.runRefreshTokenJob();
         this._appService.createAppRouting();
+        /* Track user event */
+        this._userEventService.traceUserUrlChanges();
       }
     }, 125);
   }
@@ -39,6 +44,7 @@ export class AppComponent implements OnInit {
    */
   runRefreshTokenJob() {
     setInterval(() => {
+      console.log('INTERVAL');
       let token: string | null = null; 
       if (typeof localStorage !== 'undefined') {
         token = localStorage.getItem('access_token');
@@ -50,23 +56,42 @@ export class AppComponent implements OnInit {
         const jwtExpirationTime: number = jwtDecoded?.exp;
         const currentTime: number = new Date().getTime() / 1000;
 
-        if(jwtExpirationTime > currentTime && jwtExpirationTime - currentTime < this.refreshInterval) {
+        if (jwtExpirationTime > currentTime && jwtExpirationTime - currentTime < this.refreshInterval) {
           this._authService.refreshToken().subscribe({
-            next: (resp: any) => {
-              localStorage.setItem('access_token', resp['access_token']);
-            },
-            error: () => {
-              this._router.navigateByUrl('/unauthorised');
-            }
+            next: (resp: any) => localStorage.setItem('access_token', resp['access_token']),
+            error: () => this._router.navigateByUrl('/unauthorised')
           }); 
         }
       }
       else {
         this._router.navigateByUrl('/unauthorised');
+        
       }
-
     }, this.refreshInterval * 990);
   }
 
+
+  /**
+   * Check if authentication token is valid.
+   * 
+   * @returns True if token is valid.
+   */
+  isTokenValid() {
+    const token = localStorage?.getItem('access_token');
+
+    if (!token) {
+      return false;
+    }
+
+    const jwtDecoded = jwtDecode(token);
+    const jwtExpirationTime = jwtDecoded.exp;
+    const currentTime: number = new Date().getTime() / 1000;
+
+    if (!jwtExpirationTime || currentTime > jwtExpirationTime ) {
+      return false;
+    }
+
+    return true;
+  }
 
 }

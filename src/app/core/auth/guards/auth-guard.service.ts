@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
+import { CanActivate, Router } from "@angular/router";
 import { jwtDecode } from "jwt-decode";
 
+/**
+ * Not needed since guest sign in before loading navigations.
+ */
 @Injectable({
     providedIn: 'root',
 })
@@ -11,7 +14,7 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router,
                 public dialog: MatDialog) {}
   
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate() {
       
       let token: string | null = null; 
       if (typeof localStorage !== 'undefined') {

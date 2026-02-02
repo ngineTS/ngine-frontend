@@ -39,7 +39,7 @@
                     matButton="outlined"
                     matTooltip="Delete role"
                     (click)="deleteRole(role.id)"
-                    [disabled]="role.name === 'super-admin'"
+                    [disabled]="role.name === 'super-admin' || role.name === 'guest'"
                 >
                     <i class="bi bi-trash"></i>
                 </button>
