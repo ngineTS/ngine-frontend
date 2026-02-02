@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { BehaviorSubject, Observable, take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 @Injectable({
     providedIn: 'root',
@@ -41,5 +42,15 @@ export class AuthService {
         return this._http.post(`${environment.APIURL}auth/refresh`, {}).pipe(take(1));
     }
 
+    getCurrentUser(): { [prop: string]: any} | null {
+        const token = localStorage?.getItem('access_token');
+        if (!token) return null;
+
+        try {
+            return jwtDecode<JwtPayload>(token);
+        } catch {
+            return null;
+        }
+    }
 
  }
