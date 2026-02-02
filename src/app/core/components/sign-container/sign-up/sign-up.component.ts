@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { UserSignUpPayload } from '../../../models/user.interface';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SignContainerComponent } from '../sign-container/sign-container.component';
+import { SignContainerComponent } from '../sign-container.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

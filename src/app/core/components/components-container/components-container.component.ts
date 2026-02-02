@@ -13,7 +13,6 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { MenuService } from '../../services/menu.service';
 import { AppService } from '../../services/app.service';
 import { SnackBarService } from '../../services/snackbar.service';
-import { CustomButtonType } from '../../models/custom-button.interface';
 
 
 @Component({

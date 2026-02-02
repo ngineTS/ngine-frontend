@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveringArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -26,7 +26,6 @@ import { NavigationBaseComponent } from '../navigation-base/navigation-base.comp
 export class CalendarComponent extends NavigationBaseComponent {
 
   constructor(private _http: HttpClient,
-              private _datePipe: DatePipe,
               private _mediaService: MediaService) { 
                 super(); 
               }

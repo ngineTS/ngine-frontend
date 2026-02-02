@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SignContainerComponent } from '../sign-container/sign-container.component';
+import { SignContainerComponent } from '../../../components/sign-container/sign-container.component';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordRecoveryComponent } from '../password-recovery/password-recovery.component';
 

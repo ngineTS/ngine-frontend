@@ -18,7 +18,8 @@ export class ComponentsContainerService {
     "analytic": () => import('../components/analytic/analytic.component'),
     "media-library": () => import('../components/media-library/media-library.component'),
     "user-management": () => import('../components/user-management/user-management.component'),
-    "role-management": () => import('../components/role-management/role-management.component')
+    "role-management": () => import('../components/role-management/role-management.component'),
+    "sign-container": () => import('../components/sign-container/sign-container.component')
   };
 
   /**
