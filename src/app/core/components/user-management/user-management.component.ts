@@ -49,7 +49,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
               private _route: ActivatedRoute) { super(); }
 
   /**
-   * On init:
+   * Lifecycle hook called after component has been initialized.
    * Get roles dropdown items.
    * Get all users and assign filteredUsers.
    */
@@ -79,6 +79,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Delete user and exclude it from roles array.
+   * 
    * @param userId The user id to delete.
    */
   deleteUser(userId: string) {
