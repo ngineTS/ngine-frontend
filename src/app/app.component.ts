@@ -27,14 +27,14 @@ export class AppComponent implements OnInit {
 
   /**
    * Lifecycle hook called after component has been initialized.
-   * Create app routing and run refreshToken job.
+   * Create app routing and run refreshToken and trackUserEvent job.
+   * 
    * @description
    * If url includes 'password-recovery' load initial routing,
    * else load dynamic routing grom nested navigations.
    */
   ngOnInit() {
     const path = this._location.path();
-    /* Wait for initial routing to be loaded before checking url. */
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
         if (!this._authService.isTokenValid()) {
@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
         }
         this.runRefreshTokenJob();
         this._appService.createAppRouting();
-        /* Track user event */
         this._userEventService.traceUserUrlChanges();
       }
       else {
