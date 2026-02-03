@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
 import { firstValueFrom } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +18,26 @@ export class AppComponent implements OnInit {
   constructor(private _appService: AppService,
               private _router: Router,
               private _authService: AuthService,
-              private _userEventService: UserEventService
+              private _userEventService: UserEventService,
+              private _location: Location
              ) { }
 
   title = 'my-app-frontend';
   refreshInterval = 60; //seconds
 
+  /**
+   * Lifecycle hook called after component has been initialized.
+   * Create app routing and run refreshToken job.
+   * @description
+   * If url includes 'password-recovery' load initial routing,
+   * else load dynamic routing grom nested navigations.
+   */
   ngOnInit() {
+    const path = this._location.path();
     /* Wait for initial routing to be loaded before checking url. */
     setTimeout(async () => {
-      if (!this._router.url.includes('password-recovery')) {
-        if (!this.isTokenValid()) {
+      if (!path.includes('password-recovery')) {
+        if (!this._authService.isTokenValid()) {
           const guestSignInResponse: any = await firstValueFrom(this._authService.guestSignIn());
           localStorage.setItem('access_token', guestSignInResponse['access_token']);
         }
@@ -35,6 +45,9 @@ export class AppComponent implements OnInit {
         this._appService.createAppRouting();
         /* Track user event */
         this._userEventService.traceUserUrlChanges();
+      }
+      else {
+        this._router.initialNavigation();
       }
     }, 125);
   }
@@ -70,28 +83,5 @@ export class AppComponent implements OnInit {
     }, this.refreshInterval * 990);
   }
 
-
-  /**
-   * Check if authentication token is valid.
-   * 
-   * @returns True if token is valid.
-   */
-  isTokenValid() {
-    const token = localStorage?.getItem('access_token');
-
-    if (!token) {
-      return false;
-    }
-
-    const jwtDecoded = jwtDecode(token);
-    const jwtExpirationTime = jwtDecoded.exp;
-    const currentTime: number = new Date().getTime() / 1000;
-
-    if (!jwtExpirationTime || currentTime > jwtExpirationTime ) {
-      return false;
-    }
-
-    return true;
-  }
 
 }

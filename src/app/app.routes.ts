@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { PasswordRecoveryComponent } from './core/auth/components/password-recovery/password-recovery.component';
 
 export const routes: Routes = [
     {

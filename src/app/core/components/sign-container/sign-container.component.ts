@@ -46,7 +46,7 @@ export class SignContainerComponent extends NavigationBaseComponent {
     const guestSignInResponse: any = await firstValueFrom(this._authService.guestSignIn());
     localStorage.setItem('access_token', guestSignInResponse['access_token']);
     this._appService.createAppRouting(this._router.url);
-    this._snackbarService.showSuccessSnackBar('Logout successfuly');
+    this._snackbarService.showSuccessSnackBar('Logout successfuly.');
     this._matDialogRef.close();
   }
 }

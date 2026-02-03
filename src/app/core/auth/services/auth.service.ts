@@ -53,4 +53,25 @@ export class AuthService {
         }
     }
 
+    /**
+     * Check if authentication token is valid.
+     * 
+     * @returns True if token is valid.
+     */
+    isTokenValid() {
+        const token = localStorage ? localStorage.getItem('access_token') : null;
+        if (!token) {
+        return false;
+        }
+
+        const jwtDecoded = jwtDecode(token);
+        const jwtExpirationTime = jwtDecoded.exp;
+        const currentTime: number = new Date().getTime() / 1000;
+        if (!jwtExpirationTime || currentTime > jwtExpirationTime ) {
+        return false;
+        }
+
+        return true;
+    }
+
  }
