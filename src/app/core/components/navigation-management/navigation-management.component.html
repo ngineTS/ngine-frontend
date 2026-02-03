@@ -53,9 +53,16 @@
                         <mat-select-trigger>
                             <i [class]="'bi bi-' + iconFormControl.value"></i>
                         </mat-select-trigger>
-                        @for (iconName of _headerBarService.boostrapIconNamesList; track iconName) {
-                            <mat-option [value]="iconName">
-                                <i [class]="'bi bi-' + iconName"></i>
+                            <mat-option>
+                                <input
+                                    placeholder="Search..."
+                                    (click)="$event.stopPropagation()"
+                                    (keyup)="filterIcons($event)"
+                                />
+                            </mat-option>
+                        @for (icon of filteredIcons; track icon) {
+                            <mat-option [value]="icon">
+                                <i [class]="'bi bi-' + icon"></i>
                             </mat-option>
                         }
                     </mat-select>

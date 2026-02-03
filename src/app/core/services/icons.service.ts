@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root',
 })
-export class HeaderBarService { 
+export class IconsService { 
 
     boostrapIconNamesList = ['person', 'person-circle',
         'person-gear', 'person-vcard', 'people', 'gear', 'key', 'list', 'grid', 'house',

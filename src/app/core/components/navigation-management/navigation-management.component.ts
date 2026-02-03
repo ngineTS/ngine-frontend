@@ -11,9 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
-import { HeaderBarService } from '../../services/header-bar.service';
+import { IconsService } from '../../services/icons.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-navigation-management',
@@ -31,27 +32,31 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class NavigationManagementComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) 
-              public data: { 
-                navigation: Navigation | undefined,
-                parentId: string,
-              },
-              private _formBuilder: FormBuilder,
-              private _navigationService: NavigationService,
-              private _dialogRef: MatDialogRef<NavigationManagementComponent>,
-              private _appService: AppService,
-              public _headerBarService: HeaderBarService,
-              private _snackbarService: SnackBarService) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) 
+    public data: { 
+      navigation: Navigation | undefined,
+      parentId: string,
+    },
+    private _formBuilder: FormBuilder,
+    private _navigationService: NavigationService,
+    private _dialogRef: MatDialogRef<NavigationManagementComponent>,
+    private _appService: AppService,
+    private _iconsService: IconsService,
+    private _snackbarService: SnackBarService
+  ) {}
 
   navigationForm!: FormGroup;
   navigationTypes: NavigationType[] = [];
   flatNavigations: Navigation[] = [];
   navigationTypeSelected: NavigationType | undefined;
+  filteredIcons: Array<string> = [];
 
   /**
    * Lifecycle hook called after the component has been initialized.
    */
   ngOnInit() {
+    this.filteredIcons = this._iconsService.boostrapIconNamesList;
     this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
     this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
@@ -237,6 +242,18 @@ export class NavigationManagementComponent implements OnInit {
       this.navigationForm.get('url')?.removeValidators(Validators.required);
     }
     this.navigationForm.get('url')?.updateValueAndValidity();
+  }
 
+  /**
+   * Filter icon list on user search.
+   */
+  async filterIcons(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    if (filterValue) {
+      this.filteredIcons = this._iconsService.boostrapIconNamesList.filter(obj => 
+        obj.trim().toLowerCase().includes(filterValue)
+      );
+    }
   }
 }
