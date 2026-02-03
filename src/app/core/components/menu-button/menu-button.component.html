@@ -67,7 +67,7 @@
             
             <!-- child is a button -->
             @else {
-                <div mat-menu-item class="menu-option">
+                <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
                     <app-custom-button
                         [navigation]="child" 
                         [typographyStyle]="navigation.menu.typographyStyle"
@@ -102,7 +102,7 @@
         <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
             
             <!-- Deep menu button -->
-            <div mat-menu-item 
+            <div mat-menu-item
                 style="flex-direction: row;"
                 [matMenuTriggerFor]="subMenu" 
                 class="menu-button menu-option"
@@ -111,6 +111,7 @@
                     parentMenu.typographyStyle.activeColor :
                     parentMenu.typographyStyle.color
                 "
+                [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
                 matTooltip="{{navigation.description}}"
@@ -166,7 +167,7 @@
 
                     <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
-                        <div mat-menu-item class="menu-option">
+                        <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
                             <app-custom-button
                                 [navigation]="child" 
                                 [typographyStyle]="navigation.menu.typographyStyle"

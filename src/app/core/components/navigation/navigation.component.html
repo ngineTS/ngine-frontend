@@ -1,4 +1,4 @@
-<div class="navigation-container">
+<div class="navigation-container" [style.opacity]="_navigation.isDisabled ? '0.4' : '1'">
     <!-- Top right icons -->
     @if (_canEdit) {
         @if (

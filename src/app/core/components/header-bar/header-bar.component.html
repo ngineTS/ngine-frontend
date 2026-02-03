@@ -41,6 +41,7 @@
         @for (child of navigation.children; track child.id) {
             <div cdkDrag
                 [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                [style.opacity]="child.isDisabled ? '0.4' : '1'"
                 class="d-inline-flex mx-2 p-1 align-items-center nav-container"
                 [class.nav-container]="child.permissionName?.includes('edit')"
             >
@@ -63,10 +64,7 @@
                 
                 <!-- Edit navigation button -->
                 @if (child.permissionName?.includes('edit')) {
-                    <i class="bi bi-gear edit-icon"
-                        (click)="manageNavigation(child)"
-                    >
-                    </i>
+                    <i class="bi bi-gear edit-icon" (click)="manageNavigation(child)"></i>
                 }
             </div>
         }
@@ -82,8 +80,8 @@
     @if (navigation.permissionName?.includes('edit')) {
         <i class="bi bi-marker-tip edit-header-bar auto-margin-left" 
             (click)="editMenuStyle()"
-            matTooltip="Edit menu style">
-        </i>
+            matTooltip="Edit menu style"
+        ></i>
     }
 
 </div>
