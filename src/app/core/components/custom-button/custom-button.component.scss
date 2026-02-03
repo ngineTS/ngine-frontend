@@ -1,4 +1,4 @@
-.button-div {
+.button-container {
     height: 100%;
     width: 100%;
     justify-content: center;
@@ -6,4 +6,8 @@
     display: flex;
     gap: 6px;
     cursor: pointer;
+
+    span {
+        min-width: max-content;
+    }
 }

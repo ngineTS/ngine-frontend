@@ -27,9 +27,14 @@ a {
   height: fit-content;
   background: white;
   border-radius: 4px;
-  overflow: hidden;
   background-color: transparent;
   display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.example-list::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-container:hover {
