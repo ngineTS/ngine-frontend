@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { BehaviorSubject, Observable, take } from "rxjs";
+import { Observable, take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 

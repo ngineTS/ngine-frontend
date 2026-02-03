@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { distinctUntilChanged, filter, Observable, retry, take } from "rxjs";
+import { distinctUntilChanged, filter, retry, take } from "rxjs";
 import { v4 as uuidv4 } from 'uuid'
 import { environment } from "../../../environments/environment";
 
@@ -12,9 +12,10 @@ export class UserEventService {
 
   sessionId = uuidv4();
 
-  constructor(private _http: HttpClient,
-              private _router: Router
-             ) {}
+  constructor(
+    private _http: HttpClient,
+    private _router: Router
+  ) {}
 
   traceUserUrlChanges(): void {
     this._router.events

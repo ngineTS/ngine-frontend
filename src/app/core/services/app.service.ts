@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { Route, Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
-import { AuthGuard } from "../auth/guards/auth-guard.service";
 
 @Injectable({
   providedIn: 'root',
