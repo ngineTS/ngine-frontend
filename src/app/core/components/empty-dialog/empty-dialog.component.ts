@@ -70,7 +70,6 @@ export class EmptyDialogComponent {
       .componentStore[navigation.navigationType.name]().then(m => 
         m[this._componentsContainerService.kebabCasetoPascaleCase(navigation.navigationType.name) + 'Component']
       );
-
     this.containerRef = this.container.createComponent(component, {
         injector: this.injector,
     });

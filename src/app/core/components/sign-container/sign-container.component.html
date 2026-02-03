@@ -1,0 +1,28 @@
+<div class="m-4">
+    @if (userEmail && userEmail !== 'guest@guest.com') {
+        <div class="row justify-content-center">
+            <span class="text-center">Hello <strong>{{ userEmail }}</strong>.</span>
+            <button matButton="outlined" class="my-4 w-50" (click)="onLogOutClick()">Log out</button>
+        </div>
+    }
+    @else {
+        @if (isSignUpTab) {
+            <div class="row">
+                <app-sign-up></app-sign-up>
+                <div class="text-center mt-4">
+                    <span class="align-middle">Already have an account?</span>
+                    <button matButton class="ms-2" (click)="goToSignIn()">Sign in</button>
+                </div>
+            </div>
+        }
+        @else {
+            <div class="row">
+                <app-sign-in></app-sign-in>
+                <div class="text-center mt-4">
+                    <span class="align-middle">Don't have an account yet?</span>
+                    <button matButton class="ms-2" (click)="goToSignUp()">Sign up</button>
+                </div>
+            </div>
+        }
+    }
+</div>

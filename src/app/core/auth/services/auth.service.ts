@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { BehaviorSubject, Observable, take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 @Injectable({
     providedIn: 'root',
@@ -14,15 +15,15 @@ export class AuthService {
     forgotPwdPage: boolean = false;
 
     userSignUp(signUpDto: UserSignUpPayload): any {
-        return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto, { 
-            withCredentials: true 
-        }).pipe(take(1));
+        return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto).pipe(take(1));
     }
 
     userSignIn(signInDto: UserSignInPayload) {
-        return this._http.post(`${environment.APIURL}auth/sign-in`, signInDto, {
-            withCredentials: true 
-        }).pipe(take(1));
+        return this._http.post(`${environment.APIURL}auth/sign-in`, signInDto).pipe(take(1));
+    }
+
+    guestSignIn() {
+        return this._http.get(`${environment.APIURL}auth/guest-sign-in`).pipe(take(1));
     }
 
     checkIfEmailAddressAlreadyExists(emailAdress: string): Observable<boolean> {
@@ -38,11 +39,18 @@ export class AuthService {
     }
 
     refreshToken() {
-        return this._http.post(`${environment.APIURL}auth/refresh`, 
-            { }, 
-            { withCredentials: true }
-        ).pipe(take(1));
+        return this._http.post(`${environment.APIURL}auth/refresh`, {}).pipe(take(1));
     }
 
+    getCurrentUser(): { [prop: string]: any} | null {
+        const token = localStorage?.getItem('access_token');
+        if (!token) return null;
+
+        try {
+            return jwtDecode<JwtPayload>(token);
+        } catch {
+            return null;
+        }
+    }
 
  }

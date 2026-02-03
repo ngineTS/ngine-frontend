@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { SignContainerComponent } from '../sign-container/sign-container.component';
-import { AuthService } from '../../services/auth.service';
+import { SignContainerComponent } from '../sign-container.component';
+import { AuthService } from '../../../auth/services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

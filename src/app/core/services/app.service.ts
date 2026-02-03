@@ -109,7 +109,6 @@ export class AppService {
     /* create main route */
     let route: Route  = {
       path: navigation.name === 'global' ? '' : navigation.name,
-      canActivate: [AuthGuard],
       data: { navigation: navigation },
       children: childrenRoutes
     }

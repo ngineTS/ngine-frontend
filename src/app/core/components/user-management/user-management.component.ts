@@ -59,7 +59,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
         retry(2),
         take(1)
       )
-      .subscribe(resp => this.roles = resp);
+      .subscribe(resp => this.roles = resp.filter(obj => obj.name !== 'guest'));
     this._userService.getAllUsers()
       .pipe(
         retry(2),

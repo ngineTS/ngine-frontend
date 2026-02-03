@@ -49,7 +49,7 @@
         <div class="form-group-name">{{ data.key }}</div>
         <div [formGroup]="group" class="row">
             @for (input of data.value | keyvalue; track input) {
-                @if(isStandardInput(input.value) || isDropdownInput(input.value)) {
+                @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                     <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(group, input.key) }"></ng-container>
                 }
                 @else {
