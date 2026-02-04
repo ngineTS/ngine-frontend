@@ -64,8 +64,3 @@
     display: flex !important;
     gap: 3px !important
 }
-
-::ng-deep .mat-mdc-menu-panel {
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
