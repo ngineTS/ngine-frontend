@@ -91,9 +91,8 @@ export class HeaderBarComponent implements OnInit {
     const styleInformation = {
       containerLayout: this.navigation.menu.containerLayout,
       containerStyle: this.navigation.menu.containerStyle,
-      typographyStyle: this.navigation.menu.typographyStyle
     }
-    const headerBarForm = this._menuService.setupStyleForm(styleInformation);
+    const menuStyleForm = this._menuService.setupStyleForm(styleInformation);
 
     const matDialogRef = this._matDialog.open(
       GenericFormComponent<StylePayload>,
@@ -101,7 +100,7 @@ export class HeaderBarComponent implements OnInit {
         maxWidth: '700px',
         data: {
           hasDeleteButton: false,
-          formConfig: headerBarForm,
+          formConfig: menuStyleForm,
           id: this.navigation.menu.id,
           controllerName: 'menu',
         }
@@ -115,4 +114,35 @@ export class HeaderBarComponent implements OnInit {
     });
   }
 
+  /**
+   * Edit navigation style. 
+   * 
+   * @param navigation The navigation to edit.
+   */
+  editNavigationStyle(navigation: Navigation) {
+    const styleInformation = {
+      containerLayout: navigation.containerLayout,
+      typographyStyle: navigation.typographyStyle
+    }
+    const navigationStyleForm = this._menuService.setupStyleForm(styleInformation);
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<StylePayload>,
+      { 
+        maxWidth: '700px',
+        data: {
+          hasDeleteButton: false,
+          formConfig: navigationStyleForm,
+          id: navigation.id,
+          controllerName: 'menu',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
+      }
+    });
+  }
 }

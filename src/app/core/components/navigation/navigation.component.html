@@ -72,9 +72,8 @@
             _navigation.navigationType.name === 'dialog-button'
         ) {
             <app-custom-button 
+                [navigation]="_navigation"
                 [iconOnTop]="true"
-                [navigation]="_navigation" 
-                [typographyStyle]="_navigation.typographyStyle"
             ></app-custom-button>
         }
 

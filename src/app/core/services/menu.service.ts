@@ -39,134 +39,138 @@ export class MenuService {
      * @param styleInformation The style information to edit.
      * @returns A DeepFormConfig of style information.
      */
-    setupStyleForm(styleInformation: {
-        containerLayout: ContainerLayout;
-        containerStyle: ContainerStyle;
-        typographyStyle: TypographyStyle;
-    }): DeepFormConfig<StylePayload> {
-        return {
-            containerLayout: {
+    setupStyleForm(stylePayload: Partial<StylePayload>): DeepFormConfig<Partial<StylePayload>> {
+        let styleForm: DeepFormConfig<Partial<StylePayload>> = {};
+
+        if (stylePayload.containerLayout) {
+            styleForm.containerLayout = {
                 width: {
-                    value: styleInformation.containerLayout.width ?? null,
+                    value: stylePayload.containerLayout.width ?? null,
                     type: 'number',
                     validators: []
                 },
                 height: {
-                    value: styleInformation.containerLayout.height ?? 50,
+                    value: stylePayload.containerLayout.height ?? 50,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 marginTop: {
-                    value: styleInformation.containerLayout.marginTop ?? 0,
+                    value: stylePayload.containerLayout.marginTop ?? 0,
                     type: 'number',
                     validators: []
                 },
                 marginRight: {
-                    value: styleInformation.containerLayout.marginRight ?? 0,
+                    value: stylePayload.containerLayout.marginRight ?? 0,
                     type: 'number',
                     validators: []
                 },
                 marginBottom: {
-                    value: styleInformation.containerLayout.marginBottom ?? 0,
+                    value: stylePayload.containerLayout.marginBottom ?? 0,
                     type: 'number',
                     validators: []
                 },
                 marginLeft: {
-                    value: styleInformation.containerLayout.marginLeft ?? 0,
+                    value: stylePayload.containerLayout.marginLeft ?? 0,
                     type: 'number',
                     validators: []
                 },
                 paddingTop: {
-                    value: styleInformation.containerLayout.paddingTop ?? 0,
+                    value: stylePayload.containerLayout.paddingTop ?? 0,
                     type: 'number',
                     validators: []
                 },
                 paddingRight: {
-                    value: styleInformation.containerLayout.paddingRight ?? 0,
+                    value: stylePayload.containerLayout.paddingRight ?? 0,
                     type: 'number',
                     validators: []
                 },
                 paddingBottom: {
-                    value: styleInformation.containerLayout.paddingBottom ?? 0,
+                    value: stylePayload.containerLayout.paddingBottom ?? 0,
                     type: 'number',
                     validators: []
                 },
                 paddingLeft: {
-                    value: styleInformation.containerLayout.paddingLeft ?? 0,
+                    value: stylePayload.containerLayout.paddingLeft ?? 0,
                     type: 'number',
                     validators: []
                 },
                 gap: {
-                    value: styleInformation.containerLayout.gap ?? 20,
+                    value: stylePayload.containerLayout.gap ?? 20,
                     type: 'number',
                     validators: []
                 }
-            },
-            containerStyle: {
+            }
+        }
+
+        if (stylePayload.containerStyle) {
+            styleForm.containerStyle = {
                 backgroundColor: {
-                    value: styleInformation.containerStyle.backgroundColor ?? '#636363',
+                    value: stylePayload.containerStyle.backgroundColor ?? '#636363',
                     type: 'color',
                     validators: [Validators.required]
                 },
                 borderColor: {
-                    value: styleInformation.containerStyle.borderColor ?? null,
+                    value: stylePayload.containerStyle.borderColor ?? null,
                     type: 'color',
                     validators: []
                 },
                 borderStyle: {
-                    value: styleInformation.containerStyle.borderStyle ?? null,
+                    value: stylePayload.containerStyle.borderStyle ?? null,
                     type: 'text',
                     validators: []
                 },
                 borderWidth: {
-                    value: styleInformation.containerStyle.borderWidth ?? null,
+                    value: stylePayload.containerStyle.borderWidth ?? null,
                     type: 'number',
                     validators: []
                 },
                 borderTopLeftRadius: {
-                    value: styleInformation.containerStyle.borderTopLeftRadius ?? 4,
+                    value: stylePayload.containerStyle.borderTopLeftRadius ?? 4,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 borderTopRightRadius: {
-                    value: styleInformation.containerStyle.borderTopRightRadius ?? 4,
+                    value: stylePayload.containerStyle.borderTopRightRadius ?? 4,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 borderBottomLeftRadius: {
-                    value: styleInformation.containerStyle.borderBottomLeftRadius ?? 4,
+                    value: stylePayload.containerStyle.borderBottomLeftRadius ?? 4,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 borderBottomRightRadius: {
-                    value: styleInformation.containerStyle.borderBottomRightRadius ?? 4,
+                    value: stylePayload.containerStyle.borderBottomRightRadius ?? 4,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 isBorderTopHidden: {
-                    value: styleInformation.containerStyle.isBorderTopHidden ?? false,
+                    value: stylePayload.containerStyle.isBorderTopHidden ?? false,
                     type: 'checkbox',
                     validators: [Validators.required]
                 },
                 isBorderRightHidden: {
-                    value: styleInformation.containerStyle.isBorderRightHidden ?? false,
+                    value: stylePayload.containerStyle.isBorderRightHidden ?? false,
                     type: 'checkbox',
                     validators: [Validators.required]
                 },
                 isBorderBottomHidden: {
-                    value: styleInformation.containerStyle.isBorderBottomHidden ?? false,
+                    value: stylePayload.containerStyle.isBorderBottomHidden ?? false,
                     type: 'checkbox',
                     validators: [Validators.required]
                 },
                 isBorderLeftHidden: {
-                    value: styleInformation.containerStyle.isBorderLeftHidden ?? false,
+                    value: stylePayload.containerStyle.isBorderLeftHidden ?? false,
                     type: 'checkbox',
                     validators: [Validators.required]
                 }
-            },
-            typographyStyle: {
+            }
+        }
+
+        if (stylePayload.typographyStyle) {
+            styleForm.typographyStyle = {
                 fontFamily: {
-                    value: styleInformation.typographyStyle.fontFamily ?? 'Roboto',
+                    value: stylePayload.typographyStyle.fontFamily ?? 'Roboto',
                     type: 'dropdown',
                     dropdownConfig: {
                         items: this.availableFonts
@@ -174,27 +178,29 @@ export class MenuService {
                     validators: [Validators.required]
                 },
                 fontSize: {
-                    value: styleInformation.typographyStyle.fontSize ?? 16,
+                    value: stylePayload.typographyStyle.fontSize ?? 16,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 fontWeight: {
-                    value: styleInformation.typographyStyle.fontWeight ?? 400,
+                    value: stylePayload.typographyStyle.fontWeight ?? 400,
                     type: 'number',
                     validators: [Validators.required]
                 },
                 color: {
-                    value: styleInformation.typographyStyle.color ?? '#D3D3D3',
+                    value: stylePayload.typographyStyle.color ?? '#D3D3D3',
                     type: 'color',
                     validators: [Validators.required]
                 },
                 activeColor: {
-                    value: styleInformation.typographyStyle.activeColor ?? '#1E90FF',
+                    value: stylePayload.typographyStyle.activeColor ?? '#1E90FF',
                     type: 'color',
                     validators: [Validators.required]
                 }
             }
         }
+
+        return styleForm;
     }
 
 }

@@ -70,7 +70,6 @@
                 <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
                     <app-custom-button
                         [navigation]="child" 
-                        [typographyStyle]="navigation.menu.typographyStyle"
                     ></app-custom-button>
 
                     <!-- Main menu edit navigation button-->
@@ -170,7 +169,6 @@
                         <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
                             <app-custom-button
                                 [navigation]="child" 
-                                [typographyStyle]="navigation.menu.typographyStyle"
                             ></app-custom-button>
 
                             @if (child.permissionName?.includes('edit')) {

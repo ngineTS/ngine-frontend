@@ -21,7 +21,6 @@ export class CustomButtonComponent {
   ) {}
 
   @Input() navigation!: Navigation
-  @Input() typographyStyle!: TypographyStyle;
   @Input() iconOnTop? = false;
   isMouseOver = false;
 

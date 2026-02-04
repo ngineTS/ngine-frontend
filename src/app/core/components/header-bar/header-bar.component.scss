@@ -3,8 +3,8 @@
   border: 1px solid #636363;
   border-radius: 2px;
   padding: 0px 8px 2px 8px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 14px;
+  margin-right: 14px;
   color: #636363;
 }
 
@@ -22,6 +22,7 @@
 }
 
 .nav-container:hover {
+  padding: 10px !important;
   border: 1px dashed white;
   border-radius: 4px;
   .edit-icon {
@@ -59,7 +60,7 @@
 }
 
 .edit-header-bar {
-  font-size: 14px;
+  font-size: 15px;
   border: 1px solid #636363;
   border-radius: 3px;
   background-color: #dee2e6;
@@ -67,5 +68,5 @@
   color: #636363;
   margin-right: 6px;
   cursor: pointer;
+  margin-left: auto;
 }
-

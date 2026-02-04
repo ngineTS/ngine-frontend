@@ -1,7 +1,7 @@
+<!-- Navigation bar -->
 <div class="d-flex flex-row align-items-center"
     [style.background-color]="navigation.menu.containerStyle.backgroundColor"
-    [style.width]="navigation.menu.containerLayout.width ?
-        navigation.menu.containerLayout.width + 'px' : ''"
+    [style.width]="navigation.menu.containerLayout.width + 'px'"
     [style.height]="navigation.menu.containerLayout.height + 'px'"
     [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
         navigation.menu.containerStyle.borderStyle + ' ' +
@@ -28,6 +28,7 @@
     [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
 >
 
+    <!-- List of navigations -->
     <div cdkDropList
         class="example-list"
         [style.gap]="navigation.menu.containerLayout.gap + 'px'"
@@ -36,36 +37,44 @@
         cdkDropListOrientation="horizontal"
         [cdkDropListDisabled]="!navigation.permissionName?.includes('edit')"
     >
-        
-        <!-- List of navigations -->
         @for (child of navigation.children; track child.id) {
+            <!-- Navigation -->
             <div cdkDrag
+                class="d-inline-flex align-items-center"
+                [class.nav-container]="child.permissionName?.includes('edit')"
                 [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                 [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                class="d-inline-flex mx-2 p-1 align-items-center"
-                [class.nav-container]="child.permissionName?.includes('edit')"
+                [style.margin-top]="child.containerLayout.marginTop + 'px'"
+                [style.margin-right]="child.containerLayout.marginRight + 'px'"
+                [style.margin-bottom]="child.containerLayout.marginBottom + 'px'"
+                [style.margin-left]="child.containerLayout.marginLeft + 'px'"
+                [style.padding-top]="child.containerLayout.paddingTop + 'px'"
+                [style.padding-right]="child.containerLayout.paddingRight + 'px'"
+                [style.padding-bottom]="child.containerLayout.paddingBottom + 'px'"
+                [style.padding-left]="child.containerLayout.paddingLeft + 'px'"
             >
-                <!-- Custom button -->
+                <!-- custom button case -->
                 @if (
                     child.navigationType.name === 'redirect-button' ||
                     child.navigationType.name === 'external-link-button' ||
                     child.navigationType.name === 'dialog-button'
                 ) {
                     <app-custom-button 
-                        [navigation]="child" 
-                        [typographyStyle]="navigation.menu.typographyStyle"
+                        [navigation]="child"
                     ></app-custom-button>
                 }
 
-                <!-- Menu button -->
+                <!-- menu button case -->
                 @else {
                     <app-menu-button [navigation]="child"></app-menu-button>
                 }
                 
-                <!-- Edit navigation button -->
+                <!-- Edit navigation buttons -->
                 @if (child.permissionName?.includes('edit')) {
+                    <i class="bi bi-marker-tip edit-icon" (click)="editNavigationStyle(child)"></i>
                     <i class="bi bi-gear edit-icon" (click)="manageNavigation(child)"></i>
                 }
+
             </div>
         }
         
@@ -73,7 +82,12 @@
     
     <!-- Add navigation button -->
     @if (navigation.permissionName?.includes('add')) {
-        <button class="add-nav-button" (click)="manageNavigation()">+</button>
+        <button class="add-nav-button" 
+            (click)="manageNavigation()"
+            matTooltip="Add navigation"
+        >   
+            +
+        </button>
     }
     
     <!-- Edit menu style button -->

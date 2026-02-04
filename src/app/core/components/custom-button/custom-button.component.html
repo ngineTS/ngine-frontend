@@ -4,10 +4,12 @@
     (mouseenter)="isMouseOver = true"
     (mouseleave)="isMouseOver = false"
     matTooltip="{{ navigation.description }}"
-    [style.color]="isMouseOver || isRouteActive(navigation.name) ? typographyStyle.activeColor : typographyStyle.color"
-    [style.font-size]="typographyStyle.fontSize + 'px'"
-    [style.font-weight]="typographyStyle.fontWeight"
-    [style.font-family]="typographyStyle.fontFamily"
+    [style.color]="isMouseOver || isRouteActive(navigation.name) 
+        ? navigation.typographyStyle.activeColor
+        : navigation.typographyStyle.color"
+    [style.font-size]="navigation.typographyStyle.fontSize + 'px'"
+    [style.font-weight]="navigation.typographyStyle.fontWeight"
+    [style.font-family]="navigation.typographyStyle.fontFamily"
 >
     @if (navigation.icon) {
         <i [class]="'bi bi-' + navigation.icon"></i>
