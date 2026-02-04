@@ -68,7 +68,7 @@
         
             @case ('text') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input type="text" 
                         [formControl]="control" 
                         matInput
@@ -78,7 +78,7 @@
 
             @case ('number') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input type="number" 
                         [formControl]="control" 
                         matInput
@@ -88,7 +88,7 @@
 
             @case ('email') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input type="email" 
                         [formControl]="control" 
                         matInput
@@ -99,7 +99,7 @@
 
             @case ('password') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input matInput [type]="hidePassword() ? 'password' : 'text'" [formControl]="control" />
                     <button
                         type="button"
@@ -116,7 +116,7 @@
 
             @case ('url') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input 
                        type="url" 
                        [formControl]="control" 
@@ -127,25 +127,25 @@
 
             @case ('textarea') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <textarea matInput [formControl]="control"></textarea>
                 </mat-form-field>
             }
 
             @case ('checkbox') {
-                <mat-checkbox [formControl]="control" class="mt-2">{{ input.key }}</mat-checkbox>
+                <mat-checkbox [formControl]="control" class="mt-2">{{ input.value.alias ?? input.key }}</mat-checkbox>
             }
 
             @case ('color') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input matInput type="color" [formControl]="control">
                 </mat-form-field>
             }
 
             @case ('date') {
                 <mat-form-field appearance="outline" class="w-100 pb-3">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input matInput [matDatepicker]="datePicker" [formControl]="control" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
@@ -155,7 +155,7 @@
 
             @case ('date-and-time') {
                 <mat-form-field appearance="outline" class="w-100 pb-1">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
                     <input 
                         matInput 
                         [matDatepicker]="datePicker" 
@@ -181,7 +181,7 @@
             
             @case ('dropdown') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.key }}</mat-label>
+                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
 
                     <!-- Multiple select dropdown-->
                     @if (input.value.value && typeof input.value.value === 'object') {
@@ -224,7 +224,7 @@
                 <div class="row file-div">
                     <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
                         <div class="row">
-                            <span> - {{ input.key }} - </span>
+                            <span> - {{ input.value.alias ?? input.key }} - </span>
                             <span>Upload File</span>
                         </div>
                         <input 

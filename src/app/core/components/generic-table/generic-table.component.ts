@@ -102,6 +102,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
       if (this.isStandardInput(inputConfig)) {
         payload[inputConfig.columnName] = {
           type: inputConfig.inputType,
+          alias: inputConfig.inputLabel,
           value: null,
           validators: validators
         } as StandardInputConfig<any>
@@ -109,6 +110,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
       else {
         payload[inputConfig.columnName] = {
           type: inputConfig.inputType,
+          alias: inputConfig.inputLabel,
           value: inputConfig.isList ? [] : null,
           validators: validators,
           dropdownConfig: { //TODO: Handle dropdown route name
@@ -155,6 +157,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
         if (this.isStandardInput(inputConfig)) {
           payload[key] = {
             type: inputConfig.inputType,
+            alias: inputConfig.inputLabel,
             value: value,
             validators: validators
           } as StandardInputConfig<any>
@@ -162,6 +165,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
         else { 
           payload[key] = {
             type: inputConfig.inputType,
+            alias: inputConfig.inputLabel,
             value: value,
             validators: validators,
             dropdownConfig: { //TODO: Handle dropdown route name

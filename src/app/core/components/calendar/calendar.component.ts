@@ -145,41 +145,49 @@ export class CalendarComponent extends NavigationBaseComponent {
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
           value: arg.start,
+          alias: 'Start date',
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
           value: arg.end,
+          alias: 'End date',
           type: 'date-and-time',
           validators: [Validators.required]
         },
         description: {
           value: '',
+          alias: 'Description',
           type: 'textarea',
           validators: []
         },
         title: {
           value: '',
+          alias: 'Title',
           type: 'text',
           validators: [Validators.required]
         },
         category: {
           value: '',
+          alias: 'Category',
           type: 'text',
           validators: []
         },
         url: {
           value: '',
+          alias: 'URL',
           type: 'text',
           validators: []
         },
         allDay: {
           value: false,
+          alias: 'All day',
           type: 'checkbox',
           validators: []
         },
         fileId: {
           value: '',
+          alias: 'File',
           type: 'file',
           validators: []
         }
@@ -212,42 +220,50 @@ export class CalendarComponent extends NavigationBaseComponent {
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
           value: arg.event.start,
+          alias: 'Start date',
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
           value: arg.event.end,
+          alias: 'End date',
           type: 'date-and-time',
           validators: []
         },
         description: {
           value: arg.event.extendedProps["description"],
+          alias: 'Description',
           type: 'textarea',
           validators: []
         },
         title: {
           value: arg.event.url ? arg.event.title.substring(0, arg.event.title.indexOf(' 🌐')) : arg.event.title,
+          alias: 'Title',
           type: 'text',
           validators: [Validators.required]
         },
         category: {
           value: arg.event.extendedProps["category"],
+          alias: 'Category',
           type: 'text',
           validators: []
         },
         url: {
           value: arg.event.url,
           type: 'text',
+          alias: 'Url',
           validators: []
         },
         allDay: {
           value: arg.event.extendedProps["allDay"],
           type: 'checkbox',
+          alias: 'All day',
           validators: []
         },
         fileId: {
           value: arg.event.extendedProps["fileId"],
           type: 'file',
+          alias: 'File',
           validators: []
         }
       }

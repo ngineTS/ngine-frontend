@@ -21,6 +21,7 @@ export interface Person {
 })
 export class GenericFormService { 
 
+  /*
   lucas: Person = {
       job: true,
       //age: 19,
@@ -37,6 +38,7 @@ export class GenericFormService {
       //objectArray: [{om: 'allez', nad: 38}, {om: 'yoooo', nad: 14}],
   }
 
+  
   defineInputFormat<T, K extends keyof T>(
     obj: T,
     key: K,
@@ -73,6 +75,6 @@ export class GenericFormService {
       }
     }
   }
-
+  */
 
 }
