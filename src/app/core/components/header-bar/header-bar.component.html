@@ -42,7 +42,7 @@
             <div cdkDrag
                 [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                 [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                class="d-inline-flex mx-2 p-1 align-items-center nav-container"
+                class="d-inline-flex mx-2 p-1 align-items-center"
                 [class.nav-container]="child.permissionName?.includes('edit')"
             >
                 <!-- Custom button -->
@@ -78,7 +78,7 @@
     
     <!-- Edit menu style button -->
     @if (navigation.permissionName?.includes('edit')) {
-        <i class="bi bi-marker-tip edit-header-bar auto-margin-left" 
+        <i class="bi bi-marker-tip edit-header-bar" 
             (click)="editMenuStyle()"
             matTooltip="Edit menu style"
         ></i>

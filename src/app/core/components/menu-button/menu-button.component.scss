@@ -11,6 +11,10 @@
     cursor: pointer;
     gap: 6px;
     display: flex;
+
+    span {
+        width: max-content;
+    }
 }
 
 .menu-panel {

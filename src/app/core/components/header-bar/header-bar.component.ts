@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
-import { Menu, StylePayload } from '../../models/menu.interface';
+import { StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
