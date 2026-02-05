@@ -66,11 +66,11 @@
             <!-- child is a button -->
             @else {
                 <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
-                    <app-custom-button
+                    <app-custom-button class="w-100"
                         [navigation]="child" 
                     ></app-custom-button>
 
-                    <!-- Main menu edit navigation button-->
+                    <!-- Main menu edit navigation buttons -->
                     @if (child.permissionName?.includes('edit')) {
                         <i class="bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, child)"></i>
                         <i class="bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
