@@ -12,7 +12,6 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
-import { CustomButtonType } from '../../models/custom-button.interface';
 
 @Component({
   selector: 'app-menu-button',
@@ -82,7 +81,41 @@ export class MenuButtonComponent {
   }
 
   /**
-   * Methods called on 'marker' button click.
+   * Edit navigation style. 
+   * 
+   * @param navigation The navigation to edit.
+   */
+  editNavigationStyle(event: MouseEvent, navigation: Navigation) {
+    event.stopPropagation();
+    
+    const styleInformation = {
+      typographyStyle: navigation.typographyStyle
+    }
+    const navigationStyleForm = this._menuService.setupStyleForm(styleInformation);
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<StylePayload>,
+      { 
+        maxWidth: '700px',
+        data: {
+          hasDeleteButton: false,
+          formConfig: navigationStyleForm,
+          id: navigation.id,
+          controllerName: 'menu',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
+      }
+    });
+    
+  }
+
+  /**
+   * Methods called on menu 'marker' button click.
    * Open generic form to edit menu style.
    * 
    * @param menu The menu to edit.
@@ -91,7 +124,6 @@ export class MenuButtonComponent {
     const menuStyleForm = this._menuService.setupStyleForm({
       containerLayout: menu.containerLayout,
       containerStyle: menu.containerStyle,
-      typographyStyle: menu.typographyStyle
     });
 
     const matDialogRef = this._matDialog.open(

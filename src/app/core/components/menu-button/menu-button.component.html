@@ -49,8 +49,6 @@
         [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
         [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
         [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
-        [style.font-family]="navigation.menu.typographyStyle.fontFamily"
-        [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
     >
         <!-- Main menu edit style icon -->
         @if (navigation.permissionName?.includes('edit')) {
@@ -62,7 +60,7 @@
             
             <!-- child is a menu button -->
             @if (child.navigationType.name === 'menu-button') {
-                <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child, parentMenu: navigation.menu }"></ng-container>
+                <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child }"></ng-container>
             }
             
             <!-- child is a button -->
@@ -74,6 +72,7 @@
 
                     <!-- Main menu edit navigation button-->
                     @if (child.permissionName?.includes('edit')) {
+                        <i class="bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, child)"></i>
                         <i class="bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                     }
                 </div>
@@ -98,18 +97,20 @@
 
 
         <!-- Deep menu template-->
-        <ng-template #deepMenu let-navigation let-parentMenu="parentMenu">
+        <ng-template #deepMenu let-navigation>
             
             <!-- Deep menu button -->
             <div mat-menu-item
                 style="flex-direction: row;"
                 [matMenuTriggerFor]="subMenu" 
                 class="menu-button menu-option"
-                [style.font-weight]="parentMenu.typographyStyle.fontWeight"
+                [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
-                    parentMenu.typographyStyle.activeColor :
-                    parentMenu.typographyStyle.color
+                    navigation.typographyStyle.activeColor :
+                    navigation.typographyStyle.color
                 "
+                [style.font-family]="navigation.typographyStyle.fontFamily"
+                [style.font-size]="navigation.typographyStyle.fontSize"
                 [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
@@ -125,6 +126,7 @@
 
                 <!-- Deep Menu edit navigation button -->
                 @if (navigation.permissionName?.includes('edit')) {
+                    <i class="bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, navigation)"></i>
                     <i class="bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
                 }
             </div>
@@ -156,8 +158,6 @@
                     [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
                     [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
                     [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
-                    [style.font-family]="navigation.menu.typographyStyle.fontFamily"
-                    [style.font-size]="navigation.menu.typographyStyle.fontSize + 'px'"
                 >
                     <!-- Deep menu edit style icon -->                    
                     @if (navigation.permissionName?.includes('edit')) {
@@ -167,11 +167,14 @@
                     <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
                         <div mat-menu-item class="menu-option" [style.opacity]="child.isDisabled ? '0.4' : '1'">
+                            <!-- Custom button -->
                             <app-custom-button
                                 [navigation]="child" 
                             ></app-custom-button>
-
+                            
+                            <!-- Edit navigation button -->
                             @if (child.permissionName?.includes('edit')) {
+                                <i class="bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, child)"></i>
                                 <i class="bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                             }
                         </div>

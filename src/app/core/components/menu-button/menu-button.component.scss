@@ -51,15 +51,8 @@
   padding: 4px 6px;
   color: #636363;
   cursor: pointer;
-  display: none;
-  margin-left: auto;
 }
 
-.menu-option:hover {
-    .edit-icon {
-        display: block;
-    }
-}
 
 ::ng-deep .mat-mdc-menu-content {
     padding: 0px !important;
