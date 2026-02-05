@@ -2,10 +2,8 @@
     height: 100%;
     text-align: center;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     gap: 6px;
     cursor: pointer;
-
-    span {
-        min-width: max-content;
-    }
 }

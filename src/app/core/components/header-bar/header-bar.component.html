@@ -60,13 +60,17 @@
                     child.navigationType.name === 'dialog-button'
                 ) {
                     <app-custom-button 
+                        class="button-width"
                         [navigation]="child"
                     ></app-custom-button>
                 }
 
                 <!-- menu button case -->
                 @else {
-                    <app-menu-button [navigation]="child"></app-menu-button>
+                    <app-menu-button 
+                        class="button-width"
+                        [navigation]="child"
+                    ></app-menu-button>
                 }
                 
                 <!-- Edit navigation buttons -->

@@ -1,6 +1,4 @@
-<div class="button-container"
-    [style.flex-direction]="iconOnTop ? 'column' : 'row'"
-    [style.justify-content]="iconOnTop ? 'center' : ''"
+<div [class]="iconOnTop ? 'button-container' : ''"
     (click)="actionClick(navigation)"
     (mouseenter)="isMouseOver = true"
     (mouseleave)="isMouseOver = false"

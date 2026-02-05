@@ -1,21 +1,11 @@
-.menu-button {
-    background-color: transparent;
-    border: none;
-    height: 100%;
-    width: 100%;
-}
-
 .main-button {
-    justify-content: center;
+    height: 100%;
     text-align: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
     display: flex;
-
-    span {
-        width: max-content;
-    }
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
 }
 
 .menu-panel {
@@ -35,6 +25,8 @@
     display: none;
     cursor: pointer;
     z-index: 9999999;
+    height: fit-content;
+    width: fit-content;
 }
 
 .menu-panel:hover {
@@ -51,6 +43,8 @@
   padding: 4px 6px;
   color: #636363;
   cursor: pointer;
+  height: fit-content;
+  width: fit-content;
 }
 
 
@@ -60,5 +54,5 @@
 
 ::ng-deep .mat-mdc-menu-item-text {
     display: flex !important;
-    gap: 3px !important
+    align-items: center;
 }
