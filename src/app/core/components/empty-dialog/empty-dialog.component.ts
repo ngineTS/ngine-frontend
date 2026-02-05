@@ -6,6 +6,11 @@ import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AppService } from '../../services/app.service';
+import { MenuService } from '../../services/menu.service';
+import { Router } from '@angular/router';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { StylePayload } from '../../models/menu.interface';
 
 @Component({
   selector: 'app-empty-dialog',
@@ -20,7 +25,10 @@ export class EmptyDialogComponent {
     private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { navigation: Navigation },
-    private _componentsContainerService: ComponentsContainerService
+    private _componentsContainerService: ComponentsContainerService,
+    private _appService: AppService,
+    private _menuService: MenuService,
+    private _router: Router
   ) {}
 
   injector = inject(Injector);
@@ -94,10 +102,49 @@ export class EmptyDialogComponent {
    */
   manageNavigation(navigation?: Navigation) {
     this._dialogRef.close();
-    this._matDialog.open(NavigationManagementComponent, {
+    const matDialogRef = this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
         parentId: this.data.navigation.id
+      }
+    });
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
+      }
+    });
+  }
+
+  /**
+   * Methods triggered on top right 'marker' button click.
+   * Open generic form to edit navigation style.
+   */
+  manageNavigationStyle(navigation: Navigation) {
+    this._dialogRef.close();
+    const navigationStyleForm = this._menuService.setupStyleForm({
+      containerLayout: navigation.containerLayout,
+      containerStyle: navigation.containerStyle,
+      typographyStyle: navigation.typographyStyle
+    });
+
+    const matDialogRef = this._matDialog.open(
+      GenericFormComponent<StylePayload>,
+      { 
+        maxWidth: '700px',
+        data: {
+          hasDeleteButton: false,
+          formConfig: navigationStyleForm,
+          id: navigation.id,
+          controllerName: 'menu',
+        }
+      }
+    );
+
+    matDialogRef.afterClosed().subscribe(resp => {
+      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+        this._appService.createAppRouting(this._router.url);
+        
       }
     });
   }

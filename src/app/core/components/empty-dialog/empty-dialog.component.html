@@ -1,21 +1,40 @@
 <div class="m-4 row justify-content-center">
+
     @if (navigationToLoad) {
-        @if (navigationToLoad.permissionName?.includes('edit')) {
-            <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
-                @if (_isEditing) {
-                    <i class="bi bi-x-circle" [matTooltip]="'Edit content'"></i>
-                }
-                @else {
-                    <i class="bi bi-pen" [matTooltip]="'Stop editing'"></i>
-                }
-            </button>
-            <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
-                <i class="bi bi-gear" [matTooltip]="'Edit properties'"></i>
-            </button>
-        }
         
-        <ng-template #container></ng-template>
+            @if (navigationToLoad.permissionName?.includes('edit')) {
+                <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
+                    @if (_isEditing) {
+                        <i class="bi bi-x-circle" [matTooltip]="'Edit content'"></i>
+                    }
+                    @else {
+                        <i class="bi bi-pen" [matTooltip]="'Stop editing'"></i>
+                    }
+                </button>
+                <button class="gear-button" matButton="outlined" (click)="manageNavigationStyle(navigationToLoad)">
+                    <i class="bi bi-marker-tip" [matTooltip]="'Edit navigation style'"></i>
+                </button>
+                <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
+                    <i class="bi bi-gear" [matTooltip]="'Edit navigation'"></i>
+                </button>
+            }
+
+        <div 
+            [style.margin-top]="navigationToLoad.containerLayout.marginTop + 'px'"
+            [style.margin-right]="navigationToLoad.containerLayout.marginRight + 'px'"
+            [style.margin-bottom]="navigationToLoad.containerLayout.marginBottom + 'px'"
+            [style.margin-left]="navigationToLoad.containerLayout.marginLeft + 'px'"
+            [style.padding-top]="navigationToLoad.containerLayout.paddingTop + 'px'"
+            [style.padding-right]="navigationToLoad.containerLayout.paddingRight + 'px'"
+            [style.padding-bottom]="navigationToLoad.containerLayout.paddingBottom + 'px'"
+            [style.padding-left]="navigationToLoad.containerLayout.paddingLeft + 'px'"
+            [style.color]="navigationToLoad.typographyStyle.color"
+            [style.font-family]="navigationToLoad.typographyStyle.fontFamily"
+        >
+            <ng-template #container></ng-template>
+        </div>
     }
+
     @else {
         <span class="text-center mb-4">
             There is not yet component attached to this dialog button.
