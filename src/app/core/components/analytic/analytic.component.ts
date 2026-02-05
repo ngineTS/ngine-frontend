@@ -34,7 +34,7 @@ export class AnalyticComponent extends NavigationBaseComponent {
   }> = [];
 
   gradient = false;
-  connectionChartDimensions: [number, number] = [800, 300];
+  connectionChartDimensions: [number, number] = [window.innerWidth * 0.75, 300];
   colorScheme: Color = { 
     name: '',
     selectable: true,
@@ -56,6 +56,10 @@ export class AnalyticComponent extends NavigationBaseComponent {
     this._userEventService.getNumberOfVisitByUrl().subscribe(resp => {
       this.urlVisitCharData = resp;
     });
+  }
+
+  onResize(event: any) {
+    this.connectionChartDimensions = [event.target.innerWidth / 1.35, 300];
   }
 
 }

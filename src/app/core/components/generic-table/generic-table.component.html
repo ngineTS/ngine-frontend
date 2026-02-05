@@ -1,5 +1,5 @@
-<div class="row align-items-baseline">
-    <div class="col-9">
+<div class="row">
+    <div class="col-8">
         <mat-form-field appearance="outline">
             <mat-label>Filter</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -9,15 +9,15 @@
     @if (canAdd) {
           <button 
             matButton="outlined"
-            class="col-3 add-button"
+            class="col-1 ms-auto me-4"
             (click)="addItem()"
           >
-            + Add item
+            +
           </button>
     }
 </div>
 
-<div class="mat-elevation-z8 table-container">
+<div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
 
     @for (inputConfig of tableConfig.customFormInputs; track inputConfig.columnName) {

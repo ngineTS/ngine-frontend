@@ -1,17 +1,17 @@
-<div class="row my-4 pt-1">
+<div class="user-mngt-container row">
 
-    <mat-form-field class="col-sm-6 mb-2" appearance="outline">
+    <mat-form-field class="col-sm-6" appearance="outline">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
 
     @for (user of filteredUsers; track user.id) {
-        <div class="row gap-3 align-items-baseline">
-            <span class="col-sm-3 fw-bold ellipsis">
+        <div class="row gap-3 mt-5 align-items-baseline">
+            <span class="col-md-3 d-flex fw-bold">
                 <i class="bi bi-typescript me-2"></i>
-                {{user.emailAddress}}
+                {{ user.emailAddress }}
             </span>
-            <mat-form-field appearance="outline" class="col-sm-4">
+            <mat-form-field appearance="outline" class="col-md-4">
                 <mat-label>Roles</mat-label>
                 <mat-select [(ngModel)]="userNgModel[user.id].roleIds" multiple>
                     @for (role of roles; track role.id) {
@@ -23,11 +23,11 @@
             </mat-form-field>
             
             @if (_canEdit) {
-                <mat-slide-toggle class="col-1 ms-auto me-4"
+                <mat-slide-toggle class="col ms-auto me-4"
                     [(ngModel)]="userNgModel[user.id].isEnabled">
                 </mat-slide-toggle>
 
-                <button class="col-1" 
+                <button class="col" 
                     matButton="outlined" 
                     matTooltip="Save"
                     (click)="onSaveUserClick(user.id)"
@@ -37,7 +37,7 @@
             }
 
             @if (_canDelete) {
-                <button class="col-1 text-danger" 
+                <button class="col text-danger" 
                     matButton="outlined" 
                     matTooltip="Delete user" 
                     (click)="deleteUser(user.id)"
