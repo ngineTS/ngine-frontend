@@ -8,7 +8,6 @@ import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
-import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { MenuService } from '../../services/menu.service';
 import { AppService } from '../../services/app.service';
@@ -75,12 +74,7 @@ export class ComponentsContainer implements OnInit {
    */
   openFormToAddNavigationBarOrNavigation(type: 'navigation-bar' | 'navigation'): void {
     if (type !== 'navigation-bar') {
-      this._matDialog.open(NavigationManagementComponent, {
-        data: {
-          navigation: undefined,
-          parentId: this.navigation.id
-        }
-      });
+      this._navigationService.manageNavigation(this.navigation.id);
     }
     else {
       this._menuService.createNavigationBar(this.navigation.id)

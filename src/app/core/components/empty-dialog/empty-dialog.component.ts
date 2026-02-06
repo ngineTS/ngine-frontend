@@ -11,6 +11,7 @@ import { MenuService } from '../../services/menu.service';
 import { Router } from '@angular/router';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-empty-dialog',
@@ -28,7 +29,8 @@ export class EmptyDialogComponent {
     private _componentsContainerService: ComponentsContainerService,
     private _appService: AppService,
     private _menuService: MenuService,
-    private _router: Router
+    private _router: Router,
+    private _navigationService: NavigationService
   ) {}
 
   injector = inject(Injector);
@@ -102,12 +104,7 @@ export class EmptyDialogComponent {
    */
   manageNavigation(navigation?: Navigation) {
     this._dialogRef.close();
-    this._matDialog.open(NavigationManagementComponent, {
-      data: {
-        navigation: navigation,
-        parentId: this.data.navigation.id
-      }
-    });
+    this._navigationService.manageNavigation(this.data.navigation.id, navigation);
   }
 
   /**

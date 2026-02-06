@@ -4,6 +4,8 @@ import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
 import { NavigationType } from "../models/navigation-type.interface";
 import { retry, take } from "rxjs";
+import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
+import { MatDialog } from "@angular/material/dialog";
 
 export type UpdateReturnType = {
     affected: number;
@@ -16,7 +18,10 @@ export type UpdateReturnType = {
 })
 export class NavigationService {
 
-    constructor(private _http: HttpClient) { }
+    constructor(
+        private _http: HttpClient,
+        private _matDialog: MatDialog
+    ) { }
 
     /**
      * Get navigations and their children.
@@ -84,5 +89,21 @@ export class NavigationService {
     deleteNavigationAndChildren(navigation: Navigation) {
         return this._http.post(`${environment.APIURL}navigation/delete`, navigation);
     }
+
+    /**
+       * Open navigation managenement form to add or edit navigation.
+       * If navigation is passed then edit navigation else add navigation.
+       * 
+       * @param parentId The parent reference.
+       * @param navigation The navigation to edit.
+       */
+      manageNavigation(parentId: string, navigation?: Navigation) {
+        this._matDialog.open(NavigationManagementComponent, {
+          data: {
+            navigation: navigation ?? undefined,
+            parentId: parentId
+          }
+        });
+      }
 
 }

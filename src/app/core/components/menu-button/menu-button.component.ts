@@ -4,7 +4,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Navigation } from '../../models/navigation.interface';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { NgTemplateOutlet } from '@angular/common';
 import { MenuService } from '../../services/menu.service';
 import { Menu, StylePayload } from '../../models/menu.interface';
@@ -12,6 +11,7 @@ import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-menu-button',
@@ -31,7 +31,8 @@ export class MenuButtonComponent {
     private _router: Router,
     private _matDialog: MatDialog,
     private _menuService: MenuService,
-    private _appService: AppService
+    private _appService: AppService,
+    private _navigationService: NavigationService
   ) {}
 
   /**
@@ -54,12 +55,7 @@ export class MenuButtonComponent {
    * @param parentId The parent id where to add a navigation.
    */
   addNavigation(parentId: string) {
-    this._matDialog.open(NavigationManagementComponent, {
-      data: {
-        navigation: undefined,
-        parentId: parentId,
-      }
-    });
+    this._navigationService.manageNavigation(parentId);
   }
 
   /**
@@ -71,13 +67,7 @@ export class MenuButtonComponent {
    */
   editNavigation(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
-
-    this._matDialog.open(NavigationManagementComponent, {
-      data: {
-        navigation: navigation,
-        parentId: navigation.parentId,
-      }
-    });
+    this._navigationService.manageNavigation(navigation.parentId, navigation);
   }
 
   /**

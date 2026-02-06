@@ -6,7 +6,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { MatDialog } from '@angular/material/dialog';
-import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { AppService } from '../../services/app.service';
 import { StylePayload } from '../../models/menu.interface';
@@ -71,16 +70,9 @@ export class HeaderBarComponent implements OnInit {
    * Open navigation management form to add or edit navigation properties.
    * 
    * @param navigation The navigation to edit (optional).
-   * @description
-   * If navigation is undefined then add navigation else edit navigation.
    */
   manageNavigation(navigation?: Navigation): void {
-    this._matDialog.open(NavigationManagementComponent, {
-      data: {
-        navigation: navigation,
-        parentId: this.navigation.id
-      },
-    });
+    this._navigationService.manageNavigation(this.navigation.id, navigation);
   }
 
   /**

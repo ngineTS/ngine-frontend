@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -174,23 +173,18 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods triggered on top right 'gear' button click.
-   * Open navigation management form to edit navigation properties.
+   * Methods called on top right 'gear' button click.
+   * Open form to edit navigation properties.
    */
-  manageNavigation(): void {
-    this._matDialog.open(NavigationManagementComponent, {
-      data: {
-        navigation: this._navigation,
-        parentId: this._navigation.parentId,
-      }
-    });
+  editNavigation(): void {
+    this._navigationService.manageNavigation(this._navigation.parentId, this._navigation);
   }
 
   /**
-   * Methods triggered on top right 'marker' button click.
-   * Open generic form to edit navigation style.
+   * Methods called on top right 'marker' button click.
+   * Open form to edit navigation style.
    */
-  manageNavigationStyle() {
+  editNavigationStyle() {
     const navigationStyleForm = this._menuService.setupStyleForm({
       containerLayout: this._navigation.containerLayout,
       containerStyle: this._navigation.containerStyle,
