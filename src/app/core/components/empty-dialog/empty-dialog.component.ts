@@ -1,15 +1,11 @@
 import { Component, ComponentRef, inject, Inject, Injector, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { NavigationManagementComponent } from '../navigation-management/navigation-management.component';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AppService } from '../../services/app.service';
 import { MenuService } from '../../services/menu.service';
-import { Router } from '@angular/router';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
 import { NavigationService } from '../../services/navigation.service';
 

@@ -2,13 +2,9 @@ import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Navigation } from '../../models/navigation.interface';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { NgTemplateOutlet } from '@angular/common';
 import { MenuService } from '../../services/menu.service';
 import { Menu, StylePayload } from '../../models/menu.interface';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
-import { AppService } from '../../services/app.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { NavigationService } from '../../services/navigation.service';
@@ -28,10 +24,7 @@ import { NavigationService } from '../../services/navigation.service';
 export class MenuButtonComponent {
 
   constructor(
-    private _router: Router,
-    private _matDialog: MatDialog,
     private _menuService: MenuService,
-    private _appService: AppService,
     private _navigationService: NavigationService
   ) {}
 

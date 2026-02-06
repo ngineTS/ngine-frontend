@@ -7,10 +7,7 @@ import { ComponentsContainerService } from '../../services/components-container.
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { MenuService } from '../../services/menu.service';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { StylePayload } from '../../models/menu.interface';
-import { AppService } from '../../services/app.service';
-import { Router } from '@angular/router';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 
@@ -43,8 +40,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _componentContainerService: ComponentsContainerService,
     private _containerLayoutService: ContainerLayoutService,
     private _menuService: MenuService,
-    private _appService: AppService,
-    private _router: Router
   ) { 
     super(); 
   }

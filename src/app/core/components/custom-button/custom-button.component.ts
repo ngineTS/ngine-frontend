@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TypographyStyle } from '../../models/typography-style.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { MatDialog } from '@angular/material/dialog';
