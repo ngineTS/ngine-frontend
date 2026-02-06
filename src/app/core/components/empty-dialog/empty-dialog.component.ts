@@ -124,6 +124,7 @@ export class EmptyDialogComponent {
     this._dialogRef.close();
     const navigationStyleForm = this._menuService.setupStyleForm({
       containerLayout: navigation.containerLayout,
+      containerStyle: navigation.containerStyle,
       typographyStyle: navigation.typographyStyle
     });
 
