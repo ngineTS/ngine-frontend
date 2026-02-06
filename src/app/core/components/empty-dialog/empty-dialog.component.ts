@@ -1,6 +1,6 @@
 import { Component, ComponentRef, inject, Inject, Injector, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ComponentsContainerService } from '../../services/components-container.service';
