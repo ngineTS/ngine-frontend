@@ -25,6 +25,7 @@ export class NavigationService {
 
     /**
      * Get navigations and their children.
+     * 
      * @returns An observable of navigations.
      */
     getNestedNavigations() {
@@ -36,6 +37,7 @@ export class NavigationService {
 
     /**
      * Get all navigation types.
+     * 
      * @returns An observable of navigation types.
      */
     getNavigationTypes() {
@@ -45,6 +47,7 @@ export class NavigationService {
 
     /**
      * Get flatten navigations.
+     * 
      * @returns An observable of all navigations and their children.
      */
     getFlatNavigations() {
@@ -54,6 +57,7 @@ export class NavigationService {
 
     /**
      * Save navigations.
+     * 
      * @param navigations The navigations to save.
      * @returns An observable of the navigation saved.
      */
@@ -63,6 +67,7 @@ export class NavigationService {
 
     /**
      * Update navigation properties.
+     * 
      * @param navigationId The navigation id to update.
      * @param navigationProps The navigation properties to update.
      * @returns An observable of UpdateReturnType object.
@@ -73,6 +78,7 @@ export class NavigationService {
 
     /**
      * Update array of navigation properties.
+     * 
      * @param navigationsProps Array of navigation properties to update.
      * @returns Array of navigation properties updated.
      */
@@ -83,6 +89,7 @@ export class NavigationService {
 
     /**
      * Delete navigation and children.
+     * 
      * @param navigationId The navigation to delete.
      * @returns An observable of UpdateReturnType object.
      */
@@ -91,19 +98,19 @@ export class NavigationService {
     }
 
     /**
-       * Open navigation managenement form to add or edit navigation.
-       * If navigation is passed then edit navigation else add navigation.
-       * 
-       * @param parentId The parent reference.
-       * @param navigation The navigation to edit.
-       */
-      manageNavigation(parentId: string, navigation?: Navigation) {
+     * Open navigation managenement form to add or edit navigation.
+     * If navigation is passed then edit navigation else add navigation.
+     * 
+     * @param parentId The parent reference.
+     * @param navigation The navigation to edit.
+     */
+    manageNavigation(parentId: string, navigation?: Navigation) {
         this._matDialog.open(NavigationManagementComponent, {
-          data: {
+            data: {
             navigation: navigation ?? undefined,
             parentId: parentId
-          }
+            }
         });
-      }
+    }
 
 }
