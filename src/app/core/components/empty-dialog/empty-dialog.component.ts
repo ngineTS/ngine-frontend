@@ -23,13 +23,10 @@ export class EmptyDialogComponent {
 
   constructor(
     private _dialogRef: MatDialogRef<EmptyDialogComponent>,
-    private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { navigation: Navigation },
     private _componentsContainerService: ComponentsContainerService,
-    private _appService: AppService,
     private _menuService: MenuService,
-    private _router: Router,
     private _navigationService: NavigationService
   ) {}
 
@@ -97,8 +94,8 @@ export class EmptyDialogComponent {
   }
 
   /**
+   * Methods called on top right 'gear' button click.
    * Open navigation managenement form to add or edit navigation.
-   * If navigation is passed then edit navigation else add navigation.
    * 
    * @param navigation The navigation to edit.
    */
@@ -108,36 +105,17 @@ export class EmptyDialogComponent {
   }
 
   /**
-   * Methods triggered on top right 'marker' button click.
+   * Methods called on top right 'marker' button click.
    * Open generic form to edit navigation style.
    */
-  manageNavigationStyle(navigation: Navigation) {
+  editNavigationStyle(navigation: Navigation) {
     this._dialogRef.close();
-    const navigationStyleForm = this._menuService.setupStyleForm({
+    const navigationStyleForm: StylePayload = {
       containerLayout: navigation.containerLayout,
       containerStyle: navigation.containerStyle,
       typographyStyle: navigation.typographyStyle
-    });
-
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: navigationStyleForm,
-          id: navigation.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-        
-      }
-    });
+    }
+    this._menuService.manageStyle(navigationStyleForm, navigation.id);
   }
 
   /**

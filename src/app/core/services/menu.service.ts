@@ -7,13 +7,22 @@ import { ContainerStyle } from "../models/container-style.interface";
 import { TypographyStyle } from "../models/typography-style.interface";
 import { StylePayload } from "../models/menu.interface";
 import { DeepFormConfig } from "../models/form-input.interface";
+import { GenericFormComponent } from "../components/generic-form/generic-form.component";
+import { AppService } from "./app.service";
+import { Router } from "@angular/router";
+import { MatDialog } from "@angular/material/dialog";
 
 @Injectable({
     providedIn: 'root',
 })
 export class MenuService {
 
-    constructor(private _http: HttpClient) {}
+    constructor(
+        private _http: HttpClient,
+        private _matDialog: MatDialog,
+        private _appService: AppService,
+        private _router: Router,
+    ) {}
 
     baseURL = environment.APIURL;
     availableFonts = [
@@ -201,6 +210,36 @@ export class MenuService {
         }
 
         return styleForm;
+    }
+
+    /**
+     * Open form to manage object style.
+     * 
+     * @param stylePayload The style properties.
+     * @param refId The object ref id (not the style id).
+     */
+    manageStyle(stylePayload: Partial<StylePayload>, refId: string) {
+        const styleForm = this.setupStyleForm(stylePayload);
+
+        const matDialogRef = this._matDialog.open(
+            GenericFormComponent<StylePayload>,
+            { 
+                maxWidth: '700px',
+                data: {
+                hasDeleteButton: false,
+                formConfig: styleForm,
+                id: refId,
+                controllerName: 'menu',
+                }
+            }
+        );
+
+        matDialogRef.afterClosed().subscribe((resp: string) => {
+            if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
+                this._appService.createAppRouting(this._router.url);
+                
+            }
+        });
     }
 
 }

@@ -185,30 +185,13 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation style.
    */
   editNavigationStyle() {
-    const navigationStyleForm = this._menuService.setupStyleForm({
+    const navigationStylePayload: StylePayload = {
       containerLayout: this._navigation.containerLayout,
       containerStyle: this._navigation.containerStyle,
       typographyStyle: this._navigation.typographyStyle
-    });
+    };
 
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: navigationStyleForm,
-          id: this._navigation.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-      }
-    });
+    this._menuService.manageStyle(navigationStylePayload, this._navigation.id);
   }
 
   /**

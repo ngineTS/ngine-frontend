@@ -37,9 +37,7 @@ export class HeaderBarComponent implements OnInit {
     public _router: Router,
     private _route: ActivatedRoute,
     private _navigationService: NavigationService,
-    private _matDialog: MatDialog,
     private _menuService: MenuService,
-    private _appService: AppService
   ) {}
 
   /**
@@ -56,6 +54,7 @@ export class HeaderBarComponent implements OnInit {
 
   /**
    * Drop a navigation and update position of all navigations.
+   * 
    * @param event The CdkDragDrop event containing navigation positions. 
    */
   drop(event: CdkDragDrop<Navigation[]>): void {
@@ -76,34 +75,16 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Methods called on 'Edit menu' button click.
+   * Methods called on 'edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
   editMenuStyle() {
-    const styleInformation = {
+    const menuStylePayload: Partial<StylePayload> = {
       containerLayout: this.navigation.menu.containerLayout,
       containerStyle: this.navigation.menu.containerStyle,
     }
-    const menuStyleForm = this._menuService.setupStyleForm(styleInformation);
 
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: menuStyleForm,
-          id: this.navigation.menu.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-      }
-    });
+    this._menuService.manageStyle(menuStylePayload, this.navigation.menu.id);
   }
 
   /**
@@ -112,29 +93,11 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(navigation: Navigation) {
-    const styleInformation = {
+    const navigationStylePayload: Partial<StylePayload> = {
       containerLayout: navigation.containerLayout,
       typographyStyle: navigation.typographyStyle
     }
-    const navigationStyleForm = this._menuService.setupStyleForm(styleInformation);
 
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: navigationStyleForm,
-          id: navigation.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-      }
-    });
+    this._menuService.manageStyle(navigationStylePayload, navigation.id);
   }
 }

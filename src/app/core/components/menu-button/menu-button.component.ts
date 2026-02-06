@@ -71,37 +71,18 @@ export class MenuButtonComponent {
   }
 
   /**
-   * Edit navigation style. 
+   * Methods called on navigation 'marker' button click.
+   * Open form to edit navigation style. 
    * 
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(event: MouseEvent, navigation: Navigation) {
-    event.stopPropagation();
-    
-    const styleInformation = {
+    event.stopPropagation();  
+    const stylePayload: Partial<StylePayload> = {
       typographyStyle: navigation.typographyStyle
     }
-    const navigationStyleForm = this._menuService.setupStyleForm(styleInformation);
 
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: navigationStyleForm,
-          id: navigation.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-      }
-    });
-    
+    this._menuService.manageStyle(stylePayload, navigation.id);
   }
 
   /**
@@ -111,30 +92,13 @@ export class MenuButtonComponent {
    * @param menu The menu to edit.
    */
   editMenuStyle(menu: Menu) {
-    const menuStyleForm = this._menuService.setupStyleForm({
+    const menuStylePayload: StylePayload = {
       containerLayout: menu.containerLayout,
       containerStyle: menu.containerStyle,
       typographyStyle: menu.typographyStyle
-    });
+    };
 
-    const matDialogRef = this._matDialog.open(
-      GenericFormComponent<StylePayload>,
-      { 
-        maxWidth: '700px',
-        data: {
-          hasDeleteButton: false,
-          formConfig: menuStyleForm,
-          id: menu.id,
-          controllerName: 'menu',
-        }
-      }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
-      }
-    });
+    this._menuService.manageStyle(menuStylePayload, menu.id);
   }
 
 }
