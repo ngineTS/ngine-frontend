@@ -102,16 +102,10 @@ export class EmptyDialogComponent {
    */
   manageNavigation(navigation?: Navigation) {
     this._dialogRef.close();
-    const matDialogRef = this._matDialog.open(NavigationManagementComponent, {
+    this._matDialog.open(NavigationManagementComponent, {
       data: {
         navigation: navigation,
         parentId: this.data.navigation.id
-      }
-    });
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-        this._appService.createAppRouting(this._router.url);
       }
     });
   }
