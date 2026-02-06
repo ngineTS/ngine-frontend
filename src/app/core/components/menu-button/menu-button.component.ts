@@ -124,6 +124,7 @@ export class MenuButtonComponent {
     const menuStyleForm = this._menuService.setupStyleForm({
       containerLayout: menu.containerLayout,
       containerStyle: menu.containerStyle,
+      typographyStyle: menu.typographyStyle
     });
 
     const matDialogRef = this._matDialog.open(
