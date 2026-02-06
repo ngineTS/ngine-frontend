@@ -23,7 +23,8 @@ export class AppComponent implements OnInit {
              ) { }
 
   title = 'my-app-frontend';
-  refreshInterval = 60; //seconds
+  refreshTokenIntervalOffset = 60; //seconds
+  refreshTokenIntervalId: NodeJS.Timeout | undefined;
 
   /**
    * Lifecycle hook called after component has been initialized.
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit {
    * Setup interval to refresh auth token.
    */
   runRefreshTokenJob() {
-    setInterval(() => {
+    this.refreshTokenIntervalId = setInterval(() => {
       console.log('INTERVAL');
       let token: string | null = null; 
       if (typeof localStorage !== 'undefined') {
@@ -68,7 +69,7 @@ export class AppComponent implements OnInit {
         const jwtExpirationTime: number = jwtDecoded?.exp;
         const currentTime: number = new Date().getTime() / 1000;
 
-        if (jwtExpirationTime > currentTime && jwtExpirationTime - currentTime < this.refreshInterval) {
+        if (jwtExpirationTime > currentTime && jwtExpirationTime - currentTime < this.refreshTokenIntervalOffset) {
           this._authService.refreshToken().subscribe({
             next: (resp: any) => localStorage.setItem('access_token', resp['access_token']),
             error: () => this._router.navigateByUrl('/unauthorised')
@@ -79,8 +80,10 @@ export class AppComponent implements OnInit {
         this._router.navigateByUrl('/unauthorised');
         
       }
-    }, this.refreshInterval * 990);
+    }, this.refreshTokenIntervalOffset * 990);
   }
 
-
+  ngOnDesotry() {
+    clearInterval(this.refreshTokenIntervalId);
+  }
 }
