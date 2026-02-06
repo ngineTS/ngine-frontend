@@ -16,9 +16,12 @@
         <mat-form-field appearance="outline">
             <mat-label>Parent </mat-label>
             <mat-select formControlName="parentId">
-                @for (parent of flatNavigations; track parent.id) {
-                    <mat-option [value]="parent.id" [style.color]="parent.id ? '' : 'grey'">
-                        {{ parent.displayLabel }}
+                @for (flatNavigation of flatNavigations; track flatNavigation.id) {
+                    <mat-option 
+                        [value]="flatNavigation.id" 
+                        matTooltip="{{ flatNavigation.parent?.displayLabel }} > {{ flatNavigation.displayLabel }}"
+                    >
+                        {{ flatNavigation.displayLabel }}
                     </mat-option>
                 }
             </mat-select>
