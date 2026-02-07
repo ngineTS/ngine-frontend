@@ -45,7 +45,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Open role management form to add role.
-   * If form is closed with message then load roles.
+   * After form closed, if role has been added then reload roles.
    */
   addRole() {
     const role: RolePayload = {
@@ -67,7 +67,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Open role management form to edit role.
-   * If form is closed with message then load roles.
+   * After form closed, if role has been edited then reload roles.
    * @param role The role to edit.
    */
   editRole(role: Role) {
