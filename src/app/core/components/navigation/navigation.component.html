@@ -1,4 +1,4 @@
-<div class="navigation-container" [style.opacity]="_navigation.isDisabled ? '0.4' : '1'">
+<div class="navigation-container">
     <!-- Top right icons -->
     @if (_canEdit) {
         @if (
@@ -51,6 +51,7 @@
         [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
         [style.color]="_navigation.typographyStyle.color"
         [style.font-family]="_navigation.typographyStyle.fontFamily"
+        [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"
     >
         <!-- Accept or Reject size change icons -->
         @if (_canEdit) {

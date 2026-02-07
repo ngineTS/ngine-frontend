@@ -64,16 +64,16 @@
             
             <!-- item is a custom button-->
             @else {
-                <div class="row p-0" mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">
+                <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">
                     <app-custom-button 
-                        class="col-9"
+                        class="col"
                         [navigation]="child" 
                     ></app-custom-button>
 
                     <!-- edit item buttons -->
                     @if (child.permissionName?.includes('edit')) {
-                        <i class="bi bi-marker-tip edit-icon ms-auto col-1" (click)="editNavigationStyle($event, child)"></i>
-                        <i class="bi bi-gear edit-icon col-1" (click)="editNavigation($event, child)"></i>
+                        <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
+                        <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                     }
                 </div>
             }
@@ -112,9 +112,9 @@
                 [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
-                matTooltip="{{navigation.description}}"
+                matTooltip="{{ navigation.description }}"
             >
-                <div class="col-9">
+                <div class="col">
                     @if (navigation.icon) {
                         <i [class]="'bi bi-' + navigation.icon"></i>
                     }
@@ -124,10 +124,10 @@
                     }
                 </div>
 
-                <!-- Deep Menu button -->
+                <!-- Deep Menu button - edit buttons -->
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="col-1 bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, navigation)"></i>
-                    <i class="col-1 bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
+                    <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, navigation)"></i>
+                    <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
                 }
             </div>
             
@@ -166,17 +166,17 @@
 
                     <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
-                        <div mat-menu-item class="row p-0" [style.opacity]="child.isDisabled ? '0.4' : '1'">
-                            <!-- item is a custom button -->
+                        <!-- item is a custom button -->
+                        <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">
                             <app-custom-button
-                                class="col-9"
+                                class="col"
                                 [navigation]="child" 
                             ></app-custom-button>
-                            
+
                             <!-- edit item buttons -->
                             @if (child.permissionName?.includes('edit')) {
-                                <i class="col-1 bi bi-marker-tip edit-icon ms-auto" (click)="editNavigationStyle($event, child)"></i>
-                                <i class="col-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
+                                <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
+                                <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                             }
                         </div>
                     }

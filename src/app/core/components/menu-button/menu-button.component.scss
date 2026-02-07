@@ -12,6 +12,12 @@
     position: relative;
 }
 
+.menu-panel:hover {
+    .marker-icon {
+        display: block;
+    }
+}
+
 .marker-icon {
     position: absolute;
     top: 0px;
@@ -27,12 +33,6 @@
     z-index: 9999999;
     height: fit-content;
     width: fit-content;
-}
-
-.menu-panel:hover {
-    .marker-icon {
-        display: block;
-    }
 }
 
 .edit-icon {

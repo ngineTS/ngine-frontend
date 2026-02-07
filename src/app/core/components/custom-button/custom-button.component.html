@@ -1,8 +1,9 @@
-<div [class]="iconOnTop ? 'button-container' : ''"
-    (click)="actionClick(navigation)"
+<div (click)="actionClick(navigation)"
     (mouseenter)="isMouseOver = true"
     (mouseleave)="isMouseOver = false"
     matTooltip="{{ navigation.description }}"
+    [class]="iconOnTop ? 'button-container' : ''"
+    [style.hyphens]="'auto'"
     [style.color]="isMouseOver || isRouteActive(navigation.name) 
         ? navigation.typographyStyle.activeColor
         : navigation.typographyStyle.color"
