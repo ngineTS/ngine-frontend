@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../../../services/app.service';
-import { of, switchMap } from 'rxjs';
 import { SnackBarService } from '../../../services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -54,29 +53,16 @@ export class SignUpComponent {
   }
 
   onSignUpClick() {
-    this._authService.checkIfEmailAddressAlreadyExists(this.userForm.emailAddress)
-      .pipe(
-        switchMap(resp => { 
-          if (resp === true) {
-            this.emailAddressAlreadyExists = true;
-            return of(null);
-          }
-          else {
-            return this._authService.userSignUp(this.userForm);
-          }
-        })
-      )
-      .subscribe({
-        next: (result: any) => {
-          if (result) {
-            localStorage.setItem('access_token', result['access_token']);
-            this._snackbarService.showSuccessSnackBar("Welcome!");
-            this._dialogRef.close();
-            this._appService.createAppRouting('/');
-          }
-        },
-        error: err => console.log(err)
-      });
+    this._authService.userSignUp(this.userForm).subscribe({
+      next: (result: any) => {
+        if (result) {
+          localStorage.setItem('access_token', result['access_token']);
+          this._snackbarService.showSuccessSnackBar("Welcome!");
+          this._dialogRef.close();
+          this._appService.createAppRouting('/');
+        }
+      }
+    });
   }
 
   isSignUpDisabled() {

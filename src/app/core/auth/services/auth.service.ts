@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { Observable, take } from "rxjs";
+import { take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
@@ -24,10 +24,6 @@ export class AuthService {
 
     guestSignIn() {
         return this._http.get(`${environment.APIURL}auth/guest-sign-in`).pipe(take(1));
-    }
-
-    checkIfEmailAddressAlreadyExists(emailAdress: string): Observable<boolean> {
-        return this._http.get<boolean>(`${environment.APIURL}user/email-address/${emailAdress}`).pipe(take(1));
     }
 
     askForgotPasswordLink(emailAdress: string) {
