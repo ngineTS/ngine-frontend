@@ -10,6 +10,7 @@ import { AppService } from '../../../services/app.service';
 import { SnackBarService } from '../../../services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 
+
 @Component({
   selector: 'app-sign-up',
   imports: [
@@ -25,8 +26,7 @@ export class SignUpComponent {
 
   userForm!: UserSignUpPayload;
   repeatPassword: string | null = null;
-  emailAddressAlreadyExists: boolean = false;
-  passwordTooShort: boolean = false;
+  passwordTooShort = false;
 
   constructor(public _authService: AuthService, 
               public _dialogRef: MatDialogRef<SignContainerComponent>,
@@ -44,10 +44,6 @@ export class SignUpComponent {
     this.repeatPassword = null;
   }
 
-  onEmailAdressChange() {
-    this.emailAddressAlreadyExists = false;
-  }
-
   onPasswordChange() {
     this.passwordTooShort = this.userForm.password!.length < 8 ? true : false;
   }
@@ -61,17 +57,19 @@ export class SignUpComponent {
           this._dialogRef.close();
           this._appService.createAppRouting('/');
         }
-      }
+      },
+      error: () => { this.userForm.emailAddress = ''; }
     });
   }
 
   isSignUpDisabled() {
-    if(!this.userForm.emailAddress 
-       || !this.userForm.password 
-       || this.userForm.password !== this.repeatPassword
-       || !this.userForm.emailAddress.includes('@')
-       || this.emailAddressAlreadyExists
-       || this.passwordTooShort){
+    if (
+      !this.userForm.emailAddress 
+      || !this.userForm.password 
+      || this.userForm.password !== this.repeatPassword
+      || !this.userForm.emailAddress.includes('@')
+      || this.passwordTooShort
+    ) {
       return true;
     }
     return false;

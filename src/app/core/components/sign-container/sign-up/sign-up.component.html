@@ -5,11 +5,7 @@
             type="email" 
             placeholder="Email address" 
             [(ngModel)]="userForm.emailAddress"
-            (keyup)="onEmailAdressChange()"
         />
-        @if (emailAddressAlreadyExists) {
-            <span class="err-email">This email address is already used.</span>
-        }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
