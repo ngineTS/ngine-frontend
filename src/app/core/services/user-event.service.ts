@@ -41,7 +41,7 @@ export class UserEventService {
     return this._http.get<
       Array<{name: string; value: number;}>
     >(`${environment.APIURL}user-event/session-count-by-day`).pipe(
-      retry(2),
+      retry(1),
       take(1),
     );
   }
@@ -50,7 +50,7 @@ export class UserEventService {
     return this._http.get<
       Array<{name: string; value: number;}>
     >(`${environment.APIURL}user-event/mau`).pipe(
-      retry(2),
+      retry(1),
       take(1)
     );
   }
@@ -59,9 +59,9 @@ export class UserEventService {
     return this._http.get<
       Array<{name: string; value: number;}>
     >(`${environment.APIURL}user-event/visit-by-url`).pipe(
-      retry(2),
+      retry(1),
       take(1)
-    );;
+    );
   }
 
 }

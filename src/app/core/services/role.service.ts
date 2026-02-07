@@ -71,13 +71,4 @@ export class RoleService {
         return this._http.post<Array<RoleNavigationPermission>>(`${environment.APIURL}role-navigation-permission/bulk-save`, roleNavigationPermissionsPayload);
     }
 
-    /**
-     * Delete Array of roleNavigationPermission.
-     * @param ids An array of roleNavigationPermission ids to delete.
-     * @returns An update response type object.
-     */
-    bulkDeleteRoleNavigationPermissions(ids: string[]): Observable<RoleNavigationPermission> {
-        return this._http.post<RoleNavigationPermission>(`${environment.APIURL}role-navigation-permission/bulk-delete`, ids);
-    }
-
 }

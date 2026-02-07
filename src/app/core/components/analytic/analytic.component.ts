@@ -44,7 +44,6 @@ export class AnalyticComponent extends NavigationBaseComponent {
 
   ngOnInit() {
     this._userEventService.getSessionCountByDay().subscribe(resp => {
-      console.log(resp);
       this.connectionChartData.push({
         name: 'connections',
         series: resp
