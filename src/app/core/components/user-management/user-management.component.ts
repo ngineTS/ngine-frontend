@@ -107,10 +107,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
           take(1),
           switchMap(x => this.saveUserRoles(userId))
         )
-        .subscribe(userRolesSaved => {
-          this._snackbarService.showSuccessSnackBar('User updated successfully.')
-        })
-      
+        .subscribe(() => this._snackbarService.showSuccessSnackBar('User updated successfully.'));
     }
   }
 
