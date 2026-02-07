@@ -39,7 +39,7 @@ export class UserEventService {
 
   getSessionCountByDay() {
     return this._http.get<
-      Array<{name: string; value: number;}>
+      Array<{ name: string; value: number; }>
     >(`${environment.APIURL}user-event/session-count-by-day`).pipe(
       retry(1),
       take(1),
@@ -48,7 +48,7 @@ export class UserEventService {
 
   getMonthlyActiveUsers() {
     return this._http.get<
-      Array<{name: string; value: number;}>
+      Array<{ name: string; value: number; }>
     >(`${environment.APIURL}user-event/mau`).pipe(
       retry(1),
       take(1)
@@ -57,7 +57,7 @@ export class UserEventService {
 
   getNumberOfVisitByUrl() {
     return this._http.get<
-      Array<{name: string; value: number;}>
+      Array<{ name: string; value: number; }>
     >(`${environment.APIURL}user-event/visit-by-url`).pipe(
       retry(1),
       take(1)

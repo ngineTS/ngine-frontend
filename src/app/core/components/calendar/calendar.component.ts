@@ -96,22 +96,22 @@ export class CalendarComponent extends NavigationBaseComponent {
   handleEventMouseEnter(arg: EventHoveringArg) {
     let mediaUrl$!: Observable<string>;
     
-    if (arg.event.extendedProps["fileId"]) {
-      if (this.fileIdUrlMapping[arg.event.extendedProps["fileId"]]) {
-        mediaUrl$ = this.fileIdUrlMapping[arg.event.extendedProps["fileId"]];
+    if (arg.event.extendedProps['fileId']) {
+      if (this.fileIdUrlMapping[arg.event.extendedProps['fileId']]) {
+        mediaUrl$ = this.fileIdUrlMapping[arg.event.extendedProps['fileId']];
       }
       else {
-        mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps["fileId"]);
-        this.fileIdUrlMapping[arg.event.extendedProps["fileId"]] = mediaUrl$;
+        mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps['fileId']);
+        this.fileIdUrlMapping[arg.event.extendedProps['fileId']] = mediaUrl$;
       }
     }
 
     const contentElement = document.createElement('div');
     const view = this.tooltipTemplate.createEmbeddedView({ 
         mediaUrl$: mediaUrl$,
-        mediaType: arg.event.extendedProps["mediaType"],
+        mediaType: arg.event.extendedProps['mediaType'],
         title: arg.event.title,
-        description: arg.event.extendedProps["description"],
+        description: arg.event.extendedProps['description'],
         startDate: `${arg.event.startStr}`,
         endDate: `${arg.event.endStr}`,
         allDay: arg.event.extendedProps['allDay']
