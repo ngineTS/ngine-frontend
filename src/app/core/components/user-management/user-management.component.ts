@@ -89,7 +89,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
           take(1)
         )
         .subscribe(() => {
-          this._snackbarService.showSuccessSnackBar('User updated successfully.')
+          this._snackbarService.showSuccessSnackBar('User deleted successfully.')
           this.users = this.users.filter(user => user.id !== userId);
           this.filteredUsers = this.users;
         }); 
