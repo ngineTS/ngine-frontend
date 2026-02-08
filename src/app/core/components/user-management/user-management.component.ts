@@ -88,7 +88,8 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
         .pipe(
           take(1)
         )
-        .subscribe(resp => {
+        .subscribe(() => {
+          this._snackbarService.showSuccessSnackBar('User updated successfully.')
           this.users = this.users.filter(user => user.id !== userId);
           this.filteredUsers = this.users;
         }); 
@@ -96,8 +97,9 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
   }
 
   /**
-   * Methods trigger on ✓ button click.
+   * Methods called on ✓ button click.
    * Update user and his roles assignment.
+   * 
    * @param userId The user id to update.
    */
   async onSaveUserClick(userId: string) {
@@ -113,6 +115,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Update user props based on userNgModel value.
+   * 
    * @param userId The user id to update.
    */
   updateUser(userId: string) {
@@ -122,6 +125,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
   
   /**
    * Save user roles.
+   * 
    * @param userId The user id to update.
    * @returns An observable of array of users that have been saved.
    */
@@ -138,6 +142,7 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Apply filter on displayLabel on search input keyup.
+   * 
    * @param event The keyup event.
    */
   applyFilter(event: Event) {
