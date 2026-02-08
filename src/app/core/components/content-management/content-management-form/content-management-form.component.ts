@@ -125,9 +125,7 @@ export class ContentManagementFormComponent implements OnInit {
           const customInputFormPayload = this.formInputs.value as Array<Omit<CustomFormInput, "id">>;
           customInputFormPayload.forEach(input => input.tableId = resp.id!);
           return this._http.post(`${environment.APIURL}custom-form-input/${resp.tableName}`, customInputFormPayload)
-            .pipe(
-              take(1)
-            )
+            .pipe(take(1));
         })
       )
       .subscribe(() => this._dialogRef.close('Content added successfully'));

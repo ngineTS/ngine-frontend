@@ -39,6 +39,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   @Input() tableConfig!: TableViz; //table and input configurations used for editing
   @Input() canAdd: boolean | undefined; //user permission
   @Input() canEdit: boolean | undefined; //user permission
+  @Input() canDelete: boolean | undefined; //user permission
   @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
   constructor(private _matDialog: MatDialog,
@@ -182,7 +183,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
         navigationId: null,
         controllerName: `custom-table/${this.tableConfig.tableName}`,
         formConfig: payload,
-        title: this.tableConfig.tableLabel
+        title: this.tableConfig.tableLabel,
+        hasDeleteButton: this.canDelete
       }
     });
 
