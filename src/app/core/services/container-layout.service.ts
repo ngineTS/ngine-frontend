@@ -11,6 +11,13 @@ export class ContainerLayoutService {
 
     constructor(private _http: HttpClient) {}
 
+    /**
+     * Update container layout.
+     * 
+     * @param id The container layout id.
+     * @param containerLayoutProps The containerLayout properties to update.
+     * @returns 
+     */
     updateContainerLayout(id: string, containerLayoutProps: Partial<ContainerLayout>) {
         return this._http.patch<TypeORMUpdateResponseType>(`${environment.APIURL}container-layout/${id}`, containerLayoutProps);
     }
