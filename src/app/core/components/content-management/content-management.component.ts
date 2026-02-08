@@ -30,9 +30,7 @@ export class ContentManagementComponent extends NavigationBaseComponent implemen
 
   /**
    * Get table configuration and content for given navigation and set 'content' and 'tableViz' prop accordingly.
-   * 
    * If no configuration exist then open configuration form to create new table.
-   * 
    * Else return table content by calling GET custom-table table API.
    */
   getContentInformation() {

@@ -17,7 +17,7 @@
     }
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8" [style.background-color]="containerStyle?.backgroundColor ?? ''">
   <table mat-table [dataSource]="dataSource" matSort>
 
     @for (inputConfig of tableConfig.customFormInputs; track inputConfig.columnName) {
@@ -64,5 +64,10 @@
     </tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  <mat-paginator
+    [style.background-color]="containerStyle?.backgroundColor ?? ''"
+    [pageSizeOptions]="[5, 10, 25, 100]" 
+    aria-label="Select page of users"
+  >
+  </mat-paginator>
 </div>

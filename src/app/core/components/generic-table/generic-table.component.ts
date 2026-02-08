@@ -11,6 +11,7 @@ import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { MediaService } from '../../services/media.service';
+import { ContainerStyle } from '../../models/container-style.interface';
 
 
 @Component({
@@ -40,6 +41,8 @@ export class GenericTableComponent<T extends Record<string, any>> {
   @Input() canAdd: boolean | undefined; //user permission
   @Input() canEdit: boolean | undefined; //user permission
   @Input() canDelete: boolean | undefined; //user permission
+  @Input() containerStyle?: ContainerStyle | undefined; //container style
+  
   @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
   constructor(private _matDialog: MatDialog,
