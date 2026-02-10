@@ -31,10 +31,10 @@
         @if (navigationToLoad.permissionName?.includes('edit')) {
             <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
                 @if (_isEditing) {
-                    <i class="bi bi-x-circle" [matTooltip]="'Edit content'"></i>
+                    <i class="bi bi-x-circle" [matTooltip]="'Stop editing'"></i>
                 }
                 @else {
-                    <i class="bi bi-pen" [matTooltip]="'Stop editing'"></i>
+                    <i class="bi bi-pen" [matTooltip]="'Edit content'"></i>
                 }
             </button>
             <button class="gear-button" matButton="outlined" (click)="editNavigationStyle(navigationToLoad)">

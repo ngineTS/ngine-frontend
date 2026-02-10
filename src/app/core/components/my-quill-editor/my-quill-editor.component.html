@@ -1,5 +1,5 @@
-@if (_canEdit && _isEditing) {
-    <div class="view-container">
+<div>
+    @if (_canEdit && _isEditing) {
         <quill-editor class="w-100" [(ngModel)]="content">
         </quill-editor>
         <button 
@@ -9,12 +9,10 @@
             (click)="onSaveClick()"
         >   Save
         </button>
-    </div>
-}
-@else {
-    @if (content) {
-        <div class="view-contianer">
-            <quill-view [content]="content"></quill-view>
-        </div>
     }
-}
+    @else {
+        @if (content) {
+            <quill-view [content]="content"></quill-view>
+        }
+    } 
+</div>
