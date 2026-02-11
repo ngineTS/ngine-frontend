@@ -43,10 +43,12 @@ export class UserManagementComponent extends NavigationBaseComponent implements 
     roleIds: string[];
   }> = {};
 
-  constructor(private _roleService: RoleService,
-              private _userService: UserService,
-              private _snackbarService: SnackBarService,
-              private _route: ActivatedRoute) { super(); }
+  constructor(
+    private _roleService: RoleService,
+    private _userService: UserService,
+    private _snackbarService: SnackBarService,
+    private _route: ActivatedRoute
+  ) { super(); }
 
   /**
    * Lifecycle hook called after component has been initialized.
