@@ -144,6 +144,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   /**
    * Create generic form inputs object (of type DeepFormConfig<...>)
    * based on input configurations then open form to edit row.
+   * 
    * @param row The object (of type T) to edit.
    */
   editItem(row: T) {
@@ -200,6 +201,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   /**
    * Check if input is a standard input (i.e not a dropdown).
+   * 
    * @param inputConfig The input to check.
    */
   isStandardInput(inputConfig: CustomFormInput): boolean {
