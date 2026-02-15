@@ -28,7 +28,8 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
   constructor(private _http: HttpClient) { super(); }
 
   content!: Array<object>; // The content reprensenting the table sample.
-  tableConfig!: TableViz; // The table and columns/inputs configuration. 
+  tableConfig!: TableViz; // The table and columns/inputs configuration.
+  tableVizPayload: Omit<TableViz, 'id' | 'customFormInputs'> | undefined; // The tableViz payload used to save or update.
   tableNames: Array<string> | null = []; // The list of table names used as dropdown items.
 
   ngOnInit() {
@@ -38,9 +39,8 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
   
   /**
    * Get table configuration.
-   * If it exists then get table content and
-   * build fake input configuration (needed for generic table component),
-   * else do nothing.
+   * If it exists then get table content and build dummy input configuration 
+   * (needed for generic table component), else do nothing.
    */
   getContentInformation() {
     this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this._navigation.id}`)
@@ -64,51 +64,34 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
       .subscribe(resp => {
         if (resp) {
           this.content = resp;
-          this.buildFakeInputsConfig(this.tableConfig, resp[0]);
+          this.buildDummyInputsConfig(this.tableConfig, resp[0]);
         }
       });
   }
 
   /**
    * Method triggered when table names dropdown selection changes.
-   * 
    * - Get table content from selected table name.
    * - Build table configuration (needed for generic table component).
-   * @param event The MatSelectChange event containing table name selected.
+   * 
+   * @param event The MatSelectChange event (table name selected).
    */
   onSelectTable(event: MatSelectChange) {
-    this._http.get<Array<object>>(`${environment.APIURL}table-viz/table-content/${event.value}`)
-      .pipe(
-        retry(2),
-        take(1),
-        tap(x => {
-          if (this._isEditing && this.tableConfig) {
-            this.tableConfig.tableName = event.value;
-            this.tableConfig.tableLabel = event.value;
-          }
-          else {
-            this.tableConfig = {
-              id: null,
-              navigationId: this._navigation.id,
-              tableName: event.value,
-              tableLabel: event.value,
-              isEditable: false,
-              customFormInputs: []
-            }
-          }
-          this.buildFakeInputsConfig(this.tableConfig, x[0]);
-        })
-      )
-      .subscribe(resp => this.content = resp);
+    this.tableVizPayload = {
+      navigationId: this._navigation.id,
+      tableName: event.value,
+      tableLabel: event.value,
+      isEditable: false
+    }
   }
 
   /**
-   * Define fake input configuration to be passed to generic table component.
+   * Define dummy inputs configuration to be passed to generic table component.
    * 
-   * @param tableViz The table configuration. 
+   * @param tableViz The table configuration.
    * @param contentRow The table row sample used to get column names.
    */
-  buildFakeInputsConfig(tableConfig: TableViz, contentRow: object) {
+  buildDummyInputsConfig(tableConfig: TableViz, contentRow: object) {
     const inputConfigs: Array<CustomFormInput> = [];
     for (const key in contentRow) {
       inputConfigs.push({
@@ -133,17 +116,21 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
    * Upsert table configuration into database.
    */
   onSaveSelectionClick() {
-    let {customFormInputs, ...tableConfigPayload} = this.tableConfig;
-    this._http.post<TableViz>(`${environment.APIURL}table-viz`, tableConfigPayload)
-    .pipe(
-      take(1),
-      tap(() => this.getContentInformation())
-    )
-    .subscribe(() => this._stopEditing.emit(true));
+    if (this.tableConfig) {
+      this._http.patch<TableViz>(`${environment.APIURL}table-viz/${this.tableConfig.id}`, this.tableVizPayload)
+      .pipe(take(1), tap(() => this.getContentInformation()))
+      .subscribe(() => this._stopEditing.emit(true));
+    }
+    else {
+      this._http.post<TableViz>(`${environment.APIURL}table-viz`, this.tableVizPayload)
+      .pipe(take(1), tap(() => this.getContentInformation()))
+      .subscribe(() => this._stopEditing.emit(true));
+    }
   }
 
   /**
    * Get application table names.
+   * 
    * @returns An array of table names.
    */
   getTableNames() {
