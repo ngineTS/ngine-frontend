@@ -7,13 +7,13 @@
     </div>
 
     @if (canAdd) {
-          <button 
-            matButton="outlined"
-            class="col-1 ms-auto me-4"
-            (click)="addItem()"
-          >
-            +
-          </button>
+        <button 
+          matButton="outlined"
+          class="col-1 ms-auto me-4"
+          (click)="addItem()"
+        >
+          +
+        </button>
     }
 </div>
 
@@ -22,24 +22,24 @@
 
     @for (inputConfig of tableConfig.customFormInputs; track inputConfig.columnName) {
         <ng-container matColumnDef="{{ inputConfig.columnName }}">
-              <th 
-                mat-header-cell 
-                *matHeaderCellDef 
-                mat-sort-header
-                class="fw-bold"> 
-                {{ inputConfig.inputLabel }} 
-              </th>
-              <td mat-cell *matCellDef="let row"> 
-                @if (inputConfig.inputType === 'file') {
-                  <a class="file-link" 
-                     (click)="redirectToS3File(row[inputConfig.columnName])">
-                     {{ row[inputConfig.columnName] }}
-                  </a>
-                }
-                @else {
-                  <span>{{ row[inputConfig.columnName] }}</span>
-                }
-              </td>
+            <th 
+              mat-header-cell 
+              *matHeaderCellDef 
+              mat-sort-header
+              class="fw-bold"> 
+              {{ inputConfig.inputLabel }} 
+            </th>
+            <td mat-cell *matCellDef="let row"> 
+              @if (inputConfig.inputType === 'file') {
+                <a class="file-link" 
+                    (click)="redirectToS3File(row[inputConfig.columnName])">
+                    {{ row[inputConfig.columnName] }}
+                </a>
+              }
+              @else {
+                <span>{{ row[inputConfig.columnName] }}</span>
+              }
+            </td>
         </ng-container>
     }
 
