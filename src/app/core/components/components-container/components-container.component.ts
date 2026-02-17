@@ -34,7 +34,6 @@ export class ComponentsContainer implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _navigationService: NavigationService,
-    private _matDialog: MatDialog,
     private _menuService: MenuService,
     private _appService: AppService,
     private _snackbarService: SnackBarService,
@@ -62,7 +61,7 @@ export class ComponentsContainer implements OnInit {
   drop(event: CdkDragDrop<Navigation[]>): void {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(this.navigation.children!, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index })});
+    event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index }) });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
   }
 

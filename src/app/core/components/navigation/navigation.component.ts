@@ -106,7 +106,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.instance._stopEditing.subscribe(resp => {
       this._isEditing = !resp;
       this.containerRef.setInput('_isEditing', this._isEditing);
-    })
+    });
   }
 
   /**
