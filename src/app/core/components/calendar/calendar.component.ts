@@ -76,34 +76,34 @@ export class CalendarComponent extends NavigationBaseComponent {
 
   getCalendarEvent() {
     this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this._navigation.id}`)
-              .pipe(
-                retry(this._retryCount),
-                take(this._takeCount),
-                map<Calendar[], CalendarOptions["events"]>(dbEvents => {
-                  const calendarEvents: CalendarOptions["events"] = [];
-                  dbEvents.forEach(event => {
-                    calendarEvents.push({
-                      id: event.id,
-                      title: event.url ? event.title + ' 🌐' : event.title,
-                      start: event.startDate,
-                      end: event.endDate,
-                      url: event.url,
-                      allDay: event.allDay,
-                      extendedProps: {
-                        description: event.description,
-                        category: event.category,
-                        allDay: event.allDay,
-                        fileId: event.fileId,
-                        mediaType: event.media?.type
-                      }
-                    });
-                  });
-                  return calendarEvents;
-                })
-              )
-              .subscribe(resp => {
-                this.calendarOptions.events = resp;
-              });
+      .pipe(
+        retry(this._retryCount),
+        take(this._takeCount),
+        map<Calendar[], CalendarOptions["events"]>(dbEvents => {
+          const calendarEvents: CalendarOptions["events"] = [];
+          dbEvents.forEach(event => {
+            calendarEvents.push({
+              id: event.id,
+              title: event.url ? event.title + ' 🌐' : event.title,
+              start: event.startDate,
+              end: event.endDate,
+              url: event.url,
+              allDay: event.allDay,
+              extendedProps: {
+                description: event.description,
+                category: event.category,
+                allDay: event.allDay,
+                fileId: event.fileId,
+                mediaType: event.media?.type
+              }
+            });
+          });
+          return calendarEvents;
+        })
+      )
+      .subscribe(resp => {
+        this.calendarOptions.events = resp;
+      });
   }
 
   handleEventMouseEnter(arg: EventHoveringArg) {
