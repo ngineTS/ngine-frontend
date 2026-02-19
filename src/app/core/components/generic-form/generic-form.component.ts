@@ -79,62 +79,14 @@ export class GenericFormComponent<
         this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
       }
     }
-    //edit
     if (this._data.id) {
-      this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
-        .pipe(take(1))
-        .subscribe({
-          next: () => {
-            this.isSaving.set(false);
-            this.showSuccessSnackBar('edited');
-            this._dialogRef.close('edited');
-          },
-          error: () => {
-            this.isSaving.set(false);
-          }
-        });
+      this.updateObject(); //edit
     }
-    //add
     else {
-      //if navigationId is passed then save it in the db;
-      if (this._data.navigationId) {
-        this.formContent.addControl(
-          'navigationId', 
-          this._formBuilder.control(this._data.navigationId)
-        );
-      }
-      this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
-        .pipe(take(1))
-        .subscribe({
-          next: () => {
-            this.isSaving.set(false);
-            this.showSuccessSnackBar('added');
-            this._dialogRef.close('added');
-          },
-          error: () => {
-            this.isSaving.set(false);
-          }
-        });
+      this.saveObject(); //add
     }
   }
 
-  deleteObject() {
-    if (confirm("Are you sure to delete this element?")) { 
-      this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
-        .pipe(take(1))
-        .subscribe({
-          next: () => {
-            this.isSaving.set(false);
-            this.showSuccessSnackBar('deleted');
-            this._dialogRef.close('deleted');
-          },
-          error: () => {
-            this.isSaving.set(false);
-          }
-        });
-    }
-
-  }
 
   buildFormGroup(data: any): FormGroup {
     const group: any = {};
@@ -233,6 +185,61 @@ export class GenericFormComponent<
       return fileId;
     }
     return 'No file selected'
+  }
+
+
+  saveObject() {
+    //if navigationId is passed then save it in the db;
+    if (this._data.navigationId) {
+      this.formContent.addControl(
+        'navigationId', 
+        this._formBuilder.control(this._data.navigationId)
+      );
+    }
+    this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.isSaving.set(false);
+          this.showSuccessSnackBar('added');
+          this._dialogRef.close('added');
+        },
+        error: () => {
+          this.isSaving.set(false);
+        }
+      });
+  }
+
+  updateObject() {
+    this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.isSaving.set(false);
+          this.showSuccessSnackBar('edited');
+          this._dialogRef.close('edited');
+        },
+        error: () => {
+          this.isSaving.set(false);
+        }
+      });
+  }
+
+  deleteObject() {
+    if (confirm("Are you sure to delete this element?")) { 
+      this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.isSaving.set(false);
+            this.showSuccessSnackBar('deleted');
+            this._dialogRef.close('deleted');
+          },
+          error: () => {
+            this.isSaving.set(false);
+          }
+        });
+    }
   }
 
 }
