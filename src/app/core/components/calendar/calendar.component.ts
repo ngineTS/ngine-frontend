@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveringArg } from '@fullcalendar/core';
+import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveringArg, EventMountArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
@@ -34,6 +34,8 @@ export class CalendarComponent extends NavigationBaseComponent {
   @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
   tooltipInstance: any;
   calendarApi!: CalendarApi;
+  fileIdUrlMapping: Record<string, Observable<string>> = {};
+  calendarUnsubscribe = new Subject<void>();
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
@@ -42,10 +44,21 @@ export class CalendarComponent extends NavigationBaseComponent {
     fixedWeekCount: false,
     select: (arg: DateSelectArg) => this.handleDateSelection(arg),
     eventClick: (arg: EventClickArg) => this.handleEventClick(arg),
-    eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg)
+    eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg),
+    eventDidMount: (info) => {
+      info.el.style.backgroundColor = this._navigation.typographyStyle.color;
+      info.el.style.borderColor = this._navigation.typographyStyle.color;
+      info.el.style.color = '#fff';
+    },
+    dayCellDidMount: (info) => { 
+      const numberEl = info.el.querySelector('.fc-daygrid-day-number') as HTMLElement | null;
+      numberEl!.style.color = this._navigation.typographyStyle.color;
+    },
+    dayHeaderDidMount: (info) => {
+      const headerDaysEl = info.el.querySelector('.fc-col-header-cell-cushion') as HTMLElement | null;
+      headerDaysEl!.style.color = this._navigation.typographyStyle.color;
+    }
   };
-  fileIdUrlMapping: Record<string, Observable<string>> = {};
-  calendarUnsubscribe = new Subject<void>();
 
   ngOnInit () {
     this.getCalendarEvent();
