@@ -14,6 +14,7 @@ import { RoleService } from '../../../services/role.service';
 import { catchError, firstValueFrom, retry, take, throwError } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-role-management-form',
@@ -24,6 +25,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatButtonModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatTooltipModule
   ],
   templateUrl: './role-management-form.component.html',
   styleUrl: './role-management-form.component.scss',
@@ -41,7 +43,7 @@ export class RoleManagementFormComponent implements OnInit{
              ) { }
 
   roleForm!: FormGroup;
-  navigations!: Array<Partial<Navigation>>;
+  navigations!: Array<Navigation>;
   permissions! : Array<Permission>;
   isSaving = false;
   title: string = 'Add Role';

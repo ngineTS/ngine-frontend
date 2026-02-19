@@ -25,8 +25,10 @@
                         <mat-label >Navigation</mat-label>
                         <mat-select formControlName="navigationId">
                             @for (navigation of navigations; track navigation.id) {
-                                <mat-option [value]="navigation.id" 
+                                <mat-option 
+                                    [value]="navigation.id" 
                                     [disabled]="isNavigationSelected(navigation.id!)"
+                                    matTooltip="{{ navigation.parent?.displayLabel }} > {{ navigation.displayLabel }}"
                                 >
                                     {{ navigation.displayLabel }}
                                 </mat-option>
