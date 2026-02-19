@@ -17,7 +17,7 @@ import { environment } from '../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from '../../services/media.service';
 import { FormFile } from '../../models/form-file.interface';
-import { firstValueFrom, retry, take } from 'rxjs';
+import { catchError, firstValueFrom, take, throwError } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -44,21 +44,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 /**
  * "T extends Record<string, any> & { length?: never } & { getTime?: never }"
- *  constraints the type to be an object and not an array or a date
+ * constraints the type to be an object and not an array or a date.
  */
 export class GenericFormComponent<
-                                  T extends Record<string, any> 
-                                    & { length?: never } 
-                                    & { getTime?: never }
-                                 > {
+  T extends Record<string, any> 
+    & { length?: never } 
+    & { getTime?: never }
+> {
 
-  constructor(@Inject(MAT_DIALOG_DATA) 
-              public _data: GenericFormDialogData<T>,
-              private _formBuilder: FormBuilder,
-              private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
-              private _http: HttpClient,
-              private _snackBar: MatSnackBar,
-              private _mediaService: MediaService) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) 
+    public _data: GenericFormDialogData<T>,
+    private _formBuilder: FormBuilder,
+    private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
+    private _http: HttpClient,
+    private _snackBar: MatSnackBar,
+    private _mediaService: MediaService
+  ) {}
           
   formContent!: FormGroup;
   hidePassword = signal(true);
@@ -69,24 +71,6 @@ export class GenericFormComponent<
   ngOnInit() {
     this.formContent = this.buildFormGroup(this._data.formConfig);
   }
-
-  async submitForm() {
-    this.isSaving.set(true);
-    //if new file uploaded then post it to S3 and assign file key to related form control
-    for (const formFileSetting of this.formFileSettings) {
-      if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
-        const media = await firstValueFrom(this._mediaService.uploadFileToS3(formFileSetting.formFile));
-        this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
-      }
-    }
-    if (this._data.id) {
-      this.updateObject(); //edit
-    }
-    else {
-      this.saveObject(); //add
-    }
-  }
-
 
   buildFormGroup(data: any): FormGroup {
     const group: any = {};
@@ -163,7 +147,7 @@ export class GenericFormComponent<
       formFileSetting.formFile.delete('file');
       formFileSetting.formFile.append('file', fileUploaded);
       formFileSetting.hasChanged = true;
-      formFileSetting.fileId = fileUploaded.name;  
+      formFileSetting.fileId = fileUploaded.name;
       this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(fileUploaded.name);
     }
   }
@@ -187,6 +171,29 @@ export class GenericFormComponent<
     return 'No file selected'
   }
 
+  async submitForm() {
+    this.isSaving.set(true);
+    const fileUploadError = false;
+    //if new file uploaded then post it to S3 and assign file key to related form control
+    for (const formFileSetting of this.formFileSettings) {
+      if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
+        const media = await firstValueFrom(
+          this._mediaService.uploadFileToS3(formFileSetting.formFile)
+            .pipe(catchError(err => {
+              this.isSaving.set(false);
+              return throwError(() => err);
+            }))
+        );
+        this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
+      }
+    }
+    if (this._data.id) {
+      this.updateObject(); //edit
+    }
+    else {
+      this.saveObject(); //add
+    }
+  }
 
   saveObject() {
     //if navigationId is passed then save it in the db;

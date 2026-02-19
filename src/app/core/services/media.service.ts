@@ -61,7 +61,7 @@ export class MediaService {
    */
   deleteMedia(fileName: string) {
     return this._http.delete(`${this.baseURL}file-management/${fileName}`)
-      .pipe(retry(1), take(1));
+      .pipe(take(1));
   }
 
 }
