@@ -24,7 +24,12 @@
                             <mat-label [title]="'Input Type'">Input Type</mat-label>
                             <mat-select formControlName="inputType">
                                 @for (item of inputTypeItems; track item) {
-                                    <mat-option [value]="item">{{ item }}</mat-option>
+                                    <mat-option 
+                                        [disabled]="formInputGroup.get('id')?.value"
+                                        [value]="item"
+                                    >
+                                        {{ item }}
+                                    </mat-option>
                                 }
                             </mat-select>
                         </mat-form-field>

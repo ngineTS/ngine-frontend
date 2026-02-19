@@ -55,6 +55,7 @@ export class ContentManagementFormComponent implements OnInit {
   ];
   validatorItems = ['required', 'email'];
   columnTypeItems = ['number', 'text']; // use when dropdown is selected (to know the value type)
+  hasInputBeenRemoved = false;
 
   /**
    * Lifecycle hook called after component has been initialized.
@@ -63,7 +64,6 @@ export class ContentManagementFormComponent implements OnInit {
    * - A form array for columns/inputs configuration
    */
   ngOnInit(): void {
-    console.log(this._data.tableConfig);
     this.formContent = this._formBuilder.group({
       tableLabel: new FormControl(this._data.tableConfig?.tableLabel ?? '', Validators.required),
       formInputs: this._formBuilder.array([])
@@ -130,7 +130,14 @@ export class ContentManagementFormComponent implements OnInit {
       isEditable: true
     }
     if (this._data.tableConfig?.id) {
-      this.updateTableAndInputConfig(this._data.tableConfig.id, tableVizPayload);
+      if (this.hasInputBeenRemoved) {
+        if (confirm('Are you sure to save this selection? Deleted columns cannot be recovered.')) {
+          this.updateTableAndInputConfig(this._data.tableConfig.id, tableVizPayload);
+        }
+      }
+      else {
+        this.updateTableAndInputConfig(this._data.tableConfig.id, tableVizPayload);
+      }
     }
     else {
       this.createTableAndInputConfig(tableVizPayload);
@@ -144,6 +151,7 @@ export class ContentManagementFormComponent implements OnInit {
    */
   onDeleteClick(index: number) {
     this.formInputs.removeAt(index);
+    this.hasInputBeenRemoved = true;
   }
 
   /**
