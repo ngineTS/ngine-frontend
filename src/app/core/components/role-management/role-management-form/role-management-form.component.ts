@@ -49,7 +49,7 @@ export class RoleManagementFormComponent implements OnInit{
   title: string = 'Add Role';
 
   /**
-   * Lifecycle hook called after component has been initialized,
+   * Lifecycle hook called after component has been initialized.
    * - Setup title up to form status (add or edit).
    * - Create form model.
    * - Get navigation dropdown items and add "All navigations" item.
@@ -128,6 +128,7 @@ export class RoleManagementFormComponent implements OnInit{
 
   /**
    * Save role.
+   * 
    * @returns A promise of the saved role id.
    */
   async saveRole() {
@@ -142,6 +143,7 @@ export class RoleManagementFormComponent implements OnInit{
 
   /**
    * Save roleNavigationsPermissions.
+   * 
    * @returns A promise of roleNavigationPermissions.
    */
   async saveRoleNavigationPermissions(roleId: string) {
@@ -186,6 +188,7 @@ export class RoleManagementFormComponent implements OnInit{
   /**
    * TODO: Find another way to detect selected navigation. This way has to bad performances.
    * Check if given navigation is already selected.
+   * 
    * @param navigationId The dropdown option to check.
    * @returns True if it is selected, false if not.
    * 

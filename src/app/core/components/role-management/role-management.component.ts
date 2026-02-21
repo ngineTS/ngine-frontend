@@ -68,6 +68,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
   /**
    * Open role management form to edit role.
    * After form closed, if role has been edited then reload roles.
+   * 
    * @param role The role to edit.
    */
   editRole(role: Role) {
@@ -85,6 +86,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Delete role and exclude it from roles array.
+   * 
    * @param roleId The role id to delete.
    */
   deleteRole(roleId: string) {
@@ -94,6 +96,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
           take(1)
         )
         .subscribe(() => {
+          this._snackbarService.showSuccessSnackBar(`Role deleted successfully.`);
           this.roles = this.roles.filter(role => role.id !== roleId);
           this.filteredRoles = this.roles;
         }); 
@@ -102,6 +105,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
 
   /**
    * Apply filter on displayLabel on search input keyup.
+   * 
    * @param event The keyup event.
    */
   applyFilter(event: Event) {
