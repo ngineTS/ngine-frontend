@@ -60,7 +60,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
     dialogRef.afterClosed().subscribe(message => {
       if(message) {
         this.getAllRoles();
-        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully`);
+        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully.`);
       }
     });
   }
@@ -79,7 +79,7 @@ export class RoleManagementComponent extends NavigationBaseComponent implements 
     dialogRef.afterClosed().subscribe(message => {
       if (message) {
         this.getAllRoles();
-        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully`);
+        this._snackbarService.showSuccessSnackBar(`Role ${message} successfully.`);
       }
     });
   }
