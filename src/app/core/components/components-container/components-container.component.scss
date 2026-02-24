@@ -19,21 +19,15 @@
 }
 
 .example-list {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: -webkit-fill-available;
-  gap: 25px;
+  position: relative;
   padding: 10px;
-  min-height: 60px;
-  overflow: hidden;
 }
 
 .example-box {
+  position: absolute;
   color: rgba(0, 0, 0, 0.87);
-  display: inline-block;
   box-sizing: border-box;
   background: transparent;
-  position: relative;
   max-width: -webkit-fill-available;
 }
 

@@ -3,15 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { CommonModule } from '@angular/common';
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { MenuService } from '../../services/menu.service';
 import { AppService } from '../../services/app.service';
 import { SnackBarService } from '../../services/snackbar.service';
+import { ContainerLayoutService } from '../../services/container-layout.service';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class ComponentsContainer implements OnInit {
     private _menuService: MenuService,
     private _appService: AppService,
     private _snackbarService: SnackBarService,
-    private _router: Router
+    private _router: Router,
+    private _containerLayoutService: ContainerLayoutService,
   ) {}
 
   /** 
@@ -82,6 +84,20 @@ export class ComponentsContainer implements OnInit {
           this._appService.createAppRouting(this._router.url);
         });
     }
+  }
+
+  
+  onDragEnded(event: CdkDragEnd, navigation: Navigation) {
+    const positon = event.source.getFreeDragPosition();
+    console.log('Nav', navigation);
+    console.log('New position', positon);
+    const navigationPosition = {
+      xPos: positon.x,
+      yPos: positon.y,
+    }
+    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+      .pipe(take(1))
+      .subscribe(resp => console.log(resp));
   }
 
 }

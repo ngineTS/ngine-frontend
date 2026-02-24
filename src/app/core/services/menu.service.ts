@@ -107,7 +107,17 @@ export class MenuService {
                     value: stylePayload.containerLayout.gap ?? 20,
                     type: 'number',
                     validators: []
-                }
+                },
+                xPos: {
+                    value: stylePayload.containerLayout.xPos ?? null,
+                    type: 'number',
+                    validators: []
+                },
+                yPos: {
+                    value: stylePayload.containerLayout.yPos ?? null,
+                    type: 'number',
+                    validators: []
+                },
             }
         }
 
