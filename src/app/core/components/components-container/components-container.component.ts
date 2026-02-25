@@ -92,8 +92,8 @@ export class ComponentsContainer implements OnInit {
     console.log('Nav', navigation);
     console.log('New position', positon);
     const navigationPosition = {
-      xPos: positon.x,
-      yPos: positon.y,
+      xPos: Math.round(positon.x),
+      yPos: Math.round(positon.y),
     }
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
