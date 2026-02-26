@@ -58,20 +58,24 @@ export class ComponentsContainer implements OnInit {
 
   /**
    * Lifecyle hook called after the component has been initialized.
-   * Retrieve route snapshot data properties.
+   * - retrieve route snapshot data properties
+   * - sort navigation children for mobile screen responsivity
    */
   ngOnInit(): void {
     this.windowInnerWidth = window.innerWidth;
     this.windowInnerHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
+
     this.navigation.children?.sort((a, b) => {
       const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
       const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
       const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
       const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
+
       if (aXPosRounded !== bXPosRounded) {
         return aXPosRounded - bXPosRounded; // priority: xPos
       }
+
       return aYPosRounded - bYPosRounded; // secondary: yPos
     });
   }
