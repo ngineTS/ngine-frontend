@@ -20,6 +20,12 @@
 
 .example-list {
   position: relative;
+}
+
+.test-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 10px;
 }
 
@@ -28,7 +34,6 @@
   color: rgba(0, 0, 0, 0.87);
   box-sizing: border-box;
   background: transparent;
-  max-width: -webkit-fill-available;
 }
 
 .cdk-drag-preview {

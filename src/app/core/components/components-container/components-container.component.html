@@ -3,12 +3,12 @@
     <div class="example-list">       
         
         @for (child of navigation.children; track child.id) {
-            <div class="example-box" 
-                cdkDrag 
+            <div class="example-box"
+            cdkDrag 
                 (cdkDragEnded)="onDragEnded($event, child)"
                 [cdkDragFreeDragPosition]="{
-                    x: child.containerLayout.xPos ?? 0,
-                    y: child.containerLayout.yPos ?? 0,
+                    x:  child.containerLayout.xPos ? (child.containerLayout.xPos * windowInnerWidth / 100) : 0,
+                    y:  child.containerLayout.yPos ? (child.containerLayout.yPos * windowInnerHeight / 100) : 0,
                 }"
             >
                 

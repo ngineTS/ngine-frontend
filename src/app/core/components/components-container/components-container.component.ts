@@ -46,13 +46,34 @@ export class ComponentsContainer implements OnInit {
    * The components container.
    */
   navigation!: Navigation;
+  /**
+   * Window width.
+   */
+  windowInnerWidth!: number;
+  /**
+   * Window height.
+   */
+  windowInnerHeight!: number;
+
 
   /**
    * Lifecyle hook called after the component has been initialized.
    * Retrieve route snapshot data properties.
    */
   ngOnInit(): void {
+    this.windowInnerWidth = window.innerWidth;
+    this.windowInnerHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
+    this.navigation.children?.sort((a, b) => {
+      const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
+      const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
+      const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
+      const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
+      if (aXPosRounded !== bXPosRounded) {
+        return aXPosRounded - bXPosRounded; // priority: xPos
+      }
+      return aYPosRounded - bYPosRounded; // secondary: yPos
+    });
   }
 
   /**
@@ -92,8 +113,8 @@ export class ComponentsContainer implements OnInit {
     console.log('Nav', navigation);
     console.log('New position', positon);
     const navigationPosition = {
-      xPos: Math.round(positon.x),
-      yPos: Math.round(positon.y),
+      xPos: Math.round(positon.x / window.innerWidth * 100),
+      yPos: Math.round(positon.y / window.innerHeight * 100),
     }
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
