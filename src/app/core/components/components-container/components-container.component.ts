@@ -46,13 +46,13 @@ export class ComponentsContainer implements OnInit {
    */
   navigation!: Navigation;
   /**
-   * Window width.
+   * The initial window width.
    */
-  windowInnerWidth!: number;
+  initialWindowWidth!: number;
   /**
-   * Window height.
+   * The initial window height.
    */
-  windowInnerHeight!: number;
+  initialWindowHeight!: number;
 
 
   /**
@@ -61,8 +61,8 @@ export class ComponentsContainer implements OnInit {
    * - sort navigation children for mobile screen responsivity
    */
   ngOnInit(): void {
-    this.windowInnerWidth = window.innerWidth;
-    this.windowInnerHeight = window.innerHeight;
+    this.initialWindowWidth = window.innerWidth;
+    this.initialWindowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
 
     this.navigation.children?.sort((a, b) => {

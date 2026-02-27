@@ -1,17 +1,17 @@
 @if (navigation.children) {
     
     <!-- List of navigations -->
-    <div [class]="windowInnerWidth > 500 ? '' : 'small-screen-flex'">       
+    <div [class]="initialWindowWidth > 500 ? '' : 'small-screen-flex'">       
     
         @for (child of navigation.children; track child.id) {
 
-            @if (windowInnerWidth > 500) {
+            @if (initialWindowWidth > 500) {
                 <div class="example-box"
                     cdkDrag 
                     (cdkDragEnded)="onDragEnded($event, child)"
                     [cdkDragFreeDragPosition]="{
-                        x:  child.containerLayout.xPos ? (child.containerLayout.xPos * windowInnerWidth / 100) : 0,
-                        y:  child.containerLayout.yPos ? (child.containerLayout.yPos * windowInnerHeight / 100) : 0,
+                        x:  child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
+                        y:  child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
                     }"
                 >
                     <!-- Top left drag icon -->
