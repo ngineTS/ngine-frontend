@@ -30,9 +30,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
   containerRef!: ComponentRef<NavigationBaseComponent>;
   previousWidth!: number;
-  previousheight!: number;
+  previousHeight!: number;
   initialWindowWidth!: number;
-  initialWindowheight!: number;
+  initialWindowHeight!: number;
   observer: MutationObserver | undefined;
   isMouseOver = false;
 
@@ -49,15 +49,15 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnInit(): void {
     this.initialWindowWidth = window.innerWidth;
-    this.initialWindowheight = window.innerHeight;
+    this.initialWindowHeight = window.innerHeight;
     this.previousWidth = this._navigation.containerLayout.width ? 
       this._navigation.containerLayout.width * this.initialWindowWidth / 100 :
       20 * this.initialWindowWidth / 100;
-    this.previousheight = this._navigation.containerLayout.height ?
-      this._navigation.containerLayout.height * this.initialWindowheight / 100 :
-      20 * this.initialWindowheight / 100;
+    this.previousHeight = this._navigation.containerLayout.height ?
+      this._navigation.containerLayout.height * this.initialWindowHeight / 100 :
+      20 * this.initialWindowHeight / 100;
     this._width = this.previousWidth;
-    this._height = this.previousheight;
+    this._height = this.previousHeight;
   }
 
   /**
@@ -154,7 +154,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
         this._navigation.containerLayout.width = navigationSize.width;
         this._navigation.containerLayout.height = navigationSize.height;
         this.previousWidth = this._width.valueOf();
-        this.previousheight = this._height.valueOf();
+        this.previousHeight = this._height.valueOf();
       });
   }
 
@@ -164,7 +164,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   onResetSizeClick(): void {
     this._width = this.previousWidth.valueOf();
-    this._height = this.previousheight.valueOf();
+    this._height = this.previousHeight.valueOf();
   }
 
   /**
