@@ -1,26 +1,40 @@
 @if (navigation.children) {
+    
     <!-- List of navigations -->
-    <div class="example-list">       
-        
+    <div [class]="windowInnerWidth > 500 ? '' : 'small-screen-flex'">       
+    
         @for (child of navigation.children; track child.id) {
-            <div class="example-box"
-            cdkDrag 
-                (cdkDragEnded)="onDragEnded($event, child)"
-                [cdkDragFreeDragPosition]="{
-                    x:  child.containerLayout.xPos ? (child.containerLayout.xPos * windowInnerWidth / 100) : 0,
-                    y:  child.containerLayout.yPos ? (child.containerLayout.yPos * windowInnerHeight / 100) : 0,
-                }"
-            >
-                
-                <!-- Top left drag icon -->
-                @if (navigation.permissionName?.includes('edit')) {
-                    <i class="bi bi-arrows-move drag-icon" 
-                        cdkDragHandle
-                        [style.margin-top]="child.containerLayout.marginTop + 'px'"
-                        [style.margin-left]="child.containerLayout.marginLeft + 'px'"
-                    ></i>
-                }
-                
+
+            @if (windowInnerWidth > 500) {
+                <div class="example-box"
+                    cdkDrag 
+                    (cdkDragEnded)="onDragEnded($event, child)"
+                    [cdkDragFreeDragPosition]="{
+                        x:  child.containerLayout.xPos ? (child.containerLayout.xPos * windowInnerWidth / 100) : 0,
+                        y:  child.containerLayout.yPos ? (child.containerLayout.yPos * windowInnerHeight / 100) : 0,
+                    }"
+                >
+                    <!-- Top left drag icon -->
+                    @if (navigation.permissionName?.includes('edit')) {
+                        <i class="bi bi-arrows-move drag-icon" 
+                            cdkDragHandle
+                            [style.margin-top]="child.containerLayout.marginTop + 'px'"
+                            [style.margin-left]="child.containerLayout.marginLeft + 'px'"
+                        ></i>
+                    }
+                    
+                    <!-- Navigation object -->
+                    <app-navigation
+                        [_navigation]="child"
+                        [_canAdd]="child.permissionName?.includes('add')"
+                        [_canEdit]="child.permissionName?.includes('edit')"
+                        [_canDelete]="child.permissionName?.includes('delete')"
+                    >
+                    </app-navigation>
+                </div>
+            }
+    
+            @else {
                 <!-- Navigation object -->
                 <app-navigation
                     [_navigation]="child"
@@ -29,7 +43,8 @@
                     [_canDelete]="child.permissionName?.includes('delete')"
                 >
                 </app-navigation>
-            </div>
+            }
+
         }
     </div>
 }
@@ -49,6 +64,3 @@
         <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation')">Add navigation</button>
     </mat-menu>
 }
-    
-
-

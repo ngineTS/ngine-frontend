@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { CommonModule } from '@angular/common';
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
@@ -20,7 +20,6 @@ import { take } from 'rxjs';
   imports: [
     MatTooltipModule, 
     CommonModule, 
-    CdkDropList, 
     CdkDrag,
     CdkDragHandle,
     MatProgressSpinnerModule,
@@ -81,18 +80,6 @@ export class ComponentsContainer implements OnInit {
   }
 
   /**
-   * Drop a navigation and update position of all navigations.
-   * 
-   * @param event The CdkDragDrop event containing navigation positions.
-   */
-  drop(event: CdkDragDrop<Navigation[]>): void {
-    const navigationOrders: Partial<Navigation>[] = [];
-    moveItemInArray(this.navigation.children!, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => { navigationOrders.push({ id: navigation.id, order: index }) });
-    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
-  }
-
-  /**
    * Methods called on '+' button click.
    * Open navigation form to create navigation or navigation bar.
    * 
@@ -112,10 +99,15 @@ export class ComponentsContainer implements OnInit {
   }
 
   
+  /**
+   * Method called when drag end.
+   * Get element position from cdkDragEnd event, convert it to percentage of screen size and save it.
+   * 
+   * @param event The cdkDragEnd event.
+   * @param navigation The navigation dragged.
+   */
   onDragEnded(event: CdkDragEnd, navigation: Navigation) {
     const positon = event.source.getFreeDragPosition();
-    console.log('Nav', navigation);
-    console.log('New position', positon);
     const navigationPosition = {
       xPos: Math.round(positon.x / window.innerWidth * 100),
       yPos: Math.round(positon.y / window.innerHeight * 100),

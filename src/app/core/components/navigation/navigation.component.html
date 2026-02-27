@@ -8,14 +8,14 @@
             _navigation.navigationType.name !== 'menu-button'
         ) {
             @if (_isEditing) {
-                <i class="bi bi-x-circle edit-icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+                <i class="bi bi-x-circle icon edit-icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
             }
             @else {
-                <i class="bi bi-pen edit-icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+                <i class="bi bi-pen icon edit-icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
             }
         }
-        <i class="bi bi-marker-tip marker-icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
-        <i class="bi bi-gear gear-icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+        <i class="bi bi-marker-tip icon marker-icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
+        <i class="bi bi-gear icon gear-icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
     }
 
     <!-- Navigation shape -->

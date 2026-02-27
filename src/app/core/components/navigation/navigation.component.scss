@@ -2,10 +2,8 @@
     position: relative;
 }
 
-.edit-icon {
+.icon {
     position: absolute;
-    top: 0px;
-    right: 57px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-right: none;
@@ -18,45 +16,22 @@
     z-index: 999;
 }
 
+.edit-icon {
+    top: 0px;
+    right: 57px;
+}
+
 .gear-icon {
-    position: absolute;
     top: 0px;
     right: 0px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-top: none;
-    background-color: #dee2e6;
-    padding: 2px 6px;
-    color: #636363;
-    display: none;
-    cursor: pointer;
-    z-index: 999;
 }
 
 .marker-icon {
-    position: absolute;
     top: 0px;
     right: 29px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-top: none;
-    background-color: #dee2e6;
-    padding: 2px 6px;
-    color: #636363;
-    display: none;
-    cursor: pointer;
-    z-index: 999;
 }
 
-.navigation-container:hover .edit-icon {
-    display: block;
-}
-
-.navigation-container:hover .gear-icon {
-    display: block;
-}
-
-.navigation-container:hover .marker-icon {
+.navigation-container:hover .icon {
     display: block;
 }
 
