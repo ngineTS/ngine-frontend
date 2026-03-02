@@ -10,8 +10,8 @@
                     cdkDrag 
                     (cdkDragEnded)="onDragEnded($event, child)"
                     [cdkDragFreeDragPosition]="{
-                        x:  child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
-                        y:  child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
+                        x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
+                        y: child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
                     }"
                 >
                     <!-- Top left drag icon -->
