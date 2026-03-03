@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CdkDrag, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
@@ -39,20 +39,23 @@ export class HeaderBarComponent implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
   ) { }
 
-  /**
-   * The navigations container.
-   */
+  /** The navigations container. */
   navigation!: Navigation;
-  /**
-   * Boolean to inform if one of the items of header bar is being dragged.
-   */
+  /** Boolean to inform if one of the items of header bar is being dragged. */
   isDragging = false;
+  /** The initial window width. */
+  initialWindowWidth!: number;
+  /** The initial window height. */
+  initialWindowHeight!: number;
 
   /**
    * Lifecycle hook called after the component has been initialized.
+   * Get data from snapshot and assign initial window size.
    */
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
+    this.initialWindowWidth = window.innerWidth;
+    this.initialWindowHeight = window.innerHeight;
   }
 
   /**
@@ -114,8 +117,8 @@ export class HeaderBarComponent implements OnInit {
     event.event.stopImmediatePropagation();
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: Math.round(positon.x),
-      yPos: Math.round(positon.y),
+      xPos: Math.round(positon.x / window.innerWidth * 100),
+      yPos: 0,
     }
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))

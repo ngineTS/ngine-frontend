@@ -41,17 +41,11 @@ export class ComponentsContainer implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
   ) {}
 
-  /** 
-   * The components container.
-   */
+  /** The components container. */
   navigation!: Navigation;
-  /**
-   * The initial window width.
-   */
+  /** The initial window width. */
   initialWindowWidth!: number;
-  /**
-   * The initial window height.
-   */
+  /** The initial window height. */
   initialWindowHeight!: number;
 
 

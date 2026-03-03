@@ -33,7 +33,10 @@
                 cdkDragLockAxis="x"
                 (cdkDragStarted)="onDragStart()"
                 (cdkDragEnded)="onDragEnded($event, child)"
-                [cdkDragFreeDragPosition]="{ x: child.containerLayout.xPos ?? 0, y: child.containerLayout.yPos ?? 0 }"
+                [cdkDragFreeDragPosition]="{
+                    x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
+                    y: 0,
+                }"
                 [class.nav-container]="child.permissionName?.includes('edit')"
                 [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                 [style.opacity]="child.isDisabled ? '0.4' : '1'"
@@ -46,9 +49,8 @@
                     child.navigationType.name === 'dialog-button'
                 ) {
                     <app-custom-button
-                        (mousedown)="$event.stopPropagation()"
-                        class="button-width"
                         [navigation]="child"
+                        (mousedown)="$event.stopPropagation()"
                     ></app-custom-button>
                 }
 
@@ -56,8 +58,8 @@
                 @else {
                     <app-menu-button
                         (mousedown)="$event.stopPropagation()"
-                        class="button-width"
                         [navigation]="child"
+                        (mousedown)="$event.stopPropagation()"
                     ></app-menu-button>
                 }
                 
