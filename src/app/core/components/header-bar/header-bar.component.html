@@ -1,5 +1,5 @@
 <!-- Navigation bar -->
-<div class="d-flex flex-row align-items-center"
+<div class="menu-container"
     [style.background-color]="navigation.menu.containerStyle.backgroundColor"
     [style.width]="navigation.menu.containerLayout.width + 'px'"
     [style.height]="navigation.menu.containerLayout.height + 'px'"
@@ -22,36 +22,22 @@
     [style.margin-right]="navigation.menu.containerLayout.marginRight + 'px'"
     [style.margin-bottom]="navigation.menu.containerLayout.marginBottom + 'px'"
     [style.margin-left]="navigation.menu.containerLayout.marginLeft + 'px'"
-    [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
-    [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
-    [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
-    [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
 >
 
     <!-- List of navigations -->
-    <div cdkDropList
-        class="example-list"
-        [style.gap]="navigation.menu.containerLayout.gap + 'px'"
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="navigation.children ?? []"
-        cdkDropListOrientation="horizontal"
-        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit')"
-    >
+    <div class="header-list">
         @for (child of navigation.children; track child.id) {
             <!-- Navigation -->
-            <div cdkDrag
-                class="d-inline-flex align-items-center"
+            <div class="header-box"
+                cdkDrag
+                cdkDragLockAxis="x"
+                (cdkDragStarted)="onDragStart()"
+                (cdkDragEnded)="onDragEnded($event, child)"
+                [cdkDragFreeDragPosition]="{ x: child.containerLayout.xPos ?? 0, y: child.containerLayout.yPos ?? 0 }"
                 [class.nav-container]="child.permissionName?.includes('edit')"
                 [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                 [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                [style.margin-top]="child.containerLayout.marginTop + 'px'"
-                [style.margin-right]="child.containerLayout.marginRight + 'px'"
-                [style.margin-bottom]="child.containerLayout.marginBottom + 'px'"
-                [style.margin-left]="child.containerLayout.marginLeft + 'px'"
-                [style.padding-top]="child.containerLayout.paddingTop + 'px'"
-                [style.padding-right]="child.containerLayout.paddingRight + 'px'"
-                [style.padding-bottom]="child.containerLayout.paddingBottom + 'px'"
-                [style.padding-left]="child.containerLayout.paddingLeft + 'px'"
+                [style.backgroundColor]="navigation.menu.containerStyle.backgroundColor"
             >
                 <!-- custom button case -->
                 @if (
@@ -59,7 +45,8 @@
                     child.navigationType.name === 'external-link-button' ||
                     child.navigationType.name === 'dialog-button'
                 ) {
-                    <app-custom-button 
+                    <app-custom-button
+                        (mousedown)="$event.stopPropagation()"
                         class="button-width"
                         [navigation]="child"
                     ></app-custom-button>
@@ -67,16 +54,17 @@
 
                 <!-- menu button case -->
                 @else {
-                    <app-menu-button 
+                    <app-menu-button
+                        (mousedown)="$event.stopPropagation()"
                         class="button-width"
                         [navigation]="child"
                     ></app-menu-button>
                 }
                 
                 <!-- Edit navigation buttons -->
-                @if (child.permissionName?.includes('edit')) {
-                    <i class="bi bi-marker-tip edit-icon" (click)="editNavigationStyle(child)"></i>
-                    <i class="bi bi-gear edit-icon" (click)="manageNavigation(child)"></i>
+                @if (child.permissionName?.includes('edit') && !isDragging) {
+                    <i class="bi bi-marker-tip edit-header-icon" (click)="editNavigationStyle(child)"></i>
+                    <i class="bi bi-gear edit-header-icon" (click)="manageNavigation(child)"></i>
                 }
 
             </div>
@@ -85,8 +73,8 @@
     </div>
     
     <!-- Add navigation button -->
-    @if (navigation.permissionName?.includes('add')) {
-        <button class="add-nav-button" 
+    @if (navigation.permissionName?.includes('add')  && !isDragging) {
+        <button class="menu-button add-nav-button" 
             (click)="manageNavigation()"
             matTooltip="Add navigation"
         >   
@@ -95,9 +83,9 @@
     }
     
     <!-- Edit menu style button -->
-    @if (navigation.permissionName?.includes('edit')) {
-        <i class="bi bi-marker-tip edit-header-bar" 
-            (click)="editMenuStyle()"
+    @if (navigation.permissionName?.includes('edit')  && !isDragging) {
+        <i class="bi bi-marker-tip menu-button edit-menu-button" 
+           (click)="editMenuStyle()"
             matTooltip="Edit menu style"
         ></i>
     }

@@ -3,13 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { StylePayload } from '../../models/menu.interface';
 import { MenuService } from '../../services/menu.service';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
+import { ContainerLayoutService } from '../../services/container-layout.service';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -19,7 +21,6 @@ import { CustomButtonComponent } from '../custom-button/custom-button.component'
     RouterModule, 
     CommonModule, 
     MatTooltipModule,
-    CdkDropList, 
     CdkDrag,
     MenuButtonComponent,
     CustomButtonComponent,
@@ -35,30 +36,23 @@ export class HeaderBarComponent implements OnInit {
     private _route: ActivatedRoute,
     private _navigationService: NavigationService,
     private _menuService: MenuService,
-  ) {}
+    private _containerLayoutService: ContainerLayoutService,
+  ) { }
 
   /**
    * The navigations container.
    */
   navigation!: Navigation;
+  /**
+   * Boolean to inform if one of the items of header bar is being dragged.
+   */
+  isDragging = false;
 
   /**
    * Lifecycle hook called after the component has been initialized.
    */
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
-  }
-
-  /**
-   * Drop a navigation and update position of all navigations.
-   * 
-   * @param event The CdkDragDrop event containing navigation positions. 
-   */
-  drop(event: CdkDragDrop<Navigation[]>): void {
-    const navigationOrders: Partial<Navigation>[] = [];
-    moveItemInArray(this.navigation.children!, event.previousIndex, event.currentIndex);
-    event.container.data.forEach((navigation, index) => navigationOrders.push({ id: navigation.id, order: index })); 
-    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(resp => {});
   }
 
   /**
@@ -96,5 +90,35 @@ export class HeaderBarComponent implements OnInit {
     }
 
     this._menuService.manageStyle(navigationStylePayload, navigation.id);
+  }
+
+  /**
+   * Methods called when an item is being dragged.
+   * Set `isDragging` to true.
+   */
+  onDragStart() {
+    this.isDragging = true;
+  }
+
+  /**
+   * Method called when drag end.
+   * Get element position from cdkDragEnd event, convert it to percentage of screen size and save it.
+   * It also set `isDragging` to false;
+   * 
+   * @param event The cdkDragEnd event.
+   * @param navigation The navigation dragged.
+   */
+  onDragEnded(event: CdkDragEnd, navigation: Navigation) {
+    this.isDragging = false; 
+    event.event.preventDefault();
+    event.event.stopImmediatePropagation();
+    const positon = event.source.getFreeDragPosition();
+    const navigationPosition = {
+      xPos: Math.round(positon.x),
+      yPos: Math.round(positon.y),
+    }
+    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+      .pipe(take(1))
+      .subscribe(resp => console.log(resp));
   }
 }
