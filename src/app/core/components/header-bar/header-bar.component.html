@@ -26,6 +26,7 @@
 
     <!-- List of navigations -->
     <div class="header-list">
+
         @for (child of navigation.children; track child.id) {
             <!-- Navigation -->
             <div class="header-box"
@@ -53,7 +54,6 @@
                         (mousedown)="$event.stopPropagation()"
                     ></app-custom-button>
                 }
-
                 <!-- menu button case -->
                 @else {
                     <app-menu-button

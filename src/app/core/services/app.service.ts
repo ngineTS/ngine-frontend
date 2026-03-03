@@ -103,6 +103,7 @@ export class AppService {
     navigation: Navigation
   ): Route {
     /* create children routes */
+    redirectButtonNavigations.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
     const childrenRoutes = this.createRoutes(redirectButtonNavigations);
 
     /* create main route */
@@ -112,20 +113,17 @@ export class AppService {
       children: childrenRoutes
     }
 
-    /* if navigation has a nav bar */
+    /* if navigation has a nav bar, add redirect route at the beginning of children routes */
     if (navigation.menu) {
-      /* add redirect route at the beginning of children routes */
       childrenRoutes.unshift({
         path: '',
-        redirectTo: navigation.children?.[0]?.name ?? '',
+        redirectTo: redirectButtonNavigations[0].name ?? '',
         pathMatch: 'full'
       });
-      /* lazy load header bar component on main route */
       route.loadComponent = () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent);
     }
-    /* if navigation has no nav bar */
+    /* if navigation has no nav bar, lazy load page components container at the beginning of children routes */
     else {
-      /* lazy load page components container at the beginning of children routes */
       childrenRoutes.unshift({
         path: '',
         loadComponent: () => import('../components/components-container/components-container.component').then(m => m.ComponentsContainer),
