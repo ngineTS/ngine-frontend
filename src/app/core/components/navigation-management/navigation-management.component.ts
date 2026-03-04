@@ -124,7 +124,6 @@ export class NavigationManagementComponent implements OnInit {
           )
           .subscribe({
             next: () => {
-              console.log('edit parent change  NEXT');
               this._snackbarService.showSuccessSnackBar('Element edited successfully.');
               this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
             }

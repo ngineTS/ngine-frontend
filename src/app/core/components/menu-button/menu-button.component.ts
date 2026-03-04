@@ -8,6 +8,8 @@ import { Menu, StylePayload } from '../../models/menu.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { NavigationService } from '../../services/navigation.service';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-menu-button',
@@ -16,7 +18,9 @@ import { NavigationService } from '../../services/navigation.service';
     MatButtonModule,
     NgTemplateOutlet,
     MatTooltipModule,
-    CustomButtonComponent
+    CustomButtonComponent,
+    CdkDrag,
+    CdkDropList,
   ],
   templateUrl: './menu-button.component.html',
   styleUrl: './menu-button.component.scss'
@@ -28,18 +32,20 @@ export class MenuButtonComponent {
     private _navigationService: NavigationService
   ) {}
 
-  /**
-   * The main menu button.
-   */
+  /** The main menu button. */
   @Input() navigation!: Navigation;
-  /**
-   * Define if icon should be on top or name or on the left.
-   */
+  /** Define if icon should be on top or name or on the left. */
   @Input() iconOnTop? = false;
-  /**
-   * Object which stores navigation hovered status.
-   */
+  /** Object which stores navigation hovered status. */
   isButtonHoveredRecord: Record<string, boolean> = {};
+
+
+  /**
+   * Lifecycle hook called after component ahs been initialized.
+   */
+  ngOnInit() {
+    this.sortNavigationsByOrder();
+  }
   
   /**
    * Methods called on 'add navigation' button click.
@@ -92,6 +98,32 @@ export class MenuButtonComponent {
     };
 
     this._menuService.manageStyle(menuStylePayload, menu.id);
+  }
+
+  /**
+   * Drop a navigation and update position of all navigations.
+   * 
+   * @param event The CdkDragDrop event containing navigation positions.
+   */
+  drop(event: CdkDragDrop<Navigation[]>, navigation: Navigation): void {
+    const navigationOrders: Partial<Navigation>[] = [];
+    moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
+    navigation.children!.forEach((nav, index) => { 
+      navigationOrders.push({ id: nav.id, order: index });
+      nav.order = index;
+    });
+    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
+  }
+
+
+  /**
+   * Recursively sort navigations by order.
+   */
+  sortNavigationsByOrder() {
+    this.navigation.children?.sort((a, b) => a.order - b.order);
+    this.navigation.children?.forEach(child => 
+      child.children?.sort((a, b) => a.order - b.order)
+    );
   }
 
 }

@@ -48,6 +48,10 @@
         [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
         [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
         [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
+        cdkDropList
+        (cdkDropListDropped)="drop($event, navigation)"
+        [cdkDropListData]="navigation.children!"
+        [cdkDropListDisabled]="false"
     >
         <!-- Main menu 'edit style' button -->
         @if (navigation.permissionName?.includes('edit')) {
@@ -64,7 +68,11 @@
             
             <!-- item is a custom button-->
             @else {
-                <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">
+                <div mat-menu-item 
+                    cdkDrag
+                    class='example-box'
+                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                >
                     <app-custom-button 
                         class="col"
                         [navigation]="child" 
@@ -101,6 +109,8 @@
             
             <!-- Deep menu button -->
             <div mat-menu-item
+                cdkDrag 
+                class='example-box'
                 [matMenuTriggerFor]="subMenu"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
@@ -158,6 +168,10 @@
                     [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
                     [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
                     [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event, navigation)"
+                    [cdkDropListData]="navigation.children!"
+                    [cdkDropListDisabled]="false"
                 >
                     <!-- Deep menu 'edit style' button -->                    
                     @if (navigation.permissionName?.includes('edit')) {
@@ -167,7 +181,11 @@
                     <!-- Deep menu items -->
                     @for (child of navigation.children; track child.id) {
                         <!-- item is a custom button -->
-                        <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">
+                        <div mat-menu-item 
+                            cdkDrag
+                            class="example-box"
+                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                        >
                             <app-custom-button
                                 class="col"
                                 [navigation]="child" 
