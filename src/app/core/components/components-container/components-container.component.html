@@ -15,11 +15,7 @@
             >
                 <!-- Top left drag icon -->
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="bi bi-arrows-move drag-icon" 
-                        cdkDragHandle
-                        [style.margin-top]="child.containerLayout.marginTop + 'px'"
-                        [style.margin-left]="child.containerLayout.marginLeft + 'px'"
-                    ></i>
+                    <i class="bi bi-arrows-move drag-icon" cdkDragHandle></i>
                 }
                 
                 <!-- Navigation object -->

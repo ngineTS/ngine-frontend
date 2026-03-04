@@ -162,6 +162,7 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Recursively retrieve parent name until the last parent.
+   * 
    * @param navigationId The navigation id of the wished navigation name.
    * @returns The navigation parent name with "/" prefix.
    */
@@ -181,6 +182,7 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Update navigation big sisters order by decreasing it by 1.
+   * 
    * @param parentId The navigation parentId used to find sisters.
    * @param order The navigation order used to compare with sisters one.
    * @returns An array of navigation ids and orders setup.
@@ -202,6 +204,7 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Close popup, refresh routing and redirect to parent navigation.
+   * 
    * @param parentId The navigation parent id we want to redirect on.
    */
   refreshRoutingAndRedirect(parentId: Navigation["parentId"]) {
