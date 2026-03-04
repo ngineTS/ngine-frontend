@@ -14,6 +14,7 @@ import { AppService } from '../../services/app.service';
 import { IconsService } from '../../services/icons.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ContainerLayoutService } from '../../services/container-layout.service';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class NavigationManagementComponent implements OnInit {
     private _dialogRef: MatDialogRef<NavigationManagementComponent>,
     private _appService: AppService,
     private _iconsService: IconsService,
-    private _snackbarService: SnackBarService
+    private _snackbarService: SnackBarService,
+    private _containerLayoutService: ContainerLayoutService
   ) {}
 
   navigationForm!: FormGroup;
@@ -117,10 +119,15 @@ export class NavigationManagementComponent implements OnInit {
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
           obj.parentId === this.navigationForm.get('parentId')?.value
         ).length;
+
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
             take(1),
-            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order)),
+            switchMap(() => this._containerLayoutService.updateContainerLayout(
+              this.data.navigation!.containerLayout.id,
+              { xPos: 0, yPos: 0 }
+            ))
           )
           .subscribe({
             next: () => {

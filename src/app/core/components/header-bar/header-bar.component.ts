@@ -45,8 +45,6 @@ export class HeaderBarComponent implements OnInit {
   isDragging = false;
   /** The initial window width. */
   initialWindowWidth!: number;
-  /** The initial window height. */
-  initialWindowHeight!: number;
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -57,7 +55,6 @@ export class HeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.initialWindowWidth = window.innerWidth;
-    this.initialWindowHeight = window.innerHeight;
 
     if (this.initialWindowWidth < 600) {
       this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
@@ -133,4 +130,5 @@ export class HeaderBarComponent implements OnInit {
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });
   }
+
 }

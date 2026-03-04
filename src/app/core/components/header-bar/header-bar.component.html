@@ -38,7 +38,9 @@
                     (cdkDragStarted)="onDragStart()"
                     (cdkDragEnded)="onDragEnded($event, child)"
                     [cdkDragFreeDragPosition]="{
-                        x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
+                        x: (child.containerLayout.xPos && child.containerLayout.xPos > 0)
+                            ? (child.containerLayout.xPos * initialWindowWidth / 100) 
+                            : 0,
                         y: 0,
                     }"
                     [class.nav-container]="child.permissionName?.includes('edit')"
