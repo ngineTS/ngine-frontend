@@ -8,6 +8,7 @@
             @if (initialWindowWidth > 500) {
                 <div class="example-box"
                     cdkDrag 
+                    [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
                     (cdkDragEnded)="onDragEnded($event, child)"
                     [cdkDragFreeDragPosition]="{
                         x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,

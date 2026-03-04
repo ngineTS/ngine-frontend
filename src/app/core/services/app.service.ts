@@ -103,7 +103,6 @@ export class AppService {
     navigation: Navigation
   ): Route {
     /* create children routes */
-    redirectButtonNavigations.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
     const childrenRoutes = this.createRoutes(redirectButtonNavigations);
 
     /* create main route */
@@ -113,16 +112,16 @@ export class AppService {
       children: childrenRoutes
     }
 
-    /* if navigation has a nav bar, add redirect route at the beginning of children routes */
+    /* if navigation has a nav bar */
     if (navigation.menu) {
       childrenRoutes.unshift({
         path: '',
-        redirectTo: redirectButtonNavigations[0].name ?? '',
+        redirectTo: this.getRedirectToPathName(navigation, redirectButtonNavigations) ?? '',
         pathMatch: 'full'
       });
       route.loadComponent = () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent);
     }
-    /* if navigation has no nav bar, lazy load page components container at the beginning of children routes */
+    /* if navigation has no nav bar */
     else {
       childrenRoutes.unshift({
         path: '',
@@ -137,26 +136,51 @@ export class AppService {
    * Recursively retrieve redirect button children inside menu button.
    * This method is used to create the navigation routes because only redirect-button can be routes.
    * 
-   * @param navigation The navigation where we want to filter the children on redirect-button type only.
+   * @param navigation The navigation which we want to filter the children on redirect-button type only.
    * @param redirectButtonsArray The current array of redirect button children.
    * @returns The array of redirect button children.
    */
   retrieveRedirectButtonChildren(
     navigation: Navigation,
-    redirectButtonsArray: Array<Navigation> = []
+    redirectButtonsNavigations: Array<Navigation> = []
   ): Array<Navigation> {
     if (navigation.children) {
-      redirectButtonsArray.push(
+      redirectButtonsNavigations.push(
         ...navigation.children.filter(child => child.navigationType.name === 'redirect-button')
       );
       for (const child of navigation.children) {
         if (child.navigationType.name === 'menu-button') {
-          redirectButtonsArray.push(...this.retrieveRedirectButtonChildren(child));
+          redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
         }
       }
     }
 
-    return redirectButtonsArray;
+    return redirectButtonsNavigations;
+  }
+
+  
+  /**
+   * Get redirectTo path name by excluding redirectButtons 
+   *
+   * @description
+   * 1. Exclude routes which don't have navigation as parent (menu buttons items).
+   * 2. Sort the rest by xPos.
+   * 3. Return redirectButton name.
+   * @param navigation The navigation associated to routing module.
+   * @param redirectButtonNavigations The redirect buttons navigations corresponding to routing module routes.
+   * @returns The redirectTo path name.
+   */
+  getRedirectToPathName(
+    navigation: Navigation,
+    redirectButtonNavigations: Array<Navigation>
+  ) {
+    const redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
+      .filter(obj => obj.parentId === navigation.id);
+    
+    redirectButtonNavigationsWithoutOnesInsideMenu
+      .sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+
+    return redirectButtonNavigationsWithoutOnesInsideMenu[0].name;
   }
 
 }
