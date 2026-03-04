@@ -51,7 +51,7 @@
         cdkDropList
         (cdkDropListDropped)="drop($event, navigation)"
         [cdkDropListData]="navigation.children!"
-        [cdkDropListDisabled]="false"
+        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > 600)"
     >
         <!-- Main menu 'edit style' button -->
         @if (navigation.permissionName?.includes('edit')) {
@@ -70,7 +70,7 @@
             @else {
                 <div mat-menu-item 
                     cdkDrag
-                    class='example-box'
+                    [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
                     [style.opacity]="child.isDisabled ? '0.4' : '1'"
                 >
                     <app-custom-button 
@@ -110,7 +110,7 @@
             <!-- Deep menu button -->
             <div mat-menu-item
                 cdkDrag 
-                class='example-box'
+                [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
                 [matMenuTriggerFor]="subMenu"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
@@ -171,7 +171,7 @@
                     cdkDropList
                     (cdkDropListDropped)="drop($event, navigation)"
                     [cdkDropListData]="navigation.children!"
-                    [cdkDropListDisabled]="false"
+                    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > 600)"
                 >
                     <!-- Deep menu 'edit style' button -->                    
                     @if (navigation.permissionName?.includes('edit')) {
@@ -183,7 +183,7 @@
                         <!-- item is a custom button -->
                         <div mat-menu-item 
                             cdkDrag
-                            class="example-box"
+                            [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
                             [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         >
                             <app-custom-button

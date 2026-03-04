@@ -57,8 +57,7 @@
     align-items: center;
 }
 
-.example-box {
-  position: relative;
+.drag-box {
   cursor: move;
 }
 
@@ -79,6 +78,6 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.menu-panel.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+.menu-panel.cdk-drop-list-dragging .drag-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

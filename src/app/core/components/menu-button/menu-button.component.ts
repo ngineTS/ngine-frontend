@@ -38,12 +38,15 @@ export class MenuButtonComponent {
   @Input() iconOnTop? = false;
   /** Object which stores navigation hovered status. */
   isButtonHoveredRecord: Record<string, boolean> = {};
+  /** Initial window width. */
+  initialWindowWidth!: number;
 
 
   /**
    * Lifecycle hook called after component ahs been initialized.
    */
   ngOnInit() {
+    this.initialWindowWidth = window.innerWidth;
     this.sortNavigationsByOrder();
   }
   
