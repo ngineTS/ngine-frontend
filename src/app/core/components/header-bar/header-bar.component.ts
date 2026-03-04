@@ -59,7 +59,7 @@ export class HeaderBarComponent implements OnInit {
     this.initialWindowWidth = window.innerWidth;
     this.initialWindowHeight = window.innerHeight;
 
-    if (this.initialWindowWidth < 500) {
+    if (this.initialWindowWidth < 600) {
       this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
     }
   }

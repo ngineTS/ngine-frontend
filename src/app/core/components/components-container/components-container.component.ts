@@ -59,7 +59,7 @@ export class ComponentsContainer implements OnInit {
     this.initialWindowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
 
-    if (this.initialWindowWidth < 500) {
+    if (this.initialWindowWidth < 600) {
       this.navigation.children?.sort((a, b) => {
         const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
         const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;

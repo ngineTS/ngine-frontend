@@ -1,11 +1,11 @@
 @if (navigation.children) {
     
     <!-- List of navigations -->
-    <div [class]="initialWindowWidth > 500 ? '' : 'small-screen-flex'">       
+    <div [class]="initialWindowWidth > 600 ? '' : 'small-screen-flex'">       
     
         @for (child of navigation.children; track child.id) {
 
-            @if (initialWindowWidth > 500) {
+            @if (initialWindowWidth > 600) {
                 <div class="example-box"
                     cdkDrag 
                     [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
