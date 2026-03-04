@@ -78,7 +78,7 @@ export class NavigationManagementComponent implements OnInit {
       showIconOnly: [this.data.navigation?.showIconOnly ?? null],
       displayLabel: [this.data.navigation?.displayLabel ?? null, [
         Validators.required,
-        Validators.maxLength(50)
+        Validators.maxLength(30)
       ]],
       description: [this.data.navigation?.description ?? null],
       isDisabled: [this.data.navigation?.isDisabled ?? false],
