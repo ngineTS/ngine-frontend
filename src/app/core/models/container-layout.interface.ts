@@ -11,7 +11,6 @@ export interface ContainerLayout {
 	paddingRight: number | null;
 	paddingBottom: number | null;
 	paddingLeft: number | null;
-	gap: number;
 	xPos: number | null;
 	yPos: number | null;
 }
