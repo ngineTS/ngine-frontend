@@ -41,7 +41,7 @@ export class HeaderBarComponent implements OnInit {
 
   /** The navigations container. */
   navigation!: Navigation;
-  /** Boolean to inform if one of the items of header bar is being dragged. */
+  /** Boolean to inform if one of the items of navigation bar is being dragged. */
   isDragging = false;
   /** The initial window width. */
   initialWindowWidth!: number;
