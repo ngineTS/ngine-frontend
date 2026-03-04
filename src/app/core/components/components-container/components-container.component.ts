@@ -48,7 +48,6 @@ export class ComponentsContainer implements OnInit {
   /** The initial window height. */
   initialWindowHeight!: number;
 
-
   /**
    * Lifecyle hook called after the component has been initialized.
    * - retrieve route snapshot data properties

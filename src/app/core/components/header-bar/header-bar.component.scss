@@ -98,10 +98,6 @@
   cursor: pointer;
 }
 
-.burger-menu-item {
-  width: 100%;
-}
-
 ::ng-deep .burger-menu.mat-mdc-menu-panel {
   width: calc(100vw + 1px) !important;
   max-width: 100vw !important;

@@ -74,7 +74,6 @@
                 [iconOnTop]="true"
             ></app-custom-button>
         }
-
         <!-- Menu button case -->
         @else if (_navigation.navigationType.name === 'menu-button') {
             <app-menu-button 
@@ -82,7 +81,6 @@
                 [iconOnTop]="true"
             ></app-menu-button>
         }
-
         <!-- Component case -->
         @else {
             <ng-template #container></ng-template>

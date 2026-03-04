@@ -1,9 +1,9 @@
 <!-- List of navigations -->
 <div [class]="initialWindowWidth > 600 ? '' : 'small-screen-flex'" style="position: relative;">       
-
     @for (child of navigation.children; track child.id) {
 
         @if (initialWindowWidth > 600) {
+            <!-- Draggable element -->
             <div class="example-box"
                 cdkDrag 
                 [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
@@ -32,7 +32,6 @@
                 </app-navigation>
             </div>
         }
-
         @else {
             <!-- Navigation object -->
             <app-navigation
@@ -46,7 +45,6 @@
 
     }
 </div>
-
 
 <!-- Add navigation button -->
 @if (navigation.permissionName?.includes('add')) {
