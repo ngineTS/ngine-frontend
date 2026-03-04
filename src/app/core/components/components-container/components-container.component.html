@@ -1,41 +1,27 @@
-@if (navigation.children) {
-    
-    <!-- List of navigations -->
-    <div [class]="initialWindowWidth > 600 ? '' : 'small-screen-flex'">       
-    
-        @for (child of navigation.children; track child.id) {
+<!-- List of navigations -->
+<div [class]="initialWindowWidth > 600 ? '' : 'small-screen-flex'" style="position: relative;">       
 
-            @if (initialWindowWidth > 600) {
-                <div class="example-box"
-                    cdkDrag 
-                    [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
-                    (cdkDragEnded)="onDragEnded($event, child)"
-                    [cdkDragFreeDragPosition]="{
-                        x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
-                        y: child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
-                    }"
-                >
-                    <!-- Top left drag icon -->
-                    @if (navigation.permissionName?.includes('edit')) {
-                        <i class="bi bi-arrows-move drag-icon" 
-                            cdkDragHandle
-                            [style.margin-top]="child.containerLayout.marginTop + 'px'"
-                            [style.margin-left]="child.containerLayout.marginLeft + 'px'"
-                        ></i>
-                    }
-                    
-                    <!-- Navigation object -->
-                    <app-navigation
-                        [_navigation]="child"
-                        [_canAdd]="child.permissionName?.includes('add')"
-                        [_canEdit]="child.permissionName?.includes('edit')"
-                        [_canDelete]="child.permissionName?.includes('delete')"
-                    >
-                    </app-navigation>
-                </div>
-            }
-    
-            @else {
+    @for (child of navigation.children; track child.id) {
+
+        @if (initialWindowWidth > 600) {
+            <div class="example-box"
+                cdkDrag 
+                [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
+                (cdkDragEnded)="onDragEnded($event, child)"
+                [cdkDragFreeDragPosition]="{
+                    x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
+                    y: child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
+                }"
+            >
+                <!-- Top left drag icon -->
+                @if (navigation.permissionName?.includes('edit')) {
+                    <i class="bi bi-arrows-move drag-icon" 
+                        cdkDragHandle
+                        [style.margin-top]="child.containerLayout.marginTop + 'px'"
+                        [style.margin-left]="child.containerLayout.marginLeft + 'px'"
+                    ></i>
+                }
+                
                 <!-- Navigation object -->
                 <app-navigation
                     [_navigation]="child"
@@ -44,24 +30,48 @@
                     [_canDelete]="child.permissionName?.includes('delete')"
                 >
                 </app-navigation>
-            }
-
+            </div>
         }
-    </div>
-}
+
+        @else {
+            <!-- Navigation object -->
+            <app-navigation
+                [_navigation]="child"
+                [_canAdd]="child.permissionName?.includes('add')"
+                [_canEdit]="child.permissionName?.includes('edit')"
+                [_canDelete]="child.permissionName?.includes('delete')"
+            >
+            </app-navigation>
+        }
+
+    }
+</div>
+
 
 <!-- Add navigation button -->
 @if (navigation.permissionName?.includes('add')) {
     <button 
+        cdkDrag
         matButton 
         [matMenuTriggerFor]="menu" 
         class="add-nav-button">
         +
     </button>
+    
     <mat-menu #menu="matMenu">
         @if (navigation.children?.length === 0) {
-            <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation-bar')">Add navigation bar</button>
+            <button
+                mat-menu-item
+                (click)="openFormToAddNavigationBarOrNavigation('navigation-bar')"
+            >
+                Add navigation bar
+            </button>
         }
-        <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation')">Add navigation</button>
+        <button
+            mat-menu-item
+            (click)="openFormToAddNavigationBarOrNavigation('navigation')"
+        >
+            Add navigation
+        </button>
     </mat-menu>
 }
