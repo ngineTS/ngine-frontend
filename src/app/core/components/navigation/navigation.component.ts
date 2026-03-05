@@ -10,6 +10,9 @@ import { MenuService } from '../../services/menu.service';
 import { StylePayload } from '../../models/menu.interface';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
+import { TypographyStyleService } from '../../services/typography-style.service';
+import { ContainerStyleService } from '../../services/container-style.service';
+import { DeepFormConfig } from '../../models/form-input.interface';
 
 @Component({
   selector: 'app-navigation',
@@ -39,6 +42,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   constructor(
     private _componentContainerService: ComponentsContainerService,
     private _containerLayoutService: ContainerLayoutService,
+    private _containerStyleService: ContainerStyleService,
+    private _typographyStyleService: TypographyStyleService,
     private _menuService: MenuService,
   ) { 
     super(); 
@@ -180,10 +185,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation style.
    */
   editNavigationStyle() {
-    const navigationStylePayload: StylePayload = {
-      containerLayout: this._navigation.containerLayout,
-      containerStyle: this._navigation.containerStyle,
-      typographyStyle: this._navigation.typographyStyle
+    const navigationStylePayload:  DeepFormConfig<StylePayload> = {
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(this._navigation.containerLayout),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(this._navigation.containerStyle),
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)
     };
 
     this._menuService.manageStyle(navigationStylePayload, this._navigation.id);

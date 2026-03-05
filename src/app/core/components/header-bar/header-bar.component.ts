@@ -12,6 +12,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
+import { TypographyStyleService } from '../../services/typography-style.service';
+import { MatDialog } from '@angular/material/dialog';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { DeepFormConfig } from '../../models/form-input.interface';
+import { ContainerStyleService } from '../../services/container-style.service';
 
 
 @Component({
@@ -37,6 +42,8 @@ export class HeaderBarComponent implements OnInit {
     private _navigationService: NavigationService,
     private _menuService: MenuService,
     private _containerLayoutService: ContainerLayoutService,
+    private _containerStyleService: ContainerStyleService,
+    private _typographyStyleService: TypographyStyleService,
   ) { }
 
   /** The navigations container. */
@@ -76,9 +83,13 @@ export class HeaderBarComponent implements OnInit {
    * Open menu form to edit navigation bar configuration.
    */
   editMenuStyle() {
-    const menuStylePayload: Partial<StylePayload> = {
-      containerLayout: this.navigation.menu.containerLayout,
-      containerStyle: this.navigation.menu.containerStyle,
+    const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
+        this.navigation.menu.containerLayout
+      ),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        this.navigation.menu.containerStyle
+      ),
     }
 
     this._menuService.manageStyle(menuStylePayload, this.navigation.menu.id);
@@ -90,11 +101,12 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(navigation: Navigation) {
-    const navigationStylePayload: Partial<StylePayload> = {
-      containerLayout: navigation.containerLayout,
-      typographyStyle: navigation.typographyStyle
+    const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
+        navigation.typographyStyle
+      )
     }
-
+    
     this._menuService.manageStyle(navigationStylePayload, navigation.id);
   }
 

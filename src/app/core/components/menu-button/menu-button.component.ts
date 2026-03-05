@@ -9,6 +9,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { NavigationService } from '../../services/navigation.service';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DeepFormConfig } from '../../models/form-input.interface';
+import { TypographyStyleService } from '../../services/typography-style.service';
+import { ContainerLayoutService } from '../../services/container-layout.service';
+import { ContainerStyleService } from '../../services/container-style.service';
 
 
 @Component({
@@ -29,8 +33,11 @@ export class MenuButtonComponent {
 
   constructor(
     private _menuService: MenuService,
-    private _navigationService: NavigationService
-  ) {}
+    private _navigationService: NavigationService,
+    private _containerLayoutService: ContainerLayoutService,
+    private _containerStyleService: ContainerStyleService,
+    private _typographyStyleService: TypographyStyleService,
+  ) { }
 
   /** The main menu button. */
   @Input() navigation!: Navigation;
@@ -80,11 +87,11 @@ export class MenuButtonComponent {
    */
   editNavigationStyle(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();  
-    const stylePayload: Partial<StylePayload> = {
-      typographyStyle: navigation.typographyStyle
+    const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     }
 
-    this._menuService.manageStyle(stylePayload, navigation.id);
+    this._menuService.manageStyle(navigationStylePayload, navigation.id);
   }
 
   /**
@@ -94,10 +101,10 @@ export class MenuButtonComponent {
    * @param menu The menu to edit.
    */
   editMenuStyle(menu: Menu) {
-    const menuStylePayload: StylePayload = {
-      containerLayout: menu.containerLayout,
-      containerStyle: menu.containerStyle,
-      typographyStyle: menu.typographyStyle
+    const menuStylePayload: DeepFormConfig<StylePayload> = {
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(menu.containerLayout),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(menu.containerStyle),
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(menu.typographyStyle)
     };
 
     this._menuService.manageStyle(menuStylePayload, menu.id);

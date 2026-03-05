@@ -8,6 +8,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuService } from '../../services/menu.service';
 import { StylePayload } from '../../models/menu.interface';
 import { NavigationService } from '../../services/navigation.service';
+import { ContainerLayoutService } from '../../services/container-layout.service';
+import { ContainerStyleService } from '../../services/container-style.service';
+import { TypographyStyleService } from '../../services/typography-style.service';
+import { DeepFormConfig } from '../../models/form-input.interface';
 
 @Component({
   selector: 'app-empty-dialog',
@@ -22,8 +26,11 @@ export class EmptyDialogComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: { navigation: Navigation },
     private _componentsContainerService: ComponentsContainerService,
+    private _navigationService: NavigationService,
     private _menuService: MenuService,
-    private _navigationService: NavigationService
+    private _containerLayoutService: ContainerLayoutService,
+    private _containerStyleService: ContainerStyleService,
+    private _typographyStyleService: TypographyStyleService,
   ) {}
 
   injector = inject(Injector);
@@ -105,13 +112,14 @@ export class EmptyDialogComponent {
    * Open generic form to edit navigation style.
    */
   editNavigationStyle(navigation: Navigation) {
+    const navigationStylePayload: DeepFormConfig<StylePayload> = {
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(navigation.containerLayout),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(navigation.containerStyle),
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
+    };
+    
+    this._menuService.manageStyle(navigationStylePayload, navigation.id);
     this._dialogRef.close();
-    const navigationStyleForm: StylePayload = {
-      containerLayout: navigation.containerLayout,
-      containerStyle: navigation.containerStyle,
-      typographyStyle: navigation.typographyStyle
-    }
-    this._menuService.manageStyle(navigationStyleForm, navigation.id);
   }
 
   /**
