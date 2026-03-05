@@ -107,6 +107,7 @@ export class ComponentsContainer implements OnInit {
       xPos: Math.round(positon.x / window.innerWidth * 100),
       yPos: Math.round(positon.y / window.innerHeight * 100),
     }
+
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {

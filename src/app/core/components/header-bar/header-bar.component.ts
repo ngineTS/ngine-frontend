@@ -130,17 +130,19 @@ export class HeaderBarComponent implements OnInit {
     this.isDragging = false; 
     event.event.preventDefault();
     event.event.stopImmediatePropagation();
-    
-    const positon = event.source.getFreeDragPosition();
-    navigation.containerLayout.xPos = positon.x / window.innerWidth * 100;
-    
-    const navigationPosition = {
-      xPos: Math.round(navigation.containerLayout.xPos),
-    }
 
+    const positon = event.source.getFreeDragPosition();
+    const navigationPosition = {
+      xPos: Math.round(positon.x / window.innerWidth * 100),
+      yPos: 0,
+    }
+    
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe(() => {
+        navigation.containerLayout.xPos = navigationPosition.xPos;
+        navigation.containerLayout.yPos = navigationPosition.yPos;
+      });
   }
 
 }
