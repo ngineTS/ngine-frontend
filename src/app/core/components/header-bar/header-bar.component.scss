@@ -46,6 +46,10 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+.custom-button {
+  cursor: pointer !important;
+}
+
 .edit-header-icon {
   font-size: 12px;
   border: 1px solid #636363;

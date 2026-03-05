@@ -50,13 +50,14 @@
                 >
                     @if (child.navigationType.name === 'menu-button') {
                         <app-menu-button
+                            class="custom-button"
                             (mousedown)="$event.stopPropagation()"
                             [navigation]="child"
-                            (mousedown)="$event.stopPropagation()"
                         ></app-menu-button>
                     }
                     @else {
                         <app-custom-button
+                            class="custom-button"
                             [navigation]="child"
                             (mousedown)="$event.stopPropagation()"
                         ></app-custom-button>

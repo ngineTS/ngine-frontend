@@ -127,16 +127,14 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation dragged.
    */
   onDragEnded(event: CdkDragEnd, navigation: Navigation) {
-    this.isDragging = false; 
-    event.event.preventDefault();
-    event.event.stopImmediatePropagation();
+    this.isDragging = false;
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
       xPos: Math.round(positon.x / window.innerWidth * 100),
       yPos: 0,
     }
-    
+
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {
