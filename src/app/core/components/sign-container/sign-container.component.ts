@@ -33,14 +33,6 @@ export class SignContainerComponent extends NavigationBaseComponent {
     this.userEmail = this._authService.getCurrentUser()?.['userEmail'];
   }
 
-  goToSignIn(){
-    this.isSignUpTab = false;
-  }
-
-  goToSignUp(){
-    this.isSignUpTab = true;
-  }
-
   async onLogOutClick() {
     localStorage.removeItem('access_token');
     const guestSignInResponse: any = await firstValueFrom(this._authService.guestSignIn());

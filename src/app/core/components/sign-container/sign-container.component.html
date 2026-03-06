@@ -11,7 +11,7 @@
                 <app-sign-up></app-sign-up>
                 <div class="text-center mt-4">
                     <span class="align-middle">Already have an account?</span>
-                    <button matButton class="ms-2" (click)="goToSignIn()">Sign in</button>
+                    <button matButton class="ms-2" (click)="isSignUpTab = false">Sign in</button>
                 </div>
             </div>
         }
@@ -20,7 +20,7 @@
                 <app-sign-in></app-sign-in>
                 <div class="text-center mt-4">
                     <span class="align-middle">Don't have an account yet?</span>
-                    <button matButton class="ms-2" (click)="goToSignUp()">Sign up</button>
+                    <button matButton class="ms-2" (click)="isSignUpTab = true">Sign up</button>
                 </div>
             </div>
         }

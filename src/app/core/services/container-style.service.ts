@@ -10,74 +10,93 @@ import { Validators } from "@angular/forms";
 export class ContainerStyleService {
 
 
-    constructor() { }
+  constructor() { }
   
   setUpContainerStyleForm(
-    containerStyle: ContainerStyle
-  ): DeepFormConfig<Omit<ContainerStyle, 'id' | 'refId'>> { 
+    containerStyle: ContainerStyle,
+    skipedProperties?: Array<keyof ContainerStyle>
+  ): DeepFormConfig<Partial<ContainerStyle>> {
 
-    return {
+    const containerStyleFormConfig: DeepFormConfig<Partial<ContainerStyle>> = {
       backgroundColor: {
-          value: containerStyle.backgroundColor ?? '#636363',
-          type: 'color',
-          validators: [Validators.required]
+        value: containerStyle.backgroundColor ?? '#636363',
+        alias: 'Background Color',
+        type: 'color',
+        validators: [Validators.required]
       },
       borderColor: {
-          value: containerStyle.borderColor ?? null,
-          type: 'color',
-          validators: []
+        value: containerStyle.borderColor ?? null,
+        type: 'color',
+        alias: 'Border Color',
+        validators: []
       },
       borderStyle: {
-          value: containerStyle.borderStyle ?? null,
-          type: 'text',
-          validators: []
+        value: containerStyle.borderStyle ?? null,
+        alias: 'Border Style',
+        type: 'text',
+        validators: []
       },
       borderWidth: {
-          value: containerStyle.borderWidth ?? null,
-          type: 'number',
-          validators: []
+        value: containerStyle.borderWidth ?? null,
+        alias: 'Border Width',
+        type: 'number',
+        validators: []
       },
       borderTopLeftRadius: {
-          value: containerStyle.borderTopLeftRadius ?? 4,
-          type: 'number',
-          validators: [Validators.required]
+        value: containerStyle.borderTopLeftRadius ?? 4,
+        alias: 'Border Top Left Radius',
+        type: 'number',
+        validators: [Validators.required]
       },
       borderTopRightRadius: {
-          value: containerStyle.borderTopRightRadius ?? 4,
-          type: 'number',
-          validators: [Validators.required]
+        value: containerStyle.borderTopRightRadius ?? 4,
+        alias: 'Border Top Right Radius',
+        type: 'number',
+        validators: [Validators.required]
       },
       borderBottomLeftRadius: {
-          value: containerStyle.borderBottomLeftRadius ?? 4,
-          type: 'number',
-          validators: [Validators.required]
+        value: containerStyle.borderBottomLeftRadius ?? 4,
+        alias: 'Border Bottom Left Radius',
+        type: 'number',
+        validators: [Validators.required]
       },
       borderBottomRightRadius: {
-          value: containerStyle.borderBottomRightRadius ?? 4,
-          type: 'number',
-          validators: [Validators.required]
+        value: containerStyle.borderBottomRightRadius ?? 4,
+        alias: 'Border Bottom Right Radius',
+        type: 'number',
+        validators: [Validators.required]
       },
       isBorderTopHidden: {
-          value: containerStyle.isBorderTopHidden ?? false,
-          type: 'checkbox',
-          validators: [Validators.required]
+        value: containerStyle.isBorderTopHidden ?? false,
+        alias: 'Hide Top Border',
+        type: 'checkbox',
+        validators: [Validators.required]
       },
       isBorderRightHidden: {
-          value: containerStyle.isBorderRightHidden ?? false,
-          type: 'checkbox',
-          validators: [Validators.required]
+        value: containerStyle.isBorderRightHidden ?? false,
+        alias: 'Hide Right Border',
+        type: 'checkbox',
+        validators: [Validators.required]
       },
       isBorderBottomHidden: {
-          value: containerStyle.isBorderBottomHidden ?? false,
-          type: 'checkbox',
-          validators: [Validators.required]
+        value: containerStyle.isBorderBottomHidden ?? false,
+        alias: 'Hide Bottom Border',
+        type: 'checkbox',
+        validators: [Validators.required]
       },
       isBorderLeftHidden: {
-          value: containerStyle.isBorderLeftHidden ?? false,
-          type: 'checkbox',
-          validators: [Validators.required]
+        value: containerStyle.isBorderLeftHidden ?? false,
+        alias: 'Hide Left Border',
+        type: 'checkbox',
+        validators: [Validators.required]
       }
     }
+
+    if (skipedProperties) {
+      skipedProperties.forEach(key => delete containerStyleFormConfig[key]);
+    }
+
+    return containerStyleFormConfig;
   }
 
 }

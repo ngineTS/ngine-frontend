@@ -26,70 +26,90 @@ export class ContainerLayoutService {
   }
 
   setUpContainerLayoutForm (
-    containerLayout: ContainerLayout
-  ): DeepFormConfig<Omit<ContainerLayout, 'id' | 'refId'>> {
-    return {
+    containerLayout: ContainerLayout,
+    skipedProperties?: Array<keyof ContainerLayout>
+  ): DeepFormConfig<Partial<ContainerLayout>> {
+    
+    const containerLayoutFormConfig: DeepFormConfig<Partial<ContainerLayout>> = {
       width: {
           value: containerLayout.width ?? null,
+          alias: 'Width',
           type: 'number',
           validators: []
       },
       height: {
           value: containerLayout.height ?? 50,
+          alias: 'Height',
           type: 'number',
           validators: [Validators.required]
       },
       marginTop: {
-          value: containerLayout.marginTop ?? 0,
+          value: containerLayout.marginTop ?? null,
+          alias: 'Margin Top',
           type: 'number',
           validators: []
       },
       marginRight: {
-          value: containerLayout.marginRight ?? 0,
+          value: containerLayout.marginRight ?? null,
+          alias: 'Margin Right',
           type: 'number',
           validators: []
       },
       marginBottom: {
-          value: containerLayout.marginBottom ?? 0,
+          value: containerLayout.marginBottom ?? null,
+          alias: 'Margin Bottom',
           type: 'number',
           validators: []
       },
       marginLeft: {
-          value: containerLayout.marginLeft ?? 0,
+          value: containerLayout.marginLeft ?? null,
+          alias: 'Margin Left',
           type: 'number',
           validators: []
       },
       paddingTop: {
-          value: containerLayout.paddingTop ?? 0,
+          value: containerLayout.paddingTop ?? null,
+          alias: 'Padding Top',
           type: 'number',
           validators: []
       },
       paddingRight: {
-          value: containerLayout.paddingRight ?? 0,
+          value: containerLayout.paddingRight ?? null,
+          alias: 'Padding Right',
           type: 'number',
           validators: []
       },
       paddingBottom: {
-          value: containerLayout.paddingBottom ?? 0,
+          value: containerLayout.paddingBottom ?? null,
+          alias: 'Padding Bottom',
           type: 'number',
           validators: []
       },
       paddingLeft: {
-          value: containerLayout.paddingLeft ?? 0,
+          value: containerLayout.paddingLeft ?? null,
+          alias: 'Padding Left',
           type: 'number',
           validators: []
       },
       xPos: {
           value: containerLayout.xPos ?? null,
+          alias: 'X Position',
           type: 'number',
           validators: []
       },
       yPos: {
           value: containerLayout.yPos ?? null,
+          alias: 'Y Position',
           type: 'number',
           validators: []
       },
     }
+
+    if (skipedProperties) {
+      skipedProperties.forEach(key => delete containerLayoutFormConfig[key]);
+    }
+
+    return containerLayoutFormConfig;
   }
 
 }

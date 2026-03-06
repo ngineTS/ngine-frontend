@@ -83,16 +83,17 @@ export class HeaderBarComponent implements OnInit {
    * Open menu form to edit navigation bar configuration.
    */
   editMenuStyle() {
-    const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
+    const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
-        this.navigation.menu.containerLayout
+        this.navigation.menu.containerLayout, 
+        ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop', 'xPos', 'yPos']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         this.navigation.menu.containerStyle
       ),
     }
 
-    this._menuService.manageStyle(menuStylePayload, this.navigation.menu.id);
+    this._menuService.manageStyle(menuStyleFormConfig, this.navigation.menu.id);
   }
 
   /**

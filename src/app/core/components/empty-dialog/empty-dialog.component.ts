@@ -62,7 +62,7 @@ export class EmptyDialogComponent {
 
   /**
    * Lifecycle hook called when component is destroyed.
-   * Destroy containerRef
+   * Destroy containerRef.
    */
   ngOnDestroy() {
     this.containerRef?.destroy();
@@ -80,15 +80,17 @@ export class EmptyDialogComponent {
       .componentStore[navigation.navigationType.name]().then(m => 
         m[this._componentsContainerService.kebabCasetoPascaleCase(navigation.navigationType.name) + 'Component']
       );
+
     this.containerRef = this.container.createComponent(component, {
         injector: this.injector,
     });
+
     this.containerRef.setInput('_navigation', navigation);
     this.containerRef.setInput('_canAdd', navigation.permissionName?.includes('add'));
-    this.containerRef.setInput('_canEdit', navigation.permissionName?.includes('add'));
-    this.containerRef.setInput('_canDelete', navigation.permissionName?.includes('add'));
-    this.containerRef.setInput('_width', 0);
-    this.containerRef.setInput('_height', 0);
+    this.containerRef.setInput('_canEdit', navigation.permissionName?.includes('edit'));
+    this.containerRef.setInput('_canDelete', navigation.permissionName?.includes('delete'));
+    this.containerRef.setInput('_width', null);
+    this.containerRef.setInput('_height', null);
     this.containerRef.setInput('_isEditing', this._isEditing);
     this.containerRef.instance._stopEditing.subscribe(resp => {
       this._isEditing = !resp;
@@ -103,8 +105,8 @@ export class EmptyDialogComponent {
    * @param navigation The navigation to edit.
    */
   manageNavigation(navigation?: Navigation) {
-    this._dialogRef.close();
     this._navigationService.manageNavigation(this.data.navigation.id, navigation);
+    this._dialogRef.close();
   }
 
   /**
@@ -113,8 +115,18 @@ export class EmptyDialogComponent {
    */
   editNavigationStyle(navigation: Navigation) {
     const navigationStylePayload: DeepFormConfig<StylePayload> = {
-      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(navigation.containerLayout),
-      containerStyle: this._containerStyleService.setUpContainerStyleForm(navigation.containerStyle),
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
+        navigation.containerLayout,
+        ['height', 'width', 'marginBottom', 'marginLeft', 'marginRight', 'marginTop', 'xPos', 'yPos']
+      ),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        navigation.containerStyle,
+        [
+         'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
+         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
+         'isBorderRightHidden', 'isBorderTopHidden'
+        ]
+      ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     };
     

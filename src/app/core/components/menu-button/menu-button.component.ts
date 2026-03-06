@@ -101,9 +101,11 @@ export class MenuButtonComponent {
    * @param menu The menu to edit.
    */
   editMenuStyle(menu: Menu) {
-    const menuStylePayload: DeepFormConfig<StylePayload> = {
-      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(menu.containerLayout),
-      containerStyle: this._containerStyleService.setUpContainerStyleForm(menu.containerStyle),
+    const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        menu.containerStyle,
+        ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius']
+      ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(menu.typographyStyle)
     };
 

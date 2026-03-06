@@ -12,7 +12,7 @@ export interface Menu {
 }
 
 export type StylePayload = {
-    containerLayout: Omit<ContainerLayout, 'id' | 'refId'>;
-    containerStyle: Omit<ContainerStyle, 'id' | 'refId'>;
-    typographyStyle: Omit<TypographyStyle, 'id' |'refId'>;
+    containerLayout: Partial<ContainerLayout>;
+    containerStyle: Partial<ContainerStyle>;
+    typographyStyle: Partial<TypographyStyle>;
 }

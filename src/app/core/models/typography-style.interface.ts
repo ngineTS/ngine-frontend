@@ -5,5 +5,5 @@ export interface TypographyStyle {
     fontSize: number | null;
     fontWeight: number | null;
     color: string | null;
-    activeColor: string;
+    activeColor: string | null;
 }

@@ -36,14 +36,6 @@
             'none' : navigation.menu.containerStyle.borderStyle"
         [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
             'none' : navigation.menu.containerStyle.borderStyle"
-        [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
-        [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
-        [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
-        [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-        [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
-        [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
-        [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
-        [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
         cdkDropList
         (cdkDropListDropped)="drop($event, navigation)"
         [cdkDropListData]="navigation.children!"
@@ -152,14 +144,6 @@
                         'none' : navigation.menu.containerStyle.borderStyle"
                     [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
                         'none' : navigation.menu.containerStyle.borderStyle"
-                    [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
-                    [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
-                    [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
-                    [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-                    [style.padding-top]="navigation.menu.containerLayout.paddingTop + 'px'"
-                    [style.padding-right]="navigation.menu.containerLayout.paddingRight + 'px'"
-                    [style.padding-bottom]="navigation.menu.containerLayout.paddingBottom + 'px'"
-                    [style.padding-left]="navigation.menu.containerLayout.paddingLeft + 'px'"
                     cdkDropList
                     (cdkDropListDropped)="drop($event, navigation)"
                     [cdkDropListData]="navigation.children!"
