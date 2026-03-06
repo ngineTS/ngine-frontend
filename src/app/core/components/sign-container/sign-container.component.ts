@@ -8,7 +8,6 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { firstValueFrom } from 'rxjs';
 import { AppService } from '../../services/app.service';
 import { Router } from '@angular/router';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sign-container',
@@ -23,7 +22,6 @@ export class SignContainerComponent extends NavigationBaseComponent {
     private _snackbarService: SnackBarService,
     private _appService: AppService,
     private _router: Router,
-    private _matDialogRef: MatDialogRef<SignContainerComponent>
   ) { super(); }
 
   isSignUpTab: boolean = false;
@@ -39,6 +37,5 @@ export class SignContainerComponent extends NavigationBaseComponent {
     localStorage.setItem('access_token', guestSignInResponse['access_token']);
     this._appService.createAppRouting(this._router.url);
     this._snackbarService.showSuccessSnackBar('Logout successfuly.');
-    this._matDialogRef.close();
   }
 }

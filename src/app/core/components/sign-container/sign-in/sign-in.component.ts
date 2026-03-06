@@ -1,7 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { SignContainerComponent } from '../sign-container.component';
 import { AuthService } from '../../../auth/services/auth.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,7 +33,6 @@ export class SignInComponent {
 
 
   constructor(public _authService: AuthService,
-              public _dialogRef: MatDialogRef<SignContainerComponent>,
               private _appService: AppService,
               private _snackbarService: SnackBarService) { }
 
@@ -57,7 +54,6 @@ export class SignInComponent {
         localStorage.setItem('access_token', resp['access_token']);
         this._snackbarService.showSuccessSnackBar('Login successfuly.')
         this._appService.createAppRouting('/');
-        this._dialogRef.close();
       },
       error: (err /*NestJS error type*/) => {
         this.isLogin = false;

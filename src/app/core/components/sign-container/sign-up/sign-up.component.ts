@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { UserSignUpPayload } from '../../../models/user.interface';
 import { AuthService } from '../../../auth/services/auth.service';
-import { MatDialogRef } from '@angular/material/dialog';
-import { SignContainerComponent } from '../sign-container.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +27,6 @@ export class SignUpComponent {
   passwordTooShort = false;
 
   constructor(public _authService: AuthService, 
-              public _dialogRef: MatDialogRef<SignContainerComponent>,
               private _appService: AppService,
               private _snackbarService: SnackBarService
               ) { }
@@ -54,7 +51,6 @@ export class SignUpComponent {
         if (result) {
           localStorage.setItem('access_token', result['access_token']);
           this._snackbarService.showSuccessSnackBar("Welcome!");
-          this._dialogRef.close();
           this._appService.createAppRouting('/');
         }
       },
