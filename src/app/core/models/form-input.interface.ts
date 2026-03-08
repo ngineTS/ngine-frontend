@@ -49,9 +49,15 @@ export type InputType = 'email' | 'url' | 'text' | 'password' | 'number' | 'date
 
 export type GenericFormDialogData<T> = {
   payloadId: string;
-  navigationId: string;
   formConfig: DeepFormConfig<T>;
   controllerName: string;
-  formTitle: string;
-  hasDeleteButton: boolean;
+  navigationId?: string;
+  formTitle?: string;
+  hasDeleteButton?: boolean;
+}
+
+export interface FormValueEvent {
+  formGroupName: string;
+  formControlName: string;
+  formControlValue: any;
 }

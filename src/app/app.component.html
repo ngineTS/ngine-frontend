@@ -1,6 +1,22 @@
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <app-sorter [obj]="{hello: 'Hey!', world: 'World'}"></app-sorter>
+<mat-drawer-container class="sidenav-container" autosize>
+  <mat-drawer #drawer class="sidenav-content" mode="side">
+    <div class="sidenav-leave-icon">
+      <i class="bi bi-arrow-left-circle" (click)="onCloseSideNav()"></i>
+    </div>
+
+    @if (sideNavFormConfiguration) {
+      <app-generic-form
+        [formConfig]="sideNavFormConfiguration.formConfig"
+        [controllerName]="sideNavFormConfiguration.controllerName"
+        [payloadId]="sideNavFormConfiguration.payloadId"
+        [navigationId]="sideNavFormConfiguration.navigationId"
+        [hasDeleteButton]="sideNavFormConfiguration.hasDeleteButton"
+        [formTitle]="sideNavFormConfiguration.formTitle"
+        (onFormValueChange)="onSideNavFormValueChange($event)"
+        (action)="onSideNavAction($event)"
+      >
+      </app-generic-form>
+    }
   </mat-drawer>
 
   <div class="example-sidenav-content">

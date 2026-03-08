@@ -5,7 +5,7 @@ import { TypographyStyle } from "./typography-style.interface";
 import { ContainerStyle } from "./container-style.interface";
 import { Menu } from "./menu.interface";
 
-export interface Navigation {
+export interface Navigation extends Record<string, any> {
     id: string;
     parentId: string;
     name: string;

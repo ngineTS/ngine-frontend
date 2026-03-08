@@ -5,7 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { DeepFormConfig, DropdownInputConfig, FormValueEvent, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MediaService } from '../../services/media.service';
 import { FormFile } from '../../models/form-file.interface';
-import { catchError, firstValueFrom, take, throwError } from 'rxjs';
+import { catchError, debounceTime, firstValueFrom, take, throwError } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SnackBarService } from '../../services/snackbar.service';
 
@@ -70,12 +70,12 @@ export class GenericFormComponent {
   /** Event emitter for form submition. */
   @Output() action: EventEmitter<'added' | 'edited' | 'deleted'> = new EventEmitter();
   /** Event emitter for form value change.  */
-  @Output() onFormValueChange: EventEmitter<Record<string, any>> = new EventEmitter();
+  @Output() onFormValueChange: EventEmitter<FormValueEvent> = new EventEmitter();
 
 
   ngOnInit() {
     this.formContent = this.buildFormGroup(this.formConfig);
-    this.formContent.valueChanges.subscribe(resp => console.log(resp));
+    this.watchControls(this.formContent);
   }
 
   buildFormGroup(data: any): FormGroup {
@@ -246,6 +246,29 @@ export class GenericFormComponent {
           }
         });
     }
+  }
+
+  watchControls(group: FormGroup, groupName: string = '') {
+    Object.entries(group.controls).forEach(([name, control]) => {
+      console.log('Group:', group, 'Name:', name, 'Control:', control);
+      if (control instanceof FormControl) {
+        control.valueChanges
+          .pipe(debounceTime(100))
+          .subscribe(value => {
+             this.onFormValueChange.emit({
+              formGroupName: groupName,
+              formControlName: name,
+              formControlValue: value
+             });
+            console.log('Changed:', groupName, name, value)
+          });
+      }
+
+      if (control instanceof FormGroup) {
+        const nestedGroupName = groupName ? `${groupName}.${name}` : `${name}`
+        this.watchControls(control, nestedGroupName);
+      }
+    });
   }
 
 }

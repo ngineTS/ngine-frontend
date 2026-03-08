@@ -4,12 +4,13 @@ import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { SideNavService } from './core/services/side-nav.service';
-import { SorterComponent } from './core/components/sorter/sorter.component';
+import { FormValueEvent, GenericFormDialogData } from './core/models/form-input.interface';
+import { GenericFormComponent } from './core/components/generic-form/generic-form.component';
 
 @Component({
   selector: 'app-root',
@@ -17,26 +18,28 @@ import { SorterComponent } from './core/components/sorter/sorter.component';
     RouterOutlet,
     MatSidenavModule,
     MatButtonModule,
-    SorterComponent
+    GenericFormComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _appService: AppService,
-              private _router: Router,
-              private _authService: AuthService,
-              private _userEventService: UserEventService,
-              private _location: Location,
-              public _sideNavService: SideNavService
-             ) { }
+  constructor(
+    private _appService: AppService,
+    private _router: Router,
+    private _authService: AuthService,
+    private _userEventService: UserEventService,
+    private _location: Location,
+    public _sideNavService: SideNavService
+    ) { }
 
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds
   refreshTokenIntervalId: NodeJS.Timeout | undefined;
   showFiller = false;
   @ViewChild('drawer') drawer!: MatDrawer
+  sideNavFormConfiguration: GenericFormDialogData<Record<string, any>> | null = null;
 
 
   /**
@@ -48,10 +51,7 @@ export class AppComponent implements OnInit {
    * else load dynamic routing grom nested navigations.
    */
   ngOnInit() {
-    this._sideNavService.isGlobalSideNavOpened.subscribe(resp => {
-      this.drawer.toggle();
-      console.log(resp);
-    });
+    this.setSideNavListener();
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
@@ -103,4 +103,38 @@ export class AppComponent implements OnInit {
   ngOnDesotry() {
     clearInterval(this.refreshTokenIntervalId);
   }
+
+  setSideNavListener() {
+    this._sideNavService.formConfiguration
+    .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+    .subscribe(resp => {
+      console.log(resp);
+      this.sideNavFormConfiguration = resp;
+      this.drawer.toggle();
+    });
+  }
+
+  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
+    this.drawer.toggle();
+    this._sideNavService.stopSubscriptions;
+  }
+
+  onSideNavFormValueChange(event: FormValueEvent) {
+    this._sideNavService.formValueEvent.next(event);
+  }
+
+  onCloseSideNav() {
+    this._sideNavService.formValueEvent.next({
+      formGroupName: 'close',
+      formControlName: 'close',
+      formControlValue: 'close',
+    })
+    this._sideNavService.initalFormContent = null;
+    this._sideNavService.stopSubscriptions.next();
+    this.sideNavFormConfiguration = null;
+    this._sideNavService.formConfiguration.next(null);
+    this.drawer.close();
+  }
+
+
 }

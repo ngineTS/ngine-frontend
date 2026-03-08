@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, O
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
@@ -13,6 +13,7 @@ import { CustomButtonComponent } from '../custom-button/custom-button.component'
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
+import { SideNavService } from '../../services/side-nav.service';
 
 @Component({
   selector: 'app-navigation',
@@ -45,6 +46,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _menuService: MenuService,
+    private _sideNavService: SideNavService,
   ) { 
     super(); 
   }
@@ -185,6 +187,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation style.
    */
   editNavigationStyle() {
+
+
     const navigationStylePayload:  DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
@@ -195,6 +199,29 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     };
 
     this._menuService.manageStyle(navigationStylePayload, this._navigation.id);
+    
+    const initialFormContent: StylePayload = {
+      containerLayout: JSON.parse(JSON.stringify(this._navigation.containerLayout)),
+      containerStyle: JSON.parse(JSON.stringify(this._navigation.containerStyle)),
+      typographyStyle: JSON.parse(JSON.stringify(this._navigation.typographyStyle)),
+    }
+
+    this._sideNavService.initalFormContent = initialFormContent;
+
+    this._sideNavService.formValueEvent
+      .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+      .subscribe(formValueEvent => {
+        console.log(formValueEvent);
+        if (formValueEvent.formControlValue === 'close') {
+          console.log(formValueEvent);
+          this._navigation.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
+          this._navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+          this._navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+        }
+        else{
+          this._navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+        }
+      });
   }
 
   /**

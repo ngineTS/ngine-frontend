@@ -82,9 +82,7 @@ export class HeaderBarComponent implements OnInit {
    * Methods called on 'edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
-  editMenuStyle() {
-    this._sideNavService.isGlobalSideNavOpened.next(true);
-    
+  editMenuStyle() {   
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this.navigation.menu.containerLayout, 
