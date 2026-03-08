@@ -13,8 +13,6 @@ import { CustomButtonComponent } from '../custom-button/custom-button.component'
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
 import { TypographyStyleService } from '../../services/typography-style.service';
-import { MatDialog } from '@angular/material/dialog';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
 
