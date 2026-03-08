@@ -7,13 +7,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Calendar, CalendarPayload } from '../../models/calendar.interface'
 import { DeepFormConfig, GenericFormDialogData } from '../../models/form-input.interface';
 import { Validators } from '@angular/forms';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable, retry, Subject, take, takeUntil } from 'rxjs';
 import tippy from 'tippy.js';
 import { MediaService } from '../../services/media.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { FormContainerComponent } from '../form-container/form-container.component';
 
 
 @Component({
@@ -207,10 +207,11 @@ export class CalendarComponent extends NavigationBaseComponent {
       }
 
       const matDialogRef = this._matDialog.open(
-        GenericFormComponent<CalendarPayload>,
+        FormContainerComponent,
         { 
           maxWidth: '700px',
           data: {
+            formTitle: 'Add event',
             formConfig: calendarForm,
             id: null,
             navigationId: this._navigation.id,
@@ -282,16 +283,16 @@ export class CalendarComponent extends NavigationBaseComponent {
       }
 
       const dialogData: GenericFormDialogData<CalendarPayload> = {
-        title: 'Edit event',
+        formTitle: 'Edit event',
         formConfig: calendarForm,
-        id: arg.event.id,
+        payloadId: arg.event.id,
         navigationId: this._navigation.id,
         controllerName: 'calendar',
         hasDeleteButton: true 
       }
 
       const matDialogRef = this._matDialog.open(
-        GenericFormComponent<CalendarPayload>,
+        FormContainerComponent,
         { 
           maxWidth: '700px',
           data: dialogData

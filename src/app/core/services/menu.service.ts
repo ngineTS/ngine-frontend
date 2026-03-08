@@ -7,6 +7,7 @@ import { GenericFormComponent } from "../components/generic-form/generic-form.co
 import { AppService } from "./app.service";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
+import { FormContainerComponent } from "../components/form-container/form-container.component";
 
 @Injectable({
     providedIn: 'root',
@@ -35,14 +36,14 @@ export class MenuService {
      */
     manageStyle(stylePayload: DeepFormConfig<Partial<StylePayload>>, refId: string) {
         const matDialogRef = this._matDialog.open(
-            GenericFormComponent<StylePayload>,
+            FormContainerComponent,
             { 
                 maxWidth: '700px',
                 data: {
-                hasDeleteButton: false,
-                formConfig: stylePayload,
-                id: refId,
-                controllerName: 'menu',
+                    hasDeleteButton: false,
+                    formConfig: stylePayload,
+                    payloadId: refId,
+                    controllerName: 'menu',
                 }
             }
         );

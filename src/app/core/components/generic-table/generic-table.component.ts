@@ -12,6 +12,7 @@ import { CustomFormInput, TableViz } from '../../models/content-management.inter
 import { ValidatorFn, Validators } from '@angular/forms';
 import { MediaService } from '../../services/media.service';
 import { ContainerStyle } from '../../models/container-style.interface';
+import { FormContainerComponent } from '../form-container/form-container.component';
 
 
 @Component({
@@ -124,13 +125,13 @@ export class GenericTableComponent<T extends Record<string, any>> {
       }
     }
   
-    const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
+    const dialogRef = this._matDialog.open(FormContainerComponent, {
       data: {
-        id: null, //id null therefore generic form understand it has to insert a record
+        payloadId: null, //id null therefore generic form understand it has to insert a record
         navigationId: null,
         controllerName: `custom-table/${this.tableConfig.tableName}`,
         formConfig: payload,
-        title: this.tableConfig.tableLabel
+        formTitle: this.tableConfig.tableLabel
       }
     });
 
@@ -181,13 +182,13 @@ export class GenericTableComponent<T extends Record<string, any>> {
       }
     }
 
-    const dialogRef = this._matDialog.open(GenericFormComponent<T>, {
+    const dialogRef = this._matDialog.open(FormContainerComponent, {
       data: {
-        id: row["id"], //assign id therefore generic form understand it has to update record
+        payloadId: row["id"], //assign id therefore generic form understand it has to update record
         navigationId: null,
         controllerName: `custom-table/${this.tableConfig.tableName}`,
         formConfig: payload,
-        title: this.tableConfig.tableLabel,
+        formTitle: this.tableConfig.tableLabel,
         hasDeleteButton: this.canDelete
       }
     });

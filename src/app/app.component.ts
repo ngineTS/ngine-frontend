@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
@@ -6,10 +6,19 @@ import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
 import { firstValueFrom } from 'rxjs';
 import { Location } from '@angular/common';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { SideNavService } from './core/services/side-nav.service';
+import { SorterComponent } from './core/components/sorter/sorter.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    MatButtonModule,
+    SorterComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -19,12 +28,16 @@ export class AppComponent implements OnInit {
               private _router: Router,
               private _authService: AuthService,
               private _userEventService: UserEventService,
-              private _location: Location
+              private _location: Location,
+              public _sideNavService: SideNavService
              ) { }
 
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds
   refreshTokenIntervalId: NodeJS.Timeout | undefined;
+  showFiller = false;
+  @ViewChild('drawer') drawer!: MatDrawer
+
 
   /**
    * Lifecycle hook called after component has been initialized.
@@ -35,6 +48,10 @@ export class AppComponent implements OnInit {
    * else load dynamic routing grom nested navigations.
    */
   ngOnInit() {
+    this._sideNavService.isGlobalSideNavOpened.subscribe(resp => {
+      this.drawer.toggle();
+      console.log(resp);
+    });
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {

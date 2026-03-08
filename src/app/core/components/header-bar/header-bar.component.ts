@@ -15,6 +15,7 @@ import { take } from 'rxjs';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
+import { SideNavService } from '../../services/side-nav.service';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class HeaderBarComponent implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
+    private _sideNavService: SideNavService,
   ) { }
 
   /** The navigations container. */
@@ -81,6 +83,8 @@ export class HeaderBarComponent implements OnInit {
    * Open menu form to edit navigation bar configuration.
    */
   editMenuStyle() {
+    this._sideNavService.isGlobalSideNavOpened.next(true);
+    
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this.navigation.menu.containerLayout, 
