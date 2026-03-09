@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onSideNavAction() {
+  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
     this.drawer.toggle();
     this._sideNavService.stopSubscriptions.next();
   }
