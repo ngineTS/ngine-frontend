@@ -11,7 +11,7 @@ import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
@@ -94,6 +94,7 @@ export class HeaderBarComponent implements OnInit {
     }
 
     this._menuService.manageStyle(menuStyleFormConfig, this.navigation.menu.id);
+    this.setSideNavFormListener();
   }
 
   /**
@@ -109,6 +110,7 @@ export class HeaderBarComponent implements OnInit {
     }
     
     this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this.setSideNavFormListener(navigation);
   }
 
   /**
@@ -142,6 +144,51 @@ export class HeaderBarComponent implements OnInit {
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });
+  }
+
+   setSideNavFormListener(navigation?: Navigation) {
+    let initialFormContent: Partial<StylePayload> = {};
+
+    //navigation case
+    if (navigation) {
+      initialFormContent = {
+        typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              .typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+          }
+          else {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              .typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+          }
+        });
+    }
+    //menu case
+    else {
+      initialFormContent = {
+        containerLayout: JSON.parse(JSON.stringify(this.navigation.menu.containerLayout)),
+        containerStyle: JSON.parse(JSON.stringify(this.navigation.menu.containerStyle)),
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.menu.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
+            this.navigation.menu.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+          }
+          else {
+            this.navigation.menu[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+          }
+        });
+    }
+
+    this._sideNavService.initalFormContent = initialFormContent;
   }
 
 }

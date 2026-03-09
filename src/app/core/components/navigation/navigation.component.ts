@@ -187,8 +187,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation style.
    */
   editNavigationStyle() {
-
-
     const navigationStylePayload:  DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
@@ -199,7 +197,19 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     };
 
     this._menuService.manageStyle(navigationStylePayload, this._navigation.id);
-    
+    this.setSideNavFormListener();
+  }
+
+  /**
+   * Methods called on 'edit' or 'x' button click.
+   * Switch edit mode.
+   */
+  switchEditMode() {
+    this._isEditing = !this._isEditing;
+    this.containerRef.setInput('_isEditing', this._isEditing);
+  }
+
+  setSideNavFormListener() {
     const initialFormContent: StylePayload = {
       containerLayout: JSON.parse(JSON.stringify(this._navigation.containerLayout)),
       containerStyle: JSON.parse(JSON.stringify(this._navigation.containerStyle)),
@@ -211,25 +221,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._sideNavService.formValueEvent
       .pipe(takeUntil(this._sideNavService.stopSubscriptions))
       .subscribe(formValueEvent => {
-        console.log(formValueEvent);
         if (formValueEvent.formControlValue === 'close') {
-          console.log(formValueEvent);
           this._navigation.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
           this._navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
           this._navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
         }
-        else{
+        else {
           this._navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
         }
       });
-  }
-
-  /**
-   * Methods called on 'edit' or 'x' button click.
-   * Switch edit mode.
-   */
-  switchEditMode() {
-    this._isEditing = !this._isEditing;
-    this.containerRef.setInput('_isEditing', this._isEditing);
   }
 }

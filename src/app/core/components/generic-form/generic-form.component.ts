@@ -250,7 +250,6 @@ export class GenericFormComponent {
 
   watchControls(group: FormGroup, groupName: string = '') {
     Object.entries(group.controls).forEach(([name, control]) => {
-      console.log('Group:', group, 'Name:', name, 'Control:', control);
       if (control instanceof FormControl) {
         control.valueChanges
           .pipe(debounceTime(100))
@@ -260,7 +259,6 @@ export class GenericFormComponent {
               formControlName: name,
               formControlValue: value
              });
-            console.log('Changed:', groupName, name, value)
           });
       }
 

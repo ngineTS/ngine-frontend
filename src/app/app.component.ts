@@ -128,7 +128,7 @@ export class AppComponent implements OnInit {
       formGroupName: 'close',
       formControlName: 'close',
       formControlValue: 'close',
-    })
+    });
     this._sideNavService.initalFormContent = null;
     this._sideNavService.stopSubscriptions.next();
     this.sideNavFormConfiguration = null;
