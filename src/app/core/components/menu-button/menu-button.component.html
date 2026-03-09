@@ -22,7 +22,7 @@
 </div>
 
 <!-- Main menu -->
-<mat-menu #mainMenu="matMenu">
+<mat-menu #mainMenu="matMenu" [hasBackdrop]="!navigation.permissionName?.includes('edit')">
     <div class="menu-panel"
         [style.background-color]="navigation.menu.containerStyle.backgroundColor"
         [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
@@ -43,7 +43,7 @@
     >
         <!-- Main menu 'edit style' button -->
         @if (navigation.permissionName?.includes('edit')) {
-            <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle(navigation.menu)"></i>
+            <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation.menu)"></i>
         } 
 
         <!-- Main menu items -->
@@ -151,7 +151,7 @@
                 >
                     <!-- Deep menu 'edit style' button -->                    
                     @if (navigation.permissionName?.includes('edit')) {
-                        <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle(navigation.menu)"></i>
+                        <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation.menu)"></i>
                     }
 
                     <!-- Deep menu items -->
