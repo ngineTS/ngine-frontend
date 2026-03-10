@@ -196,7 +196,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)
     };
 
-    this._menuService.manageStyle(navigationStylePayload, this._navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      this._navigation.id,
+      this._navigation.displayLabel
+    );
     this.setSideNavFormListener();
   }
 

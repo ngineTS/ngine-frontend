@@ -92,7 +92,11 @@ export class MenuButtonComponent {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     }
 
-    this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      navigation.id,
+      navigation.displayLabel
+    );
     this.setSideNavFormListener(navigation);
   }
 
@@ -102,19 +106,23 @@ export class MenuButtonComponent {
    * 
    * @param menu The menu to edit.
    */
-  editMenuStyle(event: MouseEvent, menu: Menu) {
+  editMenuStyle(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
 
     const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
-        menu.containerStyle,
+        navigation.menu.containerStyle,
         ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius']
       ),
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(menu.typographyStyle)
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
 
-    this._menuService.manageStyle(menuStylePayload, menu.id);
-    this.setSideNavFormListener(menu);
+    this._menuService.manageStyle(
+      menuStylePayload,
+      navigation.menu.id,
+      `${navigation.displayLabel} - Menu`
+    );
+    this.setSideNavFormListener(navigation.menu);
   }
 
   /**

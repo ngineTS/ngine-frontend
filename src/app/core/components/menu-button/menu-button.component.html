@@ -43,7 +43,7 @@
     >
         <!-- Main menu 'edit style' button -->
         @if (navigation.permissionName?.includes('edit')) {
-            <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation.menu)"></i>
+            <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation)"></i>
         } 
 
         <!-- Main menu items -->
@@ -151,7 +151,7 @@
                 >
                     <!-- Deep menu 'edit style' button -->                    
                     @if (navigation.permissionName?.includes('edit')) {
-                        <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation.menu)"></i>
+                        <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation)"></i>
                     }
 
                     <!-- Deep menu items -->

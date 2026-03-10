@@ -93,7 +93,11 @@ export class HeaderBarComponent implements OnInit {
       ),
     }
 
-    this._menuService.manageStyle(menuStyleFormConfig, this.navigation.menu.id);
+    this._menuService.manageStyle(
+      menuStyleFormConfig,
+      this.navigation.menu.id,
+      `${this.navigation.displayLabel} - Menu`
+    );
     this.setSideNavFormListener();
   }
 
@@ -109,7 +113,11 @@ export class HeaderBarComponent implements OnInit {
       )
     }
     
-    this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      navigation.id,
+      navigation.displayLabel
+    );
     this.setSideNavFormListener(navigation);
   }
 

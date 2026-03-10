@@ -5,8 +5,9 @@
     }
 
     @if (formTitle) {
-        <h5 class="mb-4">{{ formTitle }}</h5>
+        <p class="fw-bold">{{ formTitle }}</p>
     }
+
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
         @for (input of formConfig | keyvalue; track input) {

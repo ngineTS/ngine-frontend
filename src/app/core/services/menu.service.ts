@@ -32,13 +32,18 @@ export class MenuService {
      * @param stylePayload The style properties.
      * @param refId The object ref id (not the style id).
      */
-    manageStyle(stylePayload: DeepFormConfig<Partial<StylePayload>>, refId: string) {
+    manageStyle(
+        stylePayload: DeepFormConfig<Partial<StylePayload>>,
+        refId: string,
+        formTitle?: string
+    ) {
 
         const formConfiguration: GenericFormDialogData<Partial<StylePayload>> = {
             hasDeleteButton: false,
             formConfig: stylePayload,
             payloadId: refId,
             controllerName: 'menu',
+            formTitle: formTitle
         };
 
         this._sideNavService.formConfiguration.next(formConfiguration);
