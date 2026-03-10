@@ -62,7 +62,7 @@
 
 <!-- Form controls template -->
 <ng-template #formControls let-input let-control="control">
-    <div class="col">
+    <div class="col" [title]="input.value.alias ?? input.key">
 
         @switch (input.value.type) {
         
