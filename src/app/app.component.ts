@@ -117,6 +117,9 @@ export class AppComponent implements OnInit {
   onSideNavAction(event: 'added' | 'edited' | 'deleted') {
     this.drawer.toggle();
     this._sideNavService.stopSubscriptions.next();
+    this._sideNavService.initalFormContent = null;
+    this.sideNavFormConfiguration = null;
+    this._sideNavService.formConfiguration.next(null);
   }
 
   onSideNavFormValueChange(event: FormValueEvent) {
