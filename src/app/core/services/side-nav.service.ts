@@ -20,6 +20,12 @@ export class SideNavService {
     stopSubscriptions = new Subject<void>();
 
     resetSideNavContent() {
+      this.formValueEvent.next({
+        formGroupName: 'close',
+        formControlName: 'close',
+        formControlValue: 'close',
+      });
+
       this.initalFormContent = null;
       this.formConfiguration.next(null);
       this.stopSubscriptions.next();

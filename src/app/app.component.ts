@@ -118,18 +118,14 @@ export class AppComponent implements OnInit {
   }
 
   onSideNavAction(event: 'added' | 'edited' | 'deleted') {
-    this._sideNavService.resetSideNavContent();
+    this._sideNavService.initalFormContent = null;
+    this._sideNavService.formConfiguration.next(null);
+    this._sideNavService.stopSubscriptions.next();
     this.sideNavFormConfiguration = null;
     this.drawer.close();
   }
 
   onCloseSideNav() {
-    this._sideNavService.formValueEvent.next({
-      formGroupName: 'close',
-      formControlName: 'close',
-      formControlValue: 'close',
-    });
-
     this._sideNavService.resetSideNavContent();
     this.sideNavFormConfiguration = null;
     this.drawer.close();
