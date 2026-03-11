@@ -187,6 +187,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation style.
    */
   editNavigationStyle() {
+    this._sideNavService.resetSideNavContent();
+
     const navigationStylePayload:  DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
@@ -201,6 +203,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._navigation.id,
       this._navigation.displayLabel
     );
+
     this.setSideNavFormListener();
   }
 

@@ -7,12 +7,7 @@
 
     @if (sideNavFormConfiguration) {
       <app-generic-form
-        [formConfig]="sideNavFormConfiguration.formConfig"
-        [controllerName]="sideNavFormConfiguration.controllerName"
-        [payloadId]="sideNavFormConfiguration.payloadId"
-        [navigationId]="sideNavFormConfiguration.navigationId"
-        [hasDeleteButton]="sideNavFormConfiguration.hasDeleteButton"
-        [formTitle]="sideNavFormConfiguration.formTitle"
+        [formConfiguration]="sideNavFormConfiguration"
         (onFormValueChange)="onSideNavFormValueChange($event)"
         (action)="onSideNavAction($event)"
       >

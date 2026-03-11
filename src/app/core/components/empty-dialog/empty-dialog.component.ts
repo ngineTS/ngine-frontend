@@ -122,6 +122,8 @@ export class EmptyDialogComponent {
    * Open generic form to edit navigation style.
    */
   editNavigationStyle(navigation: Navigation) {
+    this._sideNavService.resetSideNavContent();
+
     const navigationStylePayload: DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
@@ -143,11 +145,13 @@ export class EmptyDialogComponent {
       navigation.id,
       navigation.displayLabel
     );
+
     this._dialogRef.close();
     this._matDialog.open(EmptyDialogComponent, {
       data: { navigation: this.data.navigation },
       hasBackdrop: false
     });
+
     this.setSideNavFormListener(navigation);
   }
 

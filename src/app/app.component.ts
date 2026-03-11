@@ -105,25 +105,22 @@ export class AppComponent implements OnInit {
   }
 
   setSideNavListener() {
-    this._sideNavService.formConfiguration
-    .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-    .subscribe(resp => {
-      console.log(resp);
-      this.sideNavFormConfiguration = resp;
-      this.drawer.toggle();
+    this._sideNavService.formConfiguration.subscribe(resp => {
+      if (resp) {
+        this.sideNavFormConfiguration = resp;
+        this.drawer.open();
+      }
     });
-  }
-
-  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
-    this.drawer.toggle();
-    this._sideNavService.stopSubscriptions.next();
-    this._sideNavService.initalFormContent = null;
-    this.sideNavFormConfiguration = null;
-    this._sideNavService.formConfiguration.next(null);
   }
 
   onSideNavFormValueChange(event: FormValueEvent) {
     this._sideNavService.formValueEvent.next(event);
+  }
+
+  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
+    this._sideNavService.resetSideNavContent();
+    this.sideNavFormConfiguration = null;
+    this.drawer.close();
   }
 
   onCloseSideNav() {
@@ -132,10 +129,9 @@ export class AppComponent implements OnInit {
       formControlName: 'close',
       formControlValue: 'close',
     });
-    this._sideNavService.initalFormContent = null;
-    this._sideNavService.stopSubscriptions.next();
+
+    this._sideNavService.resetSideNavContent();
     this.sideNavFormConfiguration = null;
-    this._sideNavService.formConfiguration.next(null);
     this.drawer.close();
   }
 

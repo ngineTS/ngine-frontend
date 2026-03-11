@@ -83,6 +83,8 @@ export class HeaderBarComponent implements OnInit {
    * Open menu form to edit navigation bar configuration.
    */
   editMenuStyle() {   
+    this._sideNavService.resetSideNavContent();
+
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this.navigation.menu.containerLayout, 
@@ -98,6 +100,7 @@ export class HeaderBarComponent implements OnInit {
       this.navigation.menu.id,
       `${this.navigation.displayLabel} - Menu`
     );
+
     this.setSideNavFormListener();
   }
 
@@ -107,6 +110,8 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(navigation: Navigation) {
+    this._sideNavService.resetSideNavContent();
+
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
         navigation.typographyStyle
@@ -118,6 +123,7 @@ export class HeaderBarComponent implements OnInit {
       navigation.id,
       navigation.displayLabel
     );
+    
     this.setSideNavFormListener(navigation);
   }
 

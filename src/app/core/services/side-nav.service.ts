@@ -18,5 +18,11 @@ export class SideNavService {
     >();
     
     stopSubscriptions = new Subject<void>();
+
+    resetSideNavContent() {
+      this.initalFormContent = null;
+      this.formConfiguration.next(null);
+      this.stopSubscriptions.next();
+    }
     
 }

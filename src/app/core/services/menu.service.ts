@@ -37,7 +37,6 @@ export class MenuService {
         refId: string,
         formTitle?: string
     ) {
-
         const formConfiguration: GenericFormDialogData<Partial<StylePayload>> = {
             hasDeleteButton: false,
             formConfig: stylePayload,
@@ -47,26 +46,6 @@ export class MenuService {
         };
 
         this._sideNavService.formConfiguration.next(formConfiguration);
-
-        /*const matDialogRef = this._matDialog.open(
-            FormContainerComponent,
-            { 
-                maxWidth: '700px',
-                data: {
-                    hasDeleteButton: false,
-                    formConfig: stylePayload,
-                    payloadId: refId,
-                    controllerName: 'menu',
-                }
-            }
-        );
-
-        matDialogRef.afterClosed().subscribe((resp: string) => {
-            console.log(resp);
-            if (resp === 'added' || resp === 'edited' || resp === 'deleted') {
-                this._appService.createAppRouting(this._router.url);
-            }
-        });*/
     }
 
 }

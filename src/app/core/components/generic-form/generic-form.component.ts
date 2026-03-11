@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DeepFormConfig, DropdownInputConfig, FormValueEvent, StandardInputConfig } from '../../models/form-input.interface';
+import { DropdownInputConfig, FormValueEvent, GenericFormDialogData, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -56,17 +56,7 @@ export class GenericFormComponent {
   formFileSettings: Array<FormFile> = [];
   isSaving = signal(false);
   /** The form inputs configuration. */
-  @Input('formConfig') formConfig!: DeepFormConfig<Record<string, any>>;
-  /** The backend controller name used in API call when submiting or deleting form. */
-  @Input('controllerName') controllerName!: string;
-  /** The payload id (optional). Update object if passed, else insert object. */
-  @Input('payloadId') payloadId?: string | undefined;
-  /** The navigation id associated to the object to manage (optional).*/
-  @Input('navigationId') navigationId?: string | undefined;
-  /** A boolean to show delete button or not (optional). */
-  @Input('hasDeleteButton') hasDeleteButton?: boolean | undefined;
-  /** The form title (optional). */
-  @Input('formTitle') formTitle?: string | undefined;
+  @Input('formConfiguration') formConfiguration!:  GenericFormDialogData<Record<string, any>>;
   /** Event emitter for form submition. */
   @Output() action: EventEmitter<'added' | 'edited' | 'deleted'> = new EventEmitter();
   /** Event emitter for form value change.  */
@@ -74,8 +64,15 @@ export class GenericFormComponent {
 
 
   ngOnInit() {
-    this.formContent = this.buildFormGroup(this.formConfig);
+    this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
     this.watchControls(this.formContent);
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges['formConfiguration']) {
+      this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
+      this.watchControls(this.formContent);
+    }
   }
 
   buildFormGroup(data: any): FormGroup {
@@ -186,7 +183,7 @@ export class GenericFormComponent {
         this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
       }
     }
-    if (this.payloadId) {
+    if (this.formConfiguration.payloadId) {
       this.updateObject(); //edit
     }
     else {
@@ -196,13 +193,13 @@ export class GenericFormComponent {
 
   saveObject() {
     //if navigationId is passed then save it in the db;
-    if (this.navigationId) {
+    if (this.formConfiguration.navigationId) {
       this.formContent.addControl(
         'navigationId', 
-        this._formBuilder.control(this.navigationId)
+        this._formBuilder.control(this.formConfiguration.navigationId)
       );
     }
-    this._http.post(`${environment.APIURL}${this.controllerName}`, this.formContent.value)
+    this._http.post(`${environment.APIURL}${this.formConfiguration.controllerName}`, this.formContent.value)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -217,7 +214,7 @@ export class GenericFormComponent {
   }
 
   updateObject() {
-    this._http.patch(`${environment.APIURL}${this.controllerName}/${this.payloadId}`, this.formContent.value)
+    this._http.patch(`${environment.APIURL}${this.formConfiguration.controllerName}/${this.formConfiguration.payloadId}`, this.formContent.value)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -233,7 +230,7 @@ export class GenericFormComponent {
 
   deleteObject() {
     if (confirm("Are you sure to delete this element?")) { 
-      this._http.delete(`${environment.APIURL}${this.controllerName}/${this.payloadId}`)
+      this._http.delete(`${environment.APIURL}${this.formConfiguration.controllerName}/${this.formConfiguration.payloadId}`)
         .pipe(take(1))
         .subscribe({
           next: () => {

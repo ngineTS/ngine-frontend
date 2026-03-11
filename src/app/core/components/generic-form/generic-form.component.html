@@ -4,13 +4,13 @@
         <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
     }
 
-    @if (formTitle) {
-        <p class="fw-bold">{{ formTitle }}</p>
+    @if (formConfiguration.formTitle) {
+        <p class="fw-bold">{{ formConfiguration.formTitle }}</p>
     }
 
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
-        @for (input of formConfig | keyvalue; track input) {
+        @for (input of formConfiguration.formConfig | keyvalue; track input) {
             @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                 <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(formContent, input.key) }"></ng-container>
             }
@@ -20,7 +20,7 @@
         }
 
         <div class="row">
-            @if (hasDeleteButton && payloadId) {
+            @if (formConfiguration.hasDeleteButton && formConfiguration.payloadId) {
                 <button 
                     class="form-button text-danger col ms-auto"
                     matButton="outlined"
@@ -31,7 +31,7 @@
                 </button>
             }
             <button 
-                [style.margin-left]="hasDeleteButton ? '0px' : 'auto'"
+                [style.margin-left]="formConfiguration.hasDeleteButton ? '0px' : 'auto'"
                 class="form-button col"
                 matButton="outlined" 
                 type="submit" 

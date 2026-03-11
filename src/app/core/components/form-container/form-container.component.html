@@ -1,10 +1,5 @@
 <app-generic-form class="p-3"
-    [formConfig]="_data.formConfig"
-    [controllerName]="_data.controllerName"
-    [payloadId]="_data.payloadId"
-    [navigationId]="_data.navigationId"
-    [hasDeleteButton]="_data.hasDeleteButton"
-    [formTitle]="_data.formTitle"
+    [formConfiguration]="_data"
     (onFormValueChange)="onFormValueChange($event)"
     (action)="action($event)"
 >
