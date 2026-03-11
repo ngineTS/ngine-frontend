@@ -10,7 +10,7 @@
 
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
-        @for (input of formConfiguration.formConfig | keyvalue; track input) {
+        @for (input of formConfiguration.formConfig | keyvalue; track input.key) {
             @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                 <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(formContent, input.key) }"></ng-container>
             }
