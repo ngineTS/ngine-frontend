@@ -53,7 +53,18 @@
   cursor: pointer;
   display: none;
   height: fit-content;
-  margin-left: 6px;
+  position: absolute;
+  bottom: -14px;
+  margin-right: 1px;
+  margin-left: 1px;
+}
+
+.edit-header-style-icon {
+  left: 50%;
+}
+
+.edit-header-general-icon {
+  right: 50%;
 }
 
 .menu-button {

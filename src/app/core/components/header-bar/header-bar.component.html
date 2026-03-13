@@ -52,13 +52,13 @@
                     }"
                     [class.edit-header-container]="child.permissionName?.includes('edit')"
                     [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
-                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
                 >
                     @if (child.navigationType.name === 'menu-button') {
                         <app-menu-button
                             class="custom-button"
                             (mousedown)="$event.stopPropagation()"
                             [navigation]="child"
+                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         ></app-menu-button>
                     }
                     @else {
@@ -66,13 +66,18 @@
                             class="custom-button"
                             [navigation]="child"
                             (mousedown)="$event.stopPropagation()"
+                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         ></app-custom-button>
                     }
-                    
+
                     <!-- Edit navigation buttons -->
                     @if (child.permissionName?.includes('edit') && !isDragging) {
-                        <i class="bi bi-marker-tip edit-header-icon" (click)="editNavigationStyle(child)"></i>
-                        <i class="bi bi-gear edit-header-icon" (click)="manageNavigation(child)"></i>
+                        <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
+                            (click)="editNavigationStyle(child)"
+                        ></i>
+                        <i class="bi bi-gear edit-header-icon edit-header-general-icon"
+                            (click)="manageNavigation(child)"
+                        ></i>
                     }
 
                 </div>
@@ -89,7 +94,7 @@
             }
             
             <!-- Edit menu style button -->
-            @if (navigation.permissionName?.includes('edit')  && !isDragging) {
+            @if (navigation.permissionName?.includes('edit') && !isDragging) {
                 <i class="bi bi-marker-tip menu-button edit-menu-button" 
                 (click)="editMenuStyle()"
                     matTooltip="Edit menu style"
