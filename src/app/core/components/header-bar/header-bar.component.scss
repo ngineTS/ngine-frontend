@@ -1,13 +1,6 @@
-.menu-container {
-  position: relative;
-}
-
 .header-list {
   height: 100%;
-  width: 100%;
   display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
   align-items: center;
   position: relative;
 }
@@ -22,7 +15,7 @@
   align-items: center;
 }
 
-.nav-container:hover {
+.edit-header-container:hover {
   z-index: 999;
   border: 1px dashed white;
   border-radius: 4px;
@@ -87,7 +80,7 @@
   right: 33px;
 }
 
-.menu-container:hover {
+.header-list:hover {
   .menu-button {
      display: block;
   }

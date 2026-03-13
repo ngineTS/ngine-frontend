@@ -7,9 +7,14 @@
   min-width: 240px;
 }
 
-.sidenav-leave-icon {
+.sidenav-header {
   padding-top: 0.5em;
   padding-left: 0.5em;
   font-size: 24px;
+}
+
+.sidenav-close-icon {
+  float: right;
+  margin-right: 8px;
   cursor: pointer;
 }

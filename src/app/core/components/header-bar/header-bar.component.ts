@@ -43,7 +43,7 @@ export class HeaderBarComponent implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
-    private _sideNavService: SideNavService,
+    public _sideNavService: SideNavService,
   ) { }
 
   /** The navigations container. */
