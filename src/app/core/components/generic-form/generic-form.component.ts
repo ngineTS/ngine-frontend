@@ -62,12 +62,6 @@ export class GenericFormComponent {
   /** Event emitter for form value change.  */
   @Output() onFormValueChange: EventEmitter<FormValueEvent> = new EventEmitter();
 
-
-  ngOnInit() {
-    this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
-    this.watchControls(this.formContent);
-  }
-
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges['formConfiguration']) {
       this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
@@ -169,7 +163,6 @@ export class GenericFormComponent {
 
   async submitForm() {
     this.isSaving.set(true);
-    const fileUploadError = false;
     //if new file uploaded then post it to S3 and assign file key to related form control
     for (const formFileSetting of this.formFileSettings) {
       if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {

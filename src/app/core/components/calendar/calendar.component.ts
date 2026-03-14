@@ -206,17 +206,18 @@ export class CalendarComponent extends NavigationBaseComponent {
         }
       }
 
+      const dialogData: GenericFormDialogData<CalendarPayload> = {
+        formTitle: 'Add event',
+        formConfig: calendarForm,
+        payloadId: null,
+        navigationId: this._navigation.id,
+        controllerName: 'calendar',
+      }
       const matDialogRef = this._matDialog.open(
         FormContainerComponent,
         { 
           maxWidth: '700px',
-          data: {
-            formTitle: 'Add event',
-            formConfig: calendarForm,
-            id: null,
-            navigationId: this._navigation.id,
-            controllerName: 'calendar',
-          }
+          data: dialogData
         }
       );
 
