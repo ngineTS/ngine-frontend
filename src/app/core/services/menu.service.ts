@@ -27,10 +27,11 @@ export class MenuService {
     }
 
     /**
-     * Open form to manage object style.
+     * Pass form configuration to sidenav service.
      * 
-     * @param stylePayload The style properties.
-     * @param refId The object ref id (not the style id).
+     * @param stylePayload The form configuration.
+     * @param refId The refId.
+     * @param formTitle The form title.
      */
     manageStyle(
         stylePayload: DeepFormConfig<Partial<StylePayload>>,

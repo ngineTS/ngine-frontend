@@ -216,6 +216,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_isEditing', this._isEditing);
   }
 
+  /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
   setSideNavFormListener() {
     const initialFormContent: StylePayload = {
       containerLayout: JSON.parse(JSON.stringify(this._navigation.containerLayout)),

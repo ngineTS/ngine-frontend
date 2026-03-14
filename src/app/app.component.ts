@@ -44,14 +44,15 @@ export class AppComponent implements OnInit {
 
   /**
    * Lifecycle hook called after component has been initialized.
-   * Create app routing and run refreshToken and trackUserEvent job.
    * 
-   * @description
-   * If url includes 'password-recovery' load initial routing,
-   * else load dynamic routing grom nested navigations.
+   * Process:
+   * - Verify auth token validity.
+   * - Run auth token refresh job.
+   * - Create app routing.
+   * - Create sidenav listener.
+   * - Run user event tracking job.
    */
   ngOnInit() {
-    this.setSideNavListener();
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
@@ -61,6 +62,7 @@ export class AppComponent implements OnInit {
         }
         this.runRefreshTokenJob();
         this._appService.createAppRouting();
+        this.setSideNavListener();
         this._userEventService.traceUserUrlChanges();
       }
       else {
@@ -100,10 +102,9 @@ export class AppComponent implements OnInit {
     }, this.refreshTokenIntervalOffset * 990);
   }
 
-  ngOnDesotry() {
-    clearInterval(this.refreshTokenIntervalId);
-  }
-
+  /**
+   * Setup listener to open sidenav when user edit a navigations style.
+   */
   setSideNavListener() {
     this._sideNavService.formConfiguration.subscribe(resp => {
       if (resp) {
@@ -113,11 +114,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  /**
+   * Generic form event triggered when one of the form control values has changed.
+   * 
+   * @param event The event.
+   */
   onSideNavFormValueChange(event: FormValueEvent) {
     this._sideNavService.formValueEvent.next(event);
   }
 
-  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
+  /**
+   * Method called on generic form submit button click.
+   * Stop listeners.
+   * 
+   * @param event The submit action.
+   */
+  onSideNavAction(event: 'added' | 'edited') {
     this._sideNavService.initalFormContent = null;
     this._sideNavService.formConfiguration.next(null);
     this._sideNavService.stopSubscriptions.next();
@@ -125,6 +137,10 @@ export class AppComponent implements OnInit {
     this.drawer.close();
   }
 
+  /**
+   * Method called on chevron icon click.
+   * Reset navigation style and stop listeners.
+   */
   onCloseSideNav() {
     this._sideNavService.resetSideNavContent();
     this.sideNavFormConfiguration = null;

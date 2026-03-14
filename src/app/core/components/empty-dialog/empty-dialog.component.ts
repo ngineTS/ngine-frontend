@@ -163,6 +163,10 @@ export class EmptyDialogComponent {
     this.containerRef.setInput('_isEditing', this._isEditing);
   }
 
+  /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
   setSideNavFormListener(navigation: Navigation) {
     const initialFormContent: StylePayload = {
       containerLayout: JSON.parse(JSON.stringify(navigation.containerLayout)),

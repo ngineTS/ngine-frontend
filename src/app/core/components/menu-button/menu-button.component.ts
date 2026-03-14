@@ -155,6 +155,10 @@ export class MenuButtonComponent {
     );
   }
 
+  /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
   setSideNavFormListener(object: Navigation | Menu) {
       let initialFormContent: Partial<StylePayload> = {};
   

@@ -179,6 +179,10 @@ export class HeaderBarComponent implements OnInit {
       });
   }
 
+   /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
    setSideNavFormListener(navigation?: Navigation) {
     let initialFormContent: Partial<StylePayload> = {};
 
