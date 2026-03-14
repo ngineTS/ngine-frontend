@@ -99,39 +99,41 @@
 
     <!-- Phone screen -->
     @else {
-        <!-- Burger button -->
-        <i class="bi bi-list burger-button" 
-            [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"
-            [matMenuTriggerFor]="menu"
-        >
-        </i>
+        <div class="d-flex" [style.background-color]="navigation.menu.containerStyle.backgroundColor">
+            <!-- Burger button -->
+            <i class="bi bi-list burger-button" 
+                [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"
+                [matMenuTriggerFor]="menu"
+            >
+            </i>
 
-        <!-- Burger menu -->
-        <mat-menu #menu="matMenu" class="burger-menu">
-            <div [style.background-color]="navigation.menu.containerStyle.backgroundColor">
-                
-                @for (child of navigation.children; track child.id) {  
-                    <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">   
-                        
-                        @if (child.navigationType.name === 'menu-button') {
-                            <app-menu-button
-                                class="w-100"
-                                (click)="$event.stopPropagation()"
-                                [navigation]="child"
-                            ></app-menu-button>
-                        }
-                        @else {
-                            <app-custom-button
-                                class="w-100"
-                                [navigation]="child"
-                            ></app-custom-button>
-                        }
+            <!-- Burger menu -->
+            <mat-menu #menu="matMenu" class="burger-menu">
+                <div [style.background-color]="navigation.menu.containerStyle.backgroundColor">
+                    
+                    @for (child of navigation.children; track child.id) {  
+                        <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">   
+                            
+                            @if (child.navigationType.name === 'menu-button') {
+                                <app-menu-button
+                                    class="w-100"
+                                    (click)="$event.stopPropagation()"
+                                    [navigation]="child"
+                                ></app-menu-button>
+                            }
+                            @else {
+                                <app-custom-button
+                                    class="w-100"
+                                    [navigation]="child"
+                                ></app-custom-button>
+                            }
 
-                    </div>
-                }
+                        </div>
+                    }
 
-            </div>
-        </mat-menu>
+                </div>
+            </mat-menu>
+        </div>
     }
 
 </div>
