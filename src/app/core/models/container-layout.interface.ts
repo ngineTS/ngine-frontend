@@ -1,4 +1,4 @@
-export interface ContainerLayout {
+export interface ContainerLayout extends Record<string, string | number | null> {
     id: string;
     refId: string;
 	width: number | null;

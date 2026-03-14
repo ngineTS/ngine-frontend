@@ -1,4 +1,4 @@
-export interface ContainerStyle {
+export interface ContainerStyle extends Record<string, string | number | null | boolean> {
     id: string;
     refId: string;
     backgroundColor: string | null;

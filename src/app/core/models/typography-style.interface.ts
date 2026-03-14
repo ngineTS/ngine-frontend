@@ -1,4 +1,4 @@
-export interface TypographyStyle {
+export interface TypographyStyle extends Record<string, string | number | null> {
     id: string;
     refId: string;
     fontFamily: string | null;

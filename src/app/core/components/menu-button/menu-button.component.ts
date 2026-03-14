@@ -11,8 +11,9 @@ import { NavigationService } from '../../services/navigation.service';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { TypographyStyleService } from '../../services/typography-style.service';
-import { ContainerLayoutService } from '../../services/container-layout.service';
 import { ContainerStyleService } from '../../services/container-style.service';
+import { SideNavService } from '../../services/side-nav.service';
+import { takeUntil } from 'rxjs';
 
 
 @Component({
@@ -34,9 +35,9 @@ export class MenuButtonComponent {
   constructor(
     private _menuService: MenuService,
     private _navigationService: NavigationService,
-    private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
+    private _sideNavService: SideNavService,
   ) { }
 
   /** The main menu button. */
@@ -47,7 +48,6 @@ export class MenuButtonComponent {
   isButtonHoveredRecord: Record<string, boolean> = {};
   /** Initial window width. */
   initialWindowWidth!: number;
-
 
   /**
    * Lifecycle hook called after component ahs been initialized.
@@ -86,12 +86,20 @@ export class MenuButtonComponent {
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(event: MouseEvent, navigation: Navigation) {
-    event.stopPropagation();  
+    event.stopPropagation();
+    this._sideNavService.resetSideNavContent();
+    
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     }
 
-    this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      navigation.id,
+      navigation.displayLabel
+    );
+
+    this.setSideNavFormListener(navigation);
   }
 
   /**
@@ -100,16 +108,25 @@ export class MenuButtonComponent {
    * 
    * @param menu The menu to edit.
    */
-  editMenuStyle(menu: Menu) {
+  editMenuStyle(event: MouseEvent, navigation: Navigation) {
+    event.stopPropagation();
+    this._sideNavService.resetSideNavContent();
+
     const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
-        menu.containerStyle,
+        navigation.menu.containerStyle,
         ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius']
       ),
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(menu.typographyStyle)
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
 
-    this._menuService.manageStyle(menuStylePayload, menu.id);
+    this._menuService.manageStyle(
+      menuStylePayload,
+      navigation.menu.id,
+      `${navigation.displayLabel} - Menu`
+    );
+    
+    this.setSideNavFormListener(navigation.menu);
   }
 
   /**
@@ -137,5 +154,56 @@ export class MenuButtonComponent {
       child.children?.sort((a, b) => a.order - b.order)
     );
   }
+
+  /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
+  setSideNavFormListener(object: Navigation | Menu) {
+      let initialFormContent: Partial<StylePayload> = {};
+  
+      //navigation case
+      if (!object.navigationId) {
+        initialFormContent = {
+          typographyStyle: JSON.parse(JSON.stringify(object.typographyStyle)),
+        }
+  
+        this._sideNavService.formValueEvent
+          .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+          .subscribe(formValueEvent => {
+            if (formValueEvent.formControlValue === 'close') {
+              console.log('v');
+              object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+            }
+            else {
+              console.log('NAVVV');
+              object.typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+            }
+          });
+      }
+      //menu case
+      else {
+        initialFormContent = {
+          containerStyle: JSON.parse(JSON.stringify(object.containerStyle)),
+          typographyStyle: JSON.parse(JSON.stringify(object.typographyStyle)),
+        }
+  
+        this._sideNavService.formValueEvent
+          .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+          .subscribe(formValueEvent => {
+            if (formValueEvent.formControlValue === 'close') {
+              console.log('s');
+              object.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+              object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+            }
+            else {
+              console.log('Menu');
+              object[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+            }
+          });
+      }
+
+      this._sideNavService.initalFormContent = initialFormContent;
+    }
 
 }

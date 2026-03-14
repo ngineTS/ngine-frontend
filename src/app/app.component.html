@@ -1,1 +1,20 @@
-<router-outlet />
+<mat-drawer-container class="sidenav-container">
+  <mat-drawer #drawer class="sidenav-content" mode="side">
+    <div class="sidenav-header">
+      <strong class="fs-5">Manage Style</strong>
+      <i class="bi bi-chevron-left sidenav-close-icon" (click)="onCloseSideNav()"></i>
+    </div>
+
+    @if (sideNavFormConfiguration) {
+      <app-generic-form
+        [formConfiguration]="sideNavFormConfiguration"
+        (onFormValueChange)="onSideNavFormValueChange($event)"
+        (action)="onSideNavAction($event)"
+      >
+      </app-generic-form>
+    }
+  </mat-drawer>
+
+  <router-outlet />
+
+</mat-drawer-container>

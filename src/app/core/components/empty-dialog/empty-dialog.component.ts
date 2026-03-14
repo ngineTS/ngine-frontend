@@ -1,6 +1,6 @@
 import { Component, ComponentRef, inject, Inject, Injector, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ComponentsContainerService } from '../../services/components-container.service';
@@ -12,10 +12,16 @@ import { ContainerLayoutService } from '../../services/container-layout.service'
 import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
+import { SideNavService } from '../../services/side-nav.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-empty-dialog',
-  imports: [MatButtonModule, MatTooltipModule],
+  imports: [
+    MatButtonModule,
+    MatTooltipModule,
+    MatDialogModule
+  ],
   templateUrl: './empty-dialog.component.html',
   styleUrl: './empty-dialog.component.scss'
 })
@@ -23,6 +29,7 @@ export class EmptyDialogComponent {
 
   constructor(
     private _dialogRef: MatDialogRef<EmptyDialogComponent>,
+    private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { navigation: Navigation },
     private _componentsContainerService: ComponentsContainerService,
@@ -31,6 +38,7 @@ export class EmptyDialogComponent {
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
+    private _sideNavService: SideNavService
   ) {}
 
   injector = inject(Injector);
@@ -114,6 +122,8 @@ export class EmptyDialogComponent {
    * Open generic form to edit navigation style.
    */
   editNavigationStyle(navigation: Navigation) {
+    this._sideNavService.resetSideNavContent();
+
     const navigationStylePayload: DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
@@ -130,8 +140,19 @@ export class EmptyDialogComponent {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     };
     
-    this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      navigation.id,
+      navigation.displayLabel
+    );
+
     this._dialogRef.close();
+    this._matDialog.open(EmptyDialogComponent, {
+      data: { navigation: this.data.navigation },
+      hasBackdrop: false
+    });
+
+    this.setSideNavFormListener(navigation);
   }
 
   /**
@@ -141,4 +162,31 @@ export class EmptyDialogComponent {
     this._isEditing = !this._isEditing;
     this.containerRef.setInput('_isEditing', this._isEditing);
   }
+
+  /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
+  setSideNavFormListener(navigation: Navigation) {
+    const initialFormContent: StylePayload = {
+      containerLayout: JSON.parse(JSON.stringify(navigation.containerLayout)),
+      containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
+      typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
+    }
+
+    this._sideNavService.initalFormContent = initialFormContent;
+
+    this._sideNavService.formValueEvent
+      .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+      .subscribe(formValueEvent => {
+        if (formValueEvent.formControlValue === 'close') {
+          navigation.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
+          navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+          navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+        }
+        else {
+          navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+        }
+      });
+    }
 }

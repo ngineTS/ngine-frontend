@@ -2,7 +2,7 @@ import { ContainerLayout } from "./container-layout.interface";
 import { ContainerStyle } from "./container-style.interface";
 import { TypographyStyle } from "./typography-style.interface";
 
-export interface Menu {
+export interface Menu extends Record<string, any> {
     id: string;
     navigationId: string;
     containerLayout: ContainerLayout;

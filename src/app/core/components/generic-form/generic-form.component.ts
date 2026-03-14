@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, Inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DropdownInputConfig, GenericFormDialogData, StandardInputConfig } from '../../models/form-input.interface';
+import { DropdownInputConfig, FormValueEvent, GenericFormDialogData, StandardInputConfig } from '../../models/form-input.interface';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -14,11 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from '../../services/media.service';
 import { FormFile } from '../../models/form-file.interface';
-import { catchError, firstValueFrom, take, throwError } from 'rxjs';
+import { catchError, debounceTime, firstValueFrom, take, throwError } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SnackBarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-generic-form',
@@ -42,34 +41,38 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './generic-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-/**
- * "T extends Record<string, any> & { length?: never } & { getTime?: never }"
- * constraints the type to be an object and not an array or a date.
- */
-export class GenericFormComponent<
-  T extends Record<string, any> 
-    & { length?: never } 
-    & { getTime?: never }
-> {
+export class GenericFormComponent {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) 
-    public _data: GenericFormDialogData<T>,
     private _formBuilder: FormBuilder,
-    private _dialogRef: MatDialogRef<GenericFormComponent<T>>,
     private _http: HttpClient,
-    private _snackBar: MatSnackBar,
+    private _snackbarService: SnackBarService,
     private _mediaService: MediaService
-  ) {}
+  ) { }
           
   formContent!: FormGroup;
   hidePassword = signal(true);
   dateAndTimeRecord: Record<string, Date> = {};
   formFileSettings: Array<FormFile> = [];
   isSaving = signal(false);
-    
+  /** The form inputs configuration. */
+  @Input('formConfiguration') formConfiguration!:  GenericFormDialogData<Record<string, any>>;
+  /** Event emitter for form submition. */
+  @Output() action: EventEmitter<'added' | 'edited' | 'deleted'> = new EventEmitter();
+  /** Event emitter for form value change.  */
+  @Output() onFormValueChange: EventEmitter<FormValueEvent> = new EventEmitter();
+
+
   ngOnInit() {
-    this.formContent = this.buildFormGroup(this._data.formConfig);
+    this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
+    this.watchControls(this.formContent);
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges['formConfiguration']) {
+      this.formContent = this.buildFormGroup(this.formConfiguration.formConfig);
+      this.watchControls(this.formContent);
+    }
   }
 
   buildFormGroup(data: any): FormGroup {
@@ -115,13 +118,6 @@ export class GenericFormComponent<
 
   onDateAndTimeChange(control: FormControl, formControlName: string) {
     setTimeout(() => control.setValue(new Date(this.dateAndTimeRecord[formControlName])), 250);
-  }
-
-  showSuccessSnackBar(action: string) {
-    this._snackBar.open(`Element ${action} successfully`, 'Close', {
-      verticalPosition: 'top',
-      duration: 10000
-    });
   }
 
   setUpDateTimeAndFileRecords(key: string, value: any, group: any) {    
@@ -187,7 +183,7 @@ export class GenericFormComponent<
         this.getFormControl(formFileSetting.formGroup, formFileSetting.formControlName).setValue(media.name);
       }
     }
-    if (this._data.id) {
+    if (this.formConfiguration.payloadId) {
       this.updateObject(); //edit
     }
     else {
@@ -197,19 +193,19 @@ export class GenericFormComponent<
 
   saveObject() {
     //if navigationId is passed then save it in the db;
-    if (this._data.navigationId) {
+    if (this.formConfiguration.navigationId) {
       this.formContent.addControl(
         'navigationId', 
-        this._formBuilder.control(this._data.navigationId)
+        this._formBuilder.control(this.formConfiguration.navigationId)
       );
     }
-    this._http.post(`${environment.APIURL}${this._data.controllerName}`, this.formContent.value)
+    this._http.post(`${environment.APIURL}${this.formConfiguration.controllerName}`, this.formContent.value)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.isSaving.set(false);
-          this.showSuccessSnackBar('added');
-          this._dialogRef.close('added');
+          this._snackbarService.showSuccessSnackBar(`Element added successfully.`);
+          this.action.emit('added');
         },
         error: () => {
           this.isSaving.set(false);
@@ -218,13 +214,13 @@ export class GenericFormComponent<
   }
 
   updateObject() {
-    this._http.patch(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`, this.formContent.value)
+    this._http.patch(`${environment.APIURL}${this.formConfiguration.controllerName}/${this.formConfiguration.payloadId}`, this.formContent.value)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.isSaving.set(false);
-          this.showSuccessSnackBar('edited');
-          this._dialogRef.close('edited');
+          this._snackbarService.showSuccessSnackBar(`Element edited successfully.`);
+          this.action.emit('edited');
         },
         error: () => {
           this.isSaving.set(false);
@@ -234,19 +230,40 @@ export class GenericFormComponent<
 
   deleteObject() {
     if (confirm("Are you sure to delete this element?")) { 
-      this._http.delete(`${environment.APIURL}${this._data.controllerName}/${this._data.id}`)
+      this._http.delete(`${environment.APIURL}${this.formConfiguration.controllerName}/${this.formConfiguration.payloadId}`)
         .pipe(take(1))
         .subscribe({
           next: () => {
             this.isSaving.set(false);
-            this.showSuccessSnackBar('deleted');
-            this._dialogRef.close('deleted');
+            this._snackbarService.showSuccessSnackBar(`Element deleted successfully.`);
+            this.action.emit('deleted');
           },
           error: () => {
             this.isSaving.set(false);
           }
         });
     }
+  }
+
+  watchControls(group: FormGroup, groupName: string = '') {
+    Object.entries(group.controls).forEach(([name, control]) => {
+      if (control instanceof FormControl) {
+        control.valueChanges
+          .pipe(debounceTime(100))
+          .subscribe(value => {
+             this.onFormValueChange.emit({
+              formGroupName: groupName,
+              formControlName: name,
+              formControlValue: value
+             });
+          });
+      }
+
+      if (control instanceof FormGroup) {
+        const nestedGroupName = groupName ? `${groupName}.${name}` : `${name}`
+        this.watchControls(control, nestedGroupName);
+      }
+    });
   }
 
 }

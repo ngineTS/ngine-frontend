@@ -11,10 +11,11 @@ import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
+import { SideNavService } from '../../services/side-nav.service';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class HeaderBarComponent implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
+    public _sideNavService: SideNavService,
   ) { }
 
   /** The navigations container. */
@@ -67,6 +69,25 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
+   * Computes navigation bar width based on screen size and side nav status.
+   */
+  get navigationBarWidth(): string {
+    if (this.initialWindowWidth <= 600) {
+      return '';
+    }
+
+    if (this.navigation.menu.containerLayout.width) {
+      return this.navigation.menu.containerLayout.width + 'px';
+    }
+
+    if (this._sideNavService.initalFormContent) {
+      return '100vw';
+    }
+
+    return '';
+  }
+
+  /**
    * Methods called on '+' or 'gear' button click.
    * Open navigation management form to add or edit navigation properties.
    * 
@@ -80,7 +101,9 @@ export class HeaderBarComponent implements OnInit {
    * Methods called on 'edit menu' button click.
    * Open menu form to edit navigation bar configuration.
    */
-  editMenuStyle() {
+  editMenuStyle() {   
+    this._sideNavService.resetSideNavContent();
+
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this.navigation.menu.containerLayout, 
@@ -91,7 +114,13 @@ export class HeaderBarComponent implements OnInit {
       ),
     }
 
-    this._menuService.manageStyle(menuStyleFormConfig, this.navigation.menu.id);
+    this._menuService.manageStyle(
+      menuStyleFormConfig,
+      this.navigation.menu.id,
+      `${this.navigation.displayLabel} - Menu`
+    );
+
+    this.setSideNavFormListener();
   }
 
   /**
@@ -100,13 +129,21 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit.
    */
   editNavigationStyle(navigation: Navigation) {
+    this._sideNavService.resetSideNavContent();
+
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
         navigation.typographyStyle
       )
     }
     
-    this._menuService.manageStyle(navigationStylePayload, navigation.id);
+    this._menuService.manageStyle(
+      navigationStylePayload,
+      navigation.id,
+      navigation.displayLabel
+    );
+    
+    this.setSideNavFormListener(navigation);
   }
 
   /**
@@ -140,6 +177,55 @@ export class HeaderBarComponent implements OnInit {
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });
+  }
+
+   /**
+   * Setup listener on sidenav to update navigation style in real time.
+   * If sidenav is closed without saving then assign back initial style.
+   */
+   setSideNavFormListener(navigation?: Navigation) {
+    let initialFormContent: Partial<StylePayload> = {};
+
+    //navigation case
+    if (navigation) {
+      initialFormContent = {
+        typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              .typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+          }
+          else {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              .typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+          }
+        });
+    }
+    //menu case
+    else {
+      initialFormContent = {
+        containerLayout: JSON.parse(JSON.stringify(this.navigation.menu.containerLayout)),
+        containerStyle: JSON.parse(JSON.stringify(this.navigation.menu.containerStyle)),
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.menu.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
+            this.navigation.menu.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+          }
+          else {
+            this.navigation.menu[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+          }
+        });
+    }
+
+    this._sideNavService.initalFormContent = initialFormContent;
   }
 
 }

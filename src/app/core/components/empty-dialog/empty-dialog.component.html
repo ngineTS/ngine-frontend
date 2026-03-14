@@ -28,22 +28,28 @@
         [style.font-family]="navigationToLoad.typographyStyle.fontFamily"
     >
     
-        @if (navigationToLoad.permissionName?.includes('edit')) {
-            <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
-                @if (_isEditing) {
-                    <i class="bi bi-x-circle" [matTooltip]="'Stop editing'"></i>
-                }
-                @else {
-                    <i class="bi bi-pen" [matTooltip]="'Edit content'"></i>
-                }
+        <div class="top-buttons-div">
+            @if (navigationToLoad.permissionName?.includes('edit')) {
+                <button class="edit-button"matButton="outlined" (click)="switchEditMode()">
+                    @if (_isEditing) {
+                        <i class="bi bi-x-circle" [matTooltip]="'Stop editing'"></i>
+                    }
+                    @else {
+                        <i class="bi bi-pen" [matTooltip]="'Edit content'"></i>
+                    }
+                </button>
+                <button class="gear-button" matButton="outlined" (click)="editNavigationStyle(navigationToLoad)">
+                    <i class="bi bi-marker-tip" [matTooltip]="'Edit navigation style'"></i>
+                </button>
+                <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
+                    <i class="bi bi-gear" [matTooltip]="'Edit navigation'"></i>
+                </button>
+            }
+            
+            <button class="gear-button" matButton="outlined" mat-dialog-close>
+                <i class="bi bi-x-circle"></i>
             </button>
-            <button class="gear-button" matButton="outlined" (click)="editNavigationStyle(navigationToLoad)">
-                <i class="bi bi-marker-tip" [matTooltip]="'Edit navigation style'"></i>
-            </button>
-            <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
-                <i class="bi bi-gear" [matTooltip]="'Edit navigation'"></i>
-            </button>
-        }
+        </div>
 
         <div class="m-2">
             <ng-template #container></ng-template>

@@ -48,10 +48,16 @@ export type DropdownConfig<T, U> = U extends string | number
 export type InputType = 'email' | 'url' | 'text' | 'password' | 'number' | 'date' | 'date-and-time' | 'dropdown' | 'checkbox' | 'file' | 'textarea' | 'color';
 
 export type GenericFormDialogData<T> = {
-  id: string;
-  navigationId: string;
+  payloadId: string;
   formConfig: DeepFormConfig<T>;
   controllerName: string;
-  title: string;
-  hasDeleteButton: boolean;
+  navigationId?: string;
+  formTitle?: string;
+  hasDeleteButton?: boolean;
+}
+
+export interface FormValueEvent {
+  formGroupName: string;
+  formControlName: string;
+  formControlValue: any;
 }

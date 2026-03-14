@@ -1,38 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { SideNavService } from './core/services/side-nav.service';
+import { FormValueEvent, GenericFormDialogData } from './core/models/form-input.interface';
+import { GenericFormComponent } from './core/components/generic-form/generic-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    MatButtonModule,
+    GenericFormComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _appService: AppService,
-              private _router: Router,
-              private _authService: AuthService,
-              private _userEventService: UserEventService,
-              private _location: Location
-             ) { }
+  constructor(
+    private _appService: AppService,
+    private _router: Router,
+    private _authService: AuthService,
+    private _userEventService: UserEventService,
+    private _location: Location,
+    public _sideNavService: SideNavService
+    ) { }
 
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds
   refreshTokenIntervalId: NodeJS.Timeout | undefined;
+  showFiller = false;
+  @ViewChild('drawer') drawer!: MatDrawer
+  sideNavFormConfiguration: GenericFormDialogData<Record<string, any>> | null = null;
+
 
   /**
    * Lifecycle hook called after component has been initialized.
-   * Create app routing and run refreshToken and trackUserEvent job.
    * 
-   * @description
-   * If url includes 'password-recovery' load initial routing,
-   * else load dynamic routing grom nested navigations.
+   * Process:
+   * - Verify auth token validity.
+   * - Run auth token refresh job.
+   * - Create app routing.
+   * - Create sidenav listener.
+   * - Run user event tracking job.
    */
   ngOnInit() {
     const path = this._location.path();
@@ -44,6 +62,7 @@ export class AppComponent implements OnInit {
         }
         this.runRefreshTokenJob();
         this._appService.createAppRouting();
+        this.setSideNavListener();
         this._userEventService.traceUserUrlChanges();
       }
       else {
@@ -83,7 +102,50 @@ export class AppComponent implements OnInit {
     }, this.refreshTokenIntervalOffset * 990);
   }
 
-  ngOnDesotry() {
-    clearInterval(this.refreshTokenIntervalId);
+  /**
+   * Setup listener to open sidenav when user edit a navigations style.
+   */
+  setSideNavListener() {
+    this._sideNavService.formConfiguration.subscribe(resp => {
+      if (resp) {
+        this.sideNavFormConfiguration = resp;
+        this.drawer.open();
+      }
+    });
   }
+
+  /**
+   * Generic form event triggered when one of the form control values has changed.
+   * 
+   * @param event The event.
+   */
+  onSideNavFormValueChange(event: FormValueEvent) {
+    this._sideNavService.formValueEvent.next(event);
+  }
+
+  /**
+   * Method called on generic form submit button click.
+   * Stop listeners.
+   * 
+   * @param event The submit action.
+   */
+  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
+    this._sideNavService.initalFormContent = null;
+    this._sideNavService.formConfiguration.next(null);
+    this._sideNavService.stopSubscriptions.next();
+    this.sideNavFormConfiguration = null;
+    this.drawer.close();
+  }
+
+  /**
+   * Method called on chevron icon click.
+   * Reset navigation style and stop listeners.
+   */
+  onCloseSideNav() {
+    this._sideNavService.resetSideNavContent();
+    this.sideNavFormConfiguration = null;
+    this.drawer.close();
+  }
+
+
 }

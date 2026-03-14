@@ -37,7 +37,7 @@ export class CustomButtonComponent {
       /* open mat dialog */
       case 'dialog-button':
         this._matDialog.open(EmptyDialogComponent, {
-          data: { navigation: navigation },
+          data: { navigation: navigation }
         });
         break;
       /* open url on new tab */
