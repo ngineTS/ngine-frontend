@@ -5,8 +5,7 @@
     @if (initialWindowWidth > 600) {
 
         <!-- List of navigations -->
-        <div class="header-list"
-            [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+        <div [style.background-color]="navigation.menu.containerStyle.backgroundColor"
             [style.height]="navigation.menu.containerLayout.height + 'px'"
             [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
                 navigation.menu.containerStyle.borderStyle + ' ' +
@@ -28,73 +27,73 @@
             [style.margin-bottom]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginBottom + 'px' : ''"
             [style.margin-left]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginLeft + 'px' : ''"
         >
-            @for (child of navigation.children; track child.id) {
-                
-                <!-- Navigation -->
-                <div class="header-box"
-                    cdkDrag
-                    cdkDragLockAxis="x"
-                    cdkDragBoundary=".header-list"
-                    (cdkDragStarted)="onDragStart()"
-                    (cdkDragEnded)="onDragEnded($event, child)"
-                    [cdkDragFreeDragPosition]="{
-                        x: child.containerLayout.xPos
-                            ? (child.containerLayout.xPos * initialWindowWidth / 100) 
-                            : 0,
-                        y: 0,
-                    }"
-                    [class.edit-header-container]="child.permissionName?.includes('edit')"
-                    [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
-                >
-                    @if (child.navigationType.name === 'menu-button') {
-                        <app-menu-button
-                            class="custom-button"
-                            (mousedown)="$event.stopPropagation()"
-                            [navigation]="child"
-                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                        ></app-menu-button>
-                    }
-                    @else {
-                        <app-custom-button
-                            class="custom-button"
-                            [navigation]="child"
-                            (mousedown)="$event.stopPropagation()"
-                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                        ></app-custom-button>
-                    }
+            <div class="header-list">
+                @for (child of navigation.children; track child.id) {
+                    <!-- Navigation -->
+                    <div class="header-box"
+                        cdkDrag
+                        cdkDragLockAxis="x"
+                        cdkDragBoundary=".header-list"
+                        (cdkDragStarted)="onDragStart()"
+                        (cdkDragEnded)="onDragEnded($event, child)"
+                        [cdkDragFreeDragPosition]="{
+                            x: child.containerLayout.xPos
+                                ? (child.containerLayout.xPos * initialWindowWidth / 100) 
+                                : 0,
+                            y: 0,
+                        }"
+                        [class.edit-header-container]="child.permissionName?.includes('edit')"
+                        [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                    >
+                        @if (child.navigationType.name === 'menu-button') {
+                            <app-menu-button
+                                class="custom-button"
+                                (mousedown)="$event.stopPropagation()"
+                                [navigation]="child"
+                                [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                            ></app-menu-button>
+                        }
+                        @else {
+                            <app-custom-button
+                                class="custom-button"
+                                [navigation]="child"
+                                (mousedown)="$event.stopPropagation()"
+                                [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                            ></app-custom-button>
+                        }
 
-                    <!-- Edit navigation buttons -->
-                    @if (child.permissionName?.includes('edit') && !isDragging) {
-                        <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
-                            (click)="editNavigationStyle(child)"
-                        ></i>
-                        <i class="bi bi-gear edit-header-icon edit-header-general-icon"
-                            (click)="manageNavigation(child)"
-                        ></i>
-                    }
+                        <!-- Edit navigation buttons -->
+                        @if (child.permissionName?.includes('edit') && !isDragging) {
+                            <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
+                                (click)="editNavigationStyle(child)"
+                            ></i>
+                            <i class="bi bi-gear edit-header-icon edit-header-general-icon"
+                                (click)="manageNavigation(child)"
+                            ></i>
+                        }
 
-                </div>
-            }
+                    </div>
+                }
 
-            <!-- Add navigation button -->
-            @if (navigation.permissionName?.includes('add') && !isDragging) {
-                <button class="menu-button add-nav-button" 
-                    (click)="manageNavigation()"
-                    matTooltip="Add navigation"
-                >   
-                    +
-                </button>
-            }
+                <!-- Add navigation button -->
+                @if (navigation.permissionName?.includes('add') && !isDragging) {
+                    <button class="menu-button add-nav-button" 
+                        (click)="manageNavigation()"
+                        matTooltip="Add navigation"
+                    >   
+                        +
+                    </button>
+                }
             
-            <!-- Edit menu style button -->
-            @if (navigation.permissionName?.includes('edit') && !isDragging) {
-                <i class="bi bi-marker-tip menu-button edit-menu-button" 
-                (click)="editMenuStyle()"
-                    matTooltip="Edit menu style"
-                ></i>
-            }
+                <!-- Edit menu style button -->
+                @if (navigation.permissionName?.includes('edit') && !isDragging) {
+                    <i class="bi bi-marker-tip menu-button edit-menu-button" 
+                    (click)="editMenuStyle()"
+                        matTooltip="Edit menu style"
+                    ></i>
+                }
+            </div>
         </div>
-
     }
 
     <!-- Phone screen -->
@@ -135,7 +134,6 @@
             </mat-menu>
         </div>
     }
-
 </div>
 
 <router-outlet />
