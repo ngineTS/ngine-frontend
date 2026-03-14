@@ -129,7 +129,7 @@ export class AppComponent implements OnInit {
    * 
    * @param event The submit action.
    */
-  onSideNavAction(event: 'added' | 'edited') {
+  onSideNavAction(event: 'added' | 'edited' | 'deleted') {
     this._sideNavService.initalFormContent = null;
     this._sideNavService.formConfiguration.next(null);
     this._sideNavService.stopSubscriptions.next();
