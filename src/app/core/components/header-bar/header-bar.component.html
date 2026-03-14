@@ -1,12 +1,5 @@
 <!-- Navigation bar -->
-<div [style.width]="initialWindowWidth > 600
-        ? navigation.menu.containerLayout.width
-            ? navigation.menu.containerLayout.width + 'px'
-            : _sideNavService.initalFormContent
-                ? '100vw'
-                : ''
-        : ''"
->
+<div [style.width]="navigationBarWidth">
 
     <!-- Laptop screen -->
     @if (initialWindowWidth > 600) {

@@ -69,6 +69,25 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
+   * Computes navigation bar width based on screen size and side nav status.
+   */
+  get navigationBarWidth(): string {
+    if (this.initialWindowWidth <= 600) {
+      return '';
+    }
+
+    if (this.navigation.menu.containerLayout.width) {
+      return this.navigation.menu.containerLayout.width + 'px';
+    }
+
+    if (this._sideNavService.initalFormContent) {
+      return '100vw';
+    }
+
+    return '';
+  }
+
+  /**
    * Methods called on '+' or 'gear' button click.
    * Open navigation management form to add or edit navigation properties.
    * 

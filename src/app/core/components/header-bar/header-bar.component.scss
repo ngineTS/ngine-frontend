@@ -7,7 +7,7 @@
 
 .header-box {
   position: absolute;
-  padding: 8px;
+  padding: 6px 8px; 
   margin: 4px;
   border: 1px solid transparent;
   display: flex;
@@ -54,17 +54,15 @@
   display: none;
   height: fit-content;
   position: absolute;
-  bottom: -14px;
-  margin-right: 1px;
-  margin-left: 1px;
+  top: -14px;
 }
 
 .edit-header-style-icon {
-  left: 50%;
+  right: 15px;
 }
 
 .edit-header-general-icon {
-  right: 50%;
+  right: -12px;
 }
 
 .menu-button {
