@@ -25,6 +25,9 @@
     font-weight: 600;
     margin-bottom: 20px;
     color: #636363;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .form-button {

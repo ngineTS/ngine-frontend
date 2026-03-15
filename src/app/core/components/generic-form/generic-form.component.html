@@ -46,7 +46,7 @@
 <!-- Recursive form template -->
 <ng-template #deepForm let-data let-group="group">
     <div class="form-group-box">
-        <div class="form-group-name">{{ data.key }}</div>
+        <div class="form-group-name" [title]="data.key">{{ data.key }}</div>
         <div [formGroup]="group" class="row">
             @for (input of data.value | keyvalue; track input) {
                 @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
