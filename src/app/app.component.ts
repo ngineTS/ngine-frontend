@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
    * - Verify auth token validity.
    * - Run auth token refresh job.
    * - Create app routing.
-   * - Create sidenav listener.
+   * - Set sidenav listener.
    * - Run user event tracking job.
    */
   ngOnInit() {

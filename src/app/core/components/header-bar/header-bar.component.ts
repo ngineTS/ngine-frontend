@@ -98,8 +98,10 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Methods called on 'edit menu' button click.
-   * Open menu form to edit navigation bar configuration.
+   * Methods called on 'edit menu style' button click.
+   * 
+   * Open sidenav with menu style properties and listen to changes.
+   * It also stop the previous listener.
    */
   editMenuStyle() {   
     this._sideNavService.resetSideNavContent();
@@ -124,7 +126,10 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Edit navigation style. 
+   * Method called on navigation 'marker' button click. 
+   * 
+   * Open sidenav with navigation style properties and listen to changes.
+   * It also stop the previous listener.
    * 
    * @param navigation The navigation to edit.
    */
@@ -157,7 +162,6 @@ export class HeaderBarComponent implements OnInit {
   /**
    * Method called when drag end.
    * Get element position from cdkDragEnd event, convert it to percentage of screen size and save it.
-   * It also set `isDragging` to false;
    * 
    * @param event The cdkDragEnd event.
    * @param navigation The navigation dragged.

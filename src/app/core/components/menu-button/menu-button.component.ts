@@ -81,7 +81,9 @@ export class MenuButtonComponent {
 
   /**
    * Methods called on navigation 'marker' button click.
-   * Open form to edit navigation style. 
+   * 
+   * Open sidenav with navigation style properties and listen to changes.
+   * It also stop the previous listener.
    * 
    * @param navigation The navigation to edit.
    */
@@ -104,7 +106,9 @@ export class MenuButtonComponent {
 
   /**
    * Methods called on menu 'marker' button click.
-   * Open generic form to edit menu style.
+   * 
+   * Open sidenav with navigation style properties and listen to changes.
+   * It also stop the previous listener.
    * 
    * @param menu The menu to edit.
    */

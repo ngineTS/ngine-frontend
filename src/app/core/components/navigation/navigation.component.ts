@@ -184,7 +184,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Methods called on top right 'marker' button click.
-   * Open form to edit navigation style.
+   * 
+   * Open sidenav with navigation style properties and listen to changes.
+   * It also stop the previous listener.
    */
   editNavigationStyle() {
     this._sideNavService.resetSideNavContent();
