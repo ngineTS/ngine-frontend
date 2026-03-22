@@ -65,7 +65,7 @@ export class CalendarComponent extends NavigationBaseComponent {
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if (simpleChanges["_width"]) {
+    if (simpleChanges["_sizeChanged"]) {
       this.calendarApi?.updateSize();
     }
   }

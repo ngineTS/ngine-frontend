@@ -9,16 +9,16 @@ export class SideNavService {
 
     constructor() { }
 
+    stopSubscriptions = new Subject<void>();
     initalFormContent: Record<string, any> | null = null;
-
     formValueEvent = new Subject<FormValueEvent>();
-    
     formConfiguration = new Subject<
       GenericFormDialogData<Exclude<typeof this.initalFormContent, null>> | null
     >();
     
-    stopSubscriptions = new Subject<void>();
-
+    /**
+     * Reset side nav form and stop listeners.
+     */
     resetSideNavContent() {
       this.formValueEvent.next({
         formGroupName: 'close',

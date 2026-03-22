@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -43,10 +43,21 @@ export class ComponentsContainer implements OnInit {
 
   /** The components container. */
   navigation!: Navigation;
-  /** The initial window width. */
-  initialWindowWidth!: number;
-  /** The initial window height. */
-  initialWindowHeight!: number;
+  /** The window width. */
+  windowWidth!: number;
+  /** The window height. */
+  windowHeight!: number;
+  /** Responsive threasold */
+  windowWidthLimit = 600;
+
+  /**
+   * Get window size each time it changes (zoom, screen resize...).
+   */
+  @HostListener('window:resize')
+  onResize() {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+  }
 
   /**
    * Lifecyle hook called after the component has been initialized.
@@ -54,24 +65,22 @@ export class ComponentsContainer implements OnInit {
    * - sort navigation children for mobile screen responsivity
    */
   ngOnInit(): void {
-    this.initialWindowWidth = window.innerWidth;
-    this.initialWindowHeight = window.innerHeight;
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
 
-    if (this.initialWindowWidth < 600) {
-      this.navigation.children?.sort((a, b) => {
-        const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
-        const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
-        const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
-        const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
+    this.navigation.children?.sort((a, b) => {
+      const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
+      const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
+      const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
+      const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
 
-        if (aXPosRounded !== bXPosRounded) {
-          return aXPosRounded - bXPosRounded; // priority: xPos
-        }
+      if (aXPosRounded !== bXPosRounded) {
+        return aXPosRounded - bXPosRounded; // priority: xPos
+      }
 
-        return aYPosRounded - bYPosRounded; // secondary: yPos
-      });
-    }
+      return aYPosRounded - bYPosRounded; // secondary: yPos
+    });
   }
 
   /**

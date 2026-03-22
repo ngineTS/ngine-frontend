@@ -14,8 +14,7 @@ export class NavigationBaseComponent {
   @Input() _canEdit: boolean | undefined;
   @Input() _canAdd: boolean | undefined;
   @Input() _canDelete: boolean | undefined;
-  @Input({required: false}) _width!: number;
-  @Input({required: false}) _height!: number;
+  @Input({required: false}) _sizeChanged: boolean = false;
   @Input({required: false}) _isEditing: boolean = false;
   @Output() _stopEditing: EventEmitter<boolean> = new EventEmitter(false);
   protected readonly _retryCount = 1;

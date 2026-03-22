@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -43,15 +43,25 @@ export class HeaderBarComponent implements OnInit {
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
-    public _sideNavService: SideNavService,
+    private _sideNavService: SideNavService,
   ) { }
 
   /** The navigations container. */
   navigation!: Navigation;
   /** Boolean to inform if one of the items of navigation bar is being dragged. */
   isDragging = false;
-  /** The initial window width. */
-  initialWindowWidth!: number;
+  /** The window width. */
+  windowWidth!: number;
+  /** Responsive threasold */
+  windowWidthLimit = 600;
+
+  /**
+   * Get window width each time it changes (zoom, screen resize...).
+   */
+  @HostListener('window:resize')
+  onResize() {
+    this.windowWidth = window.innerWidth;
+  }
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -61,25 +71,14 @@ export class HeaderBarComponent implements OnInit {
    */
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
-    this.initialWindowWidth = window.innerWidth;
-
-    if (this.initialWindowWidth < 600) {
-      this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
-    }
+    this.windowWidth = window.innerWidth;
+    this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
   }
 
   /**
    * Computes navigation bar width based on screen size and side nav status.
    */
   get navigationBarWidth(): string {
-    if (this.initialWindowWidth <= 600) {
-      return '';
-    }
-
-    if (this.navigation.menu.containerLayout.width) {
-      return this.navigation.menu.containerLayout.width + 'px';
-    }
-
     if (this._sideNavService.initalFormContent) {
       return '100vw';
     }
@@ -103,13 +102,13 @@ export class HeaderBarComponent implements OnInit {
    * Open sidenav with menu style properties and listen to changes.
    * It also stop the previous listener.
    */
-  editMenuStyle() {   
+  editMenuStyle() {
     this._sideNavService.resetSideNavContent();
 
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
-        this.navigation.menu.containerLayout, 
-        ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop', 'xPos', 'yPos']
+        this.navigation.menu.containerLayout,
+        ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop', 'xPos', 'yPos', 'width']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         this.navigation.menu.containerStyle
