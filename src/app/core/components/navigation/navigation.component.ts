@@ -171,6 +171,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   onResetSizeClick(): void {
     this.windowWidth = this.windowWidth + 0.01; //used to force change detection (TODO: improve)
+    this.windowHeight = this.windowHeight + 0.01; //used to force change detection (TODO: improve)
     this.isResizing = false;
   }
 

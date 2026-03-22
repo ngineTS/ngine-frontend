@@ -97,8 +97,6 @@ export class EmptyDialogComponent {
     this.containerRef.setInput('_canAdd', navigation.permissionName?.includes('add'));
     this.containerRef.setInput('_canEdit', navigation.permissionName?.includes('edit'));
     this.containerRef.setInput('_canDelete', navigation.permissionName?.includes('delete'));
-    this.containerRef.setInput('_width', null);
-    this.containerRef.setInput('_height', null);
     this.containerRef.setInput('_isEditing', this._isEditing);
     this.containerRef.instance._stopEditing.subscribe(resp => {
       this._isEditing = !resp;
