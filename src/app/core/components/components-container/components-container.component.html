@@ -1,16 +1,16 @@
 <!-- List of navigations -->
-<div [class]="initialWindowWidth > 600 ? '' : 'small-screen-flex'" style="position: relative;">       
+<div [class]="windowWidth > 600 ? '' : 'small-screen-flex'" style="position: relative;">       
     @for (child of navigation.children; track child.id) {
 
-        @if (initialWindowWidth > 600) {
+        @if (windowWidth > 600) {
             <!-- Draggable element -->
             <div class="example-box"
                 cdkDrag 
                 [cdkDragDisabled]="!navigation.permissionName?.includes('edit')"
                 (cdkDragEnded)="onDragEnded($event, child)"
                 [cdkDragFreeDragPosition]="{
-                    x: child.containerLayout.xPos ? (child.containerLayout.xPos * initialWindowWidth / 100) : 0,
-                    y: child.containerLayout.yPos ? (child.containerLayout.yPos * initialWindowHeight / 100) : 0,
+                    x: child.containerLayout.xPos ? (child.containerLayout.xPos * windowWidth / 100) : 0,
+                    y: child.containerLayout.yPos ? (child.containerLayout.yPos * windowHeight / 100) : 0,
                 }"
             >
                 <!-- Top left drag icon -->

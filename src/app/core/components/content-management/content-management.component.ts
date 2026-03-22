@@ -31,11 +31,10 @@ export class ContentManagementComponent extends NavigationBaseComponent implemen
 
   ngOnInit() {
     this.getContentInformation();
-    this._isEditing
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if (simpleChanges['_isEditing'].currentValue === true) {
+    if (simpleChanges['_isEditing']?.currentValue === true) {
       const dialogRef = this._matDialog.open(ContentManagementFormComponent, { 
         maxWidth: '700px',
         data: {

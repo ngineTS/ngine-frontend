@@ -2,11 +2,14 @@
 <div [style.width]="navigationBarWidth">
 
     <!-- Laptop screen -->
-    @if (initialWindowWidth > 600) {
+    @if (windowWidth > 600) {
 
         <!-- List of navigations -->
         <div [style.background-color]="navigation.menu.containerStyle.backgroundColor"
-            [style.height]="navigation.menu.containerLayout.height + 'px'"
+            [style.height]="navigation.menu.containerLayout.height 
+                ? navigation.menu.containerLayout.height + 'px'
+                : '60px'
+            "
             [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
                 navigation.menu.containerStyle.borderStyle + ' ' +
                 navigation.menu.containerStyle.borderColor"
@@ -22,10 +25,10 @@
             [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
             [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
             [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-            [style.margin-top]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginTop + 'px' : ''"
-            [style.margin-right]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginRight + 'px' : ''"
-            [style.margin-bottom]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginBottom + 'px' : ''"
-            [style.margin-left]="initialWindowWidth > 600 ? navigation.menu.containerLayout.marginLeft + 'px' : ''"
+            [style.margin-top]="windowWidth > 600 ? navigation.menu.containerLayout.marginTop + 'px' : ''"
+            [style.margin-right]="windowWidth > 600 ? navigation.menu.containerLayout.marginRight + 'px' : ''"
+            [style.margin-bottom]="windowWidth > 600 ? navigation.menu.containerLayout.marginBottom + 'px' : ''"
+            [style.margin-left]="windowWidth > 600 ? navigation.menu.containerLayout.marginLeft + 'px' : ''"
         >
             <div class="header-list">
                 @for (child of navigation.children; track child.id) {
@@ -38,7 +41,7 @@
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [cdkDragFreeDragPosition]="{
                             x: child.containerLayout.xPos
-                                ? (child.containerLayout.xPos * initialWindowWidth / 100) 
+                                ? (child.containerLayout.xPos * windowWidth / 100) 
                                 : 0,
                             y: 0,
                         }"

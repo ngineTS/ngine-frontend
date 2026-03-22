@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, inject, Injector, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, inject, Injector, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -29,16 +29,24 @@ import { SideNavService } from '../../services/side-nav.service';
 })
 export class NavigationComponent extends NavigationBaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  /* The injector to use as the parent for the dynamic component. */
   injector = inject(Injector);
+  /* The HTML container of the dynamic component. */
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
+  /* The HTML container of the navigation. */
   @ViewChild('navigationDiv') navigationDiv!: ElementRef<HTMLDivElement>;
+  /* The dynamic component ref. */
   containerRef!: ComponentRef<NavigationBaseComponent>;
-  previousWidth!: number;
-  previousHeight!: number;
-  initialWindowWidth!: number;
-  initialWindowHeight!: number;
+  /* The size observer used to detect resize of navigation. */
   observer: MutationObserver | undefined;
+    /** The window width. */
+  windowWidth!: number;
+  /** The window height. */
+  windowHeight!: number;
+  /** Navigation mouseover state. */
   isMouseOver = false;
+  /** Navigation resize state. */
+  isResizing = false;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
@@ -52,38 +60,36 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Initialize width, previousWidth and initialWindowSize properties.
+   * Get window size each time it changes (zoom, screen resize...).
    */
-  ngOnInit(): void {
-    this.initialWindowWidth = window.innerWidth;
-    this.initialWindowHeight = window.innerHeight;
-    this.previousWidth = this._navigation.containerLayout.width ? 
-      this._navigation.containerLayout.width * this.initialWindowWidth / 100 :
-      20 * this.initialWindowWidth / 100;
-    this.previousHeight = this._navigation.containerLayout.height ?
-      this._navigation.containerLayout.height * this.initialWindowHeight / 100 :
-      20 * this.initialWindowHeight / 100;
-    this._width = this.previousWidth;
-    this._height = this.previousHeight;
+  @HostListener('window:resize')
+  onResize() {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   /**
-   * After view init, load component and create size observer.
+   * Lifecycle hook called after component has been initialized.
+   * 
+   * Assign window size.
+   */
+  ngOnInit(): void {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+  }
+
+  /**
+   * Lifecycle hook called after component template has been initialized.
+   * 
+   * Load component and create navigation size observer.
    */
   ngAfterViewInit(): void {
-    if (
-      this._navigation.navigationType.name !== 'redirect-button' &&
-      this._navigation.navigationType.name !== 'dialog-button' &&
-      this._navigation.navigationType.name !== 'external-link-button' &&
-      this._navigation.navigationType.name !== 'menu-button'
-    ) {
-      this.loadComponent();
-    }
+    this.loadComponent();
     this.createSizeObserver();
   }
 
   /**
-   * On destroy, disconnect observer and detroy containerRef.
+   * On destroy, disconnect observer and destroy containerRef.
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
@@ -91,11 +97,15 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Load component from component dictionnary.
+   * Load component from components library and set inputs. 
    */
   async loadComponent() {
-    const component = await this._componentContainerService
-      .componentStore[this._navigation.navigationType.name]().then(m => 
+    const componentImportRef = this._componentContainerService.componentStore[this._navigation.navigationType.name];
+    if (!componentImportRef) {
+      return;
+    }
+
+    const component = await componentImportRef().then(m => 
         m[this._componentContainerService.kebabCasetoPascaleCase(this._navigation.navigationType.name) + 'Component']
       );
 
@@ -107,8 +117,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this.containerRef.setInput('_canAdd', this._canAdd);
     this.containerRef.setInput('_canEdit', this._canEdit);
     this.containerRef.setInput('_canDelete', this._canDelete);
-    this.containerRef.setInput('_width', this._width);
-    this.containerRef.setInput('_height', this._height);
     this.containerRef.setInput('_isEditing', false);
     this.containerRef.instance._stopEditing.subscribe(resp => {
       this._isEditing = !resp;
@@ -117,27 +125,15 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Create size observer on itself.
-   * 
-   * This observer retrieve width and height of HTML element
-   * and assign it to _width and _height class properties on each change.
-   * 
-   * It also updates _width and _height inputs of container ref.
+   * Create size observer on navigation.
+
+   * On size change detection show save/reset size buttons.
    */
   createSizeObserver() {
     this.observer = new MutationObserver(() => {
-      this._width = this.navigationDiv.nativeElement.offsetWidth;
-      this._height = this.navigationDiv.nativeElement.offsetHeight;
-      if (
-        this._navigation.navigationType.name !== 'redirect-button' &&
-        this._navigation.navigationType.name !== 'dialog-button' &&
-        this._navigation.navigationType.name !== 'external-link-button' &&
-        this._navigation.navigationType.name !== 'menu-button'
-      ) {
-        this.containerRef.setInput('_width', this._width);
-        this.containerRef.setInput('_height', this._height);
-      }
+      if (this.isMouseOver) this.isResizing = true;
     });
+
     this.observer.observe(
       this.navigationDiv.nativeElement,
       { attributes: true, attributeFilter: ['style'] }
@@ -147,35 +143,50 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /**
    * Methods called on 'Save size' button click.
    * - calcul width and height % based on screen size
-   * - call API to update container layout width and height
-   * - assign new value to previousWidth and previousHeight properties
+   * - update container layout width and height
    */
   onSaveSizeClick(): void {
     const navigationSize = {
-      width: Math.round((this._width! / window.innerWidth * 100)),
-      height: Math.round((this._height! / window.innerHeight * 100))
+      width: this.navigationDiv.nativeElement.offsetWidth / window.innerWidth * 100,
+      height: this.navigationDiv.nativeElement.offsetHeight / window.innerHeight * 100
     };
+
     this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
       .pipe(take(this._takeCount))
       .subscribe(() => {
         this._navigation.containerLayout.width = navigationSize.width;
         this._navigation.containerLayout.height = navigationSize.height;
-        this.previousWidth = this._width.valueOf();
-        this.previousHeight = this._height.valueOf();
+        this.isResizing = false;
+        
+        if (this.containerRef) {
+          this._sizeChanged = !this._sizeChanged;
+          this.containerRef.setInput('_sizeChanged', this._sizeChanged);
+        }
       });
   }
 
   /**
    * Methods called on 'Reset size' button click.
-   * Reset width and height to their previous value.
+   * Reset navigation size to his previous value.
    */
   onResetSizeClick(): void {
-    this._width = this.previousWidth.valueOf();
-    this._height = this.previousHeight.valueOf();
+    this.windowWidth = this.windowWidth + 0.01; //used to force change detection (TODO: improve)
+    this.isResizing = false;
+  }
+
+  /**
+   * Methods called on 'edit' or 'x' button click.
+   * 
+   * Switch edit mode and update component input.
+   */
+  switchEditMode() {
+    this._isEditing = !this._isEditing;
+    this.containerRef.setInput('_isEditing', this._isEditing);
   }
 
   /**
    * Methods called on top right 'gear' button click.
+   * 
    * Open form to edit navigation properties.
    */
   editNavigation(): void {
@@ -210,16 +221,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * Methods called on 'edit' or 'x' button click.
-   * Switch edit mode.
-   */
-  switchEditMode() {
-    this._isEditing = !this._isEditing;
-    this.containerRef.setInput('_isEditing', this._isEditing);
-  }
-
-  /**
    * Setup listener on sidenav to update navigation style in real time.
+   * 
    * If sidenav is closed without saving then assign back initial style.
    */
   setSideNavFormListener() {
