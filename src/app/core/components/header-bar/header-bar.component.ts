@@ -52,6 +52,8 @@ export class HeaderBarComponent implements OnInit {
   isDragging = false;
   /** The window width. */
   windowWidth!: number;
+  /** Responsive threasold */
+  windowWidthLimit = 600;
 
   /**
    * Get window width each time it changes (zoom, screen resize...).
@@ -70,7 +72,6 @@ export class HeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
-
     this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
   }
 

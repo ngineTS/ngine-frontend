@@ -24,10 +24,10 @@
 
     <!-- Navigation shape -->
     <div #navigationDiv
-        [style.width]="windowWidth > 600
+        [style.width]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
             : ''"
-        [style.height]="windowWidth > 600
+        [style.height]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'
             : ''"
         [style.resize]="_canEdit ? 'both' : ''"
@@ -44,14 +44,31 @@
             'none' : _navigation.containerStyle.borderStyle"
         [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
             'none' : _navigation.containerStyle.borderStyle"
-        [style.border-top-left-radius]="_navigation.containerStyle.borderTopLeftRadius + 'px'"
-        [style.border-top-right-radius]="_navigation.containerStyle.borderTopRightRadius + 'px'"
-        [style.border-bottom-right-radius]="_navigation.containerStyle.borderBottomRightRadius + 'px'"
-        [style.border-bottom-left-radius]="_navigation.containerStyle.borderBottomLeftRadius + 'px'"
-        [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
+        [style.border-top-left-radius]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopLeftRadius + 'px'
+            : '6px'
+        "
+        [style.border-top-right-radius]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopRightRadius + 'px'
+            : '6px'
+        "
+        [style.border-bottom-right-radius]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomRightRadius + 'px'
+            : '6px'
+        "
+        [style.border-bottom-left-radius]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomLeftRadius + 'px'
+            : '6px'
+        "
+        [style.padding-top]="windowWidth > windowWidthLimit 
+            ? _navigation.containerLayout.paddingTop + 'px'
+            : '8px'"
+        [style.padding-bottom]="windowWidth > windowWidthLimit 
+            ? _navigation.containerLayout.paddingBottom + 'px'
+            : '8px'"
         [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
-        [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
         [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
+        [style.margin]="windowWidth > windowWidthLimit ? '' : '6px'"
         [style.color]="_navigation.typographyStyle.color"
         [style.font-family]="_navigation.typographyStyle.fontFamily"
         [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"

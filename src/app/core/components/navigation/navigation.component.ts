@@ -47,6 +47,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   isMouseOver = false;
   /** Navigation resize state. */
   isResizing = false;
+  /** Responsive threasold */
+  windowWidthLimit = 600;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,

@@ -47,6 +47,8 @@ export class ComponentsContainer implements OnInit {
   windowWidth!: number;
   /** The window height. */
   windowHeight!: number;
+  /** Responsive threasold */
+  windowWidthLimit = 600;
 
   /**
    * Get window size each time it changes (zoom, screen resize...).
