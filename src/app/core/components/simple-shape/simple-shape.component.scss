@@ -1,0 +1,20 @@
+.save-button {
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 20px;
+}
+
+.text-area {
+    min-height: calc(100% - 70px);
+}
+
+.text-content {
+    white-space: pre-wrap;
+    hyphens: auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+}

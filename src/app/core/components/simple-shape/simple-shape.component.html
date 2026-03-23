@@ -1,0 +1,19 @@
+@if (_isEditing) {
+    <div class="row mx-1 pt-1 h-100">
+        <textarea 
+            class="text-area"
+            [(ngModel)]="content.content"
+        >
+        </textarea>
+        <button 
+            matButton="outlined" 
+            class="save-button"
+            type="button" 
+            (click)="onSaveClick()"
+        >   Save
+        </button>
+    </div>
+}
+@else {
+    <span class="text-content">{{ content.content }}</span>
+}
