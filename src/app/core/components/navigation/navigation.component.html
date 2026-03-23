@@ -24,6 +24,7 @@
 
     <!-- Navigation shape -->
     <div #navigationDiv
+        class="navigation-div"
         [style.width]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
             : ''"
@@ -31,8 +32,10 @@
             ? (_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'
             : ''"
         [style.resize]="_canEdit ? 'both' : ''"
-        [style.overflow]="'auto'"
-        [style.backgroundColor]="_navigation.containerStyle.backgroundColor"
+        [style.background-color]="_navigation.containerStyle.backgroundColor"
+        [style.background-image]="backgroundImageUrl
+            ? 'url(' + backgroundImageUrl + ')'
+            : ''"
         [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
             _navigation.containerStyle.borderStyle + ' ' +
             _navigation.containerStyle.borderColor"

@@ -33,8 +33,7 @@ export class SimpleShapeComponent extends NavigationBaseComponent {
   }
 
   onSaveClick() {
-    console.log(this.content);
-     //edit
+    //edit
     if (this.content?.id) {
       this._http.patch(`${environment.APIURL}quill-editor/${this.content.id}`, {
         navigationId: this._navigation.id,

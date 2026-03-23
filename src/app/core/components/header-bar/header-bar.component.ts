@@ -111,7 +111,8 @@ export class HeaderBarComponent implements OnInit {
         ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop', 'xPos', 'yPos', 'width']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
-        this.navigation.menu.containerStyle
+        this.navigation.menu.containerStyle,
+        ['backgroundImage']
       ),
     }
 
