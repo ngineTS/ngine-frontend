@@ -24,6 +24,7 @@
 }
 
 .fullsize-icon {
+    z-index: 999;
     position: absolute;
     left: 0px;
     top: 0px;
@@ -39,6 +40,7 @@
 }
 
 .delete-icon {
+    z-index: 999;
     position: absolute;
     right: 0px;
     top: 0px;

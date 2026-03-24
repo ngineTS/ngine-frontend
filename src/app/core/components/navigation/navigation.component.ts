@@ -14,6 +14,7 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { ContainerStyleService } from '../../services/container-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
+import { MediaService } from '../../services/media.service';
 
 @Component({
   selector: 'app-navigation',
@@ -47,8 +48,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   isMouseOver = false;
   /** Navigation resize state. */
   isResizing = false;
-  /** Responsive threasold */
+  /** Responsive threasold. */
   windowWidthLimit = 600;
+  /** Background image url. */
+  backgroundImageUrl: string | undefined;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
@@ -57,6 +60,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _typographyStyleService: TypographyStyleService,
     private _menuService: MenuService,
     private _sideNavService: SideNavService,
+    private _mediaService: MediaService
   ) { 
     super(); 
   }
@@ -73,11 +77,18 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /**
    * Lifecycle hook called after component has been initialized.
    * 
-   * Assign window size.
+   * Assign window size and get background image url if exists.
    */
   ngOnInit(): void {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
+
+    const navigationBackgroundImage = this._navigation.containerStyle.backgroundImage;
+    if (navigationBackgroundImage) {
+      this._mediaService.getS3ObjectSignedUrl(navigationBackgroundImage).subscribe(
+        resp => this.backgroundImageUrl = resp
+      );
+    }
   }
 
   /**
@@ -91,7 +102,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * On destroy, disconnect observer and destroy containerRef.
+   * Lifecycle hook called after component has been destroyed.
+   * 
+   * Disconnect observer and destroy dynamic component.
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();

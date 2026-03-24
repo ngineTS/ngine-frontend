@@ -64,4 +64,15 @@ export class MediaService {
       .pipe(take(1));
   }
 
+  /**
+   * Get media by file name.
+   * 
+   * @param fileName The file name.
+   * @returns The media.
+   */
+  getMediaByFileName(fileName: string) {
+    return this._http.get<Media>(`${this.baseURL}media/file-name/${fileName}`)
+      .pipe(retry(1), take(1));
+  }
+
 }

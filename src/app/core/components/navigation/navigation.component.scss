@@ -2,8 +2,20 @@
     position: relative;
 }
 
-.icon {
+.navigation-div {
+    background-size: cover;
+    overflow: hidden;
+}
+
+.icons-div {
     position: absolute;
+    top: 0px;
+    right: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.icon {
     font-size: 16px;
     border: 1px solid #ccc;
     border-right: none;
@@ -14,21 +26,6 @@
     display: none;
     cursor: pointer;
     z-index: 999;
-}
-
-.edit-icon {
-    top: 0px;
-    right: 57px;
-}
-
-.gear-icon {
-    top: 0px;
-    right: 0px;
-}
-
-.marker-icon {
-    top: 0px;
-    right: 29px;
 }
 
 .navigation-container:hover .icon {

@@ -89,6 +89,12 @@ export class ContainerStyleService {
         alias: 'Hide Left Border',
         type: 'checkbox',
         validators: [Validators.required]
+      },
+      backgroundImage: {
+        value: containerStyle.backgroundImage ?? null,
+        alias: 'Background Image',
+        type: 'file',
+        validators: []
       }
     }
 

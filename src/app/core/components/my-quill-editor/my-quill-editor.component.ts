@@ -49,7 +49,6 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
         this.content = resp?.content;
       }
     );
-    
   }
 
   onSaveClick() {

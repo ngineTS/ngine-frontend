@@ -19,7 +19,9 @@ export class ComponentsContainerService {
     "media-library": () => import('../components/media-library/media-library.component'),
     "user-management": () => import('../components/user-management/user-management.component'),
     "role-management": () => import('../components/role-management/role-management.component'),
-    "sign-container": () => import('../components/sign-container/sign-container.component')
+    "sign-container": () => import('../components/sign-container/sign-container.component'),
+    "simple-shape": () => import('../components/simple-shape/simple-shape.component'),
+    "media": () => import('../components/media/media.component')
   };
 
   /**

@@ -1,0 +1,38 @@
+@if (isUploading) {
+    <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
+}
+
+@if (media && !_isEditing) {
+    @if (media!.type.includes('video')) {
+        <video 
+            height="auto" 
+            width="100%" 
+            controls
+            [src]="mediaUrl$ | async"
+        >
+        </video>
+    }
+    @if (media!.type.includes('audio')) {
+        <audio 
+            height="auto" 
+            width="100%" 
+            controls
+            [src]="mediaUrl$ | async"
+        >
+        </audio>
+    }
+}
+@else {
+    <div class="row m-4 gap-2">
+        <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
+            <span>Upload File</span>
+            <input 
+                style="display: none"
+                #fileDropRef
+                type="file" 
+                (change)="onFileSelection($event)"
+            />
+        </button>
+        <span class="file-name">{{ content?.fileName ?? 'No file uploaded' }}</span>
+    </div>
+}

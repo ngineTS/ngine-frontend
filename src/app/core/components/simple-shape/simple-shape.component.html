@@ -1,0 +1,30 @@
+@if (content) {
+    <div class="row mx-2 py-2 h-100">
+        @if (_isEditing) {
+            <textarea 
+                #textArea
+                class="text-area"
+                [(ngModel)]="content.content"
+                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                [style.font-weight]="_navigation.typographyStyle.fontWeight"
+                [style.color]="_navigation.typographyStyle.color"
+            >
+            </textarea>
+            <button 
+                matButton="outlined" 
+                class="save-button"
+                type="button" 
+                (click)="onSaveClick()"
+            >   Save
+            </button>
+        }
+        @else {
+            <span class="text-content"
+                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                [style.font-weight]="_navigation.typographyStyle.fontWeight"
+            >
+                {{ content.content }}
+            </span>
+        }
+    </div>
+}
