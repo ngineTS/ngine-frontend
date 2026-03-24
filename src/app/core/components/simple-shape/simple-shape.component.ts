@@ -28,14 +28,22 @@ export class SimpleShapeComponent extends NavigationBaseComponent {
     this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
       .pipe(take(this._takeCount))
       .subscribe(resp => {
-        this.content = resp;
+        if (resp) {
+          this.content = resp;
+        }
+        else {
+          this.content = {
+            content: '',
+            fileName: '',
+            navigationId: this._navigation.id
+          } as QuillEditorContent;
+        }
       }
     );
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if (simpleChanges['_isEditing'].currentValue === true) {
-      console.log(simpleChanges['_isEditing']);
+    if (simpleChanges['_isEditing']?.currentValue === true) {
       setTimeout(() => this.textArea?.nativeElement.focus(), 100);
     }
     else {

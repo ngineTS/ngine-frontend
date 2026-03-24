@@ -20,7 +20,8 @@ export class ComponentsContainerService {
     "user-management": () => import('../components/user-management/user-management.component'),
     "role-management": () => import('../components/role-management/role-management.component'),
     "sign-container": () => import('../components/sign-container/sign-container.component'),
-    "simple-shape": () => import('../components/simple-shape/simple-shape.component')
+    "simple-shape": () => import('../components/simple-shape/simple-shape.component'),
+    "media": () => import('../components/media/media.component')
   };
 
   /**

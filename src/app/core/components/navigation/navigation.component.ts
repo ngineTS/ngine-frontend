@@ -102,7 +102,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
-   * On destroy, disconnect observer and destroy containerRef.
+   * Lifecycle hook called after component has been destroyed.
+   * 
+   * Disconnect observer and destroy dynamic component.
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
