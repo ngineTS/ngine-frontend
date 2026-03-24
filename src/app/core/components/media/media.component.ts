@@ -4,12 +4,13 @@ import { QuillEditorContent } from '../../models/quill-editor.interface';
 import { HttpClient } from '@angular/common/http';
 import { SnackBarService } from '../../services/snackbar.service';
 import { environment } from '../../../../environments/environment';
-import { firstValueFrom, Observable, take } from 'rxjs';
+import { firstValueFrom, map, Observable, take } from 'rxjs';
 import { MediaService } from '../../services/media.service';
 import { Media } from '../../models/media.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-media',
@@ -24,7 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class MediaComponent extends NavigationBaseComponent {
 
   content: QuillEditorContent | undefined;
-  mediaUrl$: Observable<string> | undefined;
+  mediaUrl$: Observable<SafeUrl> | undefined;
   media: Media | undefined;
   formFile = new FormData();
   isUploading = false;
@@ -32,7 +33,8 @@ export class MediaComponent extends NavigationBaseComponent {
   constructor(
     private _http: HttpClient,
     private _snackbarService: SnackBarService,
-    private _mediaService: MediaService
+    private _mediaService: MediaService,
+    private _sanitizer: DomSanitizer
   ) { super(); }
 
   /**
@@ -50,7 +52,8 @@ export class MediaComponent extends NavigationBaseComponent {
         console.log('media table', resp);
         this.media = resp
       })
-      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.content.fileName);
+      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.content.fileName)
+        .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
     }
   }
 
@@ -75,7 +78,8 @@ export class MediaComponent extends NavigationBaseComponent {
     this.formFile.append('file', fileUploaded);
     this.media = await firstValueFrom(this._mediaService.uploadFileToS3(this.formFile));
     if (this.media) {
-      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.media.name);
+      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.media.name)
+        .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
       this.saveContent(this.media.name);
       this.isUploading = false;
     }
