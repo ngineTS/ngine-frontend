@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, SimpleChanges, ViewChild } from '@angular/core';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { HttpClient } from '@angular/common/http';
 import { QuillEditorContent } from '../../models/quill-editor.interface';
@@ -17,6 +17,7 @@ import { SnackBarService } from '../../services/snackbar.service';
 export class SimpleShapeComponent extends NavigationBaseComponent {
 
   content!: QuillEditorContent;
+  @ViewChild('textArea') textArea!: ElementRef<HTMLTextAreaElement>;
 
   constructor(
     private _http: HttpClient,
@@ -30,6 +31,16 @@ export class SimpleShapeComponent extends NavigationBaseComponent {
         this.content = resp;
       }
     );
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges['_isEditing'].currentValue === true) {
+      console.log(simpleChanges['_isEditing']);
+      setTimeout(() => this.textArea?.nativeElement.focus(), 100);
+    }
+    else {
+      this.textArea?.nativeElement.blur();
+    }
   }
 
   onSaveClick() {

@@ -1,20 +1,22 @@
 .save-button {
-    margin-left: auto;
-    margin-top: 10px;
-    margin-right: 10px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
     width: 20px;
 }
 
 .text-area {
-    min-height: calc(100% - 70px);
+    border-radius: 4px;
+    border: none;
+    background-color: transparent;
+    resize: none;
+    overflow: hidden;
+    text-align: center;
+    outline: none;
 }
 
 .text-content {
-    white-space: pre-wrap;
-    hyphens: auto;
-    display: flex;
-    justify-content: center;
+    white-space: break-spaces;
     text-align: center;
-    align-items: center;
-    height: 100%;
+    max-width: 100%;
 }

@@ -1,9 +1,13 @@
 @if (content) {
-    @if (_isEditing) {
-        <div class="row mx-1 pt-1 h-100">
+    <div class="row mx-2 py-2 h-100">
+        @if (_isEditing) {
             <textarea 
+                #textArea
                 class="text-area"
                 [(ngModel)]="content.content"
+                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                [style.font-weight]="_navigation.typographyStyle.fontWeight"
+                [style.color]="_navigation.typographyStyle.color"
             >
             </textarea>
             <button 
@@ -13,14 +17,14 @@
                 (click)="onSaveClick()"
             >   Save
             </button>
-        </div>
-    }
-    @else {
-        <span class="text-content"
-            [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
-            [style.font-weight]="_navigation.typographyStyle.fontWeight"
-        >
-            {{ content.content }}
-        </span>
-    }
+        }
+        @else {
+            <span class="text-content"
+                [style.font-size]="_navigation.typographyStyle.fontSize + 'px'"
+                [style.font-weight]="_navigation.typographyStyle.fontWeight"
+            >
+                {{ content.content }}
+            </span>
+        }
+    </div>
 }

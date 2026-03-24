@@ -1,17 +1,21 @@
-<div class="navigation-container">
+<div class="navigation-container" [style.margin]="windowWidth > windowWidthLimit ? '' : '6px'">
     
     @if (_canEdit) {
         <!-- Top right icons -->
-        @if (containerRef) {
-            @if (_isEditing) {
-                <i class="bi bi-x-circle icon edit-icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+        <div class="icons-div">
+            @if (containerRef) {
+                @if (_isEditing) {
+                    <i class="bi bi-x-circle icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+                }
+                @else {
+                    <i class="bi bi-pen icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+                }
             }
-            @else {
-                <i class="bi bi-pen icon edit-icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+            @if (windowWidth > windowWidthLimit) {
+                <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
             }
-        }
-        <i class="bi bi-marker-tip icon marker-icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
-        <i class="bi bi-gear icon gear-icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+            <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+        </div>
 
         <!-- Accept or Reset size icons -->
         @if (isResizing) {
@@ -71,7 +75,6 @@
             : '8px'"
         [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
         [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
-        [style.margin]="windowWidth > windowWidthLimit ? '' : '6px'"
         [style.color]="_navigation.typographyStyle.color"
         [style.font-family]="_navigation.typographyStyle.fontFamily"
         [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"
