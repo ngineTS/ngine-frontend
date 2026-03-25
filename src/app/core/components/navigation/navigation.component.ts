@@ -40,7 +40,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   containerRef!: ComponentRef<NavigationBaseComponent>;
   /* The size observer used to detect resize of navigation. */
   observer: MutationObserver | undefined;
-    /** The window width. */
+  /** The window width. */
   windowWidth!: number;
   /** The window height. */
   windowHeight!: number;
@@ -52,6 +52,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   windowWidthLimit = 600;
   /** Background image url. */
   backgroundImageUrl: string | undefined;
+  /** If navigation has scroll bar or not. */
+  hasScrollBar = false;
 
   constructor(
     private _componentContainerService: ComponentsContainerService,
@@ -89,6 +91,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
         resp => this.backgroundImageUrl = resp
       );
     }
+
+    this.hasScrollBar = this.doesNavigationHasScrollBar();
   }
 
   /**
@@ -262,5 +266,22 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
           this._navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
         }
       });
+  }
+
+  doesNavigationHasScrollBar(): boolean {
+    const navigationTypeWithoutScrollBar = [
+      'external-link-button',
+      'menu-button',
+      'dialog-button',
+      'redirect-button',
+      'media',
+      'simple-shape'
+    ];
+
+    if (navigationTypeWithoutScrollBar.includes(this._navigation.navigationType.name)) {
+      return false;
+    }
+
+    return true;
   }
 }

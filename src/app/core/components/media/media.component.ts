@@ -28,7 +28,7 @@ export class MediaComponent extends NavigationBaseComponent {
   mediaUrl$: Observable<SafeUrl> | undefined;
   media: Media | undefined;
   formFile = new FormData();
-  isUploading = false;
+  isLoading = false;
   
   constructor(
     private _http: HttpClient,
@@ -43,6 +43,7 @@ export class MediaComponent extends NavigationBaseComponent {
    * Get navigation content then retrieve media metadata and mediaUrl associated.
    */
   async ngOnInit() {
+    this.isLoading = true;
     this.content = await firstValueFrom(
       this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
     );
@@ -55,6 +56,7 @@ export class MediaComponent extends NavigationBaseComponent {
       this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.content.fileName)
         .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
     }
+    this.isLoading = false;
   }
 
   /**
@@ -65,7 +67,7 @@ export class MediaComponent extends NavigationBaseComponent {
    * @param event The file upoad event.
    */
   async onFileSelection(event: any) {
-    this.isUploading = true;
+    this.isLoading = true;
     const fileUploaded: File = event.target.files[0];
     /* 1. Delete existing file. */
     this.formFile.delete('file');
@@ -81,7 +83,7 @@ export class MediaComponent extends NavigationBaseComponent {
       this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.media.name)
         .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
       this.saveContent(this.media.name);
-      this.isUploading = false;
+      this.isLoading = false;
     }
   }
 

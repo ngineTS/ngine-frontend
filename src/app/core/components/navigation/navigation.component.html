@@ -1,4 +1,4 @@
-<div class="navigation-container" [style.margin]="windowWidth > windowWidthLimit ? '' : '6px'">
+<div class="navigation-container">
     
     @if (_canEdit) {
         <!-- Top right icons -->
@@ -29,13 +29,13 @@
     <!-- Navigation shape -->
     <div #navigationDiv
         class="navigation-div"
+        [style.overflow-y]="hasScrollBar ? 'auto' : 'hidden'"
         [style.width]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
-            : ''"
-        [style.height]="windowWidth > windowWidthLimit
-            ? (_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'
-            : ''"
-        [style.resize]="_canEdit ? 'both' : ''"
+            : '100%'"
+        [style.height]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'"
+        [style.max-height]="windowWidth > windowWidthLimit ? '' : 'fit-content'"
+        [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : ''"
         [style.background-color]="_navigation.containerStyle.backgroundColor"
         [style.background-image]="backgroundImageUrl
             ? 'url(' + backgroundImageUrl + ')'
@@ -67,12 +67,8 @@
             ? _navigation.containerStyle.borderBottomLeftRadius + 'px'
             : '6px'
         "
-        [style.padding-top]="windowWidth > windowWidthLimit 
-            ? _navigation.containerLayout.paddingTop + 'px'
-            : '8px'"
-        [style.padding-bottom]="windowWidth > windowWidthLimit 
-            ? _navigation.containerLayout.paddingBottom + 'px'
-            : '8px'"
+        [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
+        [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
         [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
         [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
         [style.color]="_navigation.typographyStyle.color"
