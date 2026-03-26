@@ -1,5 +1,5 @@
 <div class="navigation-container">
-    
+
     @if (_canEdit) {
         <!-- Top right icons -->
         <div class="icons-div">
@@ -37,9 +37,7 @@
         [style.max-height]="windowWidth > windowWidthLimit ? '' : 'fit-content'"
         [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : ''"
         [style.background-color]="_navigation.containerStyle.backgroundColor"
-        [style.background-image]="backgroundImageUrl
-            ? 'url(' + backgroundImageUrl + ')'
-            : ''"
+        [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : ''"
         [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
             _navigation.containerStyle.borderStyle + ' ' +
             _navigation.containerStyle.borderColor"
