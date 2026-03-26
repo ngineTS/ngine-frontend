@@ -12,6 +12,7 @@
                 }
             }
             @if (windowWidth > windowWidthLimit) {
+                <i class="bi bi-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
                 <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
             }
             <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>

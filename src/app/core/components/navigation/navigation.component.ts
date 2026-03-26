@@ -145,8 +145,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
   /**
    * Create size observer on navigation.
-
-   * On size change detection show save/reset size buttons.
+   * On size change detection, show 'save/reset' buttons.
+   *
+   * `isMouseOver` property allows to intercept resizing applied by user
+   * and exclude resizing due to screen size change.
    */
   createSizeObserver() {
     this.observer = new MutationObserver(() => {
@@ -283,5 +285,31 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     }
 
     return true;
+  }
+
+  /**
+   * Method called on top right 'fullscreen' button click.
+   * 
+   * Resize navigation to match the screen size.
+   */
+  onFullScreenClick() {
+    const width = 100 - 16 / window.innerWidth * 100;
+    const height = 100;
+    const xPos = 0;
+    this._navigation.containerLayout.width = width;
+    this._navigation.containerLayout.height = height;
+    this._navigation.containerLayout.xPos = xPos;
+
+    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+      width: width,
+      height: height,
+      xPos: xPos
+    }).pipe(take(this._takeCount))
+      .subscribe(() => {
+        if (this.containerRef) {
+          this._sizeChanged = !this._sizeChanged;
+          this.containerRef.setInput('_sizeChanged', this._sizeChanged);
+        }
+      });
   }
 }
