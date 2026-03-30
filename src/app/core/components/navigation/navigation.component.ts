@@ -293,9 +293,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Resize navigation to match the screen size.
    */
   onFullScreenClick() {
-    const width = 100 - 16 / window.innerWidth * 100;
+    const width = 97;
     const height = 100;
-    const xPos = 0;
+    const xPos = 1;
     this._navigation.containerLayout.width = width;
     this._navigation.containerLayout.height = height;
     this._navigation.containerLayout.xPos = xPos;
