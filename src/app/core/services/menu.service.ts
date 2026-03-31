@@ -3,8 +3,6 @@ import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { StylePayload } from "../models/menu.interface";
 import { DeepFormConfig, GenericFormDialogData } from "../models/form-input.interface";
-import { AppService } from "./app.service";
-import { Router } from "@angular/router";
 import { SideNavService } from "./side-nav.service";
 
 @Injectable({
@@ -14,8 +12,6 @@ export class MenuService {
 
     constructor(
         private _http: HttpClient,
-        private _appService: AppService,
-        private _router: Router,
         private _sideNavService: SideNavService
     ) {}
 

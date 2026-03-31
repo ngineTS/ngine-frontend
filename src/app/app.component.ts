@@ -4,13 +4,14 @@ import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
-import { firstValueFrom, takeUntil } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { Location } from '@angular/common';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { SideNavService } from './core/services/side-nav.service';
 import { FormValueEvent, GenericFormDialogData } from './core/models/form-input.interface';
 import { GenericFormComponent } from './core/components/generic-form/generic-form.component';
+import { AppSettingsService } from './core/services/app-settings.service';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _appService: AppService,
+    private _appSettingsService: AppSettingsService,
     private _router: Router,
     private _authService: AuthService,
     private _userEventService: UserEventService,
@@ -40,12 +42,14 @@ export class AppComponent implements OnInit {
   showFiller = false;
   @ViewChild('drawer') drawer!: MatDrawer
   sideNavFormConfiguration: GenericFormDialogData<Record<string, any>> | null = null;
+  appBackgroundColor: string | undefined;
 
 
   /**
    * Lifecycle hook called after component has been initialized.
    * 
    * Process:
+   * - Set app background color.
    * - Verify auth token validity.
    * - Run auth token refresh job.
    * - Create app routing.
@@ -53,6 +57,7 @@ export class AppComponent implements OnInit {
    * - Run user event tracking job.
    */
   ngOnInit() {
+    this.setAppBackgroundColor();
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
@@ -147,5 +152,15 @@ export class AppComponent implements OnInit {
     this.drawer.close();
   }
 
+  /**
+   * Set app background color.
+   */
+  setAppBackgroundColor() {
+    this._appSettingsService.getAppSettings()
+      .pipe(map(appSettings => 
+        appSettings.find(setting => setting.settingName === 'backgroundColor')?.settingValue
+      ))
+      .subscribe(backgroundColor => this.appBackgroundColor = backgroundColor);
+  }
 
 }
