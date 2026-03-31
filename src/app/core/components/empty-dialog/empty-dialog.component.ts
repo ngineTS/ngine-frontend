@@ -5,7 +5,6 @@ import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MenuService } from '../../services/menu.service';
 import { StylePayload } from '../../models/menu.interface';
 import { NavigationService } from '../../services/navigation.service';
 import { ContainerLayoutService } from '../../services/container-layout.service';
@@ -34,7 +33,6 @@ export class EmptyDialogComponent {
     public data: { navigation: Navigation },
     private _componentsContainerService: ComponentsContainerService,
     private _navigationService: NavigationService,
-    private _menuService: MenuService,
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
@@ -138,7 +136,7 @@ export class EmptyDialogComponent {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     };
     
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       navigationStylePayload,
       navigation.id,
       navigation.displayLabel

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { FormValueEvent, GenericFormDialogData } from "../models/form-input.interface";
+import { DeepFormConfig, FormValueEvent, GenericFormDialogData } from "../models/form-input.interface";
+import { StylePayload } from "../models/menu.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,29 @@ export class SideNavService {
       this.initalFormContent = null;
       this.formConfiguration.next(null);
       this.stopSubscriptions.next();
+    }
+
+    /**
+     * Open style form with style form configuration.
+     * 
+     * @param stylePayload The form configuration.
+     * @param refId The refId.
+     * @param formTitle The form title.
+     */
+    openStyleForm(
+        stylePayload: DeepFormConfig<Partial<StylePayload>>,
+        refId: string,
+        formTitle?: string
+    ) {
+        const formConfiguration: GenericFormDialogData<Partial<StylePayload>> = {
+            hasDeleteButton: false,
+            formConfig: stylePayload,
+            payloadId: refId,
+            controllerName: 'menu',
+            formTitle: formTitle
+        };
+
+        this.formConfiguration.next(formConfiguration);
     }
     
 }

@@ -6,7 +6,6 @@ import { take, takeUntil } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
-import { MenuService } from '../../services/menu.service';
 import { StylePayload } from '../../models/menu.interface';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
@@ -60,7 +59,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
-    private _menuService: MenuService,
     private _sideNavService: SideNavService,
     private _mediaService: MediaService
   ) { 
@@ -233,7 +231,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)
     };
 
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       navigationStylePayload,
       this._navigation.id,
       this._navigation.displayLabel

@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Navigation } from '../../models/navigation.interface';
 import { NgTemplateOutlet } from '@angular/common';
-import { MenuService } from '../../services/menu.service';
 import { Menu, StylePayload } from '../../models/menu.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
@@ -33,7 +32,6 @@ import { takeUntil } from 'rxjs';
 export class MenuButtonComponent {
 
   constructor(
-    private _menuService: MenuService,
     private _navigationService: NavigationService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
@@ -95,7 +93,7 @@ export class MenuButtonComponent {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     }
 
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       navigationStylePayload,
       navigation.id,
       navigation.displayLabel
@@ -124,7 +122,7 @@ export class MenuButtonComponent {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
 
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       menuStylePayload,
       navigation.menu.id,
       `${navigation.displayLabel} - Menu`

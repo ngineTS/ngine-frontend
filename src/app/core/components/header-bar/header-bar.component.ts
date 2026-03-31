@@ -6,7 +6,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { StylePayload } from '../../models/menu.interface';
-import { MenuService } from '../../services/menu.service';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
@@ -39,7 +38,6 @@ export class HeaderBarComponent implements OnInit {
     public _router: Router,
     private _route: ActivatedRoute,
     private _navigationService: NavigationService,
-    private _menuService: MenuService,
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
@@ -116,7 +114,7 @@ export class HeaderBarComponent implements OnInit {
       ),
     }
 
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       menuStyleFormConfig,
       this.navigation.menu.id,
       `${this.navigation.displayLabel} - Menu`
@@ -142,7 +140,7 @@ export class HeaderBarComponent implements OnInit {
       )
     }
     
-    this._menuService.manageStyle(
+    this._sideNavService.openStyleForm(
       navigationStylePayload,
       navigation.id,
       navigation.displayLabel
