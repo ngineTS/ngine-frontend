@@ -4,14 +4,16 @@ import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './core/auth/services/auth.service';
 import { UserEventService } from './core/services/user-event.service';
-import { firstValueFrom, map } from 'rxjs';
-import { Location } from '@angular/common';
+import { firstValueFrom, map, Observable } from 'rxjs';
+import { AsyncPipe, Location } from '@angular/common';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { SideNavService } from './core/services/side-nav.service';
 import { FormValueEvent, GenericFormDialogData } from './core/models/form-input.interface';
 import { GenericFormComponent } from './core/components/generic-form/generic-form.component';
 import { AppSettingsService } from './core/services/app-settings.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,8 @@ import { AppSettingsService } from './core/services/app-settings.service';
     RouterOutlet,
     MatSidenavModule,
     MatButtonModule,
-    GenericFormComponent
+    GenericFormComponent,
+    AsyncPipe
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -33,7 +36,8 @@ export class AppComponent implements OnInit {
     private _authService: AuthService,
     private _userEventService: UserEventService,
     private _location: Location,
-    public _sideNavService: SideNavService
+    public _sideNavService: SideNavService,
+    private _matDialog: MatDialog
     ) { }
 
   title = 'my-app-frontend';
@@ -42,7 +46,7 @@ export class AppComponent implements OnInit {
   showFiller = false;
   @ViewChild('drawer') drawer!: MatDrawer
   sideNavFormConfiguration: GenericFormDialogData<Record<string, any>> | null = null;
-  appBackgroundColor: string | undefined;
+  appBackgroundColor$: Observable<string> | undefined;
 
 
   /**
@@ -57,6 +61,11 @@ export class AppComponent implements OnInit {
    * - Run user event tracking job.
    */
   ngOnInit() {
+    this._matDialog.open(DefaultStyleFormComponent, {
+      width: '500px',
+      disableClose: true,
+      hasBackdrop: false,
+    });
     this.setAppBackgroundColor();
     const path = this._location.path();
     setTimeout(async () => {
@@ -156,11 +165,20 @@ export class AppComponent implements OnInit {
    * Set app background color.
    */
   setAppBackgroundColor() {
+    this.appBackgroundColor$ = this._appSettingsService.backgroundColor$;
+    
     this._appSettingsService.getAppSettings()
       .pipe(map(appSettings => 
         appSettings.find(setting => setting.settingName === 'backgroundColor')?.settingValue
       ))
-      .subscribe(backgroundColor => this.appBackgroundColor = backgroundColor);
+      .subscribe(backgroundColor => {
+        if (backgroundColor) {
+          this._appSettingsService.setAppBackgroundColor(backgroundColor);
+        }
+        else {
+          this._appSettingsService.setAppBackgroundColor('#FFFFFF');
+        }
+      });
   }
 
 }
