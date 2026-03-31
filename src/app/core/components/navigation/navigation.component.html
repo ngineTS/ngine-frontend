@@ -1,25 +1,26 @@
 <div class="navigation-container">
-
+    
     @if (_canEdit) {
-        <!-- Top right icons -->
-        <div class="icons-div">
-            @if (containerRef) {
-                @if (_isEditing) {
-                    <i class="bi bi-x-circle icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+        @if (!isResizing) {
+            <!-- Top right icons -->
+            <div class="icons-div">
+                @if (containerRef) {
+                    @if (_isEditing) {
+                        <i class="bi bi-x-circle icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+                    }
+                    @else {
+                        <i class="bi bi-pen icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+                    }
                 }
-                @else {
-                    <i class="bi bi-pen icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+                @if (windowWidth > windowWidthLimit) {
+                    <i class="bi bi-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
+                    <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
                 }
-            }
-            @if (windowWidth > windowWidthLimit) {
-                <i class="bi bi-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
-                <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
-            }
-            <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
-        </div>
-
+                <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+            </div>
+        }
         <!-- Accept or Reset size icons -->
-        @if (isResizing) {
+        @else {
             <div class="size-icons-div" >
                 <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
                 <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
