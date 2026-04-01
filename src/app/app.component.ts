@@ -61,12 +61,13 @@ export class AppComponent implements OnInit {
    * - Run user event tracking job.
    */
   ngOnInit() {
-    this._matDialog.open(DefaultStyleFormComponent, {
-      width: '500px',
-      disableClose: true,
-      hasBackdrop: false,
-    });
     this.setAppBackgroundColor();
+    setTimeout(() => this._matDialog.open(DefaultStyleFormComponent, {
+      width: '60%',
+      height: '500px',
+      hasBackdrop: false,
+      disableClose: true
+    }), 500);
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {

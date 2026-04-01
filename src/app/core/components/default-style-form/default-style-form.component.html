@@ -1,49 +1,58 @@
-@if (step === 1) {
-    <h3 class="m-3 text-center">
-         🎨 Welcome to Your Application Setup
-    </h3>
-}
-
-<div class="m-4">
+<div class="my-3">
     
     @if (step === 1) {
-        <div class="mb-4 text-center">
-            <h5 class="fw-bold">Customize Your Workspace</h5>
-            <p class="text-muted">
-                Choose a background color that matches your preferences.  
-                This will define the overall look and feel of your application.
-            </p>
-        </div>
+        <div class="mx-4">
+            <h3 class="text-center mb-5">
+                🎨 Welcome to Your Application Setup
+            </h3>
 
-        <div class="d-flex flex-column align-items-center mb-4">
-            <input 
-            type="color"
-            class="form-control form-control-color mb-2"
-            [(ngModel)]="appBackgroundColor"
-            (input)="onAppBackgroundColorChange()"
-            style="width: 80px; height: 50px;"
-            >
-            <small class="text-muted">
-                Selected color: <strong>{{ appBackgroundColor }}</strong>
-            </small>
-        </div>
+            <div class="mb-4 text-center">
+                <h5 class="fw-bold">Customize Your application</h5>
+                <p class="text-muted">
+                    Choose a background color that matches your preferences.  
+                    This will define the overall look and feel of your application.
+                </p>
+            </div>
 
-        <div class="alert alert-info py-2">
-            💡 You can change this later anytime in the settings.
-        </div>
+            <div class="d-flex flex-column align-items-center mb-4">
+                <input 
+                type="color"
+                class="form-control form-control-color mb-2"
+                [(ngModel)]="appBackgroundColor"
+                (input)="onAppBackgroundColorChange()"
+                style="width: 80px; height: 50px;"
+                >
+                <small class="text-muted">
+                    Selected color: <strong>{{ appBackgroundColor }}</strong>
+                </small>
+            </div>
 
-        <button matButton="outlined" class="float-right mt-3" (click)="onNextClick()">
-            Continue →
-        </button>
+            <div class="alert alert-info py-2">
+                💡 You can change this later anytime in the settings.
+            </div>
+
+            <button matButton="outlined" class="float-right mt-3" (click)="onNextClick()">
+                Continue →
+            </button>
+        </div>
     }
 
     @if (step === 2) {
-        <div class="mb-4 text-center">
+        <div class="mb-4 mx-3 text-center">
             <h5 class="mb-3 fw-bold">Refine Component Styles</h5>
             <p class="text-muted">
                 Now let's fine-tune how the components look across your application.
             </p>
+            <div class="alert alert-info py-2">
+                💡 You can change style of each element individually once created.
+            </div>
         </div>
+        <app-generic-form
+            [formConfiguration]="styleFormConfiguration"
+            (onFormValueChange)="onFormValueChange($event)"
+            (action)="action($event)"
+        >
+        </app-generic-form>
     }
 
 </div>

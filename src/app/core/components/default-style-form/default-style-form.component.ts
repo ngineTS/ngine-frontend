@@ -8,10 +8,13 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { ContainerStyle } from '../../models/container-style.interface';
 import { TypographyStyle } from '../../models/typography-style.interface';
 import { AppSettingsService } from '../../services/app-settings.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { GenericFormComponent } from '../generic-form/generic-form.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-default-style-form',
-  imports: [FormsModule, MatButton],
+  imports: [FormsModule, MatButton, GenericFormComponent],
   templateUrl: './default-style-form.component.html',
   styleUrl: './default-style-form.component.scss'
 })
@@ -21,16 +24,26 @@ export class DefaultStyleFormComponent {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _appSettingsService: AppSettingsService,
+    private _matDialogRef: MatDialogRef<DefaultStyleFormComponent>
   ) { }
   
   step = 1;
   appBackgroundColor!: string;
-  styleFormConfiguration: GenericFormDialogData<Partial<StylePayload>> | undefined;
+  styleFormConfiguration!: GenericFormDialogData<Partial<StylePayload>>;
   defaultContainerStyle: ContainerStyle | undefined;
   defaultTypographyStyle: TypographyStyle | undefined;
 
   ngOnInit() {
     this.appBackgroundColor = this._appSettingsService.getCurrentAppBackgroundColor();
+    this._containerStyleService.getDefaultContainerStyle()
+      .pipe(switchMap(x => {
+        this.defaultContainerStyle = x
+        return this._typographyStyleService.getDefaultTypographyStyle()
+      }))
+      .subscribe(y => {
+        this.defaultTypographyStyle = y;
+        this.setStyleForm();
+      });
   }
 
   onNextClick(): void {
@@ -45,22 +58,38 @@ export class DefaultStyleFormComponent {
     }).subscribe(resp => console.log(resp));
   }
 
-  setStyleForm() {
-    /*const stylePayload: DeepFormConfig<Partial<StylePayload>> = {
-      containerStyle: this._containerStyleService.setUpContainerStyleForm(this._navigation.containerStyle),
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)
+  onAppBackgroundColorChange() {
+    console.log(event);
+    this._appSettingsService.setAppBackgroundColor(this.appBackgroundColor);
+  }
+
+   setStyleForm() {
+    const stylePayload: DeepFormConfig<Partial<StylePayload>> = {
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        this.defaultContainerStyle!,
+        ['backgroundImage']
+      ),
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
+        this.defaultTypographyStyle!
+      )
     };
+
+    console.log(stylePayload);
 
     this.styleFormConfiguration = {
       hasDeleteButton: false,
       formConfig: stylePayload,
-      payloadId: '000...',
+      payloadId: this.defaultContainerStyle!.refId,
       controllerName: 'menu',
-    };*/
+    };
   }
 
-  onAppBackgroundColorChange() {
+  action(event: 'added' | 'edited' | 'deleted') {
     console.log(event);
-    this._appSettingsService.setAppBackgroundColor(this.appBackgroundColor);
+    this._matDialogRef.close(event);
+  }
+
+  onFormValueChange(event: Record<string, any>) {
+    console.log(event);
   }
 }

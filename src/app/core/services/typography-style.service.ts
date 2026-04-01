@@ -2,6 +2,9 @@ import { Injectable } from "@angular/core";
 import { DeepFormConfig } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
 import { TypographyStyle } from "../models/typography-style.interface";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
+import { pipe, retry, take } from "rxjs";
 
 
 @Injectable({
@@ -10,8 +13,9 @@ import { TypographyStyle } from "../models/typography-style.interface";
 export class TypographyStyleService {
 
   
-  constructor() {}
+  constructor(private _http: HttpClient) { }
 
+  baseUrl = environment.APIURL;
   availableFonts = [
     'Roboto',
     'Open Sans',
@@ -24,6 +28,11 @@ export class TypographyStyleService {
     'Nunito',
     'Ubuntu'
   ];
+
+  getDefaultTypographyStyle() {
+    return this._http.get<TypographyStyle>(`${this.baseUrl}typography-style/default`)
+      .pipe(take(1), retry(1));
+  }
 
   setUpTypographyStyleForm(
     typographyStyle: TypographyStyle,
