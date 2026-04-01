@@ -11,10 +11,16 @@ import { AppSettingsService } from '../../services/app-settings.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { switchMap } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-default-style-form',
-  imports: [FormsModule, MatButton, GenericFormComponent],
+  imports: [
+    FormsModule,
+    MatButton,
+    GenericFormComponent,
+    MatTooltipModule
+  ],
   templateUrl: './default-style-form.component.html',
   styleUrl: './default-style-form.component.scss'
 })
