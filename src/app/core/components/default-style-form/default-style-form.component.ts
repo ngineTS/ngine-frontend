@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { DeepFormConfig, GenericFormDialogData } from '../../models/form-input.interface';
+import { DeepFormConfig, FormValueEvent, GenericFormDialogData } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
@@ -38,6 +38,7 @@ export class DefaultStyleFormComponent {
   styleFormConfiguration!: GenericFormDialogData<Partial<StylePayload>>;
   defaultContainerStyle: ContainerStyle | undefined;
   defaultTypographyStyle: TypographyStyle | undefined;
+  isMouseOverExampleSquare = false;
 
   ngOnInit() {
     this.appBackgroundColor = this._appSettingsService.getCurrentAppBackgroundColor();
@@ -95,7 +96,13 @@ export class DefaultStyleFormComponent {
     this._matDialogRef.close(event);
   }
 
-  onFormValueChange(event: Record<string, any>) {
-    console.log(event);
+  onFormValueChange(event: FormValueEvent) {
+    if (event.formGroupName = 'containerStyle') {
+      this.defaultContainerStyle![`${event.formControlName}`] = event.formControlValue;
+    }
+    if (event.formGroupName = 'typographyStyle') {
+      this.defaultTypographyStyle![`${event.formControlName}`] = event.formControlValue;
+    }
   }
+
 }

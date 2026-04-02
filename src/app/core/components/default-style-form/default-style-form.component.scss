@@ -1,3 +1,10 @@
 .float-right {
     float: right;
 }
+
+.example-square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

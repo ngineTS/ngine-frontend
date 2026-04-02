@@ -39,23 +39,52 @@
 
     @if (step === 2) {
         <div class="mb-3 mx-3">
-            <h5 class="mb-3 fw-bold text-center">Define Default Component Style</h5>
+            <h5 class="mb-4 fw-bold text-center">Define Default Component Style</h5>
             <div class="row">
                 <div class="col ms-2">
                     <span class="text-muted">
                         Now let's fine-tune how the components look across your application.
                     </span>
-                    <i class="bi bi-info-circle-fill  ms-1"
+                    <i class="bi bi-info-circle-fill ms-1"
                         matTooltip="💡 You can change style of each element individually later."
                         matTooltipPosition="above"
                         style="cursor: pointer; width: fit-content;"
                     ></i>
                 </div>
-                <div class="d-flex col mx-5 mt-2 mb-1 text-center align-items-center" style="border: 1px solid red;">
-                    Example
-                </div>
+
+                @if (defaultContainerStyle && defaultTypographyStyle) {
+                    <div class="col mx-5 mt-2 mb-1 example-square"
+                        [style.background-color]="defaultContainerStyle.backgroundColor"
+                        [style.border]="defaultContainerStyle.borderWidth + 'px ' +
+                            defaultContainerStyle.borderStyle + ' ' + defaultContainerStyle.borderColor"
+                        [style.border-top-style]="defaultContainerStyle.isBorderTopHidden ?
+                            'none' : defaultContainerStyle.borderStyle"
+                        [style.border-right-style]="defaultContainerStyle.isBorderRightHidden ?
+                            'none' : defaultContainerStyle.borderStyle"
+                        [style.border-bottom-style]="defaultContainerStyle.isBorderBottomHidden ?
+                            'none' : defaultContainerStyle.borderStyle"
+                        [style.border-left-style]="defaultContainerStyle.isBorderLeftHidden ?
+                            'none' : defaultContainerStyle.borderStyle"
+                        [style.border-top-left-radius]="defaultContainerStyle.borderTopLeftRadius + 'px'"
+                        [style.border-top-right-radius]="defaultContainerStyle.borderTopRightRadius + 'px'"
+                        [style.border-bottom-right-radius]="defaultContainerStyle.borderBottomRightRadius + 'px'"
+                        [style.border-bottom-left-radius]="defaultContainerStyle.borderBottomLeftRadius + 'px'"
+                        [style.color]="isMouseOverExampleSquare
+                            ? defaultTypographyStyle.activeColor
+                            : defaultTypographyStyle.color"
+                        [style.font-family]="defaultTypographyStyle.fontFamily"
+                        [style.font-weight]="defaultTypographyStyle.fontWeight"
+                        [style.font-size]="defaultTypographyStyle.fontSize + 'px'"
+                        (mouseenter)="isMouseOverExampleSquare = true"
+                        (mouseleave)="isMouseOverExampleSquare = false"
+                    >
+                        Example
+                    </div>
+                }
+
             </div>
         </div>
+
         <app-generic-form
             [formConfiguration]="styleFormConfiguration"
             (onFormValueChange)="onFormValueChange($event)"

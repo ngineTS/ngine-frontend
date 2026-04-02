@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GenericFormDialogData } from '../../models/form-input.interface';
+import { FormValueEvent, GenericFormDialogData } from '../../models/form-input.interface';
 import { GenericFormComponent } from '../generic-form/generic-form.component';
 
 @Component({
@@ -22,8 +22,6 @@ export class FormContainerComponent {
     this._dialogRef.close(event);
   }
 
-  onFormValueChange(event: Record<string, any>) {
-    console.log(event);
-  }
+  onFormValueChange(event: FormValueEvent) { }
 
 }
