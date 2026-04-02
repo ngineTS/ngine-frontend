@@ -1,5 +1,7 @@
-.float-right {
-    float: right;
+.continue-btn {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
 }
 
 .example-square {
@@ -7,4 +9,20 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.back-icon {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 700 !important;
+    height: fit-content;
+    margin-top: -3px;
+}
+
+.close-icon {
+    margin-left: 14px;
+    cursor: pointer;
+    font-size: 24px;
+    color: black;
+    margin-top: -3px;
 }

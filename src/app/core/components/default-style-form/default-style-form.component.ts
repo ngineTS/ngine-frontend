@@ -33,15 +33,31 @@ export class DefaultStyleFormComponent {
     private _matDialogRef: MatDialogRef<DefaultStyleFormComponent>
   ) { }
   
+  /** The step use to switch between two pages. */
   step = 1;
+  /** Initial app background color. */
+  initialAppBackgoundColor!: string;
+  /** Real time app background color. */
   appBackgroundColor!: string;
+  /** Generic form configuration use to define default component style. */
   styleFormConfiguration!: GenericFormDialogData<Partial<StylePayload>>;
+  /** Default container style */
   defaultContainerStyle: ContainerStyle | undefined;
+  /** Default typography style. */
   defaultTypographyStyle: TypographyStyle | undefined;
+  /** Boolean used to display color/activeColor of example square. */
   isMouseOverExampleSquare = false;
 
+  /**
+   * Lifecycle hook called after component has been initialized.
+   * - get app background color
+   * - get default style
+   * - setup component style form
+   */
   ngOnInit() {
     this.appBackgroundColor = this._appSettingsService.getCurrentAppBackgroundColor();
+    this.initialAppBackgoundColor = JSON.parse(JSON.stringify((this.appBackgroundColor)));
+
     this._containerStyleService.getDefaultContainerStyle()
       .pipe(switchMap(x => {
         this.defaultContainerStyle = x
@@ -53,24 +69,41 @@ export class DefaultStyleFormComponent {
       });
   }
 
+  /**
+   * Method called on 'Continue' button click'.
+   * 
+   * Save app background color and switch page.
+   */
   onNextClick(): void {
     this.saveAppBackgroundColor();
     this.step = 2;
   }
   
+  /**
+   * Save app background color.
+   */
   saveAppBackgroundColor(): void {
     this._appSettingsService.saveAppSetting({
       settingName: 'backgroundColor',
       settingValue: this.appBackgroundColor
-    }).subscribe(resp => console.log(resp));
+    }).subscribe(() => 
+      this.initialAppBackgoundColor = JSON.parse(JSON.stringify((this.appBackgroundColor)))
+    );
   }
 
+  /**
+   * Method called when app background color form control changes.
+   * 
+   * Update in real time app background color.
+   */
   onAppBackgroundColorChange() {
-    console.log(event);
     this._appSettingsService.setAppBackgroundColor(this.appBackgroundColor);
   }
 
-   setStyleForm() {
+  /**
+   * Set style form for component default style page.
+   */
+  setStyleForm() {
     const stylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         this.defaultContainerStyle!,
@@ -81,8 +114,6 @@ export class DefaultStyleFormComponent {
       )
     };
 
-    console.log(stylePayload);
-
     this.styleFormConfiguration = {
       hasDeleteButton: false,
       formConfig: stylePayload,
@@ -91,11 +122,22 @@ export class DefaultStyleFormComponent {
     };
   }
 
+  /**
+   * Method called when user makes action on generic form.
+   * Close popup.
+   * 
+   * @param event The action made by the user.
+   */
   action(event: 'added' | 'edited' | 'deleted') {
     console.log(event);
     this._matDialogRef.close(event);
   }
 
+  /**
+   * Methods called when generic form control value changes.
+   * 
+   * @param event The form control name and value event.
+   */
   onFormValueChange(event: FormValueEvent) {
     if (event.formGroupName = 'containerStyle') {
       this.defaultContainerStyle![`${event.formControlName}`] = event.formControlValue;
@@ -103,6 +145,16 @@ export class DefaultStyleFormComponent {
     if (event.formGroupName = 'typographyStyle') {
       this.defaultTypographyStyle![`${event.formControlName}`] = event.formControlValue;
     }
+  }
+
+  /**
+   * Method called on top right 'X' button click.
+   * 
+   * Apply the last saved app background color and save.
+   */
+  onCloseClick() {
+    this._appSettingsService.setAppBackgroundColor(this.initialAppBackgoundColor);
+    this._matDialogRef.close();
   }
 
 }
