@@ -14,6 +14,8 @@ import { GenericFormComponent } from './core/components/generic-form/generic-for
 import { AppSettingsService } from './core/services/app-settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,8 @@ import { DefaultStyleFormComponent } from './core/components/default-style-form/
     MatSidenavModule,
     MatButtonModule,
     GenericFormComponent,
-    AsyncPipe
+    AsyncPipe,
+    CdkDrag
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -30,7 +33,7 @@ import { DefaultStyleFormComponent } from './core/components/default-style-form/
 export class AppComponent implements OnInit {
 
   constructor(
-    private _appService: AppService,
+    public _appService: AppService,
     private _appSettingsService: AppSettingsService,
     private _router: Router,
     private _authService: AuthService,
@@ -62,12 +65,6 @@ export class AppComponent implements OnInit {
    */
   ngOnInit() {
     this.setAppBackgroundColor();
-    setTimeout(() => this._matDialog.open(DefaultStyleFormComponent, {
-      width: '60%',
-      height: '500px',
-      hasBackdrop: false,
-      disableClose: true
-    }), 500);
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
@@ -180,6 +177,15 @@ export class AppComponent implements OnInit {
           this._appSettingsService.setAppBackgroundColor('#FFFFFF');
         }
       });
+  }
+
+  onHouseSettingsClick() {
+    this._matDialog.open(DefaultStyleFormComponent, {
+      width: '60%',
+      height: '500px',
+      disableClose: true,
+      backdropClass: 'no-backdrop'
+    });
   }
 
 }

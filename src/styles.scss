@@ -32,4 +32,8 @@ html {
 
 .mat-drawer-inner-container {
   overflow: hidden !important;
- }
+}
+
+.no-backdrop {
+  background: transparent !important;
+}

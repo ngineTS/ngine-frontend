@@ -15,6 +15,16 @@
     }
   </mat-drawer>
 
+  @if (_appService.userGlobalNavigationPermission?.includes('edit')) {
+    <button 
+      cdkDrag 
+      class="general-setting-button"
+      (click)="onHouseSettingsClick()"
+    >
+      <i class="bi bi-house-gear house-gear-icon"></i>
+    </button>
+  }
+
   <router-outlet />
 
 </mat-drawer-container>
