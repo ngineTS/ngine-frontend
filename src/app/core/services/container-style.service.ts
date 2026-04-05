@@ -55,49 +55,49 @@ export class ContainerStyleService {
         value: containerStyle.borderTopLeftRadius ?? 0,
         alias: 'Border Top Left Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderTopRightRadius: {
         value: containerStyle.borderTopRightRadius ?? 0,
         alias: 'Border Top Right Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderBottomLeftRadius: {
         value: containerStyle.borderBottomLeftRadius ?? 0,
         alias: 'Border Bottom Left Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderBottomRightRadius: {
         value: containerStyle.borderBottomRightRadius ?? 0,
         alias: 'Border Bottom Right Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderTopHidden: {
         value: containerStyle.isBorderTopHidden ?? false,
         alias: 'Hide Top Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderRightHidden: {
         value: containerStyle.isBorderRightHidden ?? false,
         alias: 'Hide Right Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderBottomHidden: {
         value: containerStyle.isBorderBottomHidden ?? false,
         alias: 'Hide Bottom Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderLeftHidden: {
         value: containerStyle.isBorderLeftHidden ?? false,
         alias: 'Hide Left Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       backgroundImage: {
         value: containerStyle.backgroundImage ?? null,
