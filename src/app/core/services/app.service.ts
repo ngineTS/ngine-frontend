@@ -13,6 +13,8 @@ export class AppService {
     private _navigationService: NavigationService,
   ) { }
 
+  userGlobalNavigationPermission: string | undefined;
+
   /**
    * Create route for each navigation and return final array of routes.
    * 
@@ -64,6 +66,7 @@ export class AppService {
       next: result => {
         localStorage.setItem('access_token', result.access_token);
         console.log(result.navigation);
+        this.userGlobalNavigationPermission = result.navigation.permissionName;
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
           result.navigation

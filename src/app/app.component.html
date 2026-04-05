@@ -1,4 +1,4 @@
-<mat-drawer-container class="sidenav-container" [style.backgroundColor]="appBackgroundColor">
+<mat-drawer-container class="sidenav-container" [style.backgroundColor]="appBackgroundColor$ | async">
   <mat-drawer #drawer class="sidenav-content" mode="side">
     <div class="sidenav-header">
       <strong class="fs-5">Manage Style</strong>
@@ -14,6 +14,16 @@
       </app-generic-form>
     }
   </mat-drawer>
+
+  @if (_appService.userGlobalNavigationPermission?.includes('edit')) {
+    <button 
+      cdkDrag 
+      class="general-setting-button"
+      (click)="onHouseSettingsClick()"
+    >
+      <i class="bi bi-house-gear house-gear-icon"></i>
+    </button>
+  }
 
   <router-outlet />
 

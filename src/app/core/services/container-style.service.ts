@@ -2,6 +2,9 @@ import { Injectable } from "@angular/core";
 import { ContainerStyle } from "../models/container-style.interface";
 import { DeepFormConfig } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
+import { environment } from "../../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { retry, take } from "rxjs";
 
 
 @Injectable({
@@ -9,8 +12,14 @@ import { Validators } from "@angular/forms";
 })
 export class ContainerStyleService {
 
+  constructor(private _http: HttpClient) { }
 
-  constructor() { }
+  baseUrl = environment.APIURL;
+
+  getDefaultContainerStyle() {
+    return this._http.get<ContainerStyle>(`${this.baseUrl}container-style/default`)
+      .pipe(take(1), retry(1));
+  }
   
   setUpContainerStyleForm(
     containerStyle: ContainerStyle,
@@ -43,52 +52,52 @@ export class ContainerStyleService {
         validators: []
       },
       borderTopLeftRadius: {
-        value: containerStyle.borderTopLeftRadius ?? 4,
+        value: containerStyle.borderTopLeftRadius ?? 0,
         alias: 'Border Top Left Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderTopRightRadius: {
-        value: containerStyle.borderTopRightRadius ?? 4,
+        value: containerStyle.borderTopRightRadius ?? 0,
         alias: 'Border Top Right Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderBottomLeftRadius: {
-        value: containerStyle.borderBottomLeftRadius ?? 4,
+        value: containerStyle.borderBottomLeftRadius ?? 0,
         alias: 'Border Bottom Left Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       borderBottomRightRadius: {
-        value: containerStyle.borderBottomRightRadius ?? 4,
+        value: containerStyle.borderBottomRightRadius ?? 0,
         alias: 'Border Bottom Right Radius',
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderTopHidden: {
         value: containerStyle.isBorderTopHidden ?? false,
         alias: 'Hide Top Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderRightHidden: {
         value: containerStyle.isBorderRightHidden ?? false,
         alias: 'Hide Right Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderBottomHidden: {
         value: containerStyle.isBorderBottomHidden ?? false,
         alias: 'Hide Bottom Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       isBorderLeftHidden: {
         value: containerStyle.isBorderLeftHidden ?? false,
         alias: 'Hide Left Border',
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       backgroundImage: {
         value: containerStyle.backgroundImage ?? null,
