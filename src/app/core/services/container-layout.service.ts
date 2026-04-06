@@ -103,6 +103,12 @@ export class ContainerLayoutService {
           type: 'number',
           validators: []
       },
+      zIndex: {
+          value: containerLayout.zIndex,
+          alias: 'Z Index',
+          type: 'number',
+          validators: []
+      },
     }
 
     if (skipedProperties) {

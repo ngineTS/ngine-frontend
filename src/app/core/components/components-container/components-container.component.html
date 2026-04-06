@@ -12,6 +12,7 @@
                     x: child.containerLayout.xPos ? (child.containerLayout.xPos * windowWidth / 100) : 0,
                     y: child.containerLayout.yPos ? (child.containerLayout.yPos * windowHeight / 100) : 0,
                 }"
+                [style.z-index]="child.containerLayout.zIndex"
             >
                 <!-- Top left drag icon -->
                 @if (navigation.permissionName?.includes('edit')) {

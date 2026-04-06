@@ -13,4 +13,5 @@ export interface ContainerLayout extends Record<string, string | number | null> 
 	paddingLeft: number | null;
 	xPos: number | null;
 	yPos: number | null;
+	zIndex: number | null;
 }
