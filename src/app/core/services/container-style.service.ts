@@ -104,6 +104,12 @@ export class ContainerStyleService {
         alias: 'Background Image',
         type: 'file',
         validators: []
+      },
+      isBackgroundTransparent: {
+        value: containerStyle.isBackgroundTransparent ?? false,
+        alias: 'Transparent',
+        type: 'checkbox',
+        validators: []
       }
     }
 

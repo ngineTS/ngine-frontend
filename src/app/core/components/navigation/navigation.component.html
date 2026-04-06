@@ -38,7 +38,8 @@
         [style.height]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'"
         [style.max-height]="windowWidth > windowWidthLimit ? '' : 'fit-content'"
         [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : ''"
-        [style.background-color]="_navigation.containerStyle.backgroundColor"
+        [style.background-color]="_navigation.containerStyle.isBackgroundTransparent ?
+            'transparent' : _navigation.containerStyle.backgroundColor"
         [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : ''"
         [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
             _navigation.containerStyle.borderStyle + ' ' +

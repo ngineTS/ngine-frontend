@@ -13,5 +13,6 @@ export interface ContainerStyle extends Record<string, string | number | null | 
     isBorderRightHidden: boolean | null;
     isBorderBottomHidden: boolean | null;
     isBorderLeftHidden: boolean | null;
-    backgroundImage: string | null
+    backgroundImage: string | null;
+    isBackgroundTransparent: boolean | null;
 }
