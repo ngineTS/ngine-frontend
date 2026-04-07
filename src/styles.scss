@@ -22,6 +22,10 @@ html {
   cursor: pointer;
 }
 
+.mat-mdc-menu-content {
+  padding: 0px !important;
+}
+
 .mat-mdc-dialog-surface {
   overflow-x: hidden !important;
 }

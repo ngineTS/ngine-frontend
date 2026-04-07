@@ -10,11 +10,14 @@
                     <mat-option [disabled]="data.navigation?.id" [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
                 }
             </mat-select>
+            @if (isLoadingNavigationTypes) {
+                <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+            }
         </mat-form-field>
 
         <!-- Parent dropdown -->
         <mat-form-field appearance="outline">
-            <mat-label>Parent </mat-label>
+            <mat-label>Parent</mat-label>
             <mat-select formControlName="parentId">
                 @for (flatNavigation of flatNavigations; track flatNavigation.id) {
                     <mat-option 
@@ -25,6 +28,9 @@
                     </mat-option>
                 }
             </mat-select>
+            @if (isLoadingFlatNavigations) {
+                <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+            }
         </mat-form-field>
 
         <!-- Name input -->

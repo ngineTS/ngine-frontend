@@ -123,7 +123,7 @@ export class EmptyDialogComponent {
     const navigationStylePayload: DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['height', 'width', 'marginBottom', 'marginLeft', 'marginRight', 'marginTop', 'xPos', 'yPos']
+        ['height', 'width', 'marginBottom', 'marginLeft', 'marginRight', 'marginTop', 'xPos', 'yPos', 'zIndex']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,

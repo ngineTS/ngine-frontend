@@ -15,6 +15,7 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { HttpClient } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
@@ -26,7 +27,8 @@ import { HttpClient } from '@angular/common/http';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
@@ -55,6 +57,8 @@ export class NavigationManagementComponent implements OnInit {
   filteredIcons: Array<string> = [];
   bootstrapIconNamesList: Array<string> = [];
   isSearchingIcon = false;
+  isLoadingNavigationTypes = true;
+  isLoadingFlatNavigations = true;
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -63,8 +67,14 @@ export class NavigationManagementComponent implements OnInit {
     this._http.get<Array<string>>('assets/icons.json').subscribe(icons => {
       this.bootstrapIconNamesList = icons;
     });
-    this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
-    this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
+    this._navigationService.getFlatNavigations().subscribe(resp => {
+      this.flatNavigations = resp;
+      this.isLoadingFlatNavigations = false;
+    });
+    this._navigationService.getNavigationTypes().subscribe(resp => {
+      this.navigationTypes = resp;
+      this.isLoadingNavigationTypes = false;
+    });
     this.createForm();
     if (this.data.navigation) {
       this.navigationTypeSelected = this.data.navigation.navigationType;

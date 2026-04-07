@@ -44,11 +44,10 @@
                 <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
                     <i class="bi bi-gear" [matTooltip]="'Edit navigation'"></i>
                 </button>
+                <button class="gear-button" matButton="outlined" mat-dialog-close>
+                    <i class="bi bi-x-circle"></i>
+                </button>
             }
-            
-            <button class="gear-button" matButton="outlined" mat-dialog-close>
-                <i class="bi bi-x-circle"></i>
-            </button>
         </div>
 
         <div class="m-2">
