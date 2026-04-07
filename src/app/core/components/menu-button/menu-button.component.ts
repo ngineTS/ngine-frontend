@@ -174,11 +174,9 @@ export class MenuButtonComponent {
           .pipe(takeUntil(this._sideNavService.stopSubscriptions))
           .subscribe(formValueEvent => {
             if (formValueEvent.formControlValue === 'close') {
-              console.log('v');
               object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
             }
             else {
-              console.log('NAVVV');
               object.typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
             }
           });
@@ -194,12 +192,10 @@ export class MenuButtonComponent {
           .pipe(takeUntil(this._sideNavService.stopSubscriptions))
           .subscribe(formValueEvent => {
             if (formValueEvent.formControlValue === 'close') {
-              console.log('s');
               object.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
               object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
             }
             else {
-              console.log('Menu');
               object[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
             }
           });
