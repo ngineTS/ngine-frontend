@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable, switchMap, take } from 'rxjs';
 import { AppService } from '../../services/app.service';
-import { IconsService } from '../../services/icons.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ContainerLayoutService } from '../../services/container-layout.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -43,9 +43,9 @@ export class NavigationManagementComponent implements OnInit {
     private _navigationService: NavigationService,
     private _dialogRef: MatDialogRef<NavigationManagementComponent>,
     private _appService: AppService,
-    private _iconsService: IconsService,
     private _snackbarService: SnackBarService,
-    private _containerLayoutService: ContainerLayoutService
+    private _containerLayoutService: ContainerLayoutService,
+    private _http: HttpClient
   ) {}
 
   navigationForm!: FormGroup;
@@ -53,12 +53,16 @@ export class NavigationManagementComponent implements OnInit {
   flatNavigations: Navigation[] = [];
   navigationTypeSelected: NavigationType | undefined;
   filteredIcons: Array<string> = [];
+  bootstrapIconNamesList: Array<string> = [];
+  isSearchingIcon = false;
 
   /**
    * Lifecycle hook called after the component has been initialized.
    */
   ngOnInit() {
-    this.filteredIcons = this._iconsService.boostrapIconNamesList;
+    this._http.get<Array<string>>('assets/icons.json').subscribe(icons => {
+      this.bootstrapIconNamesList = icons;
+    });
     this._navigationService.getFlatNavigations().subscribe(resp => this.flatNavigations = resp);
     this._navigationService.getNavigationTypes().subscribe(resp => this.navigationTypes = resp);
     this.createForm();
@@ -257,12 +261,22 @@ export class NavigationManagementComponent implements OnInit {
    * Filter icon list on user search.
    */
   async filterIcons(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    if (!this.isSearchingIcon) {
 
-    if (filterValue) {
-      this.filteredIcons = this._iconsService.boostrapIconNamesList.filter(obj => 
-        obj.trim().toLowerCase().includes(filterValue)
-      );
+      setTimeout(() => {
+        this.isSearchingIcon = true;
+        const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+        if (filterValue && filterValue.length > 1) {
+          this.filteredIcons = this.bootstrapIconNamesList.filter(obj => 
+            obj.trim().toLowerCase().includes(filterValue)
+          );
+        }
+
+        this.isSearchingIcon = false;
+      }, 200);
+      
     }
   }
+
 }

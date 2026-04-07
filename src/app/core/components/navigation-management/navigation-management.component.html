@@ -57,14 +57,20 @@
                             <i [class]="'bi bi-' + iconFormControl.value"></i>
                         </mat-select-trigger>
                             <mat-option>
-                                <input
-                                    placeholder="Search..."
-                                    (click)="$event.stopPropagation()"
-                                    (keyup)="filterIcons($event)"
-                                />
+                                <div class="row align-items-center">
+                                    <input class="col-9"
+                                        placeholder="Search..."
+                                        (click)="$event.stopPropagation()"
+                                        (keyup)="filterIcons($event)"
+                                    />
+                                    <i class="bi bi-info-circle-fill ms-1 col-2"
+                                        matTooltip="Find full list of icons here: https://icons.getbootstrap.com/"
+                                        matTooltipPosition="above"
+                                    ></i>
+                                </div>
                             </mat-option>
                         @for (icon of filteredIcons; track icon) {
-                            <mat-option [value]="icon">
+                            <mat-option [value]="icon" matTooltip=" {{ icon }}">
                                 <i [class]="'bi bi-' + icon"></i>
                             </mat-option>
                         }

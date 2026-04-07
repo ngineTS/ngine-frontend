@@ -17,15 +17,15 @@ export class TypographyStyleService {
 
   baseUrl = environment.APIURL;
   availableFonts = [
-    'Roboto',
-    'Open Sans',
     'Lato',
-    'Montserrat',
-    'Poppins',
-    'Oswald',
-    'Raleway',
     'Merriweather',
+    'Montserrat',
+    'Open Sans',
+    'Oswald',
+    'Poppins',
+    'Raleway',
     'Nunito',
+    'Roboto',
     'Ubuntu'
   ];
 
