@@ -137,7 +137,11 @@ export class HeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
         navigation.typographyStyle
-      )
+      ),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        navigation.containerStyle,
+        ['backgroundImage']
+      ),
     }
     
     this._sideNavService.openStyleForm(
@@ -191,7 +195,9 @@ export class HeaderBarComponent implements OnInit {
     //navigation case
     if (navigation) {
       initialFormContent = {
+        containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
         typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
+        
       }
 
       this._sideNavService.formValueEvent
@@ -199,11 +205,14 @@ export class HeaderBarComponent implements OnInit {
         .subscribe(formValueEvent => {
           if (formValueEvent.formControlValue === 'close') {
             this.navigation.children!.find(child => child.id === navigation.id)!
+              .containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+             this.navigation.children!.find(child => child.id === navigation.id)!
               .typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
           }
           else {
             this.navigation.children!.find(child => child.id === navigation.id)!
-              .typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+              [`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue;
+
           }
         });
     }

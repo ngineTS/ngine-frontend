@@ -47,6 +47,24 @@
                         }"
                         [class.edit-header-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                        [style.background-color]="child.containerStyle.isBackgroundTransparent ?
+                            'transparent' : child.containerStyle.backgroundColor"
+                        [style.border-width]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
+                            child.containerStyle.borderWidth + 'px' : '1px'"
+                        [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
+                        [style.border-style]="child.containerStyle.borderStyle ?? 'solid'"
+                        [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
+                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                        [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
+                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                        [style.border-bottom-color]="child.containerStyle.isBorderBottomHidden ?
+                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                        [style.border-left-color]="child.containerStyle.isBorderLeftHidden ?
+                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                        [style.border-top-left-radius]="child.containerStyle.borderTopLeftRadius + 'px'"
+                        [style.border-top-right-radius]="child.containerStyle.borderTopRightRadius + 'px'"
+                        [style.border-bottom-right-radius]="child.containerStyle.borderBottomRightRadius + 'px'"
+                        [style.border-bottom-left-radius]="child.containerStyle.borderBottomLeftRadius + 'px'"
                     >
                         @if (child.navigationType.name === 'menu-button') {
                             <app-menu-button
