@@ -35,6 +35,13 @@
         >
         </audio>
     }
+    @else if (media?.type?.includes('image')) {
+        <img 
+            height="auto" 
+            width="100%" 
+            [src]="mediaUrl$ | async"
+        />
+    }
     @else if (media?.type?.includes('pdf')){
         <iframe [src]="mediaUrl$ | async" width="100%" height="100%"></iframe>
     }
