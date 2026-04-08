@@ -50,7 +50,8 @@
                         [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
                             child.containerStyle.borderWidth : 1"
                         [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-style]="child.containerStyle.borderStyle ?? 'solid'"
+                        [style.border-style]="child.containerStyle.borderStyle && child.containerStyle.borderStyle !== 'none'
+                            ? child.containerStyle.borderStyle : 'solid'"
                         [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
                             'transparent' : child.containerStyle.borderColor ?? 'transparent'"
                         [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
