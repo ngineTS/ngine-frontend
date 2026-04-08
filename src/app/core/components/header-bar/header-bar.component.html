@@ -6,10 +6,8 @@
 
         <!-- List of navigations -->
         <div [style.background-color]="navigation.menu.containerStyle.backgroundColor"
-            [style.height]="navigation.menu.containerLayout.height 
-                ? navigation.menu.containerLayout.height + 'px'
-                : '60px'
-            "
+            [style.height.px]="navigation.menu.containerLayout.height 
+                ? navigation.menu.containerLayout.height : 60"
             [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
                 navigation.menu.containerStyle.borderStyle + ' ' +
                 navigation.menu.containerStyle.borderColor"
@@ -21,14 +19,14 @@
                 'none' : navigation.menu.containerStyle.borderStyle"
             [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
                 'none' : navigation.menu.containerStyle.borderStyle"
-            [style.border-top-left-radius]="navigation.menu.containerStyle.borderTopLeftRadius + 'px'"
-            [style.border-top-right-radius]="navigation.menu.containerStyle.borderTopRightRadius + 'px'"
-            [style.border-bottom-right-radius]="navigation.menu.containerStyle.borderBottomRightRadius + 'px'"
-            [style.border-bottom-left-radius]="navigation.menu.containerStyle.borderBottomLeftRadius + 'px'"
-            [style.margin-top]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginTop + 'px' : ''"
-            [style.margin-right]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginRight + 'px' : ''"
-            [style.margin-bottom]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginBottom + 'px' : ''"
-            [style.margin-left]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginLeft + 'px' : ''"
+            [style.border-top-left-radius.px]="navigation.menu.containerStyle.borderTopLeftRadius"
+            [style.border-top-right-radius.px]="navigation.menu.containerStyle.borderTopRightRadius"
+            [style.border-bottom-right-radius.px]="navigation.menu.containerStyle.borderBottomRightRadius"
+            [style.border-bottom-left-radius.px]="navigation.menu.containerStyle.borderBottomLeftRadius"
+            [style.margin-top.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginTop : ''"
+            [style.margin-right.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginRight : ''"
+            [style.margin-bottom.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginBottom : ''"
+            [style.margin-left.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginLeft : ''"
         >
             <div class="header-list">
                 @for (child of navigation.children; track child.id) {
@@ -49,8 +47,8 @@
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                         [style.background-color]="child.containerStyle.isBackgroundTransparent ?
                             'transparent' : child.containerStyle.backgroundColor"
-                        [style.border-width]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
-                            child.containerStyle.borderWidth + 'px' : '1px'"
+                        [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
+                            child.containerStyle.borderWidth : 1"
                         [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
                         [style.border-style]="child.containerStyle.borderStyle ?? 'solid'"
                         [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
@@ -61,10 +59,10 @@
                             'transparent' : child.containerStyle.borderColor ?? 'transparent'"
                         [style.border-left-color]="child.containerStyle.isBorderLeftHidden ?
                             'transparent' : child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-top-left-radius]="child.containerStyle.borderTopLeftRadius + 'px'"
-                        [style.border-top-right-radius]="child.containerStyle.borderTopRightRadius + 'px'"
-                        [style.border-bottom-right-radius]="child.containerStyle.borderBottomRightRadius + 'px'"
-                        [style.border-bottom-left-radius]="child.containerStyle.borderBottomLeftRadius + 'px'"
+                        [style.border-top-left-radius.px]="child.containerStyle.borderTopLeftRadius"
+                        [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
+                        [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
+                        [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
                     >
                         @if (child.navigationType.name === 'menu-button') {
                             <app-menu-button

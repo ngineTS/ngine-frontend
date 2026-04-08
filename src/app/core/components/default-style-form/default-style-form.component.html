@@ -72,16 +72,16 @@
                             'none' : defaultContainerStyle.borderStyle"
                         [style.border-left-style]="defaultContainerStyle.isBorderLeftHidden ?
                             'none' : defaultContainerStyle.borderStyle"
-                        [style.border-top-left-radius]="defaultContainerStyle.borderTopLeftRadius + 'px'"
-                        [style.border-top-right-radius]="defaultContainerStyle.borderTopRightRadius + 'px'"
-                        [style.border-bottom-right-radius]="defaultContainerStyle.borderBottomRightRadius + 'px'"
-                        [style.border-bottom-left-radius]="defaultContainerStyle.borderBottomLeftRadius + 'px'"
+                        [style.border-top-left-radius.px]="defaultContainerStyle.borderTopLeftRadius"
+                        [style.border-top-right-radius.px]="defaultContainerStyle.borderTopRightRadius"
+                        [style.border-bottom-right-radius.px]="defaultContainerStyle.borderBottomRightRadius"
+                        [style.border-bottom-left-radius.px]="defaultContainerStyle.borderBottomLeftRadius"
                         [style.color]="isMouseOverExampleSquare
                             ? defaultTypographyStyle.activeColor
                             : defaultTypographyStyle.color"
                         [style.font-family]="defaultTypographyStyle.fontFamily"
                         [style.font-weight]="defaultTypographyStyle.fontWeight"
-                        [style.font-size]="defaultTypographyStyle.fontSize + 'px'"
+                        [style.font-size.px]="defaultTypographyStyle.fontSize"
                         (mouseenter)="isMouseOverExampleSquare = true"
                         (mouseleave)="isMouseOverExampleSquare = false"
                     >

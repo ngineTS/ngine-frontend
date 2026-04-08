@@ -35,7 +35,7 @@
         [style.width]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
             : '100%'"
-        [style.height]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100 + 'px'"
+        [style.height.px]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100"
         [style.max-height]="windowWidth > windowWidthLimit ? '' : 'fit-content'"
         [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : ''"
         [style.background-color]="_navigation.containerStyle.isBackgroundTransparent ?
@@ -52,26 +52,18 @@
             'none' : _navigation.containerStyle.borderStyle"
         [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
             'none' : _navigation.containerStyle.borderStyle"
-        [style.border-top-left-radius]="windowWidth > windowWidthLimit
-            ? _navigation.containerStyle.borderTopLeftRadius + 'px'
-            : '6px'
-        "
-        [style.border-top-right-radius]="windowWidth > windowWidthLimit
-            ? _navigation.containerStyle.borderTopRightRadius + 'px'
-            : '6px'
-        "
-        [style.border-bottom-right-radius]="windowWidth > windowWidthLimit
-            ? _navigation.containerStyle.borderBottomRightRadius + 'px'
-            : '6px'
-        "
-        [style.border-bottom-left-radius]="windowWidth > windowWidthLimit
-            ? _navigation.containerStyle.borderBottomLeftRadius + 'px'
-            : '6px'
-        "
-        [style.padding-top]="_navigation.containerLayout.paddingTop + 'px'"
-        [style.padding-bottom]="_navigation.containerLayout.paddingBottom + 'px'"
-        [style.padding-right]="_navigation.containerLayout.paddingRight + 'px'"
-        [style.padding-left]="_navigation.containerLayout.paddingLeft + 'px'"
+        [style.border-top-left-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopLeftRadius: 6"
+        [style.border-top-right-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopRightRadius: 6"
+        [style.border-bottom-right-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomRightRadius: 6"
+        [style.border-bottom-left-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomLeftRadius: 6"
+        [style.padding-top.px]="_navigation.containerLayout.paddingTop"
+        [style.padding-bottom.px]="_navigation.containerLayout.paddingBottom"
+        [style.padding-right.px]="_navigation.containerLayout.paddingRight"
+        [style.padding-left.px]="_navigation.containerLayout.paddingLeft"
         [style.color]="_navigation.typographyStyle.color"
         [style.font-family]="_navigation.typographyStyle.fontFamily"
         [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"

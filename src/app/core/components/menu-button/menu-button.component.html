@@ -1,7 +1,7 @@
 <!-- Main button -->
 <div [matMenuTriggerFor]="mainMenu"
     [class]="iconOnTop ? 'main-button' : ''"
-    [style.font-size]="navigation.typographyStyle.fontSize + 'px'"
+    [style.font-size.px]="navigation.typographyStyle.fontSize"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
     [style.color]="isButtonHoveredRecord[navigation.id] ?
@@ -17,7 +17,7 @@
     }
 
     @if (!navigation.showIconOnly) {
-        <span [style.margin-left]="iconOnTop ? '0px' : '4px'">{{ navigation.displayLabel }}</span>
+        <span [style.margin-left.px]="iconOnTop ? 0 : 4">{{ navigation.displayLabel }}</span>
     }
 </div>
 
