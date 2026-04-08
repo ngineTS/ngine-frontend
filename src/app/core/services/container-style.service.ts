@@ -42,7 +42,10 @@ export class ContainerStyleService {
       borderStyle: {
         value: containerStyle.borderStyle ?? null,
         alias: 'Border Style',
-        type: 'text',
+        type: 'dropdown',
+        dropdownConfig: {
+          items: ['solid', 'dashed', 'dotted', 'double', 'groove', 'ridge', 'none']
+        },
         validators: []
       },
       borderWidth: {

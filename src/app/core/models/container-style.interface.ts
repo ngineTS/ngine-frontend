@@ -3,7 +3,7 @@ export interface ContainerStyle extends Record<string, string | number | null | 
     refId: string;
     backgroundColor: string | null;
     borderColor: string | null;
-    borderStyle: string | null;
+    borderStyle: string;
     borderWidth: number | null;
     borderTopLeftRadius: number | null;
     borderTopRightRadius: number | null;
