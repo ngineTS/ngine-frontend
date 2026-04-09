@@ -21,12 +21,15 @@ import { Component } from "@angular/core";
   template: '',
   imports: []
 })
-export class ManagementBase<
-  T extends Record<string, any> 
-  & { id: string; navigationId: string; }
+export class ManagementBaseComponent<
+  T extends {
+    [prop: string]: any;
+    id: string;
+    navigationId: string;
+  }
 > extends NavigationBaseComponent {
 
-  constructor (
+  constructor(
     private _http: HttpClient,
     private _snackBarService: SnackBarService
   ) { super(); }
@@ -42,12 +45,14 @@ export class ManagementBase<
 
   /** 
    * Load the items by navigation id.
+   * 
+   * `tableName` must be set before calling this method.
    */
   loadItems() {
     this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
       .subscribe(resp => {
         console.log(resp);
-        this.items = resp
+        this.items = resp;
       });
   }
 
@@ -58,25 +63,28 @@ export class ManagementBase<
    *  otherwise the form will not be able to create the new item.
    */
   addItem() {
-    const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
-      formTitle: 'Add item',
-      formConfig: this.formInputsConfiguration,
-      payloadId: null,
-      navigationId: this._navigation.id,
-      controllerName: `custom-table/${this.tableName}`,
-      hasDeleteButton: false
-    }
-
-    const matDialogRef = this._matDialog.open(
-      FormContainerComponent,
-      { maxWidth: '700px', data: dialogData }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'added') {
-        this._snackBarService.showSuccessSnackBar('Item added successfully');
+    if (this._canAdd) {
+      const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
+        formTitle: 'Add item',
+        formConfig: this.formInputsConfiguration,
+        payloadId: null,
+        navigationId: this._navigation.id,
+        controllerName: `custom-table/${this.tableName}`,
+        hasDeleteButton: false
       }
-    });
+
+      const matDialogRef = this._matDialog.open(
+        FormContainerComponent,
+        { data: dialogData }
+      );
+
+      matDialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'added') {
+          this._snackBarService.showSuccessSnackBar('Item added successfully');
+          this.loadItems();
+        }
+      });
+    }
   }
    
   /**
@@ -88,31 +96,40 @@ export class ManagementBase<
    * @param item The item to be edited.
    */
   editItem(item: T) {
-    const {id, navigationId, ...itemWithoutId} = item;
-    for (const [key, value] of Object.entries(itemWithoutId)) {
-      if (value) {
-        this.formInputsConfiguration[key].value = value;
+    if (this._canEdit) {
+      const {id, navigationId, ...itemWithoutId} = item;
+      
+      for (const [key, value] of Object.entries(itemWithoutId)) {
+        if (value) {
+          this.formInputsConfiguration[key].value = value;
+        }
       }
-    }
 
-    const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
-      formTitle: 'Edit item',
-      formConfig: this.formInputsConfiguration,
-      payloadId: item.id,
-      navigationId: this._navigation.id,
-      controllerName: `custom-table/${this.tableName}`,
-      hasDeleteButton: true
-    }
-
-    const matDialogRef = this._matDialog.open(
-      FormContainerComponent,
-      { maxWidth: '700px', data: dialogData }
-    );
-
-    matDialogRef.afterClosed().subscribe(resp => {
-      if (resp === 'edited') {
-        this._snackBarService.showSuccessSnackBar('Item edited successfully');
+      const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
+        formTitle: 'Edit item',
+        formConfig: this.formInputsConfiguration,
+        payloadId: item.id,
+        navigationId: this._navigation.id,
+        controllerName: `custom-table/${this.tableName}`,
+        hasDeleteButton: this._canDelete
       }
-    });
+
+      const matDialogRef = this._matDialog.open(
+        FormContainerComponent,
+        { data: dialogData }
+      );
+
+      matDialogRef.afterClosed().subscribe(resp => {
+        if (resp === 'edited') {
+          this._snackBarService.showSuccessSnackBar('Item edited successfully');
+          this.loadItems();
+        }
+        if (resp === 'deleted') {
+          this._snackBarService.showSuccessSnackBar('Item deleted successfully');
+          this.loadItems();
+        }
+      });
+    }
   }
+
 }
