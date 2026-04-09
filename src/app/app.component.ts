@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     private _location: Location,
     public _sideNavService: SideNavService,
     private _matDialog: MatDialog
-    ) { }
+  ) { }
 
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds
@@ -64,7 +64,6 @@ export class AppComponent implements OnInit {
    * - Run user event tracking job.
    */
   ngOnInit() {
-    this.setAppBackgroundColor();
     const path = this._location.path();
     setTimeout(async () => {
       if (!path.includes('password-recovery')) {
@@ -72,6 +71,7 @@ export class AppComponent implements OnInit {
           const guestSignInResponse: any = await firstValueFrom(this._authService.guestSignIn());
           localStorage.setItem('access_token', guestSignInResponse['access_token']);
         }
+        this.setAppBackgroundColor();
         this.runRefreshTokenJob();
         this._appService.createAppRouting();
         this.setSideNavListener();
