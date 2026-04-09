@@ -2,8 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { DeepFormConfig, GenericFormDialogData } from "./form-input.interface";
 import { environment } from "../../../environments/environment";
 import { FormContainerComponent } from "../components/form-container/form-container.component";
-import { MatDialog } from "@angular/material/dialog";
 import { SnackBarService } from "../services/snackbar.service";
+import { NavigationBaseComponent } from "../components/navigation-base/navigation-base.component";
+import { Component } from "@angular/core";
 
 /**
  * Generic class that provides basic management functionalities (add, edit) for items of type T.
@@ -15,13 +16,20 @@ import { SnackBarService } from "../services/snackbar.service";
  * Important: The type T has to match database table structure and must contain an `id` property of type string,
  * otherwise the class will not work properly.
  */
-export class ManagementBase<T extends Record<string, unknown> & { id: string }> {
+@Component({
+  selector: 'app-management-base',
+  template: '',
+  imports: []
+})
+export class ManagementBase<
+  T extends Record<string, any> 
+  & { id: string; navigationId: string; }
+> extends NavigationBaseComponent {
 
-  constructor(
+  constructor (
     private _http: HttpClient,
-    private _matDialog: MatDialog,
     private _snackBarService: SnackBarService
-  ) { }
+  ) { super(); }
 
   /** The backend url. */
   baseUrl = environment.APIURL;
@@ -30,14 +38,17 @@ export class ManagementBase<T extends Record<string, unknown> & { id: string }> 
   /** The name of the database table. */
   tableName: string = '';
   /** The form inputs configuration. */
-  formInputsConfiguration = {} as DeepFormConfig<T>;
+  formInputsConfiguration = {} as DeepFormConfig<Omit<T, 'id' | 'navigationId'>> & Record<string, any>;
 
   /** 
    * Load the items by navigation id.
    */
-  loadItems(navigationId: string) {
-    this._http.get<Array<T>>(`${this.baseUrl}/${this.tableName}/${navigationId}`)
-      .subscribe(resp => this.items = resp);
+  loadItems() {
+    this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
+      .subscribe(resp => {
+        console.log(resp);
+        this.items = resp
+      });
   }
 
   /**
@@ -45,15 +56,13 @@ export class ManagementBase<T extends Record<string, unknown> & { id: string }> 
    * 
    * `formInputsConfiguration` and `tableName` must be set before calling this method,
    *  otherwise the form will not be able to create the new item.
-   * 
-   * @param navigationId The navigation id associated to the items.
    */
-  addItem(navigationId: string) {
-    const dialogData: GenericFormDialogData<T> = {
+  addItem() {
+    const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
       formTitle: 'Add item',
       formConfig: this.formInputsConfiguration,
       payloadId: null,
-      navigationId: navigationId,
+      navigationId: this._navigation.id,
       controllerName: `custom-table/${this.tableName}`,
       hasDeleteButton: false
     }
@@ -77,20 +86,20 @@ export class ManagementBase<T extends Record<string, unknown> & { id: string }> 
    *  otherwise the form will not be able to edit the item.
    * 
    * @param item The item to be edited.
-   * @param navigationId The navigation id associated to the items.
    */
-  editItem(item: T, navigationId: string) {
-    for (const [key, value] of Object.entries(item)) {
+  editItem(item: T) {
+    const {id, navigationId, ...itemWithoutId} = item;
+    for (const [key, value] of Object.entries(itemWithoutId)) {
       if (value) {
         this.formInputsConfiguration[key].value = value;
       }
     }
 
-    const dialogData: GenericFormDialogData<T> = {
+    const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
       formTitle: 'Edit item',
       formConfig: this.formInputsConfiguration,
       payloadId: item.id,
-      navigationId: navigationId,
+      navigationId: this._navigation.id,
       controllerName: `custom-table/${this.tableName}`,
       hasDeleteButton: true
     }

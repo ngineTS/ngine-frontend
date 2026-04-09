@@ -6,7 +6,7 @@ import { NavigationService } from '../../services/navigation.service';
 @Component({
   selector: 'app-navigation-base',
   imports: [],
-  template: `...`,
+  template: '',
 })
 export class NavigationBaseComponent {
 
