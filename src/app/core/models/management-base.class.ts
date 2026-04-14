@@ -98,16 +98,16 @@ export class ManagementBaseComponent<
   editItem(item: T) {
     if (this._canEdit) {
       const {id, navigationId, ...itemWithoutId} = item;
-      
+      const formInputsConfigurationForEdit = structuredClone(this.formInputsConfiguration);
       for (const [key, value] of Object.entries(itemWithoutId)) {
         if (value) {
-          this.formInputsConfiguration[key].value = value;
+          formInputsConfigurationForEdit[key].value = value;
         }
       }
 
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Edit item',
-        formConfig: this.formInputsConfiguration,
+        formConfig: formInputsConfigurationForEdit,
         payloadId: item.id,
         navigationId: this._navigation.id,
         controllerName: `custom-table/${this.tableName}`,
