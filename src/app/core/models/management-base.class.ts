@@ -80,7 +80,6 @@ export class ManagementBaseComponent<
 
       matDialogRef.afterClosed().subscribe(resp => {
         if (resp === 'added') {
-          this._snackBarService.showSuccessSnackBar('Item added successfully');
           this.loadItems();
         }
       });
@@ -120,12 +119,7 @@ export class ManagementBaseComponent<
       );
 
       matDialogRef.afterClosed().subscribe(resp => {
-        if (resp === 'edited') {
-          this._snackBarService.showSuccessSnackBar('Item edited successfully');
-          this.loadItems();
-        }
-        if (resp === 'deleted') {
-          this._snackBarService.showSuccessSnackBar('Item deleted successfully');
+        if (resp === 'edited' || resp === 'deleted') {
           this.loadItems();
         }
       });
