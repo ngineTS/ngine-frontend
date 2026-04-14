@@ -29,10 +29,7 @@ export class ManagementBaseComponent<
   }
 > extends NavigationBaseComponent {
 
-  constructor(
-    private _http: HttpClient,
-    private _snackBarService: SnackBarService
-  ) { super(); }
+  constructor(private _http: HttpClient) { super(); }
 
   /** The backend url. */
   baseUrl = environment.APIURL;
