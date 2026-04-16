@@ -9,7 +9,6 @@ import { NavigationService } from '../../services/navigation.service';
   template: '',
 })
 export class NavigationBaseComponent {
-
   @Input() _navigation!: Navigation;
   @Input() _canEdit: boolean | undefined;
   @Input() _canAdd: boolean | undefined;
@@ -19,12 +18,6 @@ export class NavigationBaseComponent {
   @Output() _stopEditing: EventEmitter<boolean> = new EventEmitter(false);
   protected readonly _retryCount = 1;
   protected readonly _takeCount = 1;
-  //_content: T | undefined;
-
-  constructor() { }
-
   protected _matDialog = inject(MatDialog);
   protected _navigationService = inject(NavigationService);
-
-
 }
