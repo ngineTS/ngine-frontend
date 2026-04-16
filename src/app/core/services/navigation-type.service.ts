@@ -39,7 +39,7 @@ export class NavigationTypeService {
       }
 
       const formConfiguration: GenericFormDialogData<Omit<NavigationType, 'id'>> = {
-        formTitle: 'Add navigation type (Important: Name has to ',
+        formTitle: 'Add Navigation Type',
         formConfig: inputsConfiguration,
         controllerName: 'navigation-type',
         payloadId: null,
