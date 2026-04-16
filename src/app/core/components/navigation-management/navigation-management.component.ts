@@ -163,7 +163,6 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: () => {
-              console.log('edit parent not changed NEXT');
               this._snackbarService.showSuccessSnackBar('Element edited successfully.');
               this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
             }
@@ -179,7 +178,6 @@ export class NavigationManagementComponent implements OnInit {
         .pipe(take(1))
         .subscribe({
           next: () => {
-            console.log('ADD NEXT');
             this._snackbarService.showSuccessSnackBar('Element added successfully.');
             this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
           }
@@ -262,7 +260,6 @@ export class NavigationManagementComponent implements OnInit {
    * @param event The MatSelectChange event.
    */
   onNavigationTypeChange(event: MatSelectChange) {
-    console.log(event);
     this.navigationTypeSelected = this.navigationTypes.find(obj => obj.id === event.value);
     if(this.navigationTypeSelected?.name === 'external-link-button') {
       this.navigationForm.get('url')?.addValidators(Validators.required);
