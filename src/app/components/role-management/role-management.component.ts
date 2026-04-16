@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleService } from '../../services/role.service';
-import { Role, RolePayload } from '../../models/role.interface';
+import { RoleService } from '../../core/services/role.service';
+import { Role, RolePayload } from '../../core/models/role.interface';
 import { retry, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,8 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RoleManagementFormComponent } from './role-management-form/role-management-form.component';
-import { SnackBarService } from '../../services/snackbar.service';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { SnackBarService } from '../../core/services/snackbar.service';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 
 @Component({

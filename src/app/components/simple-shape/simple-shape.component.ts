@@ -1,12 +1,12 @@
 import { Component, ElementRef, SimpleChanges, ViewChild } from '@angular/core';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 import { HttpClient } from '@angular/common/http';
-import { QuillEditorContent } from '../../models/quill-editor.interface';
-import { environment } from '../../../../environments/environment';
+import { QuillEditorContent } from '../../core/models/quill-editor.interface';
+import { environment } from '../../../environments/environment';
 import { take } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { SnackBarService } from '../../services/snackbar.service';
+import { SnackBarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-simple-shape',

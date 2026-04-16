@@ -11,17 +11,16 @@ export class ComponentsContainerService {
    * Map navigation type name with a method witch returns a promise of component imports.
    */
   componentStore: Record<string, () => Promise<any>> = {
-    "my-quill-editor": () => import('../components/my-quill-editor/my-quill-editor.component'),
-    "calendar": () => import('../components/calendar/calendar.component'),
-    "content-management": () => import('../components/content-management/content-management.component'),
-    "content-visualization": () => import('../components/content-visualization/content-visualization.component'),
-    "analytic": () => import('../components/analytic/analytic.component'),
-    "media-library": () => import('../components/media-library/media-library.component'),
-    "user-management": () => import('../components/user-management/user-management.component'),
-    "role-management": () => import('../components/role-management/role-management.component'),
-    "sign-container": () => import('../components/sign-container/sign-container.component'),
-    "simple-shape": () => import('../components/simple-shape/simple-shape.component'),
-    "media": () => import('../components/media/media.component')
+    "my-quill-editor": () => import('../../components/my-quill-editor/my-quill-editor.component'),
+    "calendar": () => import('../../components/calendar/calendar.component'),
+    "content-visualization": () => import('../../components/content-visualization/content-visualization.component'),
+    "analytic": () => import('../../components/analytic/analytic.component'),
+    "media-library": () => import('../../components/media-library/media-library.component'),
+    "user-management": () => import('../../components/user-management/user-management.component'),
+    "role-management": () => import('../../components/role-management/role-management.component'),
+    "sign-container": () => import('../../components/sign-container/sign-container.component'),
+    "simple-shape": () => import('../../components/simple-shape/simple-shape.component'),
+    "media": () => import('../../components/media/media.component')
   };
 
   /**

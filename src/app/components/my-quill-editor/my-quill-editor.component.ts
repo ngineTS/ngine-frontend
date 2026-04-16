@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 import { QuillModule } from 'ngx-quill'
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { retry, take } from 'rxjs';
-import { QuillEditorContent } from '../../models/quill-editor.interface';
+import { QuillEditorContent } from '../../core/models/quill-editor.interface';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 
 @Component({

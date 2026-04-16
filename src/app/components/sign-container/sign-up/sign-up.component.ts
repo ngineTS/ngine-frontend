@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { UserSignUpPayload } from '../../../models/user.interface';
-import { AuthService } from '../../../auth/services/auth.service';
+import { UserSignUpPayload } from '../../../core/models/user.interface';
+import { AuthService } from '../../../core/auth/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AppService } from '../../../services/app.service';
-import { SnackBarService } from '../../../services/snackbar.service';
+import { AppService } from '../../../core/services/app.service';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 
 

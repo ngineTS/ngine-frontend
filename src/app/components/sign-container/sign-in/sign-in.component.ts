@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { AppService } from '../../../services/app.service';
-import { SnackBarService } from '../../../services/snackbar.service';
+import { AppService } from '../../../core/services/app.service';
+import { SnackBarService } from '../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-sign-in',

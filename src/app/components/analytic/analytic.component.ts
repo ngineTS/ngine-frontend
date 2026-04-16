@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { UserEventService } from '../../services/user-event.service';
+import { UserEventService } from '../../core/services/user-event.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 
 @Component({

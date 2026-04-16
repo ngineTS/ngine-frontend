@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatButton } from '@angular/material/button';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
-import { AuthService } from '../../auth/services/auth.service';
-import { SnackBarService } from '../../services/snackbar.service';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
+import { AuthService } from '../../core/auth/services/auth.service';
+import { SnackBarService } from '../../core/services/snackbar.service';
 import { firstValueFrom } from 'rxjs';
-import { AppService } from '../../services/app.service';
+import { AppService } from '../../core/services/app.service';
 import { Router } from '@angular/router';
 
 @Component({

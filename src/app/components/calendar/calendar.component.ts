@@ -4,16 +4,16 @@ import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular
 import { CalendarApi, CalendarOptions, DateSelectArg, EventClickArg, EventHoveringArg, EventMountArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Calendar, CalendarPayload } from '../../models/calendar.interface'
-import { DeepFormConfig, GenericFormDialogData } from '../../models/form-input.interface';
+import { Calendar, CalendarPayload } from '../../core/models/calendar.interface'
+import { DeepFormConfig, GenericFormDialogData } from '../../core/models/form-input.interface';
 import { Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { map, Observable, retry, Subject, take, takeUntil } from 'rxjs';
 import tippy from 'tippy.js';
-import { MediaService } from '../../services/media.service';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
-import { FormContainerComponent } from '../form-container/form-container.component';
+import { MediaService } from '../../core/services/media.service';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
+import { FormContainerComponent } from '../../core/components/form-container/form-container.component';
 
 
 @Component({

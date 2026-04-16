@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
-import { QuillEditorContent } from '../../models/quill-editor.interface';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
+import { QuillEditorContent } from '../../core/models/quill-editor.interface';
 import { HttpClient } from '@angular/common/http';
-import { SnackBarService } from '../../services/snackbar.service';
-import { environment } from '../../../../environments/environment';
+import { SnackBarService } from '../../core/services/snackbar.service';
+import { environment } from '../../../environments/environment';
 import { firstValueFrom, map, Observable, take } from 'rxjs';
-import { MediaService } from '../../services/media.service';
-import { Media } from '../../models/media.interface';
+import { MediaService } from '../../core/services/media.service';
+import { Media } from '../../core/models/media.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -36,7 +36,7 @@ export class MediaComponent extends NavigationBaseComponent {
     private _mediaService: MediaService,
     private _sanitizer: DomSanitizer
   ) { super(); }
-
+  
   /**
    * Lifecycle hook called after component has been initialized.
    * 
