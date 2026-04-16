@@ -63,7 +63,7 @@ export class NavigationManagementComponent implements OnInit {
   isSearchingIcon = false;
   isLoadingNavigationTypes = true;
   isLoadingFlatNavigations = true;
-  imageS3UrlMap: Record<string, Observable<string>> = {};
+  navigationTypeImageS3UrlMap: Record<string, Observable<string>> = {};
 
 
   /**
@@ -83,7 +83,7 @@ export class NavigationManagementComponent implements OnInit {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
       this.navigationTypes.forEach(navType => {
-        this.imageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
+        this.navigationTypeImageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
       });
     });
     
