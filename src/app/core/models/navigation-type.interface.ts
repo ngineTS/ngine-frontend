@@ -3,4 +3,5 @@ export interface NavigationType {
     name: string;
     displayLabel: string;
     description: string;
+    thumbnailImage: string;
 }

@@ -2,18 +2,27 @@
     <h4>Navigation Management</h4>
     <form [formGroup]="navigationForm" class="row navigation-form" (ngSubmit)="submitForm()">
 
-        <!-- Navigation Type dropdown -->
-        <mat-form-field appearance="outline">
-            <mat-label>Navigation Type </mat-label>
-            <mat-select formControlName="navigationTypeId" (selectionChange)="onNavigationTypeChange($event)">
-                @for (navigationType of navigationTypes; track navigationType.name) {
-                    <mat-option [disabled]="data.navigation?.id" [value]="navigationType.id">{{ navigationType.displayLabel }}</mat-option>
-                }
-            </mat-select>
+        <!-- Navigation Type Cards Scroll -->
+        <div class="nav-type-section">
+            <span class="navigation-type-label">Navigation Type</span>
             @if (isLoadingNavigationTypes) {
-                <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+                <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+                <div class="nav-type-scroll">
+                    @for (navType of navigationTypes; track navType.id) {
+                        <div 
+                            class="nav-type-card"
+                            [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
+                            (click)="!data.navigation?.id && selectNavigationType(navType)"
+                        >
+                            <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"/>
+                            <h5>{{ navType.displayLabel }}</h5>
+                            <p [title]="navType.description">{{ navType.description }}</p>
+                        </div>
+                    }
+                </div>
             }
-        </mat-form-field>
+        </div>
 
         <!-- Parent dropdown -->
         <mat-form-field appearance="outline">

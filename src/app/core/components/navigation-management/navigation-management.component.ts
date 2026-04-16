@@ -16,6 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { MediaService } from '../../services/media.service';
 
 
 @Component({
@@ -28,7 +30,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
@@ -47,7 +50,8 @@ export class NavigationManagementComponent implements OnInit {
     private _appService: AppService,
     private _snackbarService: SnackBarService,
     private _containerLayoutService: ContainerLayoutService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _mediaService: MediaService
   ) {}
 
   navigationForm!: FormGroup;
@@ -59,6 +63,8 @@ export class NavigationManagementComponent implements OnInit {
   isSearchingIcon = false;
   isLoadingNavigationTypes = true;
   isLoadingFlatNavigations = true;
+  navigationTypeImageS3UrlMap: Record<string, Observable<string>> = {};
+
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -67,18 +73,25 @@ export class NavigationManagementComponent implements OnInit {
     this._http.get<Array<string>>('assets/icons.json').subscribe(icons => {
       this.bootstrapIconNamesList = icons;
     });
+
     this._navigationService.getFlatNavigations().subscribe(resp => {
       this.flatNavigations = resp;
       this.isLoadingFlatNavigations = false;
     });
+
     this._navigationService.getNavigationTypes().subscribe(resp => {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
+      this.navigationTypes.forEach(navType => {
+        this.navigationTypeImageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
+      });
     });
-    this.createForm();
+    
     if (this.data.navigation) {
       this.navigationTypeSelected = this.data.navigation.navigationType;
     }
+
+    this.createForm();
   }
 
   /**
@@ -157,7 +170,6 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: () => {
-              console.log('edit parent not changed NEXT');
               this._snackbarService.showSuccessSnackBar('Element edited successfully.');
               this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
             }
@@ -173,7 +185,6 @@ export class NavigationManagementComponent implements OnInit {
         .pipe(take(1))
         .subscribe({
           next: () => {
-            console.log('ADD NEXT');
             this._snackbarService.showSuccessSnackBar('Element added successfully.');
             this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
           }
@@ -256,7 +267,6 @@ export class NavigationManagementComponent implements OnInit {
    * @param event The MatSelectChange event.
    */
   onNavigationTypeChange(event: MatSelectChange) {
-    console.log(event);
     this.navigationTypeSelected = this.navigationTypes.find(obj => obj.id === event.value);
     if(this.navigationTypeSelected?.name === 'external-link-button') {
       this.navigationForm.get('url')?.addValidators(Validators.required);
@@ -265,6 +275,14 @@ export class NavigationManagementComponent implements OnInit {
       this.navigationForm.get('url')?.removeValidators(Validators.required);
     }
     this.navigationForm.get('url')?.updateValueAndValidity();
+  }
+
+  /**
+   * Select navigation type from card and update form control.
+   */
+  selectNavigationType(navType: NavigationType) {
+    this.navigationForm.get('navigationTypeId')?.setValue(navType.id);
+    this.onNavigationTypeChange({ value: navType.id } as MatSelectChange);
   }
 
   /**
