@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -28,7 +29,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './navigation-management.component.html',
   styleUrl: './navigation-management.component.scss'
@@ -67,18 +69,22 @@ export class NavigationManagementComponent implements OnInit {
     this._http.get<Array<string>>('assets/icons.json').subscribe(icons => {
       this.bootstrapIconNamesList = icons;
     });
+
     this._navigationService.getFlatNavigations().subscribe(resp => {
       this.flatNavigations = resp;
       this.isLoadingFlatNavigations = false;
     });
+
     this._navigationService.getNavigationTypes().subscribe(resp => {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
     });
-    this.createForm();
+    
     if (this.data.navigation) {
       this.navigationTypeSelected = this.data.navigation.navigationType;
     }
+
+    this.createForm();
   }
 
   /**
@@ -265,6 +271,14 @@ export class NavigationManagementComponent implements OnInit {
       this.navigationForm.get('url')?.removeValidators(Validators.required);
     }
     this.navigationForm.get('url')?.updateValueAndValidity();
+  }
+
+  /**
+   * Select navigation type from card and update form control.
+   */
+  selectNavigationType(navType: NavigationType) {
+    this.navigationForm.get('navigationTypeId')?.setValue(navType.id);
+    this.onNavigationTypeChange({ value: navType.id } as MatSelectChange);
   }
 
   /**
