@@ -8,7 +8,7 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SorterComponent } from '../sorter/sorter.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 
 @Component({

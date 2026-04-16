@@ -16,7 +16,7 @@
                             [class.disabled]="!!data.navigation?.id"
                             (click)="!data.navigation?.id && selectNavigationType(navType)"
                         >
-                            <img src="../../../../assets/images/media_default_image.png"/>
+                            <img [src]="imageS3UrlMap[navType.thumbnailImage] | async"/>
                             <h5>{{ navType.displayLabel }}</h5>
                             <p [title]="navType.description">{{ navType.description }}</p>
                         </div>

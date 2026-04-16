@@ -17,6 +17,7 @@ import { ContainerLayoutService } from '../../services/container-layout.service'
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { MediaService } from '../../services/media.service';
 
 
 @Component({
@@ -49,7 +50,8 @@ export class NavigationManagementComponent implements OnInit {
     private _appService: AppService,
     private _snackbarService: SnackBarService,
     private _containerLayoutService: ContainerLayoutService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _mediaService: MediaService
   ) {}
 
   navigationForm!: FormGroup;
@@ -61,6 +63,8 @@ export class NavigationManagementComponent implements OnInit {
   isSearchingIcon = false;
   isLoadingNavigationTypes = true;
   isLoadingFlatNavigations = true;
+  imageS3UrlMap: Record<string, Observable<string>> = {};
+
 
   /**
    * Lifecycle hook called after the component has been initialized.
@@ -78,6 +82,9 @@ export class NavigationManagementComponent implements OnInit {
     this._navigationService.getNavigationTypes().subscribe(resp => {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
+      this.navigationTypes.forEach(navType => {
+        this.imageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
+      });
     });
     
     if (this.data.navigation) {
