@@ -1,15 +1,15 @@
 import { Component, TemplateRef } from '@angular/core';
-import { MediaService } from '../../services/media.service';
-import { Media } from '../../models/media.interface';
+import { MediaService } from '../../core/services/media.service';
+import { Media } from '../../core/models/media.interface';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SnackBarService } from '../../services/snackbar.service';
+import { SnackBarService } from '../../core/services/snackbar.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SorterComponent } from '../sorter/sorter.component';
+import { SorterComponent } from '../../core/components/sorter/sorter.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-media-library',

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { CustomFormInput, TableViz } from '../../models/content-management.interface';
-import { environment } from '../../../../environments/environment';
+import { CustomFormInput, TableViz } from '../../core/models/content-management.interface';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { retry, switchMap, take, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
-import { GenericTableComponent } from '../generic-table/generic-table.component';
+import { GenericTableComponent } from '../../core/components/generic-table/generic-table.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 @Component({
   selector: 'app-content-visualization',

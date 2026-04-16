@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleService } from '../../services/role.service';
+import { RoleService } from '../../core/services/role.service';
 import { retry, switchMap, take, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SnackBarService } from '../../services/snackbar.service';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.interface';
+import { SnackBarService } from '../../core/services/snackbar.service';
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/user.interface';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { Role } from '../../models/role.interface';
+import { Role } from '../../core/models/role.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { UserRolePayload } from '../../models/user-role.interface';
+import { UserRolePayload } from '../../core/models/user-role.interface';
 import { ActivatedRoute } from '@angular/router';
-import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
 
 
 @Component({
