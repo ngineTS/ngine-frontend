@@ -13,7 +13,6 @@
                         <div 
                             class="nav-type-card"
                             [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
-                            [class.disabled]="!!data.navigation?.id"
                             (click)="!data.navigation?.id && selectNavigationType(navType)"
                         >
                             <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"/>
