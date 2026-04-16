@@ -26,6 +26,7 @@ export class ComponentsContainerService {
 
   /**
    * Transform a kebab case string to a pascale case string.
+   * 
    * @param input The string to transform.
    * @returns A string in pascale case.
    */

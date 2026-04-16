@@ -47,10 +47,7 @@ export class ManagementBaseComponent<
    */
   loadItems() {
     this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
-      .subscribe(resp => {
-        console.log(resp);
-        this.items = resp;
-      });
+      .subscribe(resp => this.items = resp);
   }
 
   /**

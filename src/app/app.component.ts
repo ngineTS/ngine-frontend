@@ -15,6 +15,9 @@ import { AppSettingsService } from './core/services/app-settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
 import { CdkDrag } from '@angular/cdk/drag-drop';
+import { MatMenuModule } from '@angular/material/menu';
+import { NavigationTypeService } from './core/services/navigation-type.service';
+import { FormContainerComponent } from './core/components/form-container/form-container.component';
 
 
 @Component({
@@ -23,6 +26,7 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
     RouterOutlet,
     MatSidenavModule,
     MatButtonModule,
+    MatMenuModule,
     GenericFormComponent,
     AsyncPipe,
     CdkDrag
@@ -40,7 +44,8 @@ export class AppComponent implements OnInit {
     private _userEventService: UserEventService,
     private _location: Location,
     public _sideNavService: SideNavService,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private _navigationTypeService: NavigationTypeService
   ) { }
 
   title = 'my-app-frontend';
@@ -179,13 +184,18 @@ export class AppComponent implements OnInit {
       });
   }
 
-  onHouseSettingsClick() {
+  manageAppDefaultStyle() {
     this._matDialog.open(DefaultStyleFormComponent, {
       width: '60%',
       height: '500px',
       disableClose: true,
       backdropClass: 'no-backdrop'
     });
+  }
+
+  addNavigationType() {
+    const formConfiguration = this._navigationTypeService.setupNavigationTypeForm();
+    this._matDialog.open(FormContainerComponent, { data: formConfiguration });
   }
 
 }
