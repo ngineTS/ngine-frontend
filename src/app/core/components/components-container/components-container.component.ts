@@ -112,9 +112,19 @@ export class ComponentsContainer implements OnInit {
    */
   onDragEnded(event: CdkDragEnd, navigation: Navigation) {
     const positon = event.source.getFreeDragPosition();
-    const navigationPosition = {
+    let navigationPosition = {
       xPos: Math.round(positon.x / window.innerWidth * 100),
       yPos: Math.round(positon.y / window.innerHeight * 100),
+    }
+
+    // Prevent dragging beyond top screen border
+    if (navigationPosition.yPos < 0) {
+      navigationPosition.yPos = 0;
+    }
+
+    // Prevent dragging beyond left screen border
+    if (navigationPosition.xPos < 0) {
+      navigationPosition.xPos = 0;
     }
 
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
