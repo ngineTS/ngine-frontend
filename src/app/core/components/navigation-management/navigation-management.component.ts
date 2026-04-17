@@ -83,7 +83,9 @@ export class NavigationManagementComponent implements OnInit {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
       this.navigationTypes.forEach(navType => {
-        this.navigationTypeImageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
+        if (navType.thumbnailImage) {
+          this.navigationTypeImageS3UrlMap[navType.thumbnailImage] = this._mediaService.getS3ObjectSignedUrl(navType.thumbnailImage);
+        }
       });
     });
     

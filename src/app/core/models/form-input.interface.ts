@@ -9,6 +9,7 @@ export type DeepFormConfig<T> = T extends Record<string, any>
 export type InputConfig<T> = {
     value: T;
     alias?: string;
+    info?: string;
     validators: Array<ValidatorFn>;
 }
 

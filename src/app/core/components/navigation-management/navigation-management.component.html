@@ -15,7 +15,12 @@
                             [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
                             (click)="!data.navigation?.id && selectNavigationType(navType)"
                         >
-                            <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"/>
+                            @if (navigationTypeImageS3UrlMap[navType.thumbnailImage]) {
+                                <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"/>
+                            }
+                            @else {
+                                <img src="../../../../assets/images/component-default-image-1.png"/>
+                            }
                             <h5>{{ navType.displayLabel }}</h5>
                             <p [title]="navType.description">{{ navType.description }}</p>
                         </div>

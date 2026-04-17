@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MediaService } from '../../services/media.service';
@@ -31,6 +32,7 @@ import { SnackBarService } from '../../services/snackbar.service';
     MatDatepickerModule,
     MatTimepickerModule,
     MatIconModule,
+    MatTooltipModule,
     KeyValuePipe,
     NgTemplateOutlet,
     FormsModule,

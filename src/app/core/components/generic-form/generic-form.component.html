@@ -68,7 +68,14 @@
         
             @case ('text') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input type="text" 
                         [formControl]="control" 
                         matInput
@@ -78,7 +85,14 @@
 
             @case ('number') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="'hhihihhi'" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input type="number" 
                         [formControl]="control" 
                         matInput
@@ -88,7 +102,14 @@
 
             @case ('email') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input type="email" 
                         [formControl]="control" 
                         matInput
@@ -99,7 +120,14 @@
 
             @case ('password') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input matInput [type]="hidePassword() ? 'password' : 'text'" [formControl]="control" />
                     <button
                         type="button"
@@ -116,7 +144,14 @@
 
             @case ('url') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input 
                        type="url" 
                        [formControl]="control" 
@@ -127,25 +162,53 @@
 
             @case ('textarea') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <textarea matInput [formControl]="control"></textarea>
                 </mat-form-field>
             }
 
             @case ('checkbox') {
-                <mat-checkbox [formControl]="control" class="mt-2">{{ input.value.alias ?? input.key }}</mat-checkbox>
+                <div class="d-flex align-items-center gap-2">
+                    <mat-checkbox [formControl]="control" class="mt-2">{{ input.value.alias ?? input.key }}</mat-checkbox>
+                    @if (input.value.info) {
+                        <span [matTooltip]="input.value.info" class="d-flex align-items-center">
+                            <i class="bi bi-info-circle-fill"></i>
+                        </span>
+                    }
+                </div>
             }
 
             @case ('color') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input matInput type="color" [formControl]="control">
                 </mat-form-field>
             }
 
             @case ('date') {
                 <mat-form-field appearance="outline" class="w-100 pb-3">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input matInput [matDatepicker]="datePicker" [formControl]="control" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
@@ -155,7 +218,14 @@
 
             @case ('date-and-time') {
                 <mat-form-field appearance="outline" class="w-100 pb-1">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
                     <input 
                         matInput 
                         [matDatepicker]="datePicker" 
@@ -181,7 +251,14 @@
             
             @case ('dropdown') {
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>{{ input.value.alias ?? input.key }}</mat-label>
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
 
                     <!-- Multiple select dropdown-->
                     @if (input.value.value && typeof input.value.value === 'object') {
@@ -223,8 +300,14 @@
             @case ('file') {
                 <div class="row file-div gap-2">
                     <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
-                        <div class="row">
-                            <span> - {{ input.value.alias ?? input.key }} - </span>
+                        <div class="row align-items-center gap-1">
+                            <span> - {{ input.value.alias ?? input.key }}
+                                @if (input.value.info) {
+                                    <span [matTooltip]="input.value.info" class="d-inline-flex align-items-center ms-1">
+                                        <i class="bi bi-info-circle-fill"></i>
+                                    </span>
+                                }
+                            - </span>
                             <span>Upload File</span>
                         </div>
                         <input 

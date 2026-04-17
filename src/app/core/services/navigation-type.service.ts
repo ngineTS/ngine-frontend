@@ -14,6 +14,10 @@ export class NavigationTypeService {
       const inputsConfiguration: DeepFormConfig<Omit<NavigationType, 'id'>> = {
         name: {
           type: 'text',
+          info: `
+            It has to be the kebab-case of the Angular component name it represents.
+            For example, if component name is "MyComponent", the navigation type name must be "my-component".
+          `,
           value: '',
           alias: 'Name',
           validators: [Validators.required],
