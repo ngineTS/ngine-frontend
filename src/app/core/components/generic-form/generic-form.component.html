@@ -10,7 +10,7 @@
 
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
        
-        @for (input of formConfiguration.formConfig | keyvalue; track input.key) {
+        @for (input of formConfiguration.formConfig | keyvalue: compareByOrder; track input.key) {
             @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                 <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(formContent, input.key) }"></ng-container>
             }
@@ -48,7 +48,7 @@
     <div class="form-group-box">
         <div class="form-group-name" [title]="data.key">{{ data.key }}</div>
         <div [formGroup]="group" class="row">
-            @for (input of data.value | keyvalue; track input) {
+            @for (input of data.value | keyvalue: compareByOrder; track input) {
                 @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
                     <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(group, input.key) }"></ng-container>
                 }

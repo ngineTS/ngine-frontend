@@ -10,6 +10,7 @@ export type InputConfig<T> = {
     value: T;
     alias?: string;
     info?: string;
+    order?: number;
     validators: Array<ValidatorFn>;
 }
 

@@ -5,8 +5,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DropdownInputConfig, FormValueEvent, GenericFormDialogData, StandardInputConfig } from '../../models/form-input.interface';
-import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { DropdownInputConfig, FormValueEvent, GenericFormDialogData, InputConfig, StandardInputConfig } from '../../models/form-input.interface';
+import { KeyValue, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -261,4 +261,12 @@ export class GenericFormComponent {
     });
   }
 
+  compareByOrder(
+    a: KeyValue<string, any>,
+    b: KeyValue<string, any>
+  ): number {
+    const orderA: number = a.value.order ?? Number.MAX_SAFE_INTEGER;
+    const orderB: number = b.value.order ?? Number.MAX_SAFE_INTEGER;
+    return orderA - orderB;
+  };
 }
