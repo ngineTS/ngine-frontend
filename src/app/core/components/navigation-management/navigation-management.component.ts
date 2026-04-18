@@ -102,7 +102,7 @@ export class NavigationManagementComponent implements OnInit {
    */
   createForm() {
     this.navigationForm = this._formBuilder.group({
-      parentId: [this.data.navigation?.parentId ?? this.data.parentId, [Validators.required]],
+      parentId: [this.data.navigation?.parentId ?? this.data.parentId, Validators.required],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       url: [this.data.navigation?.url ?? null],
       icon: [this.data.navigation?.icon ?? null],
@@ -283,8 +283,10 @@ export class NavigationManagementComponent implements OnInit {
    * Select navigation type from card and update form control.
    */
   selectNavigationType(navType: NavigationType) {
-    this.navigationForm.get('navigationTypeId')?.setValue(navType.id);
-    this.onNavigationTypeChange({ value: navType.id } as MatSelectChange);
+    if (!this.data.navigation?.id ) {
+      this.navigationForm.get('navigationTypeId')?.setValue(navType.id);
+      this.onNavigationTypeChange({ value: navType.id } as MatSelectChange);
+    }
   }
 
   /**

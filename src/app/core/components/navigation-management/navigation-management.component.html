@@ -4,16 +4,17 @@
 
         <!-- Navigation Type Cards Scroll -->
         <div class="nav-type-section">
-            <span class="navigation-type-label">Navigation Type</span>
+            <span class="navigation-type-label">Component Type</span>
             @if (isLoadingNavigationTypes) {
                 <mat-spinner diameter="20"></mat-spinner>
             } @else {
                 <div class="nav-type-scroll">
                     @for (navType of navigationTypes; track navType.id) {
-                        <div 
+                        <div
                             class="nav-type-card"
+                            [class.nav-type-disabled]="data.navigation?.id"
                             [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
-                            (click)="!data.navigation?.id && selectNavigationType(navType)"
+                            (click)="selectNavigationType(navType)"
                         >
                             @if (navigationTypeImageS3UrlMap[navType.thumbnailImage]) {
                                 <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"/>
