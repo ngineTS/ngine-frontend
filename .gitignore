@@ -42,4 +42,7 @@ testem.log
 Thumbs.db
 
 # Env files
-/src/environments
+src/environments/*
+
+# Do not ignore environment tamplate file 
+!src/environments/environment-template.ts
