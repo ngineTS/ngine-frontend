@@ -18,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
+import { NavigationTypeService } from '../../services/navigation-type.service';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class NavigationManagementComponent implements OnInit {
     private _snackbarService: SnackBarService,
     private _containerLayoutService: ContainerLayoutService,
     private _http: HttpClient,
-    private _mediaService: MediaService
+    private _mediaService: MediaService,
+    private _navigationTypeService: NavigationTypeService
   ) {}
 
   navigationForm!: FormGroup;
@@ -79,7 +81,7 @@ export class NavigationManagementComponent implements OnInit {
       this.isLoadingFlatNavigations = false;
     });
 
-    this._navigationService.getNavigationTypes().subscribe(resp => {
+    this._navigationTypeService.getNavigationTypes().subscribe(resp => {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
       this.navigationTypes.forEach(navType => {

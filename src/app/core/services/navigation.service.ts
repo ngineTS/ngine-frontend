@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
-import { NavigationType } from "../models/navigation-type.interface";
 import { retry, take } from "rxjs";
 import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -33,16 +32,6 @@ export class NavigationService {
             navigation: Navigation,
             access_token: string,
         }>(`${environment.APIURL}navigation`).pipe(take(1));
-    }
-
-    /**
-     * Get all navigation types.
-     * 
-     * @returns An observable of navigation types.
-     */
-    getNavigationTypes() {
-        return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`)
-            .pipe(take(1), retry(1));
     }
 
     /**

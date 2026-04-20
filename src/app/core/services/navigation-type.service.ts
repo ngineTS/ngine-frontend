@@ -2,14 +2,33 @@ import { Injectable } from "@angular/core";
 import { DeepFormConfig, GenericFormDialogData } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
 import { NavigationType } from "../models/navigation-type.interface";
+import { environment } from "../../../environments/environment";
+import { HttpClient } from "@angular/common/http";
+import { retry, take } from "rxjs";
+
 
 @Injectable({
     providedIn: 'root',
 })
 export class NavigationTypeService { 
 
-    constructor() {}
+    constructor(private _http: HttpClient) {}
 
+    /**
+     * Get all navigation types.
+     * 
+     * @returns An observable of navigation types.
+     */
+    getNavigationTypes() {
+      return this._http.get<NavigationType[]>(`${environment.APIURL}navigation-type`)
+        .pipe(take(1), retry(1));
+    }
+
+    /**
+     * Setup navigation type form.
+     * 
+     * @returns The form config.
+     */
     setupNavigationTypeForm(): GenericFormDialogData<Omit<NavigationType, 'id'>> {
       const inputsConfiguration: DeepFormConfig<Omit<NavigationType, 'id'>> = {
         name: {

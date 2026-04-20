@@ -37,6 +37,24 @@ h4 {
     padding: 8px;
     border-radius: 6px;
     background-color: #f5f5f5;
+
+    &::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #e0e0e0;
+        border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #999;
+        border-radius: 3px;
+        
+        &:hover {
+            background: #666;
+        }
+    }
 }
 
 .nav-type-card {
