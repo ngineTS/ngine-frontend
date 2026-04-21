@@ -25,10 +25,12 @@ import { FormContainerComponent } from '../../core/components/form-container/for
 })
 export class CalendarComponent extends NavigationBaseComponent {
 
-  constructor(private _http: HttpClient,
-              private _mediaService: MediaService) { 
-                super(); 
-              }
+  constructor(
+    private _http: HttpClient,
+    private _mediaService: MediaService
+  ) { 
+    super(); 
+  }
 
   @ViewChild('tooltipTemplate', { static: true }) tooltipTemplate!: TemplateRef<any>;
   @ViewChild('myFullCalendar') myFullCalendar!: FullCalendarComponent;
