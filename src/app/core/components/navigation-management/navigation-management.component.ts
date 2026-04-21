@@ -131,7 +131,7 @@ export class NavigationManagementComponent implements OnInit {
           )
           .subscribe(() => {
             this._snackbarService.showSuccessSnackBar('Element deleted successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value);
           });
       }
     }
@@ -174,8 +174,9 @@ export class NavigationManagementComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: () => {
+              //If parent has not changed, no need to refresh routing. Instead pass form value.
               this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+              this._dialogRef.close(this.navigationForm.value);
             }
           });
       }
@@ -190,7 +191,7 @@ export class NavigationManagementComponent implements OnInit {
         .subscribe({
           next: () => {
             this._snackbarService.showSuccessSnackBar('Element added successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value);
           }
         });
     }
@@ -224,7 +225,7 @@ export class NavigationManagementComponent implements OnInit {
    * @returns An array of navigation ids and orders setup.
    */
   updateNavigationBigSistersOrder(
-    parentId: Navigation["parentId"], 
+    parentId: string, 
     order: Navigation["order"]
   ): Observable<Partial<Navigation>[]> {
     const navigationOrdersToUpdate: Partial<Navigation>[] = [];
@@ -243,7 +244,7 @@ export class NavigationManagementComponent implements OnInit {
    * 
    * @param parentId The navigation parent id we want to redirect on.
    */
-  refreshRoutingAndRedirect(parentId: Navigation["parentId"]) {
+  refreshRoutingAndRedirect(parentId: string) {
     const redirectName = this.getParentName(parentId);
     this._appService.createAppRouting(redirectName);
     this._dialogRef.close();

@@ -94,10 +94,19 @@ export class NavigationService {
      * @param navigation The navigation to edit.
      */
     manageNavigation(parentId: string, navigation?: Navigation) {
-        this._matDialog.open(NavigationManagementComponent, {
+        const dialogRef = this._matDialog.open(NavigationManagementComponent, {
             data: {
-            navigation: navigation ?? undefined,
-            parentId: parentId
+                navigation: navigation ?? undefined,
+                parentId: parentId
+            }
+        });
+
+        // assign new value (only in case of edit and no parent change)
+        dialogRef.afterClosed().subscribe((navigationValue: Partial<Navigation>) => {
+            if (navigation && navigationValue) {
+                for (const [key, value] of Object.entries(navigationValue)) {
+                    navigation[key] = value;
+                }
             }
         });
     }
