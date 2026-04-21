@@ -44,7 +44,7 @@
 </div>
 
 <!-- Add navigation button -->
-@if (navigation.permissionName?.includes('add')) {
+@if (navigation.level! < 12 && navigation.permissionName?.includes('add')) {
     <button 
         cdkDrag
         matButton 

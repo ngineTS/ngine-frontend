@@ -25,6 +25,7 @@ export interface Navigation extends Record<string, any> {
     children?: Navigation[];
     parent?: Navigation;
     permissionName?: PermissionName;
+    level?: number;
     createdDate: Date;
     createdBy: string;
     updatedDate: Date;
