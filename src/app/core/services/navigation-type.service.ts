@@ -35,10 +35,8 @@ export class NavigationTypeService {
           type: 'text',
           value: '',
           alias: 'Name',
-          info: `
-            It has to be the kebab-case of the Angular component name it represents.
-            For example, if component name is "MyComponent", the navigation type name must be "my-component".
-          `,
+          info: `The name has to be the same as the key of the component store,
+            otherwise the component won't be part of the list of selectable components.`,
           order: 1,
           validators: [Validators.required],
         },
