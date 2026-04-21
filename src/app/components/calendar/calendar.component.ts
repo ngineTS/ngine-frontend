@@ -159,48 +159,56 @@ export class CalendarComponent extends NavigationBaseComponent {
         startDate: {
           value: arg.start,
           alias: 'Start date',
+          order: 1,
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
           value: arg.end,
           alias: 'End date',
+          order: 2,
           type: 'date-and-time',
           validators: [Validators.required]
         },
         description: {
           value: '',
           alias: 'Description',
+          order: 4,
           type: 'textarea',
           validators: []
         },
         title: {
           value: '',
           alias: 'Title',
+          order: 3,
           type: 'text',
           validators: [Validators.required]
         },
         category: {
           value: '',
           alias: 'Category',
+          order: 5,
           type: 'text',
           validators: []
         },
         url: {
           value: '',
           alias: 'URL',
+          order: 6,
           type: 'text',
           validators: []
         },
         allDay: {
           value: false,
           alias: 'All day',
+          order: 8,
           type: 'checkbox',
           validators: []
         },
         fileId: {
           value: '',
           alias: 'File',
+          order: 7,
           type: 'file',
           validators: []
         }
@@ -236,30 +244,35 @@ export class CalendarComponent extends NavigationBaseComponent {
         startDate: {
           value: arg.event.start,
           alias: 'Start date',
+          order: 1,
           type: 'date-and-time',
           validators: [Validators.required]
         },
         endDate: {
           value: arg.event.end,
           alias: 'End date',
+          order: 2,
           type: 'date-and-time',
           validators: []
         },
         description: {
           value: arg.event.extendedProps["description"],
           alias: 'Description',
+          order: 4,
           type: 'textarea',
           validators: []
         },
         title: {
           value: arg.event.url ? arg.event.title.substring(0, arg.event.title.indexOf(' 🌐')) : arg.event.title,
           alias: 'Title',
+          order: 3,
           type: 'text',
           validators: [Validators.required]
         },
         category: {
           value: arg.event.extendedProps["category"],
           alias: 'Category',
+          order: 5,
           type: 'text',
           validators: []
         },
@@ -267,17 +280,20 @@ export class CalendarComponent extends NavigationBaseComponent {
           value: arg.event.url,
           type: 'text',
           alias: 'Url',
+          order: 6,
           validators: []
         },
         allDay: {
           value: arg.event.extendedProps["allDay"],
           type: 'checkbox',
           alias: 'All day',
+          order: 8,
           validators: []
         },
         fileId: {
           value: arg.event.extendedProps["fileId"],
           type: 'file',
+          order: 7,
           alias: 'File',
           validators: []
         }

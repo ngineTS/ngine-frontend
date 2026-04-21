@@ -30,18 +30,28 @@ export class ContainerStyleService {
       backgroundColor: {
         value: containerStyle.backgroundColor ?? '#636363',
         alias: 'Background Color',
+        order: 1,
         type: 'color',
         validators: [Validators.required]
+      },
+      backgroundImage: {
+        value: containerStyle.backgroundImage ?? null,
+        alias: 'Background Image',
+        order: 2,
+        type: 'file',
+        validators: []
       },
       borderColor: {
         value: containerStyle.borderColor ?? null,
         type: 'color',
         alias: 'Border Color',
+        order: 3,
         validators: []
       },
       borderStyle: {
         value: containerStyle.borderStyle ?? null,
         alias: 'Border Style',
+        order: 4,
         type: 'dropdown',
         dropdownConfig: {
           items: ['solid', 'dashed', 'dotted', 'double', 'groove', 'ridge', 'none']
@@ -51,69 +61,73 @@ export class ContainerStyleService {
       borderWidth: {
         value: containerStyle.borderWidth ?? null,
         alias: 'Border Width',
+        order: 5,
         type: 'number',
         validators: []
       },
       borderTopLeftRadius: {
         value: containerStyle.borderTopLeftRadius ?? 0,
         alias: 'Border Top Left Radius',
+        order: 6,
         type: 'number',
         validators: []
       },
       borderTopRightRadius: {
         value: containerStyle.borderTopRightRadius ?? 0,
         alias: 'Border Top Right Radius',
+        order: 7,
         type: 'number',
         validators: []
       },
       borderBottomLeftRadius: {
         value: containerStyle.borderBottomLeftRadius ?? 0,
         alias: 'Border Bottom Left Radius',
+        order: 8,
         type: 'number',
         validators: []
       },
       borderBottomRightRadius: {
         value: containerStyle.borderBottomRightRadius ?? 0,
         alias: 'Border Bottom Right Radius',
+        order: 9,
         type: 'number',
+        validators: []
+      },
+      isBackgroundTransparent: {
+        value: containerStyle.isBackgroundTransparent ?? false,
+        alias: 'Transparent',
+        order: 10,
+        type: 'checkbox',
         validators: []
       },
       isBorderTopHidden: {
         value: containerStyle.isBorderTopHidden ?? false,
         alias: 'Hide Top Border',
+        order: 11,
         type: 'checkbox',
         validators: []
       },
       isBorderRightHidden: {
         value: containerStyle.isBorderRightHidden ?? false,
         alias: 'Hide Right Border',
+        order: 12,
         type: 'checkbox',
         validators: []
       },
       isBorderBottomHidden: {
         value: containerStyle.isBorderBottomHidden ?? false,
         alias: 'Hide Bottom Border',
+        order: 13,
         type: 'checkbox',
         validators: []
       },
       isBorderLeftHidden: {
         value: containerStyle.isBorderLeftHidden ?? false,
         alias: 'Hide Left Border',
+        order: 14,
         type: 'checkbox',
         validators: []
       },
-      backgroundImage: {
-        value: containerStyle.backgroundImage ?? null,
-        alias: 'Background Image',
-        type: 'file',
-        validators: []
-      },
-      isBackgroundTransparent: {
-        value: containerStyle.isBackgroundTransparent ?? false,
-        alias: 'Transparent',
-        type: 'checkbox',
-        validators: []
-      }
     }
 
     if (skipedProperties) {

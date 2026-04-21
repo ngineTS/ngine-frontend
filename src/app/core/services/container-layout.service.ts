@@ -34,78 +34,91 @@ export class ContainerLayoutService {
       width: {
           value: containerLayout.width ?? null,
           alias: 'Width',
+          order: 1,
           type: 'number',
           validators: []
       },
       height: {
           value: containerLayout.height ?? 50,
           alias: 'Height',
+          order: 2,
           type: 'number',
           validators: [Validators.required]
-      },
-      marginTop: {
-          value: containerLayout.marginTop ?? null,
-          alias: 'Margin Top',
-          type: 'number',
-          validators: []
-      },
-      marginRight: {
-          value: containerLayout.marginRight ?? null,
-          alias: 'Margin Right',
-          type: 'number',
-          validators: []
-      },
-      marginBottom: {
-          value: containerLayout.marginBottom ?? null,
-          alias: 'Margin Bottom',
-          type: 'number',
-          validators: []
-      },
-      marginLeft: {
-          value: containerLayout.marginLeft ?? null,
-          alias: 'Margin Left',
-          type: 'number',
-          validators: []
-      },
-      paddingTop: {
-          value: containerLayout.paddingTop ?? null,
-          alias: 'Padding Top',
-          type: 'number',
-          validators: []
-      },
-      paddingRight: {
-          value: containerLayout.paddingRight ?? null,
-          alias: 'Padding Right',
-          type: 'number',
-          validators: []
-      },
-      paddingBottom: {
-          value: containerLayout.paddingBottom ?? null,
-          alias: 'Padding Bottom',
-          type: 'number',
-          validators: []
-      },
-      paddingLeft: {
-          value: containerLayout.paddingLeft ?? null,
-          alias: 'Padding Left',
-          type: 'number',
-          validators: []
       },
       xPos: {
           value: containerLayout.xPos ?? null,
           alias: 'X Position',
+          order: 3,
           type: 'number',
           validators: []
       },
       yPos: {
           value: containerLayout.yPos ?? null,
           alias: 'Y Position',
+          order: 4,
           type: 'number',
           validators: []
       },
       zIndex: {
           value: containerLayout.zIndex,
           alias: 'Z Index',
+          order: 5,
+          type: 'number',
+          validators: []
+      },
+      marginTop: {
+          value: containerLayout.marginTop ?? null,
+          alias: 'Margin Top',
+          order: 6,
+          type: 'number',
+          validators: []
+      },
+      marginRight: {
+          value: containerLayout.marginRight ?? null,
+          alias: 'Margin Right',
+          order: 7,
+          type: 'number',
+          validators: []
+      },
+      marginBottom: {
+          value: containerLayout.marginBottom ?? null,
+          alias: 'Margin Bottom',
+          order: 8,
+          type: 'number',
+          validators: []
+      },
+      marginLeft: {
+          value: containerLayout.marginLeft ?? null,
+          alias: 'Margin Left',
+          order: 9,
+          type: 'number',
+          validators: []
+      },
+      paddingTop: {
+          value: containerLayout.paddingTop ?? null,
+          alias: 'Padding Top',
+          order: 10,
+          type: 'number',
+          validators: []
+      },
+      paddingRight: {
+          value: containerLayout.paddingRight ?? null,
+          alias: 'Padding Right',
+          order: 11,
+          type: 'number',
+          validators: []
+      },
+      paddingBottom: {
+          value: containerLayout.paddingBottom ?? null,
+          alias: 'Padding Bottom',
+          order: 12,
+          type: 'number',
+          validators: []
+      },
+      paddingLeft: {
+          value: containerLayout.paddingLeft ?? null,
+          alias: 'Padding Left',
+          order: 13,
           type: 'number',
           validators: []
       },
