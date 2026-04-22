@@ -8,7 +8,9 @@ export class ComponentService {
   /**
    * Application components store.
    * 
-   * Map navigation type name with a method witch returns a promise of component imports.
+   * Map navigation type name with function reference to component import.
+   * 
+   * The key has to match navigation type name and has to be kebab case of component class name.
    */
   readonly componentStore: Record<string, () => Promise<any>> = {
     "my-quill-editor": () => import('./my-quill-editor/my-quill-editor.component'),
