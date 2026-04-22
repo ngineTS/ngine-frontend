@@ -169,7 +169,7 @@ export class GenericFormComponent {
     for (const formFileSetting of this.formFileSettings) {
       if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
         const media = await firstValueFrom(
-          this._mediaService.uploadFileToS3(formFileSetting.formFile)
+          this._mediaService.uploadFile(formFileSetting.formFile)
             .pipe(catchError(err => {
               this.isSaving.set(false);
               return throwError(() => err);

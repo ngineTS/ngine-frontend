@@ -85,7 +85,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
 
     const navigationBackgroundImage = this._navigation.containerStyle.backgroundImage;
     if (navigationBackgroundImage) {
-      this._mediaService.getS3ObjectSignedUrl(navigationBackgroundImage).subscribe(
+      this._mediaService.getFileUrl(navigationBackgroundImage).subscribe(
         resp => this.backgroundImageUrl = resp
       );
     }

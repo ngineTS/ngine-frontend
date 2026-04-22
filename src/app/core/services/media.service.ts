@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, retry, take } from "rxjs";
+import { map, Observable, retry, take } from "rxjs";
 import { Media } from "../models/media.interface";
 
 @Injectable({
@@ -13,14 +13,14 @@ export class MediaService {
   constructor(private _http: HttpClient) {}
 
   /**
-   * Get S3 file temporary url.
+   * Get file url.
    * 
    * @param fileName The file key.
-   * @returns S3 File temporary URL.
+   * @returns File url.
    */
-  getS3ObjectSignedUrl(fileName: string): Observable<string> {
-    return this._http.get<string>(`${this.baseURL}file-management/${fileName}`)
-      .pipe(retry(1), take(1));
+  getFileUrl(fileName: string) {
+    return this._http.get<any>(`${this.baseURL}file-management/${fileName}`, { responseType: 'blob' as 'json' })
+      .pipe(take(1),  map((x: Blob) => URL.createObjectURL(x)));
   }
 
   /**
@@ -43,18 +43,18 @@ export class MediaService {
   }
 
   /**
-   * Upload file to S3.
+   * Upload file.
    * 
    * @param formData The file.
    * @returns The media metadata.
    */
-  uploadFileToS3(formData: FormData): Observable<Media> {
+  uploadFile(formData: FormData): Observable<Media> {
     return this._http.post<Media>(`${this.baseURL}file-management/upload`, formData)
       .pipe(take(1));
   }
 
   /**
-   * Delete media from S3.
+   * Delete file.
    * 
    * @param fileName The file key.
    * @returns A delete response.

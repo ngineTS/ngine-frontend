@@ -24,17 +24,17 @@
             </i>
             }
             
-            @if (fileIdS3UrlMap[file.name]) {         
+            @if (fileIdUrlMap[file.name]) {         
                 @if (file.type.includes('image')) {
-                    <img class="media" [src]="fileIdS3UrlMap[file.name] | async" />
+                    <img class="media" [src]="fileIdUrlMap[file.name] | async" />
                 }
 
                 @if (file.type.includes('video')) {
-                    <video class="media" controls [src]="fileIdS3UrlMap[file.name] | async"></video>
+                    <video class="media" controls [src]="fileIdUrlMap[file.name] | async"></video>
                 }
 
                 @if (file.type.includes('audio')) {
-                    <audio class="media" controls [src]="fileIdS3UrlMap[file.name] | async"></audio>
+                    <audio class="media" controls [src]="fileIdUrlMap[file.name] | async"></audio>
                 }
             }
             @else {
@@ -55,14 +55,14 @@
 <!-- Full size media template -->
  <ng-template #fullSizeMedia let-data>
     @if (data.type.includes('image')) {
-        <img height="auto" width="500px" [src]="fileIdS3UrlMap[data.name] | async" />
+        <img height="auto" width="500px" [src]="fileIdUrlMap[data.name] | async" />
     }
 
     @if (data.type.includes('video')) {
-        <video height="auto" width="500px" controls [src]="fileIdS3UrlMap[data.name] | async"></video>
+        <video height="auto" width="500px" controls [src]="fileIdUrlMap[data.name] | async"></video>
     }
 
     @if (data.type.includes('audio')) {
-        <audio height="auto" width="500px" controls [src]="fileIdS3UrlMap[data.name] | async"></audio>
+        <audio height="auto" width="500px" controls [src]="fileIdUrlMap[data.name] | async"></audio>
     }
  </ng-template>

@@ -30,8 +30,8 @@ export class MediaLibraryComponent extends NavigationBaseComponent {
   files: Array<Media> = [];
   /* Filtered list of medias. Used for search engine. */
   filteredFiles: Array<Media> = [];
-  /* Mapping object of media id and his S3 URL. */
-  fileIdS3UrlMap: Record<string, Observable<string>> = {};
+  /* Mapping object of media id and his URL. */
+  fileIdUrlMap: Record<string, Observable<string>> = {};
 
   constructor(
     private _mediaService: MediaService,
@@ -58,8 +58,8 @@ export class MediaLibraryComponent extends NavigationBaseComponent {
    * @param fileName The name of the media hovered.
    */
   onDefaultImageMouseEnter(fileName: string) {
-    if (!this.fileIdS3UrlMap[fileName]) {
-      this.fileIdS3UrlMap[fileName] = this._mediaService.getS3ObjectSignedUrl(fileName);
+    if (!this.fileIdUrlMap[fileName]) {
+      this.fileIdUrlMap[fileName] = this._mediaService.getFileUrl(fileName);
     }
   }
 
@@ -76,7 +76,7 @@ export class MediaLibraryComponent extends NavigationBaseComponent {
 
   /**
    * Methods triggered on "trash" top right corner icon click.
-   * Delete file from S3 and soft delete media record.
+   * Delete file and soft delete media record.
    * 
    * @param media The media to delete.
    */

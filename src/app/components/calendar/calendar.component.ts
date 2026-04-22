@@ -116,7 +116,7 @@ export class CalendarComponent extends NavigationBaseComponent {
         mediaUrl$ = this.fileIdUrlMapping[arg.event.extendedProps['fileId']];
       }
       else {
-        mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(arg.event.extendedProps['fileId']);
+        mediaUrl$ = this._mediaService.getFileUrl(arg.event.extendedProps['fileId']);
         this.fileIdUrlMapping[arg.event.extendedProps['fileId']] = mediaUrl$;
       }
     }
