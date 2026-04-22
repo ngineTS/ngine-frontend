@@ -85,6 +85,7 @@ export class MediaLibraryComponent extends NavigationBaseComponent {
       this._mediaService.deleteMedia(media.name).subscribe(() => {
         this._snackbarService.showSuccessSnackBar(`Media ${media.name} has been deleted successfully.`);
         this.files = this.files.filter(obj => obj.id !== media.id);
+        this.filteredFiles = this.filteredFiles.filter(obj => obj.id !== media.id);
       });
     }
   }
