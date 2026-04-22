@@ -53,7 +53,7 @@ export class MediaComponent extends NavigationBaseComponent {
         console.log('media table', resp);
         this.media = resp
       })
-      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.content.fileName)
+      this.mediaUrl$ = this._mediaService.getFileUrl(this.content.fileName)
         .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
     }
     this.isLoading = false;
@@ -61,8 +61,8 @@ export class MediaComponent extends NavigationBaseComponent {
 
   /**
    * Methods called when file is uploaded.
-   * - delete existing file from S3
-   * - update new file to S3, retrieve his URL then save navigation content
+   * - delete existing file
+   * - update new file, retrieve his URL then save navigation content
    * 
    * @param event The file upoad event.
    */
@@ -78,9 +78,9 @@ export class MediaComponent extends NavigationBaseComponent {
     }
     /* 2. Upload new file. */
     this.formFile.append('file', fileUploaded);
-    this.media = await firstValueFrom(this._mediaService.uploadFileToS3(this.formFile));
+    this.media = await firstValueFrom(this._mediaService.uploadFile(this.formFile));
     if (this.media) {
-      this.mediaUrl$ = this._mediaService.getS3ObjectSignedUrl(this.media.name)
+      this.mediaUrl$ = this._mediaService.getFileUrl(this.media.name)
         .pipe(map(url => this._sanitizer.bypassSecurityTrustResourceUrl(url)));
       this.saveContent(this.media.name);
       this.isLoading = false;

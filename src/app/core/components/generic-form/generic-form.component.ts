@@ -165,11 +165,11 @@ export class GenericFormComponent {
 
   async submitForm() {
     this.isSaving.set(true);
-    //if new file uploaded then post it to S3 and assign file key to related form control
+    //if new file uploaded then post it and assign file key to related form control
     for (const formFileSetting of this.formFileSettings) {
       if (formFileSetting.hasChanged && formFileSetting.formFile?.get('file')) {
         const media = await firstValueFrom(
-          this._mediaService.uploadFileToS3(formFileSetting.formFile)
+          this._mediaService.uploadFile(formFileSetting.formFile)
             .pipe(catchError(err => {
               this.isSaving.set(false);
               return throwError(() => err);

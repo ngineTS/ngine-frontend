@@ -16,8 +16,8 @@
                             [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
                             (click)="selectNavigationType(navType)"
                         >
-                            @if (navigationTypeImageS3UrlMap[navType.thumbnailImage]) {
-                                <img [src]="navigationTypeImageS3UrlMap[navType.thumbnailImage] | async"
+                            @if (navigationTypeImageUrlMap[navType.thumbnailImage]) {
+                                <img [src]="navigationTypeImageUrlMap[navType.thumbnailImage] | async"
                                     (error)="onImageError($event)"
                                 />
                             }

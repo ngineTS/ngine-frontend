@@ -224,7 +224,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   } 
 
   redirectToS3File(fileName: string) {
-    this._mediaService.getS3ObjectSignedUrl(fileName).subscribe(resp => window.open(resp));
+    this._mediaService.getFileUrl(fileName).subscribe(resp => window.open(resp));
   }
 
 }
