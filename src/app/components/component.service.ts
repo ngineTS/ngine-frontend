@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class ComponentService {
 
   /**
-   * Application components library.
+   * Application components store.
    * 
    * Map navigation type name with a method witch returns a promise of component imports.
    */
