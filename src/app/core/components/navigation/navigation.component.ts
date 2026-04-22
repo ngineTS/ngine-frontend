@@ -3,7 +3,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { take, takeUntil } from 'rxjs';
-import { ComponentsContainerService } from '../../services/components-container.service';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { StylePayload } from '../../models/menu.interface';
@@ -14,6 +13,7 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
 import { MediaService } from '../../services/media.service';
+import { ComponentService } from '../../../components/component.service';
 
 @Component({
   selector: 'app-navigation',
@@ -55,7 +55,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   hasScrollBar = false;
 
   constructor(
-    private _componentContainerService: ComponentsContainerService,
+    private _componentService: ComponentService,
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
@@ -117,13 +117,15 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Load component from components library and set inputs. 
    */
   async loadComponent() {
-    const componentImportRef = this._componentContainerService.componentStore[this._navigation.navigationType.name];
+    const navigationTypeName = this._navigation.navigationType.name;
+
+    const componentImportRef = this._componentService.componentStore[navigationTypeName];
     if (!componentImportRef) {
       return;
     }
 
     const component = await componentImportRef().then(m => 
-        m[this._componentContainerService.kebabCasetoPascaleCase(this._navigation.navigationType.name) + 'Component']
+        m[this._componentService.kebabCasetoPascaleCase(navigationTypeName) + 'Component']
       );
 
     this.containerRef = this.container.createComponent(component, {

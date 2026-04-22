@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
-import { ComponentsContainerService } from '../../services/components-container.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StylePayload } from '../../models/menu.interface';
 import { NavigationService } from '../../services/navigation.service';
@@ -13,6 +12,7 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
 import { takeUntil } from 'rxjs';
+import { ComponentService } from '../../../components/component.service';
 
 @Component({
   selector: 'app-empty-dialog',
@@ -31,7 +31,7 @@ export class EmptyDialogComponent {
     private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: { navigation: Navigation },
-    private _componentsContainerService: ComponentsContainerService,
+    private _componentService: ComponentService,
     private _navigationService: NavigationService,
     private _containerLayoutService: ContainerLayoutService,
     private _containerStyleService: ContainerStyleService,
@@ -82,10 +82,16 @@ export class EmptyDialogComponent {
    * Find component from component library by navigation type.
    */
   async loadComponent(navigation: Navigation) {
-    const component = await this._componentsContainerService
-      .componentStore[navigation.navigationType.name]().then(m => 
-        m[this._componentsContainerService.kebabCasetoPascaleCase(navigation.navigationType.name) + 'Component']
-      );
+    const navigationTypeName = navigation.navigationType.name;
+
+    const componentImportRef = this._componentService.componentStore[navigationTypeName];
+    if (!componentImportRef) {
+      return;
+    }
+
+    const component = await componentImportRef().then(m => 
+      m[this._componentService.kebabCasetoPascaleCase(navigationTypeName) + 'Component']
+    );
 
     this.containerRef = this.container.createComponent(component, {
         injector: this.injector,
