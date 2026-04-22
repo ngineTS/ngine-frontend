@@ -314,4 +314,8 @@ export class NavigationManagementComponent implements OnInit {
     }
   }
 
+  onImageError(event: Event): void {
+    (event.target as HTMLImageElement).src = '../../../../assets/images/component-default-image-1.png';
+  }
+
 }
