@@ -1,9 +1,8 @@
 import { HttpClient } from "@angular/common/http";
-import { DeepFormConfig, GenericFormDialogData } from "./form-input.interface";
+import { DeepFormConfig, GenericFormDialogData } from "../models/form-input.interface";
 import { environment } from "../../../environments/environment";
-import { FormContainerComponent } from "../components/form-container/form-container.component";
-import { SnackBarService } from "../services/snackbar.service";
-import { NavigationBaseComponent } from "../components/navigation-base/navigation-base.component";
+import { FormContainerComponent } from "./form-container/form-container.component";
+import { NavigationBaseComponent } from "./navigation-base/navigation-base.component";
 import { Component } from "@angular/core";
 
 /**
