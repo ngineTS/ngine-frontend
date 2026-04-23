@@ -6,11 +6,10 @@ import { NavigationBaseComponent } from "./navigation-base/navigation-base.compo
 import { Component } from "@angular/core";
 
 /**
- * Generic class that provides basic management functionalities (add, edit) for items of type T.
+ * Generic class that provides basic management functionalities (add, edit, delete) for items of type T.
  * 
- * To use this class, extend it and set the `formInputsConfiguration` and `tableName` properties 
- * with the form configuration and table name for the items. Then, you can call the `loadItems`,
- * `addItem` and `editItem` methods to manage the items.
+ * To use this class, extend it and set the `formInputsConfiguration` and `tableName` properties.
+ * Then, you can call the `loadItems`, `addItem` and `editItem` methods to manage the items.
  * 
  * Important: The type T has to match database table structure and must contain an `id` property of type string,
  * otherwise the class will not work properly.
