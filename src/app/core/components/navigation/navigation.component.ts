@@ -38,7 +38,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /* The dynamic component ref. */
   containerRef!: ComponentRef<NavigationBaseComponent>;
   /* The size observer used to detect resize of navigation. */
-  observer: MutationObserver | undefined;
+  observer: ResizeObserver | undefined;
   /** The window width. */
   windowWidth!: number;
   /** The window height. */
@@ -151,14 +151,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * and exclude resizing due to screen size change.
    */
   createSizeObserver() {
-    this.observer = new MutationObserver(() => {
+    this.observer = new ResizeObserver(() => {
       if (this.isMouseOver) this.isResizing = true;
     });
 
-    this.observer.observe(
-      this.navigationDiv.nativeElement,
-      { attributes: true, attributeFilter: ['style'] }
-    );
+    this.observer.observe(this.navigationDiv.nativeElement);
   }
 
   /**

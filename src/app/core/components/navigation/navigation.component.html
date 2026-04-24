@@ -36,14 +36,15 @@
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
             : '100%'"
         [style.height.px]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100"
-        [style.max-height]="windowWidth > windowWidthLimit ? '' : 'fit-content'"
-        [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : ''"
+        [style.max-height]="windowWidth > windowWidthLimit ? 'none' : 'fit-content'"
+        [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : 'none'"
         [style.background-color]="_navigation.containerStyle.isBackgroundTransparent ?
             'transparent' : _navigation.containerStyle.backgroundColor"
-        [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : ''"
-        [style.border]="_navigation.containerStyle.borderWidth + 'px ' +
-            _navigation.containerStyle.borderStyle + ' ' +
-            _navigation.containerStyle.borderColor"
+        [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : 'none'"
+        [style.border-width.px]="_navigation.containerStyle.borderWidth"
+        [style.border-color]="isMouseOver
+            ? _navigation.typographyStyle.activeColor
+            : _navigation.containerStyle.borderColor"
         [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
             'none' : _navigation.containerStyle.borderStyle"
         [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
