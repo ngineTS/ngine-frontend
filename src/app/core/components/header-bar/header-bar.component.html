@@ -58,8 +58,7 @@
                             [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
                                 child.containerStyle.borderWidth : 1"
                             [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
-                            [style.border-style]="child.containerStyle.borderStyle && child.containerStyle.borderStyle !== 'none'
-                                ? child.containerStyle.borderStyle : 'solid'"
+                            [style.border-style]="child.containerStyle.borderStyle"
                             [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
                                 'transparent' : child.containerStyle.borderColor ?? 'transparent'"
                             [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
@@ -126,7 +125,10 @@
 
     <!-- Phone screen -->
     @else {
-        <div class="d-flex" [style.background-color]="navigation.menu.containerStyle.backgroundColor">
+        <div class="d-flex"
+            [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
+                ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
+        >
             <!-- Burger button -->
             <i class="bi bi-list burger-button" 
                 [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"

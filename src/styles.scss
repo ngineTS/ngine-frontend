@@ -13,7 +13,7 @@ html, body {
 html {
   color-scheme: light dark;
   @include mat.theme((
-    color: mat.$blue-palette,
+    color: mat.$violet-palette,
     density: 0
   ));
 }
