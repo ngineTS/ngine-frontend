@@ -51,7 +51,7 @@ export class HeaderBarComponent implements OnInit {
   /** The window width. */
   windowWidth!: number;
   /** Responsive threasold */
-  windowWidthLimit = 900;
+  windowWidthLimit = 1000;
 
   /**
    * Get window width each time it changes (zoom, screen resize...).
