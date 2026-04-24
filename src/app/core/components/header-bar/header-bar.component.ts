@@ -135,12 +135,16 @@ export class HeaderBarComponent implements OnInit {
     this._sideNavService.resetSideNavContent();
 
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
-        navigation.typographyStyle
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
+        navigation.containerLayout,
+        ['width', 'height', 'xPos', 'yPos', 'zIndex', 'marginTop', 'marginBottom', 'marginRight', 'marginLeft']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,
         ['backgroundImage']
+      ),
+      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
+        navigation.typographyStyle
       ),
     }
     

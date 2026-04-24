@@ -5,7 +5,9 @@
     @if (windowWidth > windowWidthLimit) {
 
         <!-- List of navigations -->
-        <div [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+        <div 
+            [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
+                ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height 
                 ? navigation.menu.containerLayout.height : 60"
             [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
@@ -45,53 +47,59 @@
                         }"
                         [class.edit-header-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
-                        [style.background-color]="child.containerStyle.isBackgroundTransparent ?
-                            'transparent' : child.containerStyle.backgroundColor"
-                        [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
-                            child.containerStyle.borderWidth : 1"
-                        [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-style]="child.containerStyle.borderStyle && child.containerStyle.borderStyle !== 'none'
-                            ? child.containerStyle.borderStyle : 'solid'"
-                        [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
-                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
-                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-bottom-color]="child.containerStyle.isBorderBottomHidden ?
-                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-left-color]="child.containerStyle.isBorderLeftHidden ?
-                            'transparent' : child.containerStyle.borderColor ?? 'transparent'"
-                        [style.border-top-left-radius.px]="child.containerStyle.borderTopLeftRadius"
-                        [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
-                        [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
-                        [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
                     >
-                        @if (child.navigationType.name === 'menu-button') {
-                            <app-menu-button
-                                class="custom-button"
-                                (mousedown)="$event.stopPropagation()"
-                                [navigation]="child"
-                                [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                            ></app-menu-button>
-                        }
-                        @else {
-                            <app-custom-button
-                                class="custom-button"
-                                [navigation]="child"
-                                (mousedown)="$event.stopPropagation()"
-                                [style.opacity]="child.isDisabled ? '0.4' : '1'"
-                            ></app-custom-button>
-                        }
+                        <div
+                            [style.padding-top.px]="child.containerLayout.paddingTop"
+                            [style.padding-bottom.px]="child.containerLayout.paddingBottom"
+                            [style.padding-right.px]="child.containerLayout.paddingRight"
+                            [style.padding-left.px]="child.containerLayout.paddingLeft"
+                            [style.background-color]="child.containerStyle.isBackgroundTransparent ?
+                                'transparent' : child.containerStyle.backgroundColor"
+                            [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
+                                child.containerStyle.borderWidth : 1"
+                            [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-style]="child.containerStyle.borderStyle && child.containerStyle.borderStyle !== 'none'
+                                ? child.containerStyle.borderStyle : 'solid'"
+                            [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-bottom-color]="child.containerStyle.isBorderBottomHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-left-color]="child.containerStyle.isBorderLeftHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-top-left-radius.px]="child.containerStyle.borderTopLeftRadius"
+                            [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
+                            [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
+                            [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
+                        >
+                            @if (child.navigationType.name === 'menu-button') {
+                                <app-menu-button
+                                    class="custom-button"
+                                    (mousedown)="$event.stopPropagation()"
+                                    [navigation]="child"
+                                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                                ></app-menu-button>
+                            }
+                            @else {
+                                <app-custom-button
+                                    class="custom-button"
+                                    [navigation]="child"
+                                    (mousedown)="$event.stopPropagation()"
+                                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                                ></app-custom-button>
+                            }
 
-                        <!-- Edit navigation buttons -->
-                        @if (child.permissionName?.includes('edit') && !isDragging) {
-                            <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
-                                (click)="editNavigationStyle(child)"
-                            ></i>
-                            <i class="bi bi-gear edit-header-icon edit-header-general-icon"
-                                (click)="manageNavigation(child)"
-                            ></i>
-                        }
-
+                            <!-- Edit navigation buttons -->
+                            @if (child.permissionName?.includes('edit') && !isDragging) {
+                                <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
+                                    (click)="editNavigationStyle(child)"
+                                ></i>
+                                <i class="bi bi-gear edit-header-icon edit-header-general-icon"
+                                    (click)="manageNavigation(child)"
+                                ></i>
+                            }
+                        </div>
                     </div>
                 }
 

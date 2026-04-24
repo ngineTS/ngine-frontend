@@ -61,9 +61,11 @@
 
                 @if (defaultContainerStyle && defaultTypographyStyle) {
                     <div class="col mx-5 mt-2 mb-1 example-square"
-                        [style.background-color]="defaultContainerStyle.backgroundColor"
-                        [style.border]="defaultContainerStyle.borderWidth + 'px ' +
-                            defaultContainerStyle.borderStyle + ' ' + defaultContainerStyle.borderColor"
+                        [style.background-color]="defaultContainerStyle.isBackgroundTransparent ? 'transparent' : defaultContainerStyle.backgroundColor"
+                        [style.border-width.px]="defaultContainerStyle.borderWidth"
+                        [style.border-color]="isMouseOverExampleSquare
+                            ? defaultTypographyStyle.activeColor
+                            : defaultContainerStyle.borderColor"
                         [style.border-top-style]="defaultContainerStyle.isBorderTopHidden ?
                             'none' : defaultContainerStyle.borderStyle"
                         [style.border-right-style]="defaultContainerStyle.isBorderRightHidden ?
