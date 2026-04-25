@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,6 +15,13 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
+
+
+interface NavigationMeasure {
+  navId: string;
+  xPos: number;
+  width: number;
+}
 
 
 @Component({
@@ -53,6 +60,9 @@ export class HeaderBarComponent implements OnInit {
   /** Responsive threasold */
   windowWidthLimit = 1000;
 
+  @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
+
+
   /**
    * Get window width each time it changes (zoom, screen resize...).
    */
@@ -71,6 +81,10 @@ export class HeaderBarComponent implements OnInit {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
     this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+  }
+
+  ngAfterViewInit() {
+    this.refineNavigationPosition();
   }
 
   /**
@@ -241,6 +255,71 @@ export class HeaderBarComponent implements OnInit {
     }
 
     this._sideNavService.initalFormContent = initialFormContent;
+  }
+
+  /**
+   * Refine navigation positions to prevent overlapping.
+   * 
+   * Process:
+   * 1. Get navigations measures.
+   * 2. Adjust left side position.
+   * 3. Adjust right side position.
+   */
+  refineNavigationPosition() {
+    const navigations = this.navigation.children;
+
+    if (navigations && navigations?.length > 0) {
+      const navigationMeasures: Array<NavigationMeasure> = [];
+
+      this.navigationHTMLElements.forEach((navElt, index) => {
+        const navigation = navigations[index];
+        const navId = navigation.id;
+        const xPos = navigation.containerLayout.xPos!;
+        const width = Math.round(navElt.nativeElement.offsetWidth / this.windowWidth * 100);
+        navigationMeasures.push({ navId, xPos, width });
+      });
+
+      this.adjustPosition(navigationMeasures, navigations, 'left');
+      navigationMeasures.sort((a, b) => b.xPos - a.xPos);
+      this.adjustPosition(navigationMeasures, navigations, 'right');
+    }
+  }
+
+
+  /**
+   * Prevent overlapping of navigations.
+   * 
+   * @param navigationMeasures The navigations width and xPos.
+   * @param navigations The navigations.
+   * @param side The side to adjust.
+   */
+  adjustPosition(
+    navigationMeasures: Array<NavigationMeasure>,
+    navigations: Array<Navigation>,
+    side: 'left' | 'right'
+  ) {
+    for (const a of navigationMeasures) {
+      for (const b of navigationMeasures) {
+        if (side === 'left') {
+          if (a.xPos > b.xPos && (b.xPos + b.width > a.xPos)) {
+            a.xPos = b.xPos + b.width;
+            break;
+          }
+        }
+        else {
+          if (b.xPos > a.xPos && (a.xPos + a.width > b.xPos)) {
+            a.xPos = b.xPos - a.width;
+            break;
+          }
+        }
+      }
+
+      if (a.xPos + a.width > 98) {
+        a.xPos = 98 - a.width;
+      }
+
+      navigations.find(nav => nav.id === a.navId)!.containerLayout.xPos = a.xPos;
+    }
   }
 
 }
