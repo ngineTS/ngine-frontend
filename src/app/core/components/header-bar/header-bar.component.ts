@@ -76,12 +76,12 @@ export class HeaderBarComponent implements OnInit {
   /**
    * Computes navigation bar width based on screen size and side nav status.
    */
-  get navigationBarWidth(): string {
+  get containerWidth(): string {
     if (this._sideNavService.initalFormContent) {
       return '100vw';
     }
 
-    return '';
+    return 'none';
   }
 
   /**
@@ -166,8 +166,8 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
-   * Method called when drag end.
-   * Get element position from cdkDragEnd event, convert it to percentage of screen size and save it.
+   * Method called when drag ends.
+   * Get dragged navigation position, convert it to percentage of screen size and save it.
    * 
    * @param event The cdkDragEnd event.
    * @param navigation The navigation dragged.

@@ -1,11 +1,11 @@
-<!-- Navigation bar -->
-<div [style.width]="navigationBarWidth">
+<!-- Navigation bar container -->
+<div [style.width]="containerWidth">
 
     <!-- Laptop screen -->
     @if (windowWidth > windowWidthLimit) {
 
         <!-- List of navigations -->
-        <div 
+        <div
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height 

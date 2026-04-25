@@ -104,17 +104,19 @@ export class ComponentsContainer implements OnInit {
 
   
   /**
-   * Method called when drag end.
-   * Get element position from cdkDragEnd event, convert it to percentage of screen size and save it.
+   * Method called when drag ends.
+   * 
+   * Get dragged navigation position, convert it to percentage of screen size and save it.
    * 
    * @param event The cdkDragEnd event.
    * @param navigation The navigation dragged.
    */
   onDragEnded(event: CdkDragEnd, navigation: Navigation) {
-    const positon = event.source.getFreeDragPosition();
-    let navigationPosition = {
-      xPos: Math.round(positon.x / window.innerWidth * 100),
-      yPos: Math.round(positon.y / window.innerHeight * 100),
+    const position = event.source.getFreeDragPosition();
+
+    const navigationPosition = {
+      xPos: Math.round(position.x / window.innerWidth * 100),
+      yPos: Math.round(position.y / window.innerHeight * 100),
     }
 
     // Prevent dragging beyond top screen border
