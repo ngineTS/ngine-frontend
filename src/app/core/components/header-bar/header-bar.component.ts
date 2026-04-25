@@ -262,8 +262,8 @@ export class HeaderBarComponent implements OnInit {
    * 
    * Process:
    * 1. Get navigations measures.
-   * 2. Adjust left side position.
-   * 3. Adjust right side position.
+   * 2. Adjust navigation positions compared to left items.
+   * 3. Adjust navigation positions compared to right items.
    */
   refineNavigationPosition() {
     const navigations = this.navigation.children;
