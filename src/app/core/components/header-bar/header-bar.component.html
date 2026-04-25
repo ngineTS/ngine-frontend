@@ -30,13 +30,14 @@
             [style.margin-bottom.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginBottom : ''"
             [style.margin-left.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginLeft : ''"
         >
-            <div class="header-list">
+            <div class="navigation-list">
                 @for (child of navigation.children; track child.id) {
                     <!-- Navigation -->
-                    <div class="header-box"
+                    <div @navigationElement
+                        class="navigation-box"
                         cdkDrag
                         cdkDragLockAxis="x"
-                        cdkDragBoundary=".header-list"
+                        cdkDragBoundary=".navigation-list"
                         (cdkDragStarted)="onDragStart()"
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [cdkDragFreeDragPosition]="{

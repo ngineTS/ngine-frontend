@@ -1,4 +1,4 @@
-.header-list {
+.navigation-list {
   margin-right: 25px;
   margin-left: 15px;
   height: 100%;
@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.header-box {
+.navigation-box {
   position: absolute;
   display: flex;
   flex-direction: row;
@@ -89,7 +89,7 @@
   right: 8px;
 }
 
-.header-list:hover {
+.navigation-list:hover {
   .menu-button {
      display: block;
   }
