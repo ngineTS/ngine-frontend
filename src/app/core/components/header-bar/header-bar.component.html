@@ -38,14 +38,15 @@
                         cdkDrag
                         cdkDragLockAxis="x"
                         cdkDragBoundary=".navigation-list"
-                        (cdkDragStarted)="onDragStart()"
-                        (cdkDragEnded)="onDragEnded($event, child)"
+                        [cdkDragDisabled]="!child.permissionName?.includes('edit')"
                         [cdkDragFreeDragPosition]="{
                             x: child.containerLayout.xPos
                                 ? (child.containerLayout.xPos * navigationBarWidth / 100) 
                                 : 0,
                             y: 0,
                         }"
+                        (cdkDragStarted)="onDragStart()"
+                        (cdkDragEnded)="onDragEnded($event, child)"
                         [class.edit-header-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                     >
