@@ -100,7 +100,7 @@ export class HeaderBarComponent implements OnInit {
     setTimeout(() => {
       this.refineNavigationPosition();
       this.isRefiningPosition = false;
-    }, 50);
+    }, 100);
   }
 
   /**
