@@ -207,7 +207,7 @@ export class HeaderBarComponent implements OnInit {
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: Math.round(positon.x / this.navigationBarWidth * 100),
+      xPos: positon.x / this.navigationBarWidth * 100,
       yPos: 0,
     }
 
@@ -291,7 +291,7 @@ export class HeaderBarComponent implements OnInit {
         const navigation = navigations[index];
         const navId = navigation.id;
         const xPos = navigation.containerLayout.xPos!;
-        const width = Math.round(navElt.nativeElement.offsetWidth / this.navigationBarWidth * 100);
+        const width = Math.round(navElt.nativeElement.offsetWidth / this.navigationBarWidth * 10000) / 100;
         navigationMeasures.push({ navId, xPos, width });
       });
 
