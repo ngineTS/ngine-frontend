@@ -52,17 +52,18 @@ export class HeaderBarComponent implements OnInit {
 
   /** The navigations container. */
   navigation!: Navigation;
-  /** Boolean to inform if one of the items of navigation bar is being dragged. */
-  isDragging = false;
   /** The window width. */
   windowWidth!: number;
   /** Responsive threasold. */
   windowWidthLimit = 1000;
-  /** HTML navigation divs as array. */
-  @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
+  /** Navigation bar width in pixel */
+  navigationBarWidth!: number;
+  /** Boolean to inform if one of the items of navigation bar is being dragged. */
+  isDragging = false;
   /** Boolean to hide navigation bar during position refining. */
   isRefiningPosition = true;
-
+  /** HTML navigation divs as array. */
+  @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
 
   /**
    * Get window width each time it changes (zoom, screen resize...).
@@ -70,6 +71,9 @@ export class HeaderBarComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
+    this.navigationBarWidth = this.windowWidth
+      - (this.navigation.menu.containerLayout.marginLeft ?? 0)
+      - (this.navigation.menu.containerLayout.marginRight ?? 0);
   }
 
   /**
@@ -81,6 +85,9 @@ export class HeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
+    this.navigationBarWidth = this.windowWidth
+      - (this.navigation.menu.containerLayout.marginLeft ?? 0)
+      - (this.navigation.menu.containerLayout.marginRight ?? 0);
     this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
   }
 
@@ -90,10 +97,10 @@ export class HeaderBarComponent implements OnInit {
    * Refine navigation positions.
    */
   ngAfterViewInit() {
-      setTimeout(() => {
-        this.refineNavigationPosition();
-        this.isRefiningPosition = false;
-      }, 50);
+    setTimeout(() => {
+      this.refineNavigationPosition();
+      this.isRefiningPosition = false;
+    }, 50);
   }
 
   /**
@@ -200,7 +207,7 @@ export class HeaderBarComponent implements OnInit {
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: Math.round(positon.x / window.innerWidth * 100),
+      xPos: Math.round(positon.x / this.navigationBarWidth * 100),
       yPos: 0,
     }
 
@@ -284,7 +291,7 @@ export class HeaderBarComponent implements OnInit {
         const navigation = navigations[index];
         const navId = navigation.id;
         const xPos = navigation.containerLayout.xPos!;
-        const width = Math.round(navElt.nativeElement.offsetWidth / this.windowWidth * 100);
+        const width = Math.round(navElt.nativeElement.offsetWidth / this.navigationBarWidth * 100);
         navigationMeasures.push({ navId, xPos, width });
       });
 
@@ -316,7 +323,7 @@ export class HeaderBarComponent implements OnInit {
           }
         }
         else {
-          if (b.xPos > a.xPos && (a.xPos + a.width + 1 > b.xPos)) {
+          if (b.xPos > a.xPos && (a.xPos + a.width - 1 > b.xPos)) {
             a.xPos = b.xPos - a.width - 1;
             break;
           }
