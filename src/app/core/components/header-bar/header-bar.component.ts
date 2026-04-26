@@ -290,7 +290,7 @@ export class HeaderBarComponent implements OnInit {
       this.navigationHTMLElements.forEach((navElt, index) => {
         const navigation = navigations[index];
         const navId = navigation.id;
-        const xPos = navigation.containerLayout.xPos!;
+        const xPos = Number(navigation.containerLayout.xPos!);
         const width = Math.round(navElt.nativeElement.offsetWidth / this.navigationBarWidth * 10000) / 100;
         navigationMeasures.push({ navId, xPos, width });
       });
