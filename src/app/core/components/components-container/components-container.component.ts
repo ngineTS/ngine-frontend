@@ -69,18 +69,20 @@ export class ComponentsContainer implements OnInit {
     this.windowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
 
-    this.navigation.children?.sort((a, b) => {
-      const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
-      const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
-      const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
-      const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
+    if (this.windowWidth < this.windowWidthLimit) {
+      this.navigation.children?.sort((a, b) => {
+        const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
+        const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
+        const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
+        const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
 
-      if (aXPosRounded !== bXPosRounded) {
-        return aXPosRounded - bXPosRounded; // priority: xPos
-      }
+        if (aXPosRounded !== bXPosRounded) {
+          return aXPosRounded - bXPosRounded; // priority: xPos
+        }
 
-      return aYPosRounded - bYPosRounded; // secondary: yPos
-    });
+        return aYPosRounded - bYPosRounded; // secondary: yPos
+      });
+    }
   }
 
   /**
@@ -115,8 +117,8 @@ export class ComponentsContainer implements OnInit {
     const position = event.source.getFreeDragPosition();
 
     const navigationPosition = {
-      xPos: Math.round(position.x / window.innerWidth * 100),
-      yPos: Math.round(position.y / window.innerHeight * 100),
+      xPos: position.x / window.innerWidth * 100,
+      yPos: position.y / window.innerHeight * 100,
     }
 
     // Prevent dragging beyond top screen border

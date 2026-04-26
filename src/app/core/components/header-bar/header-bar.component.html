@@ -25,10 +25,10 @@
             [style.border-top-right-radius.px]="navigation.menu.containerStyle.borderTopRightRadius"
             [style.border-bottom-right-radius.px]="navigation.menu.containerStyle.borderBottomRightRadius"
             [style.border-bottom-left-radius.px]="navigation.menu.containerStyle.borderBottomLeftRadius"
-            [style.margin-top.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginTop : ''"
-            [style.margin-right.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginRight : ''"
-            [style.margin-bottom.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginBottom : ''"
-            [style.margin-left.px]="windowWidth > windowWidthLimit ? navigation.menu.containerLayout.marginLeft : ''"
+            [style.margin-top.px]="navigation.menu.containerLayout.marginTop"
+            [style.margin-right.px]="navigation.menu.containerLayout.marginRight"
+            [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
+            [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
         >
             <div class="navigation-list">
                 @for (child of navigation.children; track child.id) {
@@ -128,6 +128,7 @@
     <!-- Phone screen -->
     @else {
         <div class="d-flex"
+        [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
         >
