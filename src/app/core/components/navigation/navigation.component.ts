@@ -220,11 +220,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   editNavigationStyle() {
     this._sideNavService.resetSideNavContent();
-
     const navigationStylePayload:  DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
-        ['marginBottom', 'marginLeft', 'marginRight', 'marginTop', 'width', 'height']
+        ['marginBottom', 'marginLeft', 'marginRight', 'marginTop']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(this._navigation.containerStyle),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)

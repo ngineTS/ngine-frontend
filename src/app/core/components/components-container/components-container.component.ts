@@ -117,8 +117,8 @@ export class ComponentsContainer implements OnInit {
     const position = event.source.getFreeDragPosition();
 
     const navigationPosition = {
-      xPos: position.x / window.innerWidth * 100,
-      yPos: position.y / window.innerHeight * 100,
+      xPos: Math.round(position.x / window.innerWidth * 10000) / 100,
+      yPos: Math.round(position.y / window.innerHeight * 10000) / 100,
     }
 
     // Prevent dragging beyond top screen border

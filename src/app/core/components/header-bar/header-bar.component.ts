@@ -167,7 +167,7 @@ export class HeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['width', 'height', 'xPos', 'yPos', 'zIndex', 'marginTop', 'marginBottom', 'marginRight', 'marginLeft']
+        ['width', 'height', 'yPos', 'zIndex', 'marginTop', 'marginBottom', 'marginRight', 'marginLeft']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,
@@ -207,7 +207,7 @@ export class HeaderBarComponent implements OnInit {
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: positon.x / this.navigationBarWidth * 100,
+      xPos: Math.round(positon.x / this.navigationBarWidth * 10000) / 100,
       yPos: 0,
     }
 
