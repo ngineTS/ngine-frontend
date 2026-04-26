@@ -317,21 +317,21 @@ export class HeaderBarComponent implements OnInit {
     for (const a of navigationMeasures) {
       for (const b of navigationMeasures) {
         if (side === 'left') {
-          if (a.xPos > b.xPos && (b.xPos + b.width + 1 > a.xPos)) {
+          if (a.xPos > b.xPos && (b.xPos + b.width > a.xPos)) {
             a.xPos = b.xPos + b.width + 1;
             break;
           }
         }
         else {
-          if (b.xPos > a.xPos && (a.xPos + a.width - 1 > b.xPos)) {
+          if (b.xPos > a.xPos && (a.xPos + a.width > b.xPos)) {
             a.xPos = b.xPos - a.width - 1;
             break;
           }
         }
       }
 
-      if (a.xPos + a.width > 96) {
-        a.xPos = 96 - a.width;
+      if (a.xPos + a.width > 98) {
+        a.xPos = 98 - a.width;
       }
 
       navigations.find(nav => nav.id === a.navId)!.containerLayout.xPos = a.xPos;
