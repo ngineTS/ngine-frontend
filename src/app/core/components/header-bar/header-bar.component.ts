@@ -56,10 +56,12 @@ export class HeaderBarComponent implements OnInit {
   isDragging = false;
   /** The window width. */
   windowWidth!: number;
-  /** Responsive threasold */
+  /** Responsive threasold. */
   windowWidthLimit = 1000;
-
+  /** HTML navigation divs as array. */
   @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
+  /** Boolean to hide navigation bar during position refining. */
+  isRefiningPosition = true;
 
 
   /**
@@ -88,7 +90,10 @@ export class HeaderBarComponent implements OnInit {
    * Refine navigation positions.
    */
   ngAfterViewInit() {
-      setTimeout(() => this.refineNavigationPosition());
+      setTimeout(() => {
+        this.refineNavigationPosition();
+        this.isRefiningPosition = false;
+      }, 50);
   }
 
   /**

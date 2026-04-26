@@ -6,6 +6,7 @@
 
         <!-- List of navigations -->
         <div
+            [style.opacity]="isRefiningPosition ? 0 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height 
