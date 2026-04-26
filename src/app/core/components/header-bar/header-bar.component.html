@@ -5,7 +5,7 @@
     @if (windowWidth > windowWidthLimit) {
 
         <!-- List of navigations -->
-        <div
+        <div [style.opacity]="isRefiningPosition ? 0 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height 
@@ -33,7 +33,7 @@
             <div class="navigation-list">
                 @for (child of navigation.children; track child.id) {
                     <!-- Navigation -->
-                    <div 
+                    <div #navigationElement
                         class="navigation-box"
                         cdkDrag
                         cdkDragLockAxis="x"
@@ -42,7 +42,7 @@
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [cdkDragFreeDragPosition]="{
                             x: child.containerLayout.xPos
-                                ? (child.containerLayout.xPos * windowWidth / 100) 
+                                ? (child.containerLayout.xPos * navigationBarWidth / 100) 
                                 : 0,
                             y: 0,
                         }"
