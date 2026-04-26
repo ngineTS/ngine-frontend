@@ -25,9 +25,7 @@ export class UnauthorisedComponent implements OnInit{
       });
     }
     else {
-      this._matDialog.open(SignContainerComponent, {
-        disableClose: true,
-      });
+      this._matDialog.open(SignContainerComponent);
     }
   }
 
