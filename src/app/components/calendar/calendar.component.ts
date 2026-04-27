@@ -48,9 +48,9 @@ export class CalendarComponent extends NavigationBaseComponent {
     eventClick: (arg: EventClickArg) => this.handleEventClick(arg),
     eventMouseEnter: (arg: EventHoveringArg) => this.handleEventMouseEnter(arg),
     eventDidMount: (info) => {
-      info.el.style.backgroundColor = this._navigation.typographyStyle.color ?? '';
-      info.el.style.borderColor = this._navigation.typographyStyle.color ?? '';
-      info.el.style.color = '#fff';
+      info.el.style.backgroundColor = this._navigation.typographyStyle.activeColor ?? '';
+      info.el.style.borderColor = this._navigation.typographyStyle.activeColor ?? '';
+      info.el.style.color = this._navigation.typographyStyle.color ?? '';
     },
     dayCellDidMount: (info) => { 
       const numberEl = info.el.querySelector('.fc-daygrid-day-number') as HTMLElement | null;
