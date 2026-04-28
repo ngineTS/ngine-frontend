@@ -46,9 +46,9 @@ export class SignInComponent {
 
   onSignInClick() {
     this.isLogin = true;
-    this._authService.userSignIn({ 
-      emailAddress: this.userEmail!, 
-      password: this.userPassword! 
+    this._authService.userSignIn({
+      emailAddress: this.userEmail!,
+      password: this.userPassword!
     }).subscribe({
       next: (resp: any) => {
         localStorage.setItem('access_token', resp['access_token']);

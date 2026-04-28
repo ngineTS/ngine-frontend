@@ -4,7 +4,7 @@
     <!-- Laptop screen -->
     @if (windowWidth > windowWidthLimit) {
 
-        <!-- List of navigations -->
+        <!-- Navigation bar -->
         <div [style.opacity]="isRefiningPosition ? 0 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
@@ -30,8 +30,10 @@
             [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
             [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
         >
+            <!-- List of navigations -->
             <div class="navigation-list">
                 @for (child of navigation.children; track child.id) {
+                    
                     <!-- Navigation -->
                     <div #navigationElement
                         class="navigation-box"
