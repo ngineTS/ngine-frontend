@@ -30,11 +30,10 @@
             [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
             [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
         >
-            <!-- Logo (comment if not needed)
+            <!-- Logo (comment if not needed) -->
             @if (navigation.level === 0) {
-                <img class="logo" src="../../../../assets/images/ngine_logo.png" />
-            }
-            -->
+                <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
+            }    
 
             <!-- List of navigations -->
             <div #dropZone class="navigation-list">
@@ -49,7 +48,7 @@
                         [cdkDragDisabled]="!child.permissionName?.includes('edit')"
                         [cdkDragFreeDragPosition]="{
                             x: child.containerLayout.xPos
-                                ? (child.containerLayout.xPos * dropZoneWidth / 100) 
+                                ? (child.containerLayout.xPos * dropZoneWidth! / 100) 
                                 : 0,
                             y: 0,
                         }"
@@ -140,12 +139,19 @@
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
         >
-            <!-- Burger button -->
-            <i class="bi bi-list burger-button" 
-                [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"
-                [matMenuTriggerFor]="menu"
-            >
-            </i>
+            <div class="d-flex w-100">
+                <!-- Logo (comment if not needed) -->
+                @if (navigation.level === 0) {
+                    <img height="60px" width="auto" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
+                }
+
+                <!-- Burger button -->
+                <i class="bi bi-list burger-button" 
+                    [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"
+                    [matMenuTriggerFor]="menu"
+                >
+                </i>
+            </div>
 
             <!-- Burger menu -->
             <mat-menu #menu="matMenu" class="burger-menu">

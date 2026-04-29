@@ -17,7 +17,7 @@
     }
 
     @if (!navigation.showIconOnly) {
-        <span [style.margin-left.px]="iconOnTop ? 0 : 4">{{ navigation.displayLabel }}</span>
+        <span [style.margin-left.px]="iconOnTop || !navigation.icon ? 0 : 4">{{ navigation.displayLabel }}</span>
     }
 </div>
 

@@ -57,23 +57,35 @@ export class HeaderBarComponent implements OnInit {
   /** Responsive threasold. */
   windowWidthLimit = 1000;
   /** Navigation bar width in pixel */
-  dropZoneWidth!: number;
+  dropZoneWidth: number | undefined;
   /** Boolean to inform if one of the items of navigation bar is being dragged. */
   isDragging = false;
   /** Boolean to hide navigation bar during position refining. */
   isRefiningPosition = true;
+  /** Refining position timeout */
+  refiningPositionTimeout: ReturnType<typeof setTimeout> | undefined;
   /** HTML navigation elements as array. */
   @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
   /** HTML drop zone */
-  @ViewChild('dropZone') dropZone!: ElementRef<HTMLDivElement>
+  @ViewChild('dropZone') dropZone: ElementRef<HTMLDivElement> | undefined;
   
   /**
-   * Get window width each time it changes (zoom, screen resize...).
+   * Get window and navigation bar width each time it changes (zoom, screen resize...).
+   * 
+   * If large screen (navigation bar mode) refine navigation positions.
    */
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
-    this.dropZoneWidth = this.dropZone.nativeElement.offsetWidth;
+    this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
+
+    if (this.windowWidth > this.windowWidthLimit) {
+      clearTimeout(this.refiningPositionTimeout);
+      this.refiningPositionTimeout = setTimeout(() => {
+        this.refineNavigationPosition();
+        this.isRefiningPosition = false;
+      }, 200);
+    }
   }
 
   /**
@@ -95,9 +107,11 @@ export class HeaderBarComponent implements OnInit {
    */
   ngAfterViewInit() {
     setTimeout(() => {
-      this.dropZoneWidth = this.dropZone.nativeElement.offsetWidth;
-      this.refineNavigationPosition();
-      this.isRefiningPosition = false;
+      this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
+      if (this.dropZoneWidth) {
+        this.refineNavigationPosition();
+        this.isRefiningPosition = false;
+      }
     }, 50);
   }
 
@@ -205,7 +219,7 @@ export class HeaderBarComponent implements OnInit {
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: Math.round(positon.x / this.dropZoneWidth * 10000) / 100,
+      xPos: Math.round(positon.x / this.dropZoneWidth! * 10000) / 100,
       yPos: 0,
     }
 
@@ -289,7 +303,7 @@ export class HeaderBarComponent implements OnInit {
         const navigation = navigations[index];
         const navId = navigation.id;
         const xPos = Number(navigation.containerLayout.xPos!);
-        const width = Math.round(navElt.nativeElement.offsetWidth / this.dropZoneWidth * 10000) / 100;
+        const width = Math.round(navElt.nativeElement.offsetWidth / this.dropZoneWidth! * 10000) / 100;
         navigationMeasures.push({ navId, xPos, width });
       });
 
@@ -334,6 +348,15 @@ export class HeaderBarComponent implements OnInit {
 
       navigations.find(nav => nav.id === a.navId)!.containerLayout.xPos = a.xPos;
     }
+  }
+
+  /** 
+   * Method called on logo click.
+   * 
+   * Navigate to rool url.
+   */
+  navigateToRootUrl() {
+    this._router.navigateByUrl('');
   }
 
 }
