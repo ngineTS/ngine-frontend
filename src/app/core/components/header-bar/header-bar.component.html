@@ -135,9 +135,10 @@
     <!-- Phone screen -->
     @else {
         <div class="d-flex"
-        [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
-            [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
-                ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
+            [style.background-color]="
+                navigation.menu.containerStyle.isBackgroundTransparent
+                ? 'transparent' 
+                : navigation.menu.containerStyle.backgroundColor"
         >
             <div class="d-flex w-100">
                 <!-- Logo (remove if not needed) -->
