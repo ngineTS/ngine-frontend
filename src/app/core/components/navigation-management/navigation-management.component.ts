@@ -70,17 +70,32 @@ export class NavigationManagementComponent implements OnInit {
 
   /**
    * Lifecycle hook called after the component has been initialized.
+   * 
+   * Process:
+   * 1. Get bootstrap icons.
+   * 2. If payload has icon, add it to the filtered icons list.
+   * 3. Get "parent" dropdown values.
+   * 4. Get "navigation type" dropdown values.
+   * 5. Build reactive form.
    */
   ngOnInit() {
+    /* 1 */
     this._http.get<Array<string>>('assets/icons.json').subscribe(icons => {
       this.bootstrapIconNamesList = icons;
     });
 
+    /* 2. */
+    if (this.data.navigation?.icon) {
+      this.filteredIcons.push(this.data.navigation?.icon);
+    }
+
+    /* 3 */
     this._navigationService.getFlatNavigations().subscribe(resp => {
       this.flatNavigations = resp;
       this.isLoadingFlatNavigations = false;
     });
 
+    /* 4. */
     this._navigationTypeService.getNavigationTypes().subscribe(resp => {
       this.navigationTypes = resp;
       this.isLoadingNavigationTypes = false;
@@ -91,6 +106,7 @@ export class NavigationManagementComponent implements OnInit {
       });
     });
     
+    /* 5. */
     if (this.data.navigation) {
       this.navigationTypeSelected = this.data.navigation.navigationType;
     }
@@ -297,7 +313,6 @@ export class NavigationManagementComponent implements OnInit {
    */
   async filterIcons(event: Event) {
     if (!this.isSearchingIcon) {
-
       setTimeout(() => {
         this.isSearchingIcon = true;
         const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
@@ -310,7 +325,11 @@ export class NavigationManagementComponent implements OnInit {
 
         this.isSearchingIcon = false;
       }, 200);
-      
+    }
+
+    const currentIcon = this.iconFormControl;
+    if (currentIcon.value) {
+      this.filteredIcons.push(currentIcon.value);
     }
   }
 

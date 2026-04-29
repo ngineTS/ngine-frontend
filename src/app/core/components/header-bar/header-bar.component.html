@@ -30,7 +30,7 @@
             [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
             [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
         >
-            <!-- Logo (comment if not needed) -->
+            <!-- Logo (remove if not needed) -->
             @if (navigation.level === 0) {
                 <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
             }    
@@ -140,7 +140,7 @@
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
         >
             <div class="d-flex w-100">
-                <!-- Logo (comment if not needed) -->
+                <!-- Logo (remove if not needed) -->
                 @if (navigation.level === 0) {
                     <img height="60px" width="auto" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
                 }
