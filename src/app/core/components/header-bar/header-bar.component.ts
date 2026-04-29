@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -57,23 +57,23 @@ export class HeaderBarComponent implements OnInit {
   /** Responsive threasold. */
   windowWidthLimit = 1000;
   /** Navigation bar width in pixel */
-  navigationBarWidth!: number;
+  dropZoneWidth!: number;
   /** Boolean to inform if one of the items of navigation bar is being dragged. */
   isDragging = false;
   /** Boolean to hide navigation bar during position refining. */
   isRefiningPosition = true;
-  /** HTML navigation divs as array. */
+  /** HTML navigation elements as array. */
   @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
-
+  /** HTML drop zone */
+  @ViewChild('dropZone') dropZone!: ElementRef<HTMLDivElement>
+  
   /**
    * Get window width each time it changes (zoom, screen resize...).
    */
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
-    this.navigationBarWidth = this.windowWidth
-      - (this.navigation.menu.containerLayout.marginLeft ?? 0)
-      - (this.navigation.menu.containerLayout.marginRight ?? 0);
+    this.dropZoneWidth = this.dropZone.nativeElement.offsetWidth;
   }
 
   /**
@@ -85,9 +85,6 @@ export class HeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
-    this.navigationBarWidth = this.windowWidth
-      - (this.navigation.menu.containerLayout.marginLeft ?? 0)
-      - (this.navigation.menu.containerLayout.marginRight ?? 0);
     this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
   }
 
@@ -98,9 +95,10 @@ export class HeaderBarComponent implements OnInit {
    */
   ngAfterViewInit() {
     setTimeout(() => {
+      this.dropZoneWidth = this.dropZone.nativeElement.offsetWidth;
       this.refineNavigationPosition();
       this.isRefiningPosition = false;
-    }, 100);
+    }, 50);
   }
 
   /**
@@ -207,7 +205,7 @@ export class HeaderBarComponent implements OnInit {
 
     const positon = event.source.getFreeDragPosition();
     const navigationPosition = {
-      xPos: Math.round(positon.x / this.navigationBarWidth * 10000) / 100,
+      xPos: Math.round(positon.x / this.dropZoneWidth * 10000) / 100,
       yPos: 0,
     }
 
@@ -291,7 +289,7 @@ export class HeaderBarComponent implements OnInit {
         const navigation = navigations[index];
         const navId = navigation.id;
         const xPos = Number(navigation.containerLayout.xPos!);
-        const width = Math.round(navElt.nativeElement.offsetWidth / this.navigationBarWidth * 10000) / 100;
+        const width = Math.round(navElt.nativeElement.offsetWidth / this.dropZoneWidth * 10000) / 100;
         navigationMeasures.push({ navId, xPos, width });
       });
 

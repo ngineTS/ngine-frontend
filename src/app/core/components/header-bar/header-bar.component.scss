@@ -1,3 +1,13 @@
+.logo {
+  float: left;
+  height: 100%;
+  width: auto;
+  display: block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
 .navigation-list {
   height: 100%;
   display: flex;
@@ -74,14 +84,14 @@
   padding: 2px 6px;
   position: absolute;
   top: 2px;
-  right: -23px;
+  right: 2px;
 }
 
 .add-nav-button {
   padding: 0px 8px 2px 8px;
   position: absolute;
   top: 2px;
-  right: 8px;
+  right: 33px;
 }
 
 .navigation-list:hover {

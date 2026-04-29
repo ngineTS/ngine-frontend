@@ -30,8 +30,14 @@
             [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
             [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
         >
+            <!-- Logo (comment if not needed)
+            @if (navigation.level === 0) {
+                <img class="logo" src="../../../../assets/images/ngine_logo.png" />
+            }
+            -->
+
             <!-- List of navigations -->
-            <div class="navigation-list">
+            <div #dropZone class="navigation-list">
                 @for (child of navigation.children; track child.id) {
                     
                     <!-- Navigation -->
@@ -43,7 +49,7 @@
                         [cdkDragDisabled]="!child.permissionName?.includes('edit')"
                         [cdkDragFreeDragPosition]="{
                             x: child.containerLayout.xPos
-                                ? (child.containerLayout.xPos * navigationBarWidth / 100) 
+                                ? (child.containerLayout.xPos * dropZoneWidth / 100) 
                                 : 0,
                             y: 0,
                         }"
