@@ -48,7 +48,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /** Navigation resize state. */
   isResizing = false;
   /** Responsive threasold. */
-  windowWidthLimit = 700;
+  windowWidthLimit = 750;
   /** Background image url. */
   backgroundImageUrl: string | undefined;
   /** If navigation has scroll bar or not. */

@@ -7,7 +7,7 @@
     [style.color]="isMouseOver || isRouteActive(navigation.name) 
         ? navigation.typographyStyle.activeColor
         : navigation.typographyStyle.color"
-    [style.font-size.px]="navigation.typographyStyle.fontSize"
+    [style.font-size]="getFontSize()"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
     [style.font-family]="navigation.typographyStyle.fontFamily"
 >

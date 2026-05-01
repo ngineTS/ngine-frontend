@@ -59,4 +59,9 @@ export class CustomButtonComponent {
     return urlList.includes(navigationName);
   }
 
+
+  getFontSize(): string {
+    return `clamp(8px, ${this.navigation.typographyStyle.fontSize! / 12.5}vw, 36px)`;
+  }
+
 }

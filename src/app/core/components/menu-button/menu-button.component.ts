@@ -204,4 +204,8 @@ export class MenuButtonComponent {
       this._sideNavService.initalFormContent = initialFormContent;
     }
 
+    getFontSize(fontSize: number) {
+      return `clamp(8px, ${fontSize / 12.5}vw, 36px)`;
+    }
+
 }

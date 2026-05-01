@@ -304,7 +304,9 @@ export class HeaderBarComponent implements OnInit {
         const navId = navigation.id;
         const xPos = Number(navigation.containerLayout.xPos!);
         const width = Math.round(navElt.nativeElement.offsetWidth / this.dropZoneWidth! * 10000) / 100;
-        navigationMeasures.push({ navId, xPos, width });
+        if (xPos) {
+          navigationMeasures.push({ navId, xPos, width });
+        }
       });
 
       this.adjustPosition(navigationMeasures, navigations, 'left');
