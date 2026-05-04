@@ -1,7 +1,7 @@
 <!-- Main button -->
 <div [matMenuTriggerFor]="mainMenu"
     [class]="iconOnTop ? 'main-button' : ''"
-    [style.font-size]="getFontSize(navigation.typographyStyle.fontSize!)"
+    [style.font-size.px]="navigation.typographyStyle.fontSize"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
     [style.color]="isButtonHoveredRecord[navigation.id] ?
@@ -106,7 +106,7 @@
                     navigation.typographyStyle.color
                 "
                 [style.font-family]="navigation.typographyStyle.fontFamily"
-                [style.font-size]="getFontSize(navigation.typographyStyle.fontSize!)"
+                [style.font-size.px]="navigation.typographyStyle.fontSize"
                 [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"

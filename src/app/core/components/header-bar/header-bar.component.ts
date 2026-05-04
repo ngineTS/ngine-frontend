@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,13 +15,8 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
+import { ContainerLayout } from '../../models/container-layout.interface';
 
-
-interface NavigationMeasure {
-  navId: string;
-  xPos: number;
-  width: number;
-}
 
 @Component({
   selector: 'app-header-bar',
@@ -62,56 +57,48 @@ export class HeaderBarComponent implements OnInit {
   isDragging = false;
   /** Boolean to hide navigation bar during position refining. */
   isRefiningPosition = true;
-  /** Refining position timeout */
-  refiningPositionTimeout: ReturnType<typeof setTimeout> | undefined;
-  /** HTML navigation elements as array. */
-  @ViewChildren('navigationElement') navigationHTMLElements!: QueryList<ElementRef<HTMLDivElement>>;
   /** HTML drop zone */
   @ViewChild('dropZone') dropZone: ElementRef<HTMLDivElement> | undefined;
   
   /**
    * Get window and navigation bar width each time it changes (zoom, screen resize...).
    * 
-   * If large screen (navigation bar mode) refine navigation positions.
    */
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
     this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
-
-    if (this.windowWidth > this.windowWidthLimit) {
-      clearTimeout(this.refiningPositionTimeout);
-      this.refiningPositionTimeout = setTimeout(() => {
-        this.refineNavigationPosition();
-        this.isRefiningPosition = false;
-      }, 200);
-    }
   }
 
   /**
    * Lifecycle hook called after the component has been initialized.
    * - get data from snapshot
    * - assign initial window size
-   * - sort navigation by xPos if we are on phone screen
+   * - sort navigation by xPos for phone screen
    */
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
-    this.navigation.children?.sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+    this.navigation.children?.sort((a, b) => {
+      const aPos = Number(a.containerLayout.xPos) >= 0;
+      const bPos = Number(b.containerLayout.xPos) >= 0;
+
+      if (aPos && bPos) return Number(a.containerLayout.xPos) - Number(b.containerLayout.xPos); // both positive → ASC
+      if (aPos && !bPos) return -1; // positive before negative
+      if (!aPos && bPos) return 1; // negative after positive
+      return Number(a.containerLayout.xPos) - Number(b.containerLayout.xPos);  
+    });
   }
 
   /**
    * Lifecycle hook called after the component view has been initialized.
    * 
-   * Refine navigation positions.
+   * Get drop zone width used to compute navigation positions.
    */
   ngAfterViewInit() {
     setTimeout(() => {
       this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
-      if (this.dropZoneWidth) {
-        this.refineNavigationPosition();
         this.isRefiningPosition = false;
-      }
     }, 50);
   }
 
@@ -209,7 +196,8 @@ export class HeaderBarComponent implements OnInit {
 
   /**
    * Method called when drag ends.
-   * Get dragged navigation position, convert it to percentage of screen size and save it.
+   * 
+   * Get dragged navigation position and save it.
    * 
    * @param event The cdkDragEnd event.
    * @param navigation The navigation dragged.
@@ -218,17 +206,15 @@ export class HeaderBarComponent implements OnInit {
     this.isDragging = false;
 
     const positon = event.source.getFreeDragPosition();
-    const navigationPosition = {
-      xPos: Math.round(positon.x / this.dropZoneWidth! * 10000) / 100,
-      yPos: 0,
+    let newPos = Number(navigation.containerLayout.xPos) + positon.x;
+    if (this.dropZoneWidth && (newPos > (0.7 * this.dropZoneWidth))) {
+      newPos = newPos - this.dropZoneWidth;
     }
+    const navigationPosition = { xPos: newPos }
 
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {
-        navigation.containerLayout.xPos = navigationPosition.xPos;
-        navigation.containerLayout.yPos = navigationPosition.yPos;
-      });
+      .subscribe(() => {});
   }
 
    /**
@@ -285,73 +271,6 @@ export class HeaderBarComponent implements OnInit {
     this._sideNavService.initalFormContent = initialFormContent;
   }
 
-  /**
-   * Refine navigation positions to prevent overlapping.
-   * 
-   * Process:
-   * 1. Get navigations measures.
-   * 2. Adjust navigation positions compared to left items.
-   * 3. Adjust navigation positions compared to right items.
-   */
-  refineNavigationPosition() {
-    const navigations = this.navigation.children;
-
-    if (navigations && navigations?.length > 0) {
-      const navigationMeasures: Array<NavigationMeasure> = [];
-
-      this.navigationHTMLElements.forEach((navElt, index) => {
-        const navigation = navigations[index];
-        const navId = navigation.id;
-        const xPos = Number(navigation.containerLayout.xPos!);
-        const width = Math.round(navElt.nativeElement.offsetWidth / this.dropZoneWidth! * 10000) / 100;
-        if (xPos) {
-          navigationMeasures.push({ navId, xPos, width });
-        }
-      });
-
-      this.adjustPosition(navigationMeasures, navigations, 'left');
-      navigationMeasures.sort((a, b) => b.xPos - a.xPos);
-      this.adjustPosition(navigationMeasures, navigations, 'right');
-    }
-  }
-
-
-  /**
-   * Prevent overlapping of navigations.
-   * 
-   * @param navigationMeasures The navigations width and xPos.
-   * @param navigations The navigations.
-   * @param side The side to adjust.
-   */
-  adjustPosition(
-    navigationMeasures: Array<NavigationMeasure>,
-    navigations: Array<Navigation>,
-    side: 'left' | 'right'
-  ) {
-    for (const a of navigationMeasures) {
-      for (const b of navigationMeasures) {
-        if (side === 'left') {
-          if (a.xPos > b.xPos && (b.xPos + b.width > a.xPos)) {
-            a.xPos = b.xPos + b.width + 1;
-            break;
-          }
-        }
-        else {
-          if (b.xPos > a.xPos && (a.xPos + a.width > b.xPos)) {
-            a.xPos = b.xPos - a.width - 1;
-            break;
-          }
-        }
-      }
-
-      if (a.xPos + a.width > 98) {
-        a.xPos = 98 - a.width;
-      }
-
-      navigations.find(nav => nav.id === a.navId)!.containerLayout.xPos = a.xPos;
-    }
-  }
-
   /** 
    * Method called on logo click.
    * 
@@ -359,6 +278,26 @@ export class HeaderBarComponent implements OnInit {
    */
   navigateToRootUrl() {
     this._router.navigateByUrl('');
+  }
+
+  /**
+   * Get navigation position.
+   * 
+   * @param containerLayout The navigation container layout.
+   * @returns The x position.
+   */
+  getNavigationPosition(containerLayout: ContainerLayout) {
+    const xPos = Number(containerLayout.xPos);
+    if (xPos === null) {
+      return this.dropZoneWidth;
+    }
+
+    if (xPos >= 0) {
+      return xPos;
+    }
+    else {
+      return this.dropZoneWidth! + xPos;
+    }
   }
 
 }

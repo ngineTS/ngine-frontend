@@ -8,8 +8,7 @@
         <div [style.opacity]="isRefiningPosition ? 0 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
-            [style.height.vh]="navigation.menu.containerLayout.height 
-                ? navigation.menu.containerLayout.height / 6 : 2"
+            [style.height.px]="navigation.menu.containerLayout.height"
             [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
                 navigation.menu.containerStyle.borderStyle + ' ' +
                 navigation.menu.containerStyle.borderColor"
@@ -40,18 +39,12 @@
                 @for (child of navigation.children; track child.id) {
                     
                     <!-- Navigation -->
-                    <div #navigationElement
-                        class="navigation-box"
+                    <div class="navigation-box"
                         cdkDrag
                         cdkDragLockAxis="x"
                         cdkDragBoundary=".navigation-list"
                         [cdkDragDisabled]="!child.permissionName?.includes('edit')"
-                        [cdkDragFreeDragPosition]="{
-                            x: child.containerLayout.xPos
-                                ? (child.containerLayout.xPos * dropZoneWidth! / 100) 
-                                : 90 * dropZoneWidth! / 100,
-                            y: 0,
-                        }"
+                        [style.left.px]="getNavigationPosition(child.containerLayout)"
                         (cdkDragStarted)="onDragStart()"
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [class.edit-header-container]="child.permissionName?.includes('edit')"
