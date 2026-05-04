@@ -73,6 +73,7 @@ export class HeaderBarComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
+    this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
   }
 
   /**
