@@ -30,6 +30,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
   myQuillEditor!: QuillEditorContent;
   quillConfig = {
     toolbar: [
+      [{ font: ['montserrat', 'roboto', 'opensans', 'lato', 'poppins', 'oswald', 'ubuntu'] }],
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote', 'code-block'],
       [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],

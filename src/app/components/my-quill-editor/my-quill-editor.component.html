@@ -1,6 +1,6 @@
 <div>
     @if (_canEdit && _isEditing) {
-        <quill-editor class="w-100" [(ngModel)]="content">
+        <quill-editor class="w-100" [modules]="quillConfig" [(ngModel)]="content">
         </quill-editor>
         <button 
             matButton="outlined" 
