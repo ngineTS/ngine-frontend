@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
       customOptions: [
         {
           import: 'formats/font',
-          whitelist: ['montserrat', 'roboto', 'opensans', 'lato', 'poppins', 'oswald', 'ubuntu']   // 👈 only one for now (keep it simple)
+          whitelist: ['montserrat', 'roboto', 'opensans', 'lato', 'poppins', 'oswald', 'ubuntu']
         }
       ]
     })
