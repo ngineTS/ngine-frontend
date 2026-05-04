@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -17,12 +17,6 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { ContainerLayout } from '../../models/container-layout.interface';
 
-
-interface NavigationMeasure {
-  navId: string;
-  xPos: number;
-  width: number;
-}
 
 @Component({
   selector: 'app-header-bar',
