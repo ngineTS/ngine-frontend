@@ -288,9 +288,6 @@ export class HeaderBarComponent implements OnInit {
    */
   getNavigationPosition(containerLayout: ContainerLayout) {
     const xPos = Number(containerLayout.xPos);
-    if (xPos === null) {
-      return this.dropZoneWidth;
-    }
 
     if (xPos >= 0) {
       return xPos;
