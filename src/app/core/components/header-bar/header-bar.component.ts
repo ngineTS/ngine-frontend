@@ -110,7 +110,7 @@ export class HeaderBarComponent implements OnInit {
       return '100vw';
     }
 
-    return 'none';
+    return 'unset';
   }
 
   /**
