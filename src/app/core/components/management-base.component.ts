@@ -1,9 +1,10 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { DeepFormConfig, GenericFormDialogData } from "../models/form-input.interface";
 import { environment } from "../../../environments/environment";
 import { FormContainerComponent } from "./form-container/form-container.component";
 import { NavigationBaseComponent } from "./navigation-base/navigation-base.component";
 import { Component } from "@angular/core";
+import { retry, take } from "rxjs";
 
 /**
  * Generic class that provides basic management functionalities (add, edit, delete) for items of type T.
@@ -37,15 +38,30 @@ export class ManagementBaseComponent<
   tableName: string = '';
   /** The form inputs configuration. */
   formInputsConfiguration = {} as DeepFormConfig<Omit<T, 'id' | 'navigationId'>> & Record<string, any>;
+  /** The sorting configuration. */
+  sortConfiguration : { orderBy: keyof T, order: 'asc' | 'desc' } | null = null;
 
   /** 
-   * Load the items by navigation id.
+   * Load items by navigation id.
    * 
+   * If sortConfiguration is set, the items will be sorted accordingly.
    * `tableName` must be set before calling this method.
    */
   loadItems() {
-    this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
+    if(this.sortConfiguration) {
+      const params = new HttpParams()
+        .set('orderBy', this.sortConfiguration.orderBy as string)
+        .set('order', this.sortConfiguration.order);
+
+      this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`, { params })
+      .pipe(retry(this._retryCount), take(this._takeCount))
       .subscribe(resp => this.items = resp);
+    }
+    else {
+      this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
+      .pipe(retry(this._retryCount), take(this._takeCount))
+      .subscribe(resp => this.items = resp);
+    }
   }
 
   /**
