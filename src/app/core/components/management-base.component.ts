@@ -31,15 +31,15 @@ export class ManagementBaseComponent<
   constructor(private _http: HttpClient) { super(); }
 
   /** The backend url. */
-  baseUrl = environment.APIURL;
+  protected readonly baseUrl = environment.APIURL;
   /** The items to be managed. */
-  items: Array<T> = [];
+  protected items: Array<T> = [];
   /** The name of the database table. */
-  tableName: string = '';
+  protected tableName: string = '';
   /** The form inputs configuration. */
-  formInputsConfiguration = {} as DeepFormConfig<Omit<T, 'id' | 'navigationId'>> & Record<string, any>;
+  protected formInputsConfiguration = {} as DeepFormConfig<Omit<T, 'id' | 'navigationId'>> & Record<string, any>;
   /** The sorting configuration. */
-  sortConfiguration : { orderBy: keyof T, order: 'asc' | 'desc' } | null = null;
+  protected sortConfiguration : { orderBy: keyof T, order: 'ASC' | 'DESC' } | null = null;
 
   /** 
    * Load items by navigation id.
