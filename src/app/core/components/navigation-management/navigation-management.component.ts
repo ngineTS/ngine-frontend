@@ -138,7 +138,7 @@ export class NavigationManagementComponent implements OnInit {
    * Delete navigation, update old big sisters order and refresh routing.
    */
   deleteNavigation() {
-    if (confirm("Are you sure to delete this navigation?")) {
+    if (confirm("Are you sure to delete this component?")) {
       if (this.data.navigation?.id) {
         this._navigationService.deleteNavigationAndChildren(this.data.navigation)
           .pipe(
@@ -146,7 +146,7 @@ export class NavigationManagementComponent implements OnInit {
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
           )
           .subscribe(() => {
-            this._snackbarService.showSuccessSnackBar('Element deleted successfully.');
+            this._snackbarService.showSuccessSnackBar('Component deleted successfully.');
             this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value);
           });
       }

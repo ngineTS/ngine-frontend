@@ -36,7 +36,8 @@
             ? (_navigation.containerLayout.width ?? 20) * windowWidth / 100 + 'px' 
             : '100%'"
         [style.height.px]="(_navigation.containerLayout.height ?? 20) * windowHeight / 100"
-        [style.max-height]="windowWidth > windowWidthLimit ? 'none' : 'fit-content'"
+        [style.max-height]="windowWidth > windowWidthLimit ? 'unset' : 'fit-content'"
+        [style.min-height]="windowWidth > windowWidthLimit ? 'unset' : 'max-content'"
         [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : 'none'"
         [style.background-color]="_navigation.containerStyle.isBackgroundTransparent ?
             'transparent' : _navigation.containerStyle.backgroundColor"

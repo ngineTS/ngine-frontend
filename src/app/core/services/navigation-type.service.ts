@@ -61,7 +61,7 @@ export class NavigationTypeService {
           value: '',
           alias: 'Thumbnail image',
           order: 4,
-          validators: [Validators.required],
+          validators: [],
         }
       }
 
