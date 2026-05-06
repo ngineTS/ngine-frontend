@@ -88,13 +88,12 @@ export class ManagementBaseComponent<
    */
   editItem(item: T) {
     if (this._canEdit) {
-      const {id, navigationId, ...itemWithoutId} = item;
-      const formInputsConfigurationForEdit = structuredClone(this.formInputsConfiguration);
-      for (const [key, value] of Object.entries(itemWithoutId)) {
-        if (value) {
-          formInputsConfigurationForEdit[key].value = value;
-        }
-      }
+      const formInputsConfigurationForEdit = Object.fromEntries(
+        Object.entries(this.formInputsConfiguration).map(([key, field]) => [
+          key,
+          { ...field, value: item[key] ?? field.value }
+        ])
+      ) as DeepFormConfig<Omit<T, 'id' | 'navigationId'>>;
 
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Edit item',
