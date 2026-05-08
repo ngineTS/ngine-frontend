@@ -1,0 +1,100 @@
+<div class="vertical-bar-container">
+  <!-- Left sidebar with navigation tree -->
+  <div class="navigation-sidebar">
+    <!-- Header with logo and controls -->
+    <div class="sidebar-header">
+      @if (navigation.level === 0) {
+        <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()" />
+      }
+      
+      @if (navigation.permissionName?.includes('edit')) {
+        <div class="header-controls">
+          <i class="bi bi-plus-circle edit-icon" 
+            (click)="manageNavigation()"
+            [matTooltip]="'Add navigation'"></i>
+        </div>
+      }
+    </div>
+
+    <!-- Navigation tree -->
+    <div class="navigation-tree">
+      @for (child of navigation.children; track child.id) {
+        <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child }"></ng-container>
+      }
+    </div>
+  </div>
+
+  <!-- Right content area -->
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- Recursive tree node template -->
+<ng-template #treeNode let-node>
+  <div class="tree-node" [attr.data-node-id]="node.id">
+    <!-- Node header with toggle and item -->
+    <div class="node-header">
+      <!-- Expand/Collapse toggle -->
+      @if (hasChildren(node)) {
+        <button class="expand-toggle"
+          (click)="toggleNodeExpanded(node.id)"
+          [attr.aria-expanded]="isNodeExpanded(node.id)">
+          <i class="bi"
+            [class.bi-chevron-down]="isNodeExpanded(node.id)"
+            [class.bi-chevron-right]="!isNodeExpanded(node.id)"></i>
+        </button>
+      } @else {
+        <span class="expand-placeholder"></span>
+      }
+
+      <!-- Navigation item -->
+      <div class="navigation-item"
+        [class.edit-nav-container]="node.permissionName?.includes('edit')"
+        [style.background-color]="node.containerStyle.isBackgroundTransparent ? 'transparent' : node.containerStyle.backgroundColor"
+        [style.border-width.px]="node.containerStyle.borderWidth && node.containerStyle.borderWidth > 0 ? node.containerStyle.borderWidth : 1"
+        [style.border-color]="node.containerStyle.borderColor ?? 'transparent'"
+        [style.border-style]="node.containerStyle.borderStyle"
+        [style.border-top-color]="node.containerStyle.isBorderTopHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
+        [style.border-right-color]="node.containerStyle.isBorderRightHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
+        [style.border-bottom-color]="node.containerStyle.isBorderBottomHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
+        [style.border-left-color]="node.containerStyle.isBorderLeftHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
+        [style.border-top-left-radius.px]="node.containerStyle.borderTopLeftRadius"
+        [style.border-top-right-radius.px]="node.containerStyle.borderTopRightRadius"
+        [style.border-bottom-right-radius.px]="node.containerStyle.borderBottomRightRadius"
+        [style.border-bottom-left-radius.px]="node.containerStyle.borderBottomLeftRadius"
+        [style.padding-top.px]="node.containerLayout.paddingTop"
+        [style.padding-bottom.px]="node.containerLayout.paddingBottom"
+        [style.padding-right.px]="node.containerLayout.paddingRight"
+        [style.padding-left.px]="node.containerLayout.paddingLeft"
+        [style.opacity]="node.isDisabled ? '0.4' : '1'">
+        
+        <!-- Button content -->
+        @if (node.navigationType.name === 'menu-button') {
+          <app-menu-button class="custom-button" [navigation]="node"></app-menu-button>
+        } @else {
+          <app-custom-button class="custom-button" [navigation]="node"></app-custom-button>
+        }
+
+        <!-- Edit buttons -->
+        @if (node.permissionName?.includes('edit')) {
+          <i class="bi bi-marker-tip edit-nav-icon edit-nav-style-icon"
+            (click)="editNavigationStyle(node)"
+            [matTooltip]="'Edit style'"></i>
+          <i class="bi bi-gear edit-nav-icon edit-nav-general-icon"
+            (click)="manageNavigation(node)"
+            [matTooltip]="'Manage navigation'"></i>
+        }
+      </div>
+    </div>
+
+    <!-- Children - displayed when expanded -->
+    @if (hasChildren(node) && isNodeExpanded(node.id)) {
+      <div class="node-children">
+        @for (child of node.children; track child.id) {
+          <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ $implicit: child }"></ng-container>
+        }
+      </div>
+    }
+  </div>
+</ng-template>
