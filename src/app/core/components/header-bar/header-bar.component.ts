@@ -74,7 +74,8 @@ export class HeaderBarComponent implements OnInit {
    * Lifecycle hook called after the component has been initialized.
    * - get data from snapshot
    * - assign initial window size
-   * - sort navigation by xPos for phone screen
+   * - sort navigation by xPos for phone screen (right elements have negative xPos and
+   * left elements positive xPos so calculation is applied to get the right order)
    */
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];

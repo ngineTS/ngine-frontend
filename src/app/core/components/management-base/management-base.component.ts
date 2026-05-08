@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { DeepFormConfig, GenericFormDialogData } from "../models/form-input.interface";
-import { environment } from "../../../environments/environment";
-import { FormContainerComponent } from "./form-container/form-container.component";
-import { NavigationBaseComponent } from "./navigation-base/navigation-base.component";
+import { DeepFormConfig, GenericFormDialogData } from "../../models/form-input.interface";
+import { environment } from "../../../../environments/environment";
+import { FormContainerComponent } from "../form-container/form-container.component";
+import { NavigationBaseComponent } from "../navigation-base/navigation-base.component";
 import { Component } from "@angular/core";
 import { retry, take } from "rxjs";
 
