@@ -19,7 +19,7 @@
     <!-- Navigation tree -->
     <div class="navigation-tree">
       @for (child of navigation.children; track child.id) {
-        <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child }"></ng-container>
+        <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child, parentPath: [] }"></ng-container>
       }
     </div>
   </div>
@@ -31,7 +31,7 @@
 </div>
 
 <!-- Recursive tree node template -->
-<ng-template #treeNode let-node>
+<ng-template #treeNode let-node let-parentPath="parentPath">
   <div class="tree-node" [attr.data-node-id]="node.id">
     <!-- Node header with toggle and item -->
     <div class="node-header">
@@ -67,14 +67,11 @@
         [style.padding-bottom.px]="node.containerLayout.paddingBottom"
         [style.padding-right.px]="node.containerLayout.paddingRight"
         [style.padding-left.px]="node.containerLayout.paddingLeft"
-        [style.opacity]="node.isDisabled ? '0.4' : '1'">
+        [style.opacity]="node.isDisabled ? '0.4' : '1'"
+        (click)="navigateTo(node, parentPath)">
+        {{ node.name }}
         
-        <!-- Button content -->
-        @if (node.navigationType.name === 'menu-button') {
-          <app-menu-button class="custom-button" [navigation]="node"></app-menu-button>
-        } @else {
-          <app-custom-button class="custom-button" [navigation]="node"></app-custom-button>
-        }
+        
 
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {
@@ -92,7 +89,7 @@
     @if (hasChildren(node) && isNodeExpanded(node.id)) {
       <div class="node-children">
         @for (child of node.children; track child.id) {
-          <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ $implicit: child }"></ng-container>
+          <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ $implicit: child, parentPath: parentPath.concat(node.name) }"></ng-container>
         }
       </div>
     }

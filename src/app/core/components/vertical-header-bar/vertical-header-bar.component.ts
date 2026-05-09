@@ -176,4 +176,13 @@ export class VerticalHeaderBarComponent implements OnInit {
   navigateToRootUrl() {
     this._router.navigateByUrl('');
   }
+
+  navigateTo(navigation: Navigation, parentPath: string[] = []): void {
+    if (!navigation.isDisabled) {
+      const fullPath = [...parentPath, navigation.name];
+      console.log('Navigation path:', fullPath);
+      this._router.navigate(fullPath, { relativeTo: this._route });
+    }
+  }
+
 }
