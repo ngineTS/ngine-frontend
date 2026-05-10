@@ -57,9 +57,15 @@
         @if (navigation.children?.length === 0) {
             <button
                 mat-menu-item
-                (click)="openFormToAddNavigationBarOrNavigation('navigation-bar')"
+                (click)="openFormToAddNavigationBarOrNavigation('horizontal')"
             >
-                Add navigation bar
+                Add horizontal navigation bar
+            </button>
+            <button
+                mat-menu-item
+                (click)="openFormToAddNavigationBarOrNavigation('vertical')"
+            >
+                Add vertical navigation bar
             </button>
         }
         <button

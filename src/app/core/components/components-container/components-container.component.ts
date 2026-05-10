@@ -89,14 +89,14 @@ export class ComponentsContainer implements OnInit {
    * Methods called on '+' button click.
    * Open navigation form to create navigation or navigation bar.
    * 
-   * @param type The type ('navigation-bar' or 'navigation').
+   * @param type The type ('horizontal bar', 'vertical bar' or 'navigation').
    */
-  openFormToAddNavigationBarOrNavigation(type: 'navigation-bar' | 'navigation'): void {
-    if (type !== 'navigation-bar') {
+  openFormToAddNavigationBarOrNavigation(type: 'horizontal' | 'vertical' | 'navigation'): void {
+    if (type === 'navigation') {
       this._navigationService.manageNavigation(this.navigation.id);
     }
     else {
-      this._menuService.createNavigationBar(this.navigation.id)
+      this._menuService.createNavigationBar(this.navigation.id, type)
         .subscribe(resp => {
           this._snackbarService.showSuccessSnackBar(resp);
           this._appService.createAppRouting(this._router.url);

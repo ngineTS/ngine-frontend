@@ -12,8 +12,8 @@ export class MenuService {
     baseURL = environment.APIURL;
 
     /* Create menu prop by inheriting style of parent menu and add first redirect button. */
-    createNavigationBar(navigationId: string) {
-        return this._http.get<any>(`${this.baseURL}menu/create-navigation-bar/${navigationId}`)
+    createNavigationBar(navigationId: string, navigationTypeBar: 'horizontal' | 'vertical') {
+        return this._http.get<any>(`${this.baseURL}menu/create-navigation-bar/${navigationId}/${navigationTypeBar}`)
     }
 
 }

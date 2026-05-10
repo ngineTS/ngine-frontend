@@ -18,12 +18,12 @@ export class AppService {
   /**
    * Create route for each navigation and return final array of routes.
    * 
-   * @param navigations The array of navigations used to create routes.
-   * @returns The routes set up.
    * @description
    * Each route can redirect either to a routing module or to ComponentsContainer component.
    * If the navigation has at least one redirect-button in chidlren then create routing module,
    * else load ComponentsContainer component.
+   * @param navigations The array of navigations used to create routes.
+   * @returns The routes set up.
    */
   createRoutes(navigations: Navigation[]): Routes {
     const routes: Routes = [];
@@ -97,6 +97,11 @@ export class AppService {
   /**
    * Create routing module and return his main route.
    * 
+   * If the navigation has a menu then the main route will load the corresponding
+   * header bar component (vertical or horizontal) and children routes will be loaded inside it.
+   * 
+   * If the navigation has no menu then the main route will load directly the ComponentsContainer component.
+   * 
    * @param redirectButtonNavigations - The array of redirect-button navigations used as children routes of the routing module.
    * @param navigation - The navigation associated to the routing module.
    * @returns The main route of routing module.
@@ -122,7 +127,13 @@ export class AppService {
         redirectTo: this.getRedirectToPathName(navigation, redirectButtonNavigations) ?? '',
         pathMatch: 'full'
       });
-      route.loadComponent = () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent);
+
+      if (navigation.menu.isVertical) {
+        route.loadComponent = () => import('../components/vertical-header-bar/vertical-header-bar.component').then(m => m.VerticalHeaderBarComponent);
+      }
+      else {
+        route.loadComponent = () => import('../components/header-bar/header-bar.component').then(m => m.HeaderBarComponent);
+      }
     }
     /* if navigation has no nav bar */
     else {

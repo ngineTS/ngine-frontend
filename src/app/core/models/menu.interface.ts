@@ -5,6 +5,7 @@ import { TypographyStyle } from "./typography-style.interface";
 export interface Menu extends Record<string, any> {
     id: string;
     navigationId: string;
+    isVertical: boolean;
     containerLayout: ContainerLayout;
     containerStyle: ContainerStyle;
     typographyStyle: TypographyStyle;
