@@ -57,6 +57,8 @@ export class HeaderBarComponent implements OnInit {
   isDragging = false;
   /** Boolean to hide navigation bar during position refining. */
   isRefiningPosition = true;
+  /** Boolean to hide navigation bar when user click on 'Hide menu'.*/
+  isNavigationBarHidden = false;
   /** HTML drop zone */
   @ViewChild('dropZone') dropZone: ElementRef<HTMLDivElement> | undefined;
   

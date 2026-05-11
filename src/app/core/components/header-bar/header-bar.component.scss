@@ -53,16 +53,20 @@
 
 .edit-header-icon {
   font-size: 12px;
-  border: 1px solid #636363;
+  border: 1px solid #2B2B2B;
   border-radius: 3px;
   background-color: #dee2e6;
   padding: 2px 6px;
-  color: #636363;
+  color: #2B2B2B;
   cursor: pointer;
   display: none;
   height: fit-content;
   position: absolute;
   top: -14px;
+
+  &:hover {
+    background-color: #E8E8E8;
+  }
 }
 
 .edit-header-style-icon {
@@ -73,33 +77,32 @@
   right: -12px;
 }
 
+.menu-toolbar {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  border-radius: 3px;
+}
+
+.toolbar-grab {
+  cursor: grab;
+  color: #E8E8E8;
+}
+
 .menu-button {
-  height: 30px;
-  border: 1px solid #636363;
+  height: 26px;
+  border: 1px solid #2B2B2B;
   border-radius: 3px;
   background-color: #dee2e6;
-  color: #636363;
+  color: #2B2B2B;
   cursor: pointer;
-  display: none;
-}
+  display: block;
+  padding: 0px 5px;
 
-.edit-menu-button {
-  padding: 2px 6px;
-  position: absolute;
-  top: 2px;
-  right: 2px;
-}
-
-.add-nav-button {
-  padding: 0px 8px 2px 8px;
-  position: absolute;
-  top: 2px;
-  right: 33px;
-}
-
-.navigation-list:hover {
-  .menu-button {
-     display: block;
+  &:hover {
+    background-color: #E8E8E8;
   }
 }
 

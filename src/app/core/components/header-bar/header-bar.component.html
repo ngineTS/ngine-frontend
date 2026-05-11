@@ -1,11 +1,53 @@
 <!-- Navigation bar container -->
-<div [style.width]="containerWidth">
+<div class="nav-bar-container" [style.width]="containerWidth">
 
     <!-- Laptop screen -->
     @if (windowWidth > windowWidthLimit) {
 
+        <!-- Navigation bar setting buttons -->
+        @if (!isDragging) {
+            <div class="menu-toolbar" cdkDrag cdkDragLockAxis="x">
+
+                @if (navigation.permissionName?.includes('add') && !isNavigationBarHidden) {
+                    <!-- Grab toolbar icon -->
+                    <div cdkDragHandle class="toolbar-grab">
+                        <i class="bi bi-grip-vertical"></i>
+                    </div>
+
+                    <!-- Add navigation button -->
+                    <i class="bi bi-plus menu-button" 
+                        (click)="manageNavigation()"
+                        matTooltip="Add navigation"
+                    ></i>
+                }
+            
+                <!-- Edit navigation bar style button -->
+                @if (navigation.permissionName?.includes('edit') && !isNavigationBarHidden) {
+                    <i class="bi bi-marker-tip menu-button" 
+                        (click)="editMenuStyle()"
+                        matTooltip="Edit navigation bar style"
+                    ></i>
+                }
+
+                <!-- Hide navigation bar button -->
+                @if (isNavigationBarHidden) {
+                    <i class="bi bi-chevron-down menu-button" 
+                        (click)="isNavigationBarHidden = false" 
+                        matTooltip="Show navigation bar"
+                    ></i>
+                }
+                @else {
+                    <i class="bi bi-chevron-up menu-button" 
+                        (click)="isNavigationBarHidden = true"
+                        matTooltip="Hide navigation bar"
+                    ></i>
+                }
+            </div>
+        }
+
         <!-- Navigation bar -->
-        <div [style.opacity]="isRefiningPosition ? 0 : 1"
+        <div [style.display]="isNavigationBarHidden ? 'none' : ''"
+            [style.opacity]="isRefiningPosition ? 1 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height"
@@ -102,24 +144,6 @@
                             }
                         </div>
                     </div>
-                }
-
-                <!-- Add navigation button -->
-                @if (navigation.permissionName?.includes('add') && !isDragging) {
-                    <button class="menu-button add-nav-button" 
-                        (click)="manageNavigation()"
-                        matTooltip="Add header"
-                    >   
-                        +
-                    </button>
-                }
-            
-                <!-- Edit menu style button -->
-                @if (navigation.permissionName?.includes('edit') && !isDragging) {
-                    <i class="bi bi-marker-tip menu-button edit-menu-button" 
-                    (click)="editMenuStyle()"
-                        matTooltip="Edit menu style"
-                    ></i>
                 }
             </div>
         </div>
