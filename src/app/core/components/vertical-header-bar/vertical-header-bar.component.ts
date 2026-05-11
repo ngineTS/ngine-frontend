@@ -8,8 +8,6 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MenuButtonComponent } from '../menu-button/menu-button.component';
-import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { takeUntil } from 'rxjs';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
@@ -21,11 +19,9 @@ import { StylePayload } from '../../models/menu.interface';
     RouterModule,
     RouterOutlet,
     MatTooltipModule,
-    MenuButtonComponent,
-    CustomButtonComponent,
   ],
   templateUrl: './vertical-header-bar.component.html',
-  styleUrl: './vertical-header-bar.component.scss'
+  styleUrl: './vertical-header-bar.component.scss',
 })
 export class VerticalHeaderBarComponent implements OnInit {
 

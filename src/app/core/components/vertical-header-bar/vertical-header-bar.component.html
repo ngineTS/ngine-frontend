@@ -17,11 +17,16 @@
     </div>
 
     <!-- Navigation tree -->
-    <div class="navigation-tree">
-      @for (child of navigation.children; track child.id) {
-        <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child, parentPath: [] }"></ng-container>
-      }
-    </div>
+    @for (child of navigation.children; track child.id) {
+      <ng-container *ngTemplateOutlet="treeNode; context: {
+        $implicit: child,
+        parentPath: [], 
+        containerLayout: child.containerLayout,
+        containerStyle: child.containerStyle,
+        typographyStyle: child.typographyStyle,
+        treeLevel: 0,
+      }"></ng-container>
+    }
   </div>
 
   <!-- Right content area -->
@@ -31,7 +36,15 @@
 </div>
 
 <!-- Recursive tree node template -->
-<ng-template #treeNode let-node let-parentPath="parentPath">
+<ng-template #treeNode 
+  let-node 
+  let-parentPath="parentPath"
+  let-parent="parent"
+  let-containerLayout="containerLayout"
+  let-containerStyle="containerStyle"
+  let-typographyStyle="typographyStyle"
+  let-treeLevel="treeLevel"
+>
   <div class="tree-node" [attr.data-node-id]="node.id">
     <!-- Node header with toggle and item -->
     <div class="node-header">
@@ -48,25 +61,29 @@
         <span class="expand-placeholder"></span>
       }
 
+      @if (parent) {
+        <span>{{ parent.name }}</span>
+      }
+
       <!-- Navigation item -->
       <div class="navigation-item"
         [class.edit-nav-container]="node.permissionName?.includes('edit')"
-        [style.background-color]="node.containerStyle.isBackgroundTransparent ? 'transparent' : node.containerStyle.backgroundColor"
-        [style.border-width.px]="node.containerStyle.borderWidth && node.containerStyle.borderWidth > 0 ? node.containerStyle.borderWidth : 1"
-        [style.border-color]="node.containerStyle.borderColor ?? 'transparent'"
-        [style.border-style]="node.containerStyle.borderStyle"
-        [style.border-top-color]="node.containerStyle.isBorderTopHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
-        [style.border-right-color]="node.containerStyle.isBorderRightHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
-        [style.border-bottom-color]="node.containerStyle.isBorderBottomHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
-        [style.border-left-color]="node.containerStyle.isBorderLeftHidden ? 'transparent' : node.containerStyle.borderColor ?? 'transparent'"
-        [style.border-top-left-radius.px]="node.containerStyle.borderTopLeftRadius"
-        [style.border-top-right-radius.px]="node.containerStyle.borderTopRightRadius"
-        [style.border-bottom-right-radius.px]="node.containerStyle.borderBottomRightRadius"
-        [style.border-bottom-left-radius.px]="node.containerStyle.borderBottomLeftRadius"
-        [style.padding-top.px]="node.containerLayout.paddingTop"
-        [style.padding-bottom.px]="node.containerLayout.paddingBottom"
-        [style.padding-right.px]="node.containerLayout.paddingRight"
-        [style.padding-left.px]="node.containerLayout.paddingLeft"
+        [style.background-color]="containerStyle.isBackgroundTransparent ? 'transparent' : containerStyle.backgroundColor"
+        [style.border-width.px]="containerStyle.borderWidth && containerStyle.borderWidth > 0 ? containerStyle.borderWidth : 1"
+        [style.border-color]="containerStyle.borderColor ?? 'transparent'"
+        [style.border-style]="containerStyle.borderStyle"
+        [style.border-top-color]="containerStyle.isBorderTopHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-right-color]="containerStyle.isBorderRightHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-bottom-color]="containerStyle.isBorderBottomHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-left-color]="containerStyle.isBorderLeftHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-top-left-radius.px]="containerStyle.borderTopLeftRadius"
+        [style.border-top-right-radius.px]="containerStyle.borderTopRightRadius"
+        [style.border-bottom-right-radius.px]="containerStyle.borderBottomRightRadius"
+        [style.border-bottom-left-radius.px]="containerStyle.borderBottomLeftRadius"
+        [style.padding-top.px]="containerLayout.paddingTop"
+        [style.padding-bottom.px]="containerLayout.paddingBottom"
+        [style.padding-right.px]="containerLayout.paddingRight"
+        [style.padding-left.px]="containerLayout.paddingLeft"
         [style.opacity]="node.isDisabled ? '0.4' : '1'"
         (click)="navigateTo(node, parentPath)">
         {{ node.name }}
@@ -75,21 +92,40 @@
 
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {
-          <i class="bi bi-marker-tip edit-nav-icon edit-nav-style-icon"
-            (click)="editNavigationStyle(node)"
-            [matTooltip]="'Edit style'"></i>
-          <i class="bi bi-gear edit-nav-icon edit-nav-general-icon"
-            (click)="manageNavigation(node)"
-            [matTooltip]="'Manage navigation'"></i>
+          <div class="edit-nav-buttons-div">
+            @if (treeLevel === 0) {
+              <i class="bi bi-marker-tip edit-nav-icon"
+                (click)="editNavigationStyle(node)"
+                [matTooltip]="'Edit style'">
+              </i>
+            }
+            <i class="bi bi-gear edit-nav-icon"
+              (click)="manageNavigation(node)"
+              [matTooltip]="'Manage navigation'">
+            </i>
+          </div>
         }
       </div>
     </div>
 
     <!-- Children - displayed when expanded -->
-    @if (hasChildren(node) && isNodeExpanded(node.id)) {
+    @if (isNodeExpanded(node.id)) {
       <div class="node-children">
         @for (child of node.children; track child.id) {
-          <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{ $implicit: child, parentPath: parentPath.concat(node.name) }"></ng-container>
+          @if (
+            child.navigationType.name === 'redirect-button' ||
+            child.navigationType.name === 'external-link-button' ||
+            child.navigationType.name === 'dialog-button'
+          ) {
+            <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{
+              $implicit: child,
+              parentPath: parentPath.concat(node.name),
+              containerLayout: containerLayout,
+              containerStyle: containerStyle,
+              typographyStyle: typographyStyle,
+              treeLevel: 1
+            }"></ng-container>
+          }
         }
       </div>
     }
