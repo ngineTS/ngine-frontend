@@ -9,9 +9,14 @@
       
       @if (navigation.permissionName?.includes('edit')) {
         <div class="header-controls">
-          <i class="bi bi-plus-circle edit-icon" 
+          <i class="bi bi-marker-tip edit-icon" 
             (click)="manageNavigation($event)"
-            [matTooltip]="'Add navigation'"></i>
+            [matTooltip]="'Edit navigation bar style'">
+          </i>
+          <i class="bi bi-plus edit-icon" 
+            (click)="manageNavigation($event)"
+            [matTooltip]="'Add navigation'">
+          </i>
         </div>
       }
     </div>
