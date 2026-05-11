@@ -101,7 +101,8 @@ export class VerticalHeaderBarComponent implements OnInit {
    * 
    * @param navigation The navigation to edit (optional).
    */
-  manageNavigation(navigation?: Navigation): void {
+  manageNavigation(event: MouseEvent, navigation?: Navigation): void {
+    event.stopPropagation();
     this._navigationService.manageNavigation(this.navigation.id, navigation);
   }
 
@@ -113,7 +114,8 @@ export class VerticalHeaderBarComponent implements OnInit {
    * 
    * @param navigation The navigation to edit.
    */
-  editNavigationStyle(navigation: Navigation) {
+  editNavigationStyle(event: MouseEvent, navigation: Navigation) {
+    event.stopPropagation();
     this._sideNavService.resetSideNavContent();
 
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {

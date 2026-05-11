@@ -10,7 +10,7 @@
       @if (navigation.permissionName?.includes('edit')) {
         <div class="header-controls">
           <i class="bi bi-plus-circle edit-icon" 
-            (click)="manageNavigation()"
+            (click)="manageNavigation($event)"
             [matTooltip]="'Add navigation'"></i>
         </div>
       }
@@ -87,6 +87,7 @@
         [style.opacity]="node.isDisabled ? '0.4' : '1'"
         (click)="navigateTo(node, parentPath)">
         {{ node.name }}
+        {{ node.displayLabel }}
         
         
 
@@ -95,12 +96,12 @@
           <div class="edit-nav-buttons-div">
             @if (treeLevel === 0) {
               <i class="bi bi-marker-tip edit-nav-icon"
-                (click)="editNavigationStyle(node)"
+                (click)="editNavigationStyle($event, node)"
                 [matTooltip]="'Edit style'">
               </i>
             }
             <i class="bi bi-gear edit-nav-icon"
-              (click)="manageNavigation(node)"
+              (click)="manageNavigation($event, node)"
               [matTooltip]="'Manage navigation'">
             </i>
           </div>
