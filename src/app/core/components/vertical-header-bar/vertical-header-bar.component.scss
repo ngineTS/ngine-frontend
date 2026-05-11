@@ -2,17 +2,15 @@
 .vertical-bar-container {
   display: flex;
   height: 100vh;
-  width: 100%;
 
   // Left sidebar with navigation
   .navigation-sidebar {
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 20%;
     height: 100%;
     border-right: 1px solid #e0e0e0;
     overflow-y: auto;
-    overflow-x: hidden;
     z-index: 50;
 
     // Header section
@@ -70,9 +68,7 @@
   // Content wrapper on the right
   .content-wrapper {
     flex: 1;
-    position: relative;
-    overflow: auto;
-    width: 100%;
+    overflow-y: auto;
   }
 }
 
@@ -209,10 +205,6 @@
 // Responsive design
 @media (max-width: 1200px) {
   .vertical-bar-container {
-    .navigation-sidebar {
-      width: 240px;
-    }
-
     .tree-node {
       .tree-node {
         margin-left: 16px;
@@ -221,7 +213,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 750px) {
   .vertical-bar-container {
     flex-direction: column;
 
