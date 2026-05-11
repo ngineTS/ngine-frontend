@@ -119,6 +119,7 @@
         [style.font-size.px]="typographyStyle.fontSize"
         [style.font-weight]="typographyStyle.fontWeight"
         [style.font-family]="typographyStyle.fontFamily"
+        [style.cursor]="node.isDisabled ? 'default' : 'pointer'"
         (click)="actionClick(node, parentPath)"
         (mouseenter)="node['isMouseOver'] = true"
         (mouseleave)="node['isMouseOver'] = false"
