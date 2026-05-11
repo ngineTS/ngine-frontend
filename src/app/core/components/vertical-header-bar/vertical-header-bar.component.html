@@ -76,8 +76,9 @@
     <!-- Node header with toggle and item -->
     <div class="node-header">
       <!-- Expand/Collapse toggle -->
-      @if (hasChildren(node)) {
+      @if (hasChildren(node) && !node.isDisabled) {
         <button class="expand-toggle"
+          [style.color]="typographyStyle.color"
           (click)="toggleNodeExpanded(node.id)"
           [attr.aria-expanded]="isNodeExpanded(node.id)">
           <i class="bi"
@@ -112,11 +113,17 @@
         [style.padding-right.px]="containerLayout.paddingRight"
         [style.padding-left.px]="containerLayout.paddingLeft"
         [style.opacity]="node.isDisabled ? '0.4' : '1'"
-        (click)="navigateTo(node, parentPath)">
-        {{ node.name }}
+        [style.color]="node['isMouseOver'] || isRouteActive(node.name) 
+          ? typographyStyle.activeColor
+          : typographyStyle.color"
+        [style.font-size.px]="typographyStyle.fontSize"
+        [style.font-weight]="typographyStyle.fontWeight"
+        [style.font-family]="typographyStyle.fontFamily"
+        (click)="actionClick(node, parentPath)"
+        (mouseenter)="node['isMouseOver'] = true"
+        (mouseleave)="node['isMouseOver'] = false"
+      >  
         {{ node.displayLabel }}
-        
-        
 
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {

@@ -11,6 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { takeUntil } from 'rxjs';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
 
 @Component({
   selector: 'app-vertical-header-bar',
@@ -33,6 +35,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
+    private _matDialog: MatDialog
   ) { }
 
   /** The navigations container. */
@@ -234,12 +237,54 @@ export class VerticalHeaderBarComponent implements OnInit {
     this._router.navigateByUrl('');
   }
 
+  /**
+   * Navigate to given path.
+   * 
+   * @param navigation The navigationo clicked.
+   * @param parentPath The accumulated route url.
+   */
   navigateTo(navigation: Navigation, parentPath: string[] = []): void {
+    const fullPath = [...parentPath, navigation.name];
+    console.log('Navigation path:', fullPath);
+    this._router.navigate(fullPath, { relativeTo: this._route });
+  }
+
+  /**
+   * Trigger an action on button click depending of the navigation type.
+   * 
+   * @param navigation The navigation.
+   */
+  actionClick(navigation: Navigation, parentPath?: Array<string>) {
     if (!navigation.isDisabled) {
-      const fullPath = [...parentPath, navigation.name];
-      console.log('Navigation path:', fullPath);
-      this._router.navigate(fullPath, { relativeTo: this._route });
+      switch (navigation.navigationType.name) {
+        /* redirect to navigation url */
+        case 'redirect-button':
+          this.navigateTo(navigation, parentPath);
+          break;
+        /* open mat dialog */
+        case 'dialog-button':
+          this._matDialog.open(EmptyDialogComponent, {
+            data: { navigation: navigation },
+            width: '90%',
+          });
+          break;
+        /* open url on new tab */
+        case 'external-link-button':
+          window.open(navigation.url, '_blank', 'noopener,noreferrer');
+          break;
+      }
     }
+  }
+
+  /**
+   * Check if user is in this navigation or not (used in case button is in navigation bar).
+   * 
+   * @param navigationName The navigation name to check.
+   * @returns true or false.
+   */
+  isRouteActive(navigationName: string) {
+    const urlList = this._router.url.split('/');
+    return urlList.includes(navigationName);
   }
 
 }
