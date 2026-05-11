@@ -154,7 +154,9 @@ export class VerticalHeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['width', 'height', 'marginTop', 'marginBottom', 'marginRight', 'marginLeft']
+        ['width', 'height', 'marginBottom', 'marginRight', 'marginLeft', 'zIndex',
+          'xPos', 'yPos', 'paddingTop', 'paddingBottom', 'paddingRight', 'paddingLeft'
+        ]
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,

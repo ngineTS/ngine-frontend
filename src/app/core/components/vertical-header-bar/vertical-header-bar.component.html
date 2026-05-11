@@ -49,7 +49,6 @@
       <ng-container *ngTemplateOutlet="treeNode; context: {
         $implicit: child,
         parentPath: [], 
-        containerLayout: child.containerLayout,
         containerStyle: child.containerStyle,
         typographyStyle: child.typographyStyle,
         treeLevel: 0,
@@ -68,7 +67,6 @@
   let-node 
   let-parentPath="parentPath"
   let-parent="parent"
-  let-containerLayout="containerLayout"
   let-containerStyle="containerStyle"
   let-typographyStyle="typographyStyle"
   let-treeLevel="treeLevel"
@@ -90,13 +88,10 @@
         <span class="expand-placeholder"></span>
       }
 
-      @if (parent) {
-        <span>{{ parent.name }}</span>
-      }
-
       <!-- Navigation item -->
       <div class="navigation-item"
         [class.edit-nav-container]="node.permissionName?.includes('edit')"
+        [style.margin-top.px]="treeLevel === 0 ? node.containerLayout.marginTop : 0"
         [style.background-color]="containerStyle.isBackgroundTransparent ? 'transparent' : containerStyle.backgroundColor"
         [style.border-width.px]="containerStyle.borderWidth && containerStyle.borderWidth > 0 ? containerStyle.borderWidth : 1"
         [style.border-color]="containerStyle.borderColor ?? 'transparent'"
@@ -110,7 +105,7 @@
         [style.border-bottom-right-radius.px]="containerStyle.borderBottomRightRadius"
         [style.border-bottom-left-radius.px]="containerStyle.borderBottomLeftRadius"
         [style.opacity]="node.isDisabled ? '0.4' : '1'"
-        [style.color]="node['isMouseOver'] || isRouteActive(node.name) 
+        [style.color]="((node['isMouseOver'] || isRouteActive(node.name)) && !node.isDisabled)
           ? typographyStyle.activeColor
           : typographyStyle.color"
         [style.font-size.px]="typographyStyle.fontSize"
@@ -153,7 +148,6 @@
             <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{
               $implicit: child,
               parentPath: parentPath.concat(node.name),
-              containerLayout: containerLayout,
               containerStyle: containerStyle,
               typographyStyle: typographyStyle,
               treeLevel: 1
