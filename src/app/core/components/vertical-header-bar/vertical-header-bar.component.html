@@ -23,6 +23,7 @@
     [style.margin-right.px]="navigation.menu.containerLayout.marginRight"
     [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
     [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
+    [style.padding-top.px]="navigation.menu.containerLayout.paddingTop"
   >
     
     <!-- Header with logo and controls -->
@@ -108,10 +109,6 @@
         [style.border-top-right-radius.px]="containerStyle.borderTopRightRadius"
         [style.border-bottom-right-radius.px]="containerStyle.borderBottomRightRadius"
         [style.border-bottom-left-radius.px]="containerStyle.borderBottomLeftRadius"
-        [style.padding-top.px]="containerLayout.paddingTop"
-        [style.padding-bottom.px]="containerLayout.paddingBottom"
-        [style.padding-right.px]="containerLayout.paddingRight"
-        [style.padding-left.px]="containerLayout.paddingLeft"
         [style.opacity]="node.isDisabled ? '0.4' : '1'"
         [style.color]="node['isMouseOver'] || isRouteActive(node.name) 
           ? typographyStyle.activeColor
