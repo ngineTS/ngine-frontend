@@ -107,6 +107,36 @@ export class VerticalHeaderBarComponent implements OnInit {
   }
 
   /**
+   * Methods called on 'edit menu style' button click.
+   * 
+   * Open sidenav with menu style properties and listen to changes.
+   * It also stop the previous listener.
+   */
+  editMenuStyle() {
+    this._sideNavService.resetSideNavContent();
+
+    const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
+      containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
+        this.navigation.menu.containerLayout,
+        ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop',
+         'marginBottom', 'xPos', 'yPos', 'width', 'height', 'zIndex']
+      ),
+      containerStyle: this._containerStyleService.setUpContainerStyleForm(
+        this.navigation.menu.containerStyle,
+        ['backgroundImage']
+      ),
+    }
+
+    this._sideNavService.openStyleForm(
+      menuStyleFormConfig,
+      this.navigation.menu.id,
+      `${this.navigation.displayLabel} - Menu`
+    );
+
+    this.setSideNavFormListener();
+  }
+
+  /**
    * Method called on navigation 'marker' button click. 
    * 
    * Open sidenav with navigation style properties and listen to changes.
@@ -145,23 +175,52 @@ export class VerticalHeaderBarComponent implements OnInit {
    * Setup listener on sidenav to update navigation style in real time.
    * If sidenav is closed without saving then assign back initial style.
    */
-  setSideNavFormListener(navigation: Navigation) {
-    const initialFormContent: Partial<StylePayload> = {
-      containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
-      typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
-    }
+   setSideNavFormListener(navigation?: Navigation) {
+    let initialFormContent: Partial<StylePayload> = {};
 
-    this._sideNavService.formValueEvent
-      .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-      .subscribe(formValueEvent => {
-        if (formValueEvent.formControlValue === 'close') {
-          navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-          navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-        }
-        else {
-          navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue;
-        }
-      });
+    //navigation case
+    if (navigation) {
+      initialFormContent = {
+        containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
+        typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
+        
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              .containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+             this.navigation.children!.find(child => child.id === navigation.id)!
+              .typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
+          }
+          else {
+            this.navigation.children!.find(child => child.id === navigation.id)!
+              [`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue;
+
+          }
+        });
+    }
+    //menu case
+    else {
+      initialFormContent = {
+        containerLayout: JSON.parse(JSON.stringify(this.navigation.menu.containerLayout)),
+        containerStyle: JSON.parse(JSON.stringify(this.navigation.menu.containerStyle)),
+      }
+
+      this._sideNavService.formValueEvent
+        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            this.navigation.menu.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
+            this.navigation.menu.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
+          }
+          else {
+            this.navigation.menu[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
+          }
+        });
+    }
 
     this._sideNavService.initalFormContent = initialFormContent;
   }

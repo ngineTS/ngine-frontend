@@ -11,30 +11,27 @@
     height: 100%;
     border-right: 1px solid #e0e0e0;
     overflow-y: auto;
+    padding-top: 4px;
     padding-right: 4px;
     padding-bottom: 4px;
+    position: relative;
 
     // Header section
-    .sidebar-header {
+    .logo {
+      margin: 10px 50px 10px 50px;
+      height: auto;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .header-controls {
+      padding-bottom: 10px;
+      margin-left: auto;
+      gap: 1px;
       display: flex;
-      padding-bottom: 12px;
-      padding-top: 12px;
-
-      .logo {
-        height: 50px;
-        width: auto;
-        cursor: pointer;
-        flex-shrink: 0;
-
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-
-      .header-controls {
-        margin-left: auto;
-        display: flex;
-      }
     }
 
     // Scrollbar styling

@@ -1,25 +1,47 @@
 <div class="vertical-bar-container">
+  
   <!-- Left sidebar with navigation tree -->
-  <div class="navigation-sidebar">
+  <div class="navigation-sidebar"
+    [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
+        ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
+    [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+        navigation.menu.containerStyle.borderStyle + ' ' +
+        navigation.menu.containerStyle.borderColor"
+    [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-top-left-radius.px]="navigation.menu.containerStyle.borderTopLeftRadius"
+    [style.border-top-right-radius.px]="navigation.menu.containerStyle.borderTopRightRadius"
+    [style.border-bottom-right-radius.px]="navigation.menu.containerStyle.borderBottomRightRadius"
+    [style.border-bottom-left-radius.px]="navigation.menu.containerStyle.borderBottomLeftRadius"
+    [style.margin-top.px]="navigation.menu.containerLayout.marginTop"
+    [style.margin-right.px]="navigation.menu.containerLayout.marginRight"
+    [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
+    [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
+  >
+    
     <!-- Header with logo and controls -->
-    <div class="sidebar-header">
-      @if (navigation.level === 0) {
-        <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()" />
-      }
-      
-      @if (navigation.permissionName?.includes('edit')) {
-        <div class="header-controls">
-          <i class="bi bi-marker-tip edit-icon" 
-            (click)="manageNavigation($event)"
-            [matTooltip]="'Edit navigation bar style'">
-          </i>
-          <i class="bi bi-plus edit-icon" 
-            (click)="manageNavigation($event)"
-            [matTooltip]="'Add navigation'">
-          </i>
-        </div>
-      }
-    </div>
+    @if (navigation.level === 0) {
+      <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()" />
+    }
+    
+    @if (navigation.permissionName?.includes('edit')) {
+      <div class="header-controls">
+        <i class="bi bi-marker-tip edit-icon" 
+          (click)="editMenuStyle()"
+          [matTooltip]="'Edit navigation bar style'">
+        </i>
+        <i class="bi bi-plus edit-icon" 
+          (click)="manageNavigation($event)"
+          [matTooltip]="'Add navigation'">
+        </i>
+      </div>
+    }
 
     <!-- Navigation tree -->
     @for (child of navigation.children; track child.id) {
