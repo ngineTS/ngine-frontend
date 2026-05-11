@@ -75,8 +75,6 @@
 .node-header {
   display: flex;
   align-items: baseline;
-  gap: 4px;
-  transition: background-color 0.2s ease;
 }
 
 // Expand/collapse toggle button
@@ -90,8 +88,6 @@
   justify-content: center;
   color: #636363;
   font-size: 14px;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
   min-width: 32px;
   height: 32px;
 
@@ -103,7 +99,6 @@
 
 .expand-placeholder {
   width: 32px;
-  height: 32px;
 }
 
 // Navigation item styling
