@@ -89,13 +89,23 @@ export class VerticalHeaderBarComponent implements OnInit {
   }
 
   /**
-   * Check if a navigation has children.
+   * Check if a navigation has at least one child which is not a component.
    * 
    * @param navigation The navigation to check.
-   * @returns True if the navigation has children, false otherwise.
+   * @returns True if the navigation has a valid child, false otherwise.
    */
   hasChildren(navigation: Navigation): boolean | undefined {
-    return navigation.children && navigation.children.length > 0;
+    const child = navigation.children?.find(child => 
+      child.navigationType.name === 'redirect-button' ||
+      child.navigationType.name === 'dialog-button' ||
+      child.navigationType.name === 'external-link-button'
+    )
+
+    if (child) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
