@@ -225,7 +225,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     const navigationStylePayload:  DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
-        ['marginBottom', 'marginLeft', 'marginRight', 'marginTop']
+        ['paddingTop', 'paddingRight', 'paddingLeft', 'paddingBottom',
+         'xPos', 'yPos', 'width', 'height', 'zIndex']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(this._navigation.containerStyle),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)

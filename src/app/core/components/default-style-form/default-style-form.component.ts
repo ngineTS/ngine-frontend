@@ -107,7 +107,11 @@ export class DefaultStyleFormComponent {
     const stylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         this.defaultContainerStyle!,
-        ['backgroundImage']
+        [
+         'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
+         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
+         'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent'
+        ]
       ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
         this.defaultTypographyStyle!

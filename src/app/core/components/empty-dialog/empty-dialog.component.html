@@ -1,6 +1,7 @@
 @if (navigationToLoad) {
     <div class="row justify-content-center"
-        [style.backgroundColor]="navigationToLoad.containerStyle.backgroundColor"
+        [style.backgroundColor]="navigationToLoad.containerStyle.isBackgroundTransparent
+            ? 'transparent' : navigationToLoad.containerStyle.backgroundColor"
         [style.border]="navigationToLoad.containerStyle.borderWidth + 'px ' +
             navigationToLoad.containerStyle.borderStyle + ' ' +
             navigationToLoad.containerStyle.borderColor"

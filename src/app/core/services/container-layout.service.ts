@@ -27,7 +27,7 @@ export class ContainerLayoutService {
 
   setUpContainerLayoutForm (
     containerLayout: ContainerLayout,
-    skipedProperties?: Array<keyof ContainerLayout>
+    wishedProperties?: Array<keyof ContainerLayout>
   ): DeepFormConfig<Partial<ContainerLayout>> {
     
     const containerLayoutFormConfig: DeepFormConfig<Partial<ContainerLayout>> = {
@@ -124,11 +124,12 @@ export class ContainerLayoutService {
       },
     }
 
-    if (skipedProperties) {
-      skipedProperties.forEach(key => delete containerLayoutFormConfig[key]);
-    }
+    const filteredContainerLayoutFormConfig: typeof containerLayoutFormConfig = {};
+    wishedProperties?.forEach(prop => {
+        filteredContainerLayoutFormConfig[prop] = containerLayoutFormConfig[prop];
+    });
 
-    return containerLayoutFormConfig;
+    return filteredContainerLayoutFormConfig;
   }
 
 }

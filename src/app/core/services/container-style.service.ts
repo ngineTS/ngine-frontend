@@ -23,7 +23,7 @@ export class ContainerStyleService {
   
   setUpContainerStyleForm(
     containerStyle: ContainerStyle,
-    skipedProperties?: Array<keyof ContainerStyle>
+    wishedProperties?: Array<keyof ContainerStyle>
   ): DeepFormConfig<Partial<ContainerStyle>> {
 
     const containerStyleFormConfig: DeepFormConfig<Partial<ContainerStyle>> = {
@@ -130,9 +130,10 @@ export class ContainerStyleService {
       },
     }
 
-    if (skipedProperties) {
-      skipedProperties.forEach(key => delete containerStyleFormConfig[key]);
-    }
+    const filteredContainerStyleFormConfig: typeof containerStyleFormConfig = {};
+    wishedProperties?.forEach(prop => {
+        filteredContainerStyleFormConfig[prop] = containerStyleFormConfig[prop];
+    });
 
     return containerStyleFormConfig;
   }
