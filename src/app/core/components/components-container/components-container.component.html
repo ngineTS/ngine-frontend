@@ -1,5 +1,5 @@
 <!-- List of navigations -->
-<div [class]="windowWidth > windowWidthLimit ? '' : 'small-screen-flex'" class="components-container">       
+<div #componentsContainer [class]="windowWidth > windowWidthLimit ? '' : 'small-screen-flex'" class="components-container">       
     @for (child of navigation.children; track child.id) {
 
         @if (windowWidth > windowWidthLimit) {
@@ -30,7 +30,7 @@
             </div>
         }
         @else {
-            <!-- Navigation object -->
+            <!-- Navigation object not draggable -->
             <app-navigation
                 [_navigation]="child"
                 [_canAdd]="child.permissionName?.includes('add')"

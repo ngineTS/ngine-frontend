@@ -14,6 +14,7 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
 import { MediaService } from '../../services/media.service';
 import { ComponentService } from '../../../components/component.service';
+import { ComponentsContainerService } from '../../services/components-container.service';
 
 @Component({
   selector: 'app-navigation',
@@ -60,7 +61,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
-    private _mediaService: MediaService
+    private _mediaService: MediaService,
+    private _componentsContainerService: ComponentsContainerService
   ) { 
     super(); 
   }
@@ -289,7 +291,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Resize navigation to match the screen size.
    */
   onFullScreenClick() {
-    const width = 97;
+    const width = this._componentsContainerService.currentWidth! / this.windowWidth * 98;
     const height = 100;
     const xPos = 1;
     this._navigation.containerLayout.width = width;

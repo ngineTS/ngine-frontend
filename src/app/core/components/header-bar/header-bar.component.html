@@ -47,7 +47,7 @@
 
         <!-- Navigation bar -->
         <div [style.display]="isNavigationBarHidden ? 'none' : ''"
-            [style.opacity]="isRefiningPosition ? 1 : 1"
+            [style.opacity]="isRefiningPosition ? 0 : 1"
             [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
                 ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
             [style.height.px]="navigation.menu.containerLayout.height"

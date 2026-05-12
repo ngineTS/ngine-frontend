@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
@@ -13,6 +13,7 @@ import { AppService } from '../../services/app.service';
 import { SnackBarService } from '../../services/snackbar.service';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
+import { ComponentsContainerService } from '../../services/components-container.service';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class ComponentsContainer implements OnInit {
     private _snackbarService: SnackBarService,
     private _router: Router,
     private _containerLayoutService: ContainerLayoutService,
-  ) {}
+    private _componentsContainerService: ComponentsContainerService
+  ) { }
 
   /** The components container. */
   navigation!: Navigation;
@@ -49,6 +51,8 @@ export class ComponentsContainer implements OnInit {
   windowHeight!: number;
   /** Responsive threasold */
   windowWidthLimit = 750;
+  /** The HTML container */
+  @ViewChild('componentsContainer') componentsContainerRef!: ElementRef<HTMLDivElement>;
 
   /**
    * Get window size each time it changes (zoom, screen resize...).
@@ -57,6 +61,7 @@ export class ComponentsContainer implements OnInit {
   onResize() {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
+    this._componentsContainerService.currentWidth = this.componentsContainerRef.nativeElement.offsetWidth;
   }
 
   /**
@@ -83,6 +88,13 @@ export class ComponentsContainer implements OnInit {
         return aYPosRounded - bYPosRounded; // secondary: yPos
       });
     }
+  }
+
+  /**
+   * Lifecycle hook called after the component view has been initialized.
+   */
+  ngAfterViewInit() {
+    this._componentsContainerService.currentWidth = this.componentsContainerRef.nativeElement.offsetWidth;
   }
 
   /**
