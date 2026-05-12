@@ -39,7 +39,7 @@
         cdkDropList
         (cdkDropListDropped)="drop($event, navigation)"
         [cdkDropListData]="navigation.children!"
-        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > 600)"
+        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
     >
         <!-- Main menu 'edit style' button -->
         @if (navigation.permissionName?.includes('edit')) {
@@ -58,7 +58,7 @@
             @else {
                 <div mat-menu-item 
                     cdkDrag
-                    [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
+                    [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
                     [style.opacity]="child.isDisabled ? '0.4' : '1'"
                 >
                     <app-custom-button 
@@ -98,7 +98,7 @@
             <!-- Deep menu button -->
             <div mat-menu-item
                 cdkDrag 
-                [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
+                [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
                 [matMenuTriggerFor]="subMenu"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
@@ -147,7 +147,7 @@
                     cdkDropList
                     (cdkDropListDropped)="drop($event, navigation)"
                     [cdkDropListData]="navigation.children!"
-                    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > 600)"
+                    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
                 >
                     <!-- Deep menu 'edit style' button -->                    
                     @if (navigation.permissionName?.includes('edit')) {
@@ -159,7 +159,8 @@
                         <!-- item is a custom button -->
                         <div mat-menu-item 
                             cdkDrag
-                            [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > 600"
+                            [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
+                            [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
                             [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         >
                             <app-custom-button

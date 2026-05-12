@@ -46,13 +46,15 @@ export class MenuButtonComponent {
   isButtonHoveredRecord: Record<string, boolean> = {};
   /** Initial window width. */
   initialWindowWidth!: number;
+  /** Responsive threasold. */
+  windowWidthLimit = 750;
 
   /**
    * Lifecycle hook called after component ahs been initialized.
    */
   ngOnInit() {
     this.initialWindowWidth = window.innerWidth;
-    this.sortNavigationsByOrder();
+    this._navigationService.sortNavigationsByOrder(this.navigation);
   }
   
   /**
@@ -144,17 +146,6 @@ export class MenuButtonComponent {
       nav.order = index;
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
-  }
-
-
-  /**
-   * Recursively sort navigations by order.
-   */
-  sortNavigationsByOrder() {
-    this.navigation.children?.sort((a, b) => a.order - b.order);
-    this.navigation.children?.forEach(child => 
-      child.children?.sort((a, b) => a.order - b.order)
-    );
   }
 
   /**

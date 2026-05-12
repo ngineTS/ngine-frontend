@@ -111,4 +111,14 @@ export class NavigationService {
         });
     }
 
+    /**
+     * Recursively sort navigations by order.
+     */
+    sortNavigationsByOrder(navigation: Navigation) {
+        navigation.children?.sort((a, b) => a.order - b.order);
+        navigation.children?.forEach(child => 
+            child.children?.sort((a, b) => a.order - b.order)
+        );
+    }
+
 }
