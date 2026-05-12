@@ -52,12 +52,12 @@
     @for (child of navigation.children; track child.id) {
       <div cdkDrag [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)">
         <ng-container *ngTemplateOutlet="treeNode; context: {
-        $implicit: child,
-        parentPath: [], 
-        containerStyle: child.containerStyle,
-        typographyStyle: child.typographyStyle,
-        treeLevel: 0,
-      }"></ng-container>
+          $implicit: child,
+          parentPath: [], 
+          containerStyle: child.containerStyle,
+          typographyStyle: child.typographyStyle,
+          treeLevel: 0,
+        }"></ng-container>
       </div>
     }
   </div>
@@ -124,7 +124,13 @@
         (mouseenter)="node['isMouseOver'] = true"
         (mouseleave)="node['isMouseOver'] = false"
       >  
-        {{ node.displayLabel }}
+        @if (node.icon) {
+          <i [class]="'bi bi-' + node.icon"></i>
+        }
+
+        @if (!node.showIconOnly) {
+          <span> {{ node.displayLabel }} </span>
+        }
 
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {

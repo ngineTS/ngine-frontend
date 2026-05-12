@@ -32,14 +32,14 @@ export class ContainerLayoutService {
     
     const containerLayoutFormConfig: DeepFormConfig<Partial<ContainerLayout>> = {
       width: {
-          value: containerLayout.width ?? null,
+          value: containerLayout.width ? Math.round(containerLayout.width * 100) / 100 : null,
           alias: 'Width',
           order: 1,
           type: 'number',
           validators: []
       },
       height: {
-          value: containerLayout.height ?? 50,
+          value: containerLayout.height ? Math.round(containerLayout.height * 100) / 100 : null,
           alias: 'Height',
           order: 2,
           type: 'number',
