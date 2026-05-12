@@ -36,7 +36,7 @@ export class TypographyStyleService {
 
   setUpTypographyStyleForm(
     typographyStyle: TypographyStyle,
-    skipedProperties?: Array<keyof TypographyStyle>
+    wishedProperties?: Array<keyof TypographyStyle>
   ): DeepFormConfig<Partial<TypographyStyle>> {
 
     const typographyStyleFormConfig: DeepFormConfig<Partial<TypographyStyle>> = {
@@ -80,9 +80,13 @@ export class TypographyStyleService {
       },
     }
 
-    if (skipedProperties) {
-      skipedProperties.forEach(key => delete typographyStyleFormConfig[key]);
+    let filteredContainerStyleFormConfig: typeof typographyStyleFormConfig = {};
+    if (!wishedProperties) {
+        filteredContainerStyleFormConfig = typographyStyleFormConfig;
     }
+    wishedProperties?.forEach(prop => {
+        filteredContainerStyleFormConfig[prop] = typographyStyleFormConfig[prop];
+    });
 
     return typographyStyleFormConfig;
   }

@@ -130,12 +130,15 @@ export class ContainerStyleService {
       },
     }
 
-    const filteredContainerStyleFormConfig: typeof containerStyleFormConfig = {};
+    let filteredContainerStyleFormConfig: typeof containerStyleFormConfig = {};
+    if (!wishedProperties) {
+        filteredContainerStyleFormConfig = containerStyleFormConfig;
+    }
     wishedProperties?.forEach(prop => {
         filteredContainerStyleFormConfig[prop] = containerStyleFormConfig[prop];
     });
 
-    return containerStyleFormConfig;
+    return filteredContainerStyleFormConfig;
   }
 
 }

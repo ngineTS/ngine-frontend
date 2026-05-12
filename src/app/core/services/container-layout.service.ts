@@ -124,7 +124,11 @@ export class ContainerLayoutService {
       },
     }
 
-    const filteredContainerLayoutFormConfig: typeof containerLayoutFormConfig = {};
+
+    let filteredContainerLayoutFormConfig: typeof containerLayoutFormConfig = {};
+    if (!wishedProperties) {
+        filteredContainerLayoutFormConfig = containerLayoutFormConfig;
+    }
     wishedProperties?.forEach(prop => {
         filteredContainerLayoutFormConfig[prop] = containerLayoutFormConfig[prop];
     });
