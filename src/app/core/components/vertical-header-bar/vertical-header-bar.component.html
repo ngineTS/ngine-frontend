@@ -1,7 +1,7 @@
 <div class="vertical-bar-container">
   
   <!-- Left sidebar with navigation tree -->
-  <div class="navigation-sidebar"
+  <div class="navigation-sidebar drop-zone"
     [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
         ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
     [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
@@ -24,6 +24,10 @@
     [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
     [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
     [style.padding-top.px]="navigation.menu.containerLayout.paddingTop"
+    cdkDropList
+    (cdkDropListDropped)="drop($event, navigation)"
+    [cdkDropListData]="navigation.children!"
+    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)"
   >
     
     <!-- Header with logo and controls -->
@@ -46,13 +50,15 @@
 
     <!-- Navigation tree -->
     @for (child of navigation.children; track child.id) {
-      <ng-container *ngTemplateOutlet="treeNode; context: {
+      <div cdkDrag [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)">
+        <ng-container *ngTemplateOutlet="treeNode; context: {
         $implicit: child,
         parentPath: [], 
         containerStyle: child.containerStyle,
         typographyStyle: child.typographyStyle,
         treeLevel: 0,
       }"></ng-container>
+      </div>
     }
   </div>
 
@@ -75,7 +81,7 @@
     <!-- Node header with toggle and item -->
     <div class="node-header">
       <!-- Expand/Collapse toggle -->
-      @if (hasChildren(node) && !node.isDisabled) {
+      @if (isExtandable(node) && !node.isDisabled) {
         <button class="expand-toggle"
           [style.color]="typographyStyle.color"
           (click)="toggleNodeExpanded(node.id)"
@@ -90,8 +96,10 @@
 
       <!-- Navigation item -->
       <div class="navigation-item"
+        [class.drag-box]="node.permissionName?.includes('edit') && (windowWidth > windowWidthLimit)"
         [class.edit-nav-container]="node.permissionName?.includes('edit')"
         [style.margin-top.px]="treeLevel === 0 ? node.containerLayout.marginTop : 0"
+        [style.margin-bottom.px]="treeLevel === 0 ? node.containerLayout.marginBottom : 0"
         [style.background-color]="containerStyle.isBackgroundTransparent ? 'transparent' : containerStyle.backgroundColor"
         [style.border-width.px]="containerStyle.borderWidth && containerStyle.borderWidth > 0 ? containerStyle.borderWidth : 1"
         [style.border-color]="containerStyle.borderColor ?? 'transparent'"
@@ -137,21 +145,28 @@
     </div>
 
     <!-- Children - displayed when expanded -->
-    @if (isNodeExpanded(node.id)) {
-      <div class="node-children">
+    @if (isNodeExpanded(node.id)) {            
+      <div class="node-children drop-zone"
+        cdkDropList
+        (cdkDropListDropped)="drop($event, node)"
+        [cdkDropListData]="node.children"
+        [cdkDropListDisabled]="!node.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)"
+      >
         @for (child of node.children; track child.id) {
           @if (
             child.navigationType.name === 'redirect-button' ||
             child.navigationType.name === 'external-link-button' ||
             child.navigationType.name === 'dialog-button'
           ) {
-            <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{
-              $implicit: child,
-              parentPath: parentPath.concat(node.name),
-              containerStyle: containerStyle,
-              typographyStyle: typographyStyle,
-              treeLevel: 1
-            }"></ng-container>
+            <div cdkDrag [cdkDragDisabled]="!node.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)">
+              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{
+                $implicit: child,
+                parentPath: parentPath.concat(node.name),
+                containerStyle: containerStyle,
+                typographyStyle: typographyStyle,
+                treeLevel: 1
+              }"></ng-container>
+            </div>
           }
         }
       </div>

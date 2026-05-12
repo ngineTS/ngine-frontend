@@ -13,6 +13,8 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-vertical-header-bar',
@@ -21,6 +23,8 @@ import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
     RouterModule,
     RouterOutlet,
     MatTooltipModule,
+    CdkDrag,
+    CdkDropList,
   ],
   templateUrl: './vertical-header-bar.component.html',
   styleUrl: './vertical-header-bar.component.scss',
@@ -43,7 +47,7 @@ export class VerticalHeaderBarComponent implements OnInit {
   /** The window width. */
   windowWidth!: number;
   /** Responsive threshold. */
-  windowWidthLimit = 1000;
+  windowWidthLimit = 750;
   /** Tracks which navigation items are expanded in the tree. */
   expandedNodes: Set<string> = new Set();
   /** Reference to the navigation sidebar element */
@@ -63,6 +67,7 @@ export class VerticalHeaderBarComponent implements OnInit {
   ngOnInit() {
     this.navigation = this._route.snapshot.data["navigation"];
     this.windowWidth = window.innerWidth;
+    this._navigationService.sortNavigationsByOrder(this.navigation);
   }
 
   /**
@@ -89,12 +94,20 @@ export class VerticalHeaderBarComponent implements OnInit {
   }
 
   /**
-   * Check if a navigation has at least one child which is not a component.
+   * Check if a node is extandable.
+   * 
+   * It must have:
+   * - no menu attached to it
+   * - at least one child which is not a component
    * 
    * @param navigation The navigation to check.
-   * @returns True if the navigation has a valid child, false otherwise.
+   * @returns True if the navigation is extandable, false otherwise.
    */
-  hasChildren(navigation: Navigation): boolean | undefined {
+  isExtandable(navigation: Navigation): boolean | undefined {
+    if(navigation.menu) {
+      return false;
+    }
+
     const child = navigation.children?.find(child => 
       child.navigationType.name === 'redirect-button' ||
       child.navigationType.name === 'dialog-button' ||
@@ -164,7 +177,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['width', 'height', 'marginBottom', 'marginRight', 'marginLeft', 'zIndex',
+        ['width', 'height', 'marginRight', 'marginLeft', 'zIndex',
           'xPos', 'yPos', 'paddingTop', 'paddingBottom', 'paddingRight', 'paddingLeft'
         ]
       ),
@@ -298,5 +311,32 @@ export class VerticalHeaderBarComponent implements OnInit {
     const urlList = this._router.url.split('/');
     return urlList.includes(navigationName);
   }
+
+  /**
+   * Recursively sort navigations by order.
+   */
+  sortNavigationsByOrder() {
+    this.navigation.children?.sort((a, b) => a.order - b.order);
+    this.navigation.children?.forEach(child => 
+      child.children?.sort((a, b) => a.order - b.order)
+    );
+  }
+
+  /**
+   * Drop a navigation and update position of all navigations.
+   * 
+   * @param event The CdkDragDrop event containing navigation positions.
+   */
+  drop(event: CdkDragDrop<Navigation[]>, navigation: Navigation): void {
+    const navigationOrders: Partial<Navigation>[] = [];
+    moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
+    navigation.children!.forEach((nav, index) => { 
+      navigationOrders.push({ id: nav.id, order: index });
+      nav.order = index;
+    });
+    this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
+  }
+
+  
 
 }
