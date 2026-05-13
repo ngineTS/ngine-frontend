@@ -29,24 +29,22 @@ export class CustomButtonComponent {
    * @param navigation The navigation.
    */
   actionClick(navigation: Navigation) {
-    if (!navigation.isDisabled) {
-      switch (navigation.navigationType.name) {
-        /* redirect to navigation url */
-        case 'redirect-button':
-          this._router.navigate([navigation.name], { relativeTo: this._route });
-          break;
-        /* open mat dialog */
-        case 'dialog-button':
-          this._matDialog.open(EmptyDialogComponent, {
-            data: { navigation: navigation },
-            width: '90%',
-          });
-          break;
-        /* open url on new tab */
-        case 'external-link-button':
-          window.open(navigation.url, '_blank', 'noopener,noreferrer');
-          break;
-      }
+    switch (navigation.navigationType.name) {
+      /* redirect to navigation url */
+      case 'redirect-button':
+        this._router.navigate([navigation.name], { relativeTo: this._route });
+        break;
+      /* open mat dialog */
+      case 'dialog-button':
+        this._matDialog.open(EmptyDialogComponent, {
+          data: { navigation: navigation },
+          width: '90%',
+        });
+        break;
+      /* open url on new tab */
+      case 'external-link-button':
+        window.open(navigation.url, '_blank', 'noopener,noreferrer');
+        break;
     }
   }
 

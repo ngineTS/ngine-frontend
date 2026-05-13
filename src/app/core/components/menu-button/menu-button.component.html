@@ -1,7 +1,6 @@
 <!-- Main button -->
-<div [matMenuTriggerFor]="navigation.isDisabled ? null : mainMenu"
+<div [matMenuTriggerFor]="mainMenu"
     [class]="iconOnTop ? 'main-button' : ''"
-    [style.cursor]="navigation.isDisabled ? 'default' : 'pointer'"
     [style.font-size.px]="navigation.typographyStyle.fontSize"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
@@ -100,7 +99,7 @@
             <div mat-menu-item
                 cdkDrag 
                 [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
-                [matMenuTriggerFor]="navigation.isDisabled ? null : subMenu"
+                [matMenuTriggerFor]="subMenu"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
                     navigation.typographyStyle.activeColor :

@@ -81,7 +81,7 @@
     <!-- Node header with toggle and item -->
     <div class="node-header">
       <!-- Expand/Collapse toggle -->
-      @if (isExpandable(node) && !node.isDisabled) {
+      @if (isExpandable(node)) {
         <button class="expand-toggle"
           [style.color]="typographyStyle.color"
           (click)="toggleNodeExpanded(node.id)"
@@ -119,7 +119,6 @@
         [style.font-size.px]="typographyStyle.fontSize"
         [style.font-weight]="typographyStyle.fontWeight"
         [style.font-family]="typographyStyle.fontFamily"
-        [style.cursor]="node.isDisabled ? 'default' : 'pointer'"
         (click)="actionClick(node, parentPath)"
         (mouseenter)="node['isMouseOver'] = true"
         (mouseleave)="node['isMouseOver'] = false"

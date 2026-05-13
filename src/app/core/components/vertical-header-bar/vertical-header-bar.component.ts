@@ -295,24 +295,22 @@ export class VerticalHeaderBarComponent implements OnInit {
    * @param navigation The navigation.
    */
   actionClick(navigation: Navigation, parentPath?: Array<string>) {
-    if (!navigation.isDisabled) {
-      switch (navigation.navigationType.name) {
-        /* redirect to navigation url */
-        case 'redirect-button':
-          this.navigateTo(navigation, parentPath);
-          break;
-        /* open mat dialog */
-        case 'dialog-button':
-          this._matDialog.open(EmptyDialogComponent, {
-            data: { navigation: navigation },
-            width: '90%',
-          });
-          break;
-        /* open url on new tab */
-        case 'external-link-button':
-          window.open(navigation.url, '_blank', 'noopener,noreferrer');
-          break;
-      }
+    switch (navigation.navigationType.name) {
+      /* redirect to navigation url */
+      case 'redirect-button':
+        this.navigateTo(navigation, parentPath);
+        break;
+      /* open mat dialog */
+      case 'dialog-button':
+        this._matDialog.open(EmptyDialogComponent, {
+          data: { navigation: navigation },
+          width: '90%',
+        });
+        break;
+      /* open url on new tab */
+      case 'external-link-button':
+        window.open(navigation.url, '_blank', 'noopener,noreferrer');
+        break;
     }
   }
 
