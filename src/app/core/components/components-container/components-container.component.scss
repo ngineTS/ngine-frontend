@@ -70,7 +70,7 @@
 
 .global-button {
     margin-left: 6px;
-    padding: 10px 16px;
+    padding: 6px 10px;
     border: none;
     border-radius: 6px;
     font-size: 14px;
@@ -78,6 +78,14 @@
     background-color: #985ab5;
     cursor: pointer;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      opacity: 0.8;
+    }
+}
+
+.global-icon {
+  font-size: 16px;
 }
 
 ::ng-deep .mat-mdc-tooltip{
