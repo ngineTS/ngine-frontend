@@ -81,18 +81,10 @@ export class ComponentsContainer implements OnInit {
     this.navigation = this._route.snapshot.data["navigation"];
 
     if (this.windowWidth < this.windowWidthLimit) {
-      this.navigation.children?.sort((a, b) => {
-        const aXPosRounded = Math.ceil(a.containerLayout.xPos! / 10) * 10;
-        const bXPosRounded = Math.ceil(b.containerLayout.xPos! / 10) * 10;
-        const aYPosRounded = Math.ceil(a.containerLayout.yPos! / 10) * 10;
-        const bYPosRounded = Math.ceil(b.containerLayout.yPos! / 10) * 10;
-
-        if (aXPosRounded !== bXPosRounded) {
-          return aXPosRounded - bXPosRounded; // priority: xPos
-        }
-
-        return aYPosRounded - bYPosRounded; // secondary: yPos
-      });
+      this.navigation.children?.sort((a, b) => 
+        (Number(a.containerLayout.xPos!) + Number(a.containerLayout.yPos!)) 
+          - (Number(b.containerLayout.xPos!) + Number(b.containerLayout.yPos!))
+      );
     }
   }
 
