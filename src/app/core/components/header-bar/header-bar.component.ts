@@ -3,7 +3,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Navigation } from '../../models/navigation.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NavigationService } from '../../services/navigation.service';
 import { StylePayload } from '../../models/menu.interface';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
@@ -27,6 +27,7 @@ import { HeaderBarService } from '../../services/header-bar.service';
     CommonModule, 
     MatTooltipModule,
     CdkDrag,
+    CdkDragHandle,
     MenuButtonComponent,
     CustomButtonComponent,
     MatMenuModule,
