@@ -1,4 +1,4 @@
-<div (window:resize)="onResize($event)">
+<div>
     <h4 class="ms-3">
         Application analytic 
         <i class="bi bi-info-circle ms-1" 
@@ -7,7 +7,7 @@
     </h4>
 
     @if (connectionChartData.length > 0) {
-        <div class="graph-container">
+        <div class="graph-container p-md-4">
             <h5 class="mb-3">Daily Visits</h5>
             <ngx-charts-line-chart
                 [view]="connectionChartDimensions"
@@ -20,7 +20,7 @@
     }
 
     @if (mauChartData.length > 0) {
-        <div class="graph-container">
+        <div class="graph-container p-md-4">
             <h5 class="mb-3">Montly Active Users</h5>
             <ngx-charts-bar-vertical
                 [view]="connectionChartDimensions"
@@ -33,7 +33,7 @@
     }
 
     @if (urlVisitCharData.length > 0) {
-        <div class="graph-container">
+        <div class="graph-container p-md-4">
             <h5 class="mb-3">URL Visits</h5>
             <ngx-charts-bar-vertical
                 [view]="connectionChartDimensions"

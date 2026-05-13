@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { Color, NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { UserEventService } from '../../core/services/user-event.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -34,7 +34,7 @@ export class AnalyticComponent extends NavigationBaseComponent {
   }> = [];
 
   gradient = false;
-  connectionChartDimensions: [number, number] = [window.innerWidth * 0.75, 300];
+  connectionChartDimensions: [number, number] = [0, 0];
   colorScheme: Color = { 
     name: '',
     selectable: true,
@@ -57,8 +57,13 @@ export class AnalyticComponent extends NavigationBaseComponent {
     });
   }
 
-  onResize(event: any) {
-    this.connectionChartDimensions = [event.target.innerWidth / 1.35, 300];
+  ngAfterViewInit() {
+    this.connectionChartDimensions = [Number(this._navigation.containerLayout.width! * window.innerWidth / 100) * 0.88, 0]
   }
 
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    if (simpleChanges["_sizeChanged"]) {
+      this.connectionChartDimensions = [Number(this._navigation.containerLayout.width! * window.innerWidth / 100) * 0.88, 0]
+    }
+  }
 }
