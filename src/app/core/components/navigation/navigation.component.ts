@@ -295,7 +295,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   onFullScreenClick() {
     const width = this._componentsContainerService.currentWidth! / this.windowWidth * 97.5;
-    const height = 100;
+    const height = 99;
     const xPos = 1;
     this._navigation.containerLayout.width = width;
     this._navigation.containerLayout.height = height;
