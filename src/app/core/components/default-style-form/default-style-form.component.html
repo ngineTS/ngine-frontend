@@ -1,4 +1,4 @@
-<div class="my-3">
+<div class="default-style-container">
     
     @if (step === 1) {
         <div class="mx-4">
@@ -60,7 +60,7 @@
                 </div>
 
                 @if (defaultContainerStyle && defaultTypographyStyle) {
-                    <div class="col mx-5 mt-2 mb-1 example-square"
+                    <div class="col mx-5 example-square"
                         [style.background-color]="defaultContainerStyle.isBackgroundTransparent ? 'transparent' : defaultContainerStyle.backgroundColor"
                         [style.border-width.px]="defaultContainerStyle.borderWidth"
                         [style.border-color]="isMouseOverExampleSquare
@@ -95,6 +95,7 @@
         </div>
 
         <app-generic-form
+            class="component-style-form"
             [formConfiguration]="styleFormConfiguration"
             (onFormValueChange)="onFormValueChange($event)"
             (action)="action($event)"

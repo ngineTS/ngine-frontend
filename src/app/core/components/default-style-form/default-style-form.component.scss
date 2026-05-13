@@ -1,3 +1,9 @@
+.default-style-container {
+    overflow-y: hidden;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
 .continue-btn {
     position: absolute;
     bottom: 25px;
@@ -30,4 +36,9 @@
 .step-2-info {
     cursor: pointer;
     width: fit-content;
+}
+
+.component-style-form {
+    display: flex;
+    height: 70%;
 }
