@@ -36,7 +36,7 @@ export class ContainerLayoutService {
         alias: 'Fit content',
         order: 0,
         type: 'checkbox',
-        validators: [Validators.required]
+        validators: []
       },
       width: {
         value: containerLayout.width ? Math.round(containerLayout.width * 100) / 100 : null,
