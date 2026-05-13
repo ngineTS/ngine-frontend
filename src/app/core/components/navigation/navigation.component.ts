@@ -168,7 +168,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   onSaveSizeClick(): void {
     const navigationSize = {
       width: this.navigationDiv.nativeElement.offsetWidth / window.innerWidth * 100,
-      height: this.navigationDiv.nativeElement.offsetHeight / window.innerHeight * 100
+      height: this.navigationDiv.nativeElement.offsetHeight / window.innerHeight * 100,
+      heightFitContent: false
     };
 
     this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
@@ -176,6 +177,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       .subscribe(() => {
         this._navigation.containerLayout.width = navigationSize.width;
         this._navigation.containerLayout.height = navigationSize.height;
+        this._navigation.containerLayout.heightFitContent = navigationSize.heightFitContent;
         this.isResizing = false;
         
         if (this.containerRef) {
@@ -226,7 +228,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this._navigation.containerLayout,
         ['paddingTop', 'paddingRight', 'paddingLeft', 'paddingBottom',
-         'xPos', 'yPos', 'width', 'height', 'zIndex']
+         'xPos', 'yPos', 'width', 'height', 'zIndex', 'heightFitContent']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(this._navigation.containerStyle),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(this._navigation.typographyStyle)
@@ -292,17 +294,33 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Resize navigation to match the screen size.
    */
   onFullScreenClick() {
-    const width = this._componentsContainerService.currentWidth! / this.windowWidth * 98;
+    const width = this._componentsContainerService.currentWidth! / this.windowWidth * 97.5;
     const height = 100;
     const xPos = 1;
     this._navigation.containerLayout.width = width;
     this._navigation.containerLayout.height = height;
     this._navigation.containerLayout.xPos = xPos;
+    this._navigation.containerLayout.heightFitContent = false;
 
     this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
       width: width,
       height: height,
+      heightFitContent: false,
       xPos: xPos
+    }).pipe(take(this._takeCount))
+      .subscribe(() => {
+        if (this.containerRef) {
+          this._sizeChanged = !this._sizeChanged;
+          this.containerRef.setInput('_sizeChanged', this._sizeChanged);
+        }
+      });
+  }
+
+  onFitContentClick() {
+    this._navigation.containerLayout.heightFitContent = !this._navigation.containerLayout.heightFitContent;
+
+    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+      heightFitContent: this._navigation.containerLayout.heightFitContent,
     }).pipe(take(this._takeCount))
       .subscribe(() => {
         if (this.containerRef) {

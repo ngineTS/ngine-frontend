@@ -31,96 +31,103 @@ export class ContainerLayoutService {
   ): DeepFormConfig<Partial<ContainerLayout>> {
     
     const containerLayoutFormConfig: DeepFormConfig<Partial<ContainerLayout>> = {
+      heightFitContent: {
+        value: containerLayout.heightFitContent,
+        alias: 'Fit content',
+        order: 0,
+        type: 'checkbox',
+        validators: [Validators.required]
+      },
       width: {
-          value: containerLayout.width ? Math.round(containerLayout.width * 100) / 100 : null,
-          alias: 'Width',
-          order: 1,
-          type: 'number',
-          validators: []
+        value: containerLayout.width ? Math.round(containerLayout.width * 100) / 100 : null,
+        alias: 'Width',
+        order: 1,
+        type: 'number',
+        validators: []
       },
       height: {
-          value: containerLayout.height ? Math.round(containerLayout.height * 100) / 100 : null,
-          alias: 'Height',
-          order: 2,
-          type: 'number',
-          validators: [Validators.required]
+        value: containerLayout.height ? Math.round(containerLayout.height * 100) / 100 : null,
+        alias: 'Height',
+        order: 2,
+        type: 'number',
+        validators: [Validators.required]
       },
       xPos: {
-          value: containerLayout.xPos ?? null,
-          alias: 'X Position',
-          order: 3,
-          type: 'number',
-          validators: []
+        value: containerLayout.xPos ?? null,
+        alias: 'X Position',
+        order: 3,
+        type: 'number',
+        validators: []
       },
       yPos: {
-          value: containerLayout.yPos ?? null,
-          alias: 'Y Position',
-          order: 4,
-          type: 'number',
-          validators: []
+        value: containerLayout.yPos ?? null,
+        alias: 'Y Position',
+        order: 4,
+        type: 'number',
+        validators: []
       },
       zIndex: {
-          value: containerLayout.zIndex,
-          alias: 'Z Index',
-          order: 5,
-          type: 'number',
-          validators: []
+        value: containerLayout.zIndex,
+        alias: 'Z Index',
+        order: 5,
+        type: 'number',
+        validators: []
       },
       marginTop: {
-          value: containerLayout.marginTop ?? null,
-          alias: 'Margin Top',
-          order: 6,
-          type: 'number',
-          validators: []
+        value: containerLayout.marginTop ?? null,
+        alias: 'Margin Top',
+        order: 6,
+        type: 'number',
+        validators: []
       },
       marginRight: {
-          value: containerLayout.marginRight ?? null,
-          alias: 'Margin Right',
-          order: 7,
-          type: 'number',
-          validators: []
+        value: containerLayout.marginRight ?? null,
+        alias: 'Margin Right',
+        order: 7,
+        type: 'number',
+        validators: []
       },
       marginBottom: {
-          value: containerLayout.marginBottom ?? null,
-          alias: 'Margin Bottom',
-          order: 8,
-          type: 'number',
-          validators: []
+        value: containerLayout.marginBottom ?? null,
+        alias: 'Margin Bottom',
+        order: 8,
+        type: 'number',
+        validators: []
       },
       marginLeft: {
-          value: containerLayout.marginLeft ?? null,
-          alias: 'Margin Left',
-          order: 9,
-          type: 'number',
-          validators: []
+        value: containerLayout.marginLeft ?? null,
+        alias: 'Margin Left',
+        order: 9,
+        type: 'number',
+        validators: []
       },
       paddingTop: {
-          value: containerLayout.paddingTop ?? null,
-          alias: 'Padding Top',
-          order: 10,
-          type: 'number',
-          validators: []
+        value: containerLayout.paddingTop ?? null,
+        alias: 'Padding Top',
+        order: 10,
+        type: 'number',
+        validators: []
       },
       paddingRight: {
-          value: containerLayout.paddingRight ?? null,
-          alias: 'Padding Right',
-          order: 11,
-          type: 'number',
-          validators: []
+        value: containerLayout.paddingRight ?? null,
+        alias: 'Padding Right',
+        order: 11,
+        type: 'number',
+        validators: []
       },
       paddingBottom: {
-          value: containerLayout.paddingBottom ?? null,
-          alias: 'Padding Bottom',
-          order: 12,
-          type: 'number',
-          validators: []
+        value: containerLayout.paddingBottom ?? null,
+        alias: 'Padding Bottom',
+        order: 12,
+        type: 'number',
+        validators: []
       },
       paddingLeft: {
-          value: containerLayout.paddingLeft ?? null,
-          alias: 'Padding Left',
-          order: 13,
-          type: 'number',
-          validators: []
+        value: containerLayout.paddingLeft ?? null,
+        alias: 'Padding Left',
+        order: 13,
+        type: 'number',
+        validators: []
       },
     }
 

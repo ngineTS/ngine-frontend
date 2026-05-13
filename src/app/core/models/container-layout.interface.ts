@@ -1,4 +1,4 @@
-export interface ContainerLayout extends Record<string, string | number | null> {
+export interface ContainerLayout extends Record<string, string | number | boolean | null> {
     id: string;
     refId: string;
 	width: number | null;
@@ -14,4 +14,5 @@ export interface ContainerLayout extends Record<string, string | number | null> 
 	xPos: number | null;
 	yPos: number | null;
 	zIndex: number | null;
+	heightFitContent: boolean | null;
 }

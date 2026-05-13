@@ -39,6 +39,7 @@
   .content-wrapper {
     flex: 1;
     overflow-y: auto;
+    scrollbar-width: thin;
   }
 }
 
@@ -113,7 +114,7 @@
   padding: 0px 5px;
 
   &:hover {
-    background-color: #E8E8E8;
+    background-color: #ced4da;
   }
 }
 
@@ -136,7 +137,7 @@
   margin-left: 2px;
 
   &:hover {
-    background-color: #E8E8E8;
+    background-color: #ced4da;
   }
 }
 
