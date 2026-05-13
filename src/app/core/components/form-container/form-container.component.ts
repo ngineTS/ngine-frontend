@@ -18,7 +18,6 @@ export class FormContainerComponent {
   ) { }
 
   action(event: 'added' | 'edited' | 'deleted') {
-    console.log(event);
     this._dialogRef.close(event);
   }
 

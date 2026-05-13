@@ -65,7 +65,6 @@ export class AppService {
     this._navigationService.getNestedNavigations().subscribe({
       next: result => {
         localStorage.setItem('access_token', result.access_token);
-        console.log(result.navigation);
         this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],

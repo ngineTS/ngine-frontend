@@ -133,7 +133,6 @@ export class DefaultStyleFormComponent {
    * @param event The action made by the user.
    */
   action(event: 'added' | 'edited' | 'deleted') {
-    console.log(event);
     this._matDialogRef.close(event);
   }
 

@@ -50,7 +50,6 @@ export class MediaComponent extends NavigationBaseComponent {
 
     if (this.content?.fileName) {
       this._mediaService.getMediaByFileName(this.content.fileName).subscribe(resp => {
-        console.log('media table', resp);
         this.media = resp
       })
       this.mediaUrl$ = this._mediaService.getFileUrl(this.content.fileName)

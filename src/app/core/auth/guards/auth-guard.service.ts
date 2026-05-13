@@ -26,8 +26,6 @@ export class AuthGuard implements CanActivate {
       }
       const jwtExpirationTime: number = jwtDecoded?.exp;
       const currentTime: number = new Date().getTime() / 1000;
-      console.log(currentTime);
-      console.log(jwtExpirationTime);
       if (jwtExpirationTime && jwtExpirationTime >= currentTime) {
         return true;
       }

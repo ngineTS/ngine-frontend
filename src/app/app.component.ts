@@ -85,7 +85,6 @@ export class AppComponent implements OnInit {
    */
   runRefreshTokenJob() {
     this.refreshTokenIntervalId = setInterval(() => {
-      console.log('INTERVAL');
       let token: string | null = null; 
       if (typeof localStorage !== 'undefined') {
         token = localStorage.getItem('access_token');
