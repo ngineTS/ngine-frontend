@@ -30,17 +30,19 @@
                 }
 
                 <!-- Hide navigation bar button -->
-                @if (isNavigationBarHidden) {
-                    <i class="bi bi-chevron-down menu-button" 
-                        (click)="isNavigationBarHidden = false" 
-                        matTooltip="Show navigation bar"
-                    ></i>
-                }
-                @else {
-                    <i class="bi bi-chevron-up menu-button" 
-                        (click)="isNavigationBarHidden = true"
-                        matTooltip="Hide navigation bar"
-                    ></i>
+                @if (_headerBarService.activeVerticalBarsNumber) {
+                    @if (isNavigationBarHidden) {
+                        <i class="bi bi-chevron-down menu-button" 
+                            (click)="isNavigationBarHidden = false" 
+                            matTooltip="Show navigation bar"
+                        ></i>
+                    }
+                    @else {
+                        <i class="bi bi-chevron-up menu-button" 
+                            (click)="isNavigationBarHidden = true"
+                            matTooltip="Hide navigation bar"
+                        ></i>
+                    }
                 }
             </div>
         }

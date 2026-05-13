@@ -81,7 +81,7 @@
     <!-- Node header with toggle and item -->
     <div class="node-header">
       <!-- Expand/Collapse toggle -->
-      @if (isExtandable(node) && !node.isDisabled) {
+      @if (isExpandable(node) && !node.isDisabled) {
         <button class="expand-toggle"
           [style.color]="typographyStyle.color"
           (click)="toggleNodeExpanded(node.id)"
