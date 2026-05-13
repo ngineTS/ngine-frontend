@@ -4,12 +4,13 @@
     matTooltip="{{ navigation.description }}"
     [class]="iconOnTop ? 'button-container' : ''"
     [style.hyphens]="'auto'"
-    [style.color]="isMouseOver || isRouteActive(navigation.name) 
+    [style.color]="!navigation.isDisabled && (isMouseOver || isRouteActive(navigation.name))
         ? navigation.typographyStyle.activeColor
         : navigation.typographyStyle.color"
     [style.font-size.px]="navigation.typographyStyle.fontSize"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
     [style.font-family]="navigation.typographyStyle.fontFamily"
+    [style.cursor]="navigation.isDisabled ? 'default' : 'pointer'"
 >
     @if (navigation.icon) {
         <i [class]="'bi bi-' + navigation.icon"></i>
