@@ -37,7 +37,7 @@ export class ManagementBaseComponent<
   /** The name of the database table. */
   protected tableName: string = '';
   /** The form inputs configuration. */
-  protected formInputsConfiguration = {} as DeepFormConfig<Omit<T, 'id' | 'navigationId'>> & Record<string, any>;
+  protected formInputsConfiguration: DeepFormConfig<Omit<T, 'id' | 'navigationId'>> | undefined;
   /** The sorting configuration. */
   protected sortConfiguration : { orderBy: keyof T, order: 'ASC' | 'DESC' } | null = null;
 
@@ -71,7 +71,7 @@ export class ManagementBaseComponent<
    *  otherwise the form will not be able to create the new item.
    */
   addItem() {
-    if (this._canAdd) {
+    if (this.formInputsConfiguration && this._canAdd) {
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Add item',
         formConfig: this.formInputsConfiguration,
@@ -103,7 +103,7 @@ export class ManagementBaseComponent<
    * @param item The item to be edited.
    */
   editItem(item: T) {
-    if (this._canEdit) {
+    if (this.formInputsConfiguration && this._canEdit) {
       const formInputsConfigurationForEdit = Object.fromEntries(
         Object.entries(this.formInputsConfiguration).map(([key, field]) => [
           key,

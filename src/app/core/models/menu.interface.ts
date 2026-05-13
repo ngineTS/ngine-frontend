@@ -9,7 +9,7 @@ export interface Menu extends Record<string, any> {
     containerLayout: ContainerLayout;
     containerStyle: ContainerStyle;
     typographyStyle: TypographyStyle;
-    permissionName?: string;  
+    permissionName?: string;
 }
 
 export type StylePayload = {

@@ -176,7 +176,7 @@
 
             @case ('checkbox') {
                 <div class="d-flex align-items-center gap-2">
-                    <mat-checkbox [formControl]="control" class="mt-2">{{ input.value.alias ?? input.key }}</mat-checkbox>
+                    <mat-checkbox [formControl]="control" class="mb-3">{{ input.value.alias ?? input.key }}</mat-checkbox>
                     @if (input.value.info) {
                         <span [matTooltip]="input.value.info" class="d-flex align-items-center">
                             <i class="bi bi-info-circle-fill"></i>

@@ -144,12 +144,15 @@ export class VerticalHeaderBarComponent implements OnInit {
     const menuStyleFormConfig: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         this.navigation.menu.containerLayout,
-        ['paddingBottom', 'paddingLeft', 'paddingRight', 'marginBottom',
-         'xPos', 'yPos', 'width', 'height', 'zIndex']
+        ['marginTop', 'marginRight', 'marginBottom', 'marginLeft']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         this.navigation.menu.containerStyle,
-        ['backgroundImage']
+        [
+         'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
+         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
+         'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent'
+        ]
       ),
     }
 
@@ -177,13 +180,15 @@ export class VerticalHeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['width', 'height', 'marginRight', 'marginLeft', 'zIndex',
-          'xPos', 'yPos', 'paddingTop', 'paddingBottom', 'paddingRight', 'paddingLeft'
-        ]
+        ['marginTop', 'marginBottom']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,
-        ['backgroundImage']
+        [
+         'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
+         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
+         'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent'
+        ]
       ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(
         navigation.typographyStyle

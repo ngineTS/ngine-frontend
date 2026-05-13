@@ -27,6 +27,14 @@
     display: none;
     cursor: pointer;
     z-index: 999;
+
+    &:hover {
+        background-color: #ced4da;
+    }
+}
+
+.fit-content-icon {
+    transform: rotate(90deg);
 }
 
 .navigation-container:hover .icon {

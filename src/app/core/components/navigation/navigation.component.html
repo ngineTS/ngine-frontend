@@ -13,7 +13,12 @@
                     }
                 }
                 @if (windowWidth > windowWidthLimit) {
-                    <i class="bi bi-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
+                    <i class="bi bi-aspect-ratio icon fit-content-icon"
+                        [style.backgroundColor]="_navigation.containerLayout.heightFitContent ? '#ced4da' : ''"
+                        (click)="onFitContentClick()" 
+                        [matTooltip]="_navigation.containerLayout.heightFitContent ? 'Unfit content' : 'Fit content'"
+                    ></i>
+                    <i class="bi bi-arrows-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
                     <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
                 }
                 <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
@@ -35,7 +40,9 @@
         [style.width]="windowWidth > windowWidthLimit
             ? (_navigation.containerLayout.width ?? 25) * windowWidth / 100 + 'px' 
             : '100%'"
-        [style.height.px]="(_navigation.containerLayout.height ?? 25) * windowHeight / 100"
+        [style.height]="_navigation.containerLayout.heightFitContent
+            ? 'fit-content'
+            : ((_navigation.containerLayout.height ?? 25) * windowHeight / 100 + 'px')"
         [style.max-height]="windowWidth > windowWidthLimit ? 'unset' : 'fit-content'"
         [style.min-height]="windowWidth > windowWidthLimit ? 'unset' : 'max-content'"
         [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : 'none'"

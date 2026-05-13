@@ -129,15 +129,11 @@ export class EmptyDialogComponent {
     const navigationStylePayload: DeepFormConfig<StylePayload> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['height', 'width', 'marginBottom', 'marginLeft', 'marginRight', 'marginTop', 'xPos', 'yPos', 'zIndex']
+        ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,
-        [
-         'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius',
-         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
-         'isBorderRightHidden', 'isBorderTopHidden'
-        ]
+        ['backgroundColor', 'isBackgroundTransparent', 'backgroundImage']
       ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.typographyStyle)
     };

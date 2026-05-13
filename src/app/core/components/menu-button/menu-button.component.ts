@@ -119,7 +119,10 @@ export class MenuButtonComponent {
     const menuStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.menu.containerStyle,
-        ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius']
+        [
+         'borderColor', 'borderStyle', 'borderWidth', 'isBorderBottomHidden', 'isBorderLeftHidden',
+         'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent',
+        ]
       ),
       typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
