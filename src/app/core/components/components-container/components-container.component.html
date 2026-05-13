@@ -56,14 +56,13 @@
         <!-- App global setting button -->
         @if (_componentsContainerService.userGlobalNavigationPermission?.includes('edit')) {
             <button 
-                cdkDrag
                 class="global-button"
                 [matMenuTriggerFor]="menu" 
             >
             <i class="bi bi-house-gear house-gear-icon"></i>
             </button>
 
-            <mat-menu #menu="matMenu" cdkDrag>
+            <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="manageAppDefaultStyle()">
                     Manage application style
                 </button>
