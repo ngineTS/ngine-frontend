@@ -14,4 +14,9 @@ export class ComponentsContainerService {
      * via the 'full screen' button.
      */
     currentWidth: number | undefined;
+
+    /**
+     * The user global navigation permission.
+     */
+    userGlobalNavigationPermission: string | undefined;
 }

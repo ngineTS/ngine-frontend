@@ -14,6 +14,10 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DefaultStyleFormComponent } from '../default-style-form/default-style-form.component';
+import { NavigationTypeService } from '../../services/navigation-type.service';
+import { FormContainerComponent } from '../form-container/form-container.component';
 
 
 @Component({
@@ -40,7 +44,9 @@ export class ComponentsContainer implements OnInit {
     private _snackbarService: SnackBarService,
     private _router: Router,
     private _containerLayoutService: ContainerLayoutService,
-    private _componentsContainerService: ComponentsContainerService
+    private _matDialog: MatDialog,
+    private _navigationTypeService: NavigationTypeService,
+    public _componentsContainerService: ComponentsContainerService,
   ) { }
 
   /** The components container. */
@@ -149,6 +155,30 @@ export class ComponentsContainer implements OnInit {
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });
+  }
+
+  /**
+   * Method called on 'Manage application style' button click.
+   * 
+   * Open form to manage app default style.
+   */
+  manageAppDefaultStyle() {
+    this._matDialog.open(DefaultStyleFormComponent, {
+      width: '60%',
+      height: '500px',
+      disableClose: true,
+      backdropClass: 'no-backdrop'
+    });
+  }
+
+  /**
+   * Methods called on 'New component type' button click.
+   * 
+   * Open form to add a new navigation type.
+   */
+  addNavigationType() {
+    const formConfiguration = this._navigationTypeService.setupNavigationTypeForm();
+    this._matDialog.open(FormContainerComponent, { data: formConfiguration });
   }
 
 }

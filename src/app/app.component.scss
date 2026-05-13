@@ -20,23 +20,3 @@
   cursor: pointer;
   font-size: 18px;
 }
-
-.general-setting-button {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  color: white;
-  background-color: #985ab5;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  z-index: 10000;
-}
-
-.house-gear-icon {
-  color: white;
-  font-size: 16px;
-}
