@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, injec
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { StylePayload } from '../../models/menu.interface';
@@ -240,36 +240,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._navigation.displayLabel
     );
 
-    this.setSideNavFormListener();
+    this._sideNavService.setSideNavFormListener(this._navigation);
   }
 
-  /**
-   * Setup listener on sidenav to update navigation style in real time.
-   * 
-   * If sidenav is closed without saving then assign back initial style.
-   */
-  setSideNavFormListener() {
-    const initialFormContent: StylePayload = {
-      containerLayout: JSON.parse(JSON.stringify(this._navigation.containerLayout)),
-      containerStyle: JSON.parse(JSON.stringify(this._navigation.containerStyle)),
-      typographyStyle: JSON.parse(JSON.stringify(this._navigation.typographyStyle)),
-    }
-
-    this._sideNavService.initalFormContent = initialFormContent;
-
-    this._sideNavService.formValueEvent
-      .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-      .subscribe(formValueEvent => {
-        if (formValueEvent.formControlValue === 'close') {
-          this._navigation.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
-          this._navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-          this._navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-        }
-        else {
-          this._navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
-        }
-      });
-  }
 
   doesNavigationHasScrollBar(): boolean {
     const navigationTypeWithoutScrollBar = [

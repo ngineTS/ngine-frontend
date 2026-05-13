@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { DeepFormConfig, FormValueEvent, GenericFormDialogData } from "../models/form-input.interface";
-import { StylePayload } from "../models/menu.interface";
+import { Menu, StylePayload } from "../models/menu.interface";
+import { Navigation } from "../models/navigation.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +54,34 @@ export class SideNavService {
         };
 
         this.formConfiguration.next(formConfiguration);
+    }
+
+    /**
+     * Setup listener on sidenav to update navigation style in real time.
+     * If sidenav is closed without saving then assign back initial style.
+     */
+    setSideNavFormListener(object: Navigation | Menu) {
+      //navigation case
+      const initialFormContent = {
+        containerLayout: JSON.parse(JSON.stringify(object.containerLayout)),
+        containerStyle: JSON.parse(JSON.stringify(object.containerStyle)),
+        typographyStyle: JSON.parse(JSON.stringify(object.typographyStyle)),
+      }
+  
+      this.formValueEvent
+        .pipe(takeUntil(this.stopSubscriptions))
+        .subscribe(formValueEvent => {
+          if (formValueEvent.formControlValue === 'close') {
+            object.containerLayout = this.initalFormContent!['containerLayout'];
+            object.containerStyle = this.initalFormContent!['containerStyle'];
+            object.typographyStyle = this.initalFormContent!['typographyStyle'];
+          }
+          else {
+            object[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue;
+          }
+        });
+
+        this.initalFormContent = initialFormContent;
     }
     
 }

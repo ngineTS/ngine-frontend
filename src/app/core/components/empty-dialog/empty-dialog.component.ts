@@ -11,7 +11,6 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
-import { takeUntil } from 'rxjs';
 import { ComponentService } from '../../../components/component.service';
 
 @Component({
@@ -150,7 +149,7 @@ export class EmptyDialogComponent {
       hasBackdrop: false
     });
 
-    this.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation);
   }
 
   /**
@@ -161,30 +160,4 @@ export class EmptyDialogComponent {
     this.containerRef.setInput('_isEditing', this._isEditing);
   }
 
-  /**
-   * Setup listener on sidenav to update navigation style in real time.
-   * If sidenav is closed without saving then assign back initial style.
-   */
-  setSideNavFormListener(navigation: Navigation) {
-    const initialFormContent: StylePayload = {
-      containerLayout: JSON.parse(JSON.stringify(navigation.containerLayout)),
-      containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
-      typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
-    }
-
-    this._sideNavService.initalFormContent = initialFormContent;
-
-    this._sideNavService.formValueEvent
-      .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-      .subscribe(formValueEvent => {
-        if (formValueEvent.formControlValue === 'close') {
-          navigation.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
-          navigation.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-          navigation.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-        }
-        else {
-          navigation[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
-        }
-      });
-    }
 }

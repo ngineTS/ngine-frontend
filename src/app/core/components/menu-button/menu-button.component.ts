@@ -12,7 +12,6 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
-import { takeUntil } from 'rxjs';
 
 
 @Component({
@@ -101,7 +100,7 @@ export class MenuButtonComponent {
       navigation.displayLabel
     );
 
-    this.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation);
   }
 
   /**
@@ -133,7 +132,7 @@ export class MenuButtonComponent {
       `${navigation.displayLabel} - Menu`
     );
     
-    this.setSideNavFormListener(navigation.menu);
+    this._sideNavService.setSideNavFormListener(navigation.menu);
   }
 
   /**
@@ -150,53 +149,5 @@ export class MenuButtonComponent {
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});
   }
-
-  /**
-   * Setup listener on sidenav to update navigation style in real time.
-   * If sidenav is closed without saving then assign back initial style.
-   */
-  setSideNavFormListener(object: Navigation | Menu) {
-      let initialFormContent: Partial<StylePayload> = {};
-  
-      //navigation case
-      if (!object.navigationId) {
-        initialFormContent = {
-          typographyStyle: JSON.parse(JSON.stringify(object.typographyStyle)),
-        }
-  
-        this._sideNavService.formValueEvent
-          .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-          .subscribe(formValueEvent => {
-            if (formValueEvent.formControlValue === 'close') {
-              object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-            }
-            else {
-              object.typographyStyle[`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
-            }
-          });
-      }
-      //menu case
-      else {
-        initialFormContent = {
-          containerStyle: JSON.parse(JSON.stringify(object.containerStyle)),
-          typographyStyle: JSON.parse(JSON.stringify(object.typographyStyle)),
-        }
-  
-        this._sideNavService.formValueEvent
-          .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-          .subscribe(formValueEvent => {
-            if (formValueEvent.formControlValue === 'close') {
-              object.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-              object.typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-            }
-            else {
-              object[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
-            }
-          });
-      }
-
-      this._sideNavService.initalFormContent = initialFormContent;
-    }
-
 
 }

@@ -10,7 +10,7 @@ import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
-import { take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { ContainerStyleService } from '../../services/container-style.service';
@@ -159,7 +159,7 @@ export class HeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this.setSideNavFormListener();
+    this._sideNavService.setSideNavFormListener(this.navigation.menu);
   }
 
   /**
@@ -197,7 +197,7 @@ export class HeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation);
   }
 
   /**
@@ -229,60 +229,6 @@ export class HeaderBarComponent implements OnInit {
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {});
-  }
-
-   /**
-   * Setup listener on sidenav to update navigation style in real time.
-   * If sidenav is closed without saving then assign back initial style.
-   */
-   setSideNavFormListener(navigation?: Navigation) {
-    let initialFormContent: Partial<StylePayload> = {};
-
-    //navigation case
-    if (navigation) {
-      initialFormContent = {
-        containerStyle: JSON.parse(JSON.stringify(navigation.containerStyle)),
-        typographyStyle: JSON.parse(JSON.stringify(navigation.typographyStyle)),
-        
-      }
-
-      this._sideNavService.formValueEvent
-        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-        .subscribe(formValueEvent => {
-          if (formValueEvent.formControlValue === 'close') {
-            this.navigation.children!.find(child => child.id === navigation.id)!
-              .containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-             this.navigation.children!.find(child => child.id === navigation.id)!
-              .typographyStyle = this._sideNavService.initalFormContent!['typographyStyle'];
-          }
-          else {
-            this.navigation.children!.find(child => child.id === navigation.id)!
-              [`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue;
-
-          }
-        });
-    }
-    //menu case
-    else {
-      initialFormContent = {
-        containerLayout: JSON.parse(JSON.stringify(this.navigation.menu.containerLayout)),
-        containerStyle: JSON.parse(JSON.stringify(this.navigation.menu.containerStyle)),
-      }
-
-      this._sideNavService.formValueEvent
-        .pipe(takeUntil(this._sideNavService.stopSubscriptions))
-        .subscribe(formValueEvent => {
-          if (formValueEvent.formControlValue === 'close') {
-            this.navigation.menu.containerLayout = this._sideNavService.initalFormContent!['containerLayout'];
-            this.navigation.menu.containerStyle = this._sideNavService.initalFormContent!['containerStyle'];
-          }
-          else {
-            this.navigation.menu[`${formValueEvent.formGroupName}`][`${formValueEvent.formControlName}`] = formValueEvent.formControlValue
-          }
-        });
-    }
-
-    this._sideNavService.initalFormContent = initialFormContent;
   }
 
   /** 
