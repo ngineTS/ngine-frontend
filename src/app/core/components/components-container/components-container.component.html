@@ -43,36 +43,68 @@
     }
 </div>
 
-<!-- Add navigation button -->
-@if (navigation.level < 12 && navigation.permissionName?.includes('add')) {
-    <button 
-        cdkDrag
-        matButton 
-        [matMenuTriggerFor]="menu" 
-        class="add-nav-button">
-        +
-    </button>
-    
-    <mat-menu #menu="matMenu">
-        @if (navigation.children?.length === 0) {
-            <button
-                mat-menu-item
-                (click)="openFormToAddNavigationBarOrNavigation('horizontal')"
+
+
+<!-- Management buttons toolbar (visible if user has at least 'add' permission on navigation) -->
+@if (navigation.permissionName?.includes('add')) {
+    <div cdkDrag class="toolbar">
+        <!-- Grab toolbar icon -->
+        <div cdkDragHandle class="toolbar-grab">
+            <i class="bi bi-grip-vertical"></i>
+        </div>
+
+        <!-- App global setting button -->
+        @if (_componentsContainerService.userGlobalNavigationPermission?.includes('edit')) {
+            <button 
+                cdkDrag
+                class="global-button"
+                [matMenuTriggerFor]="menu" 
             >
-                Add horizontal navigation bar
+            <i class="bi bi-house-gear house-gear-icon"></i>
             </button>
-            <button
-                mat-menu-item
-                (click)="openFormToAddNavigationBarOrNavigation('vertical')"
-            >
-                Add vertical navigation bar
-            </button>
+
+            <mat-menu #menu="matMenu" cdkDrag>
+                <button mat-menu-item (click)="manageAppDefaultStyle()">
+                    Manage application style
+                </button>
+
+                <button mat-menu-item (click)="addNavigationType()">
+                    New component type
+                </button>
+            </mat-menu>
         }
-        <button
-            mat-menu-item
-            (click)="openFormToAddNavigationBarOrNavigation('navigation')"
-        >
-            Add component
-        </button>
-    </mat-menu>
+
+        <!-- Add navigation button -->
+        @if (navigation.level < 12) {
+            <button
+                matButton 
+                [matMenuTriggerFor]="menu" 
+                class="global-button">
+                <i class="bi bi-plus"></i>
+            </button>
+            
+            <mat-menu #menu="matMenu">
+                @if (navigation.children?.length === 0) {
+                    <button
+                        mat-menu-item
+                        (click)="openFormToAddNavigationBarOrNavigation('horizontal')"
+                    >
+                        Add horizontal navigation bar
+                    </button>
+                    <button
+                        mat-menu-item
+                        (click)="openFormToAddNavigationBarOrNavigation('vertical')"
+                    >
+                        Add vertical navigation bar
+                    </button>
+                }
+                <button
+                    mat-menu-item
+                    (click)="openFormToAddNavigationBarOrNavigation('navigation')"
+                >
+                    Add component
+                </button>
+            </mat-menu>
+        }
+    </div>
 }

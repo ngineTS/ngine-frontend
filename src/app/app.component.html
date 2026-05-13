@@ -15,26 +15,6 @@
     }
   </mat-drawer>
 
-  @if (_appService.userGlobalNavigationPermission?.includes('edit')) {
-    <button 
-        cdkDrag
-        class="general-setting-button"
-        [matMenuTriggerFor]="menu" 
-    >
-      <i class="bi bi-house-gear house-gear-icon"></i>
-    </button>
-
-     <mat-menu #menu="matMenu" cdkDrag>
-        <button mat-menu-item (click)="manageAppDefaultStyle()">
-          Manage Application Style
-        </button>
-
-        <button mat-menu-item (click)="addNavigationType()">
-            New Component Type
-        </button>
-    </mat-menu>
-  }
-
   <router-outlet />
 
 </mat-drawer-container>

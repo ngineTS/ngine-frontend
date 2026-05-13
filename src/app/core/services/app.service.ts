@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { Route, Router, Routes } from "@angular/router";
 import { NavigationService } from "./navigation.service";
+import { ComponentsContainerService } from "./components-container.service";
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,8 @@ export class AppService {
   constructor(
     private _router: Router,
     private _navigationService: NavigationService,
+    private _componentsContainerService: ComponentsContainerService
   ) { }
-
-  userGlobalNavigationPermission: string | undefined;
 
   /**
    * Create route for each navigation and return final array of routes.
@@ -66,7 +66,7 @@ export class AppService {
       next: result => {
         localStorage.setItem('access_token', result.access_token);
         console.log(result.navigation);
-        this.userGlobalNavigationPermission = result.navigation.permissionName;
+        this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
           result.navigation
