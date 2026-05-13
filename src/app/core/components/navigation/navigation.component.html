@@ -50,7 +50,7 @@
             'transparent' : _navigation.containerStyle.backgroundColor"
         [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : 'none'"
         [style.border-width.px]="_navigation.containerStyle.borderWidth"
-        [style.border-color]="isMouseOver
+        [style.border-color]="isMouseOver && !_navigation.isDisabled
             ? _navigation.typographyStyle.activeColor
             : _navigation.containerStyle.borderColor"
         [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?

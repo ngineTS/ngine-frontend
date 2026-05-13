@@ -1,6 +1,7 @@
 <!-- Main button -->
-<div [matMenuTriggerFor]="mainMenu"
+<div [matMenuTriggerFor]="navigation.isDisabled ? null : mainMenu"
     [class]="iconOnTop ? 'main-button' : ''"
+    [style.cursor]="navigation.isDisabled ? 'default' : 'pointer'"
     [style.font-size.px]="navigation.typographyStyle.fontSize"
     [style.font-family]="navigation.typographyStyle.fontFamily"
     [style.font-weight]="navigation.typographyStyle.fontWeight"
@@ -59,9 +60,9 @@
                 <div mat-menu-item 
                     cdkDrag
                     [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
-                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
                 >
-                    <app-custom-button 
+                    <app-custom-button
+                        [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         class="col"
                         [navigation]="child" 
                     ></app-custom-button>
@@ -99,7 +100,7 @@
             <div mat-menu-item
                 cdkDrag 
                 [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
-                [matMenuTriggerFor]="subMenu"
+                [matMenuTriggerFor]="navigation.isDisabled ? null : subMenu"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord[navigation.id] ?
                     navigation.typographyStyle.activeColor :
@@ -107,12 +108,11 @@
                 "
                 [style.font-family]="navigation.typographyStyle.fontFamily"
                 [style.font-size.px]="navigation.typographyStyle.fontSize"
-                [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                 (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
                 (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
                 matTooltip="{{ navigation.description }}"
             >
-                <div class="col">
+                <div class="col" [style.opacity]="navigation.isDisabled ? '0.4' : '1'">
                     @if (navigation.icon) {
                         <i [class]="'bi bi-' + navigation.icon"></i>
                     }
@@ -161,9 +161,9 @@
                             cdkDrag
                             [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
                             [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
-                            [style.opacity]="child.isDisabled ? '0.4' : '1'"
                         >
                             <app-custom-button
+                                [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
                                 class="col"
                                 [navigation]="child" 
                             ></app-custom-button>
