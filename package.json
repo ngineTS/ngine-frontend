@@ -1,6 +1,10 @@
 {
   "name": "ngine-frontend",
   "version": "1.0.0",
+  "description": "An Angular app with the essential ;)",
+  "author": "Cédric Belin",
+  "private": false,
+  "license": "MIT License",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +12,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^20.0.6",
     "@angular/common": "^20.0.6",
