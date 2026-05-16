@@ -1,0 +1,29 @@
+<div class="row p-4">
+<!-- Items Cards -->
+@for (item of items; track item.id) {
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card card-item">
+            <i [class]="'bi bi-' + item.icon + ' fs-1 text-purple'"></i>
+            <h5 class="fw-bold mb-2">{{ item.name }}</h5>
+            <p class="small text-secondary flex-grow-1">{{ item.description }}</p>
+            
+            @if (_canEdit) {
+                <button class="btn-edit" (click)="editItem(item)" title="Edit">
+                    <span>✎</span>
+                </button>
+            }
+        </div>
+    </div>
+}
+
+<!-- Add Card -->
+@if (_canAdd) {
+    <div class="col-lg-3 col-md-6">
+        <div class="card card-item card-add" (click)="addItem()">
+            <span class="fs-1">+</span>
+            <h5 class="fw-bold">Add New</h5>
+            <p class="small flex-grow-1">Create a new item</p>
+        </div>
+    </div>
+}
+</div>

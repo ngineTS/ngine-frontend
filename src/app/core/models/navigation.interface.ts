@@ -1,0 +1,35 @@
+import { NavigationType } from "./navigation-type.interface";
+import { PermissionName } from "./permission.interface";
+import { ContainerLayout } from "./container-layout.interface";
+import { TypographyStyle } from "./typography-style.interface";
+import { ContainerStyle } from "./container-style.interface";
+import { Menu } from "./menu.interface";
+
+export interface Navigation extends Record<string, any> {
+    id: string;
+    parentId: string;
+    name: string;
+    displayLabel: string;
+    description: string;
+    order: number;
+    isDisabled: boolean;
+    navigationTypeId: string;
+    navigationType: NavigationType;
+    icon: string;
+    showIconOnly: boolean;
+    url: string;
+    menu: Menu;
+    containerLayout: ContainerLayout;
+    containerStyle: ContainerStyle;
+    typographyStyle: TypographyStyle;
+    level: number;
+    children?: Navigation[];
+    parent?: Navigation;
+    permissionName?: PermissionName;
+    createdDate: Date;
+    createdBy: string;
+    updatedDate: Date;
+    updatedBy: string;
+    deletedDate: Date;
+    deletedBy: string;
+}

@@ -1,1 +1,115 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.snow.css';
+@import 'tippy.js/dist/tippy.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lato&family=Montserrat&family=Poppins&family=Oswald&family=Raleway&family=Merriweather&family=Nunito&family=Ubuntu&display=swap');
+
+
+html, body {
+  max-height: 100vh;
+}
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$violet-palette,
+    density: 0
+  ));
+}
+
+.fc table {
+  cursor: pointer;
+}
+
+.mat-mdc-menu-content {
+  padding: 0px !important;
+}
+
+.mat-mdc-dialog-surface {
+  overflow-x: hidden !important;
+}
+
+.ql-editor {
+  padding: 0px !important;
+}
+
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}
+
+.no-backdrop {
+  background: transparent !important;
+}
+
+/* Set content font-families */
+
+/* Label in dropdown */
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="montserrat"]::before {
+  content: "Montserrat";
+  font-family: 'Montserrat';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before {
+  content: "Roboto";
+  font-family: 'Roboto';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="opensans"]::before {
+  content: "Open Sans";
+  font-family: 'Open Sans';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="lato"]::before {
+  content: "Lato";
+  font-family: 'Lato';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="poppins"]::before {
+  content: "Poppins";
+  font-family: 'Poppins';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="oswald"]::before {
+  content: "Oswald";
+  font-family: 'Oswald';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="ubuntu"]::before {
+  content: "Ubuntu";
+  font-family: 'Ubuntu';
+}
+
+
+/* Apply font inside editor */
+.ql-font-montserrat {
+  font-family: 'Montserrat';
+}
+
+.ql-font-roboto {
+  font-family: 'Roboto';
+}
+
+.ql-font-opensans {
+  font-family: 'Open Sans';
+}
+
+.ql-font-lato {
+  font-family: 'Lato';
+}
+
+.ql-font-poppins {
+  font-family: 'Poppins';
+}
+
+.ql-font-oswald {
+  font-family: 'Oswald';
+}
+
+.ql-font-ubuntu {
+  font-family: 'Ubuntu';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+  content: attr(data-value) !important;
+}

@@ -1,0 +1,27 @@
+.view-contianer {
+    position: relative;
+}
+
+.save-button {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.edit-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: white;
+}
+
+.back-button {
+    position: absolute;
+    bottom: -6px;
+    right: 125px;
+    background-color: white;
+}
+
+.back-icon {
+    color: blue;
+}

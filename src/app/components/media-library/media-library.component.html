@@ -1,0 +1,68 @@
+<div class="row align-items-baseline">
+    <h4 class="col-sm-3">Files Management</h4>
+    <mat-form-field class="col-sm-6" appearance="outline">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    </mat-form-field>
+    <app-sorter class="col-sm-2" [obj]="files[0]" (sortEvent)="onSort($event)"></app-sorter>
+</div>
+
+<div class="row mx-2 files-container">
+    
+    @for (file of filteredFiles; track file.id) {
+        <div class="col-sm-2 col-11 m-3 p-2 file-box">
+
+            <i class="bi bi-fullscreen fullsize-icon"
+                (click)="onFullSizeClick(file, fullSizeMedia)"
+            >
+            </i>
+            
+            @if (_canDelete) {
+            <i class="bi bi-trash-fill delete-icon"
+                (click)="onDeleteClick(file)"
+            >
+            </i>
+            }
+            
+            @if (fileIdUrlMap[file.name]) {         
+                @if (file.type.includes('image')) {
+                    <img class="media" [src]="fileIdUrlMap[file.name] | async" />
+                }
+
+                @if (file.type.includes('video')) {
+                    <video class="media" controls [src]="fileIdUrlMap[file.name] | async"></video>
+                }
+
+                @if (file.type.includes('audio')) {
+                    <audio class="media" controls [src]="fileIdUrlMap[file.name] | async"></audio>
+                }
+            }
+            @else {
+                <img class="media" 
+                    src="../../../../assets/images/media_default_image.png"
+                    (mouseenter)="onDefaultImageMouseEnter(file.name)"
+                />
+            }
+
+            <strong class="file-name" [matTooltip]="file.name">- {{file.name}}</strong>
+            <span><strong>- Date: </strong> {{file.createdDate | date: 'dd/MM/yyyy'}}</span>
+        </div>
+    }
+
+</div>
+
+
+<!-- Full size media template -->
+ <ng-template #fullSizeMedia let-data>
+    @if (data.type.includes('image')) {
+        <img height="auto" width="500px" [src]="fileIdUrlMap[data.name] | async" />
+    }
+
+    @if (data.type.includes('video')) {
+        <video height="auto" width="500px" controls [src]="fileIdUrlMap[data.name] | async"></video>
+    }
+
+    @if (data.type.includes('audio')) {
+        <audio height="auto" width="500px" controls [src]="fileIdUrlMap[data.name] | async"></audio>
+    }
+ </ng-template>

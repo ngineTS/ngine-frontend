@@ -1,0 +1,154 @@
+<div class="m-4">
+    <h4>Navigation Management</h4>
+    <form [formGroup]="navigationForm" class="row navigation-form" (ngSubmit)="submitForm()">
+
+        <!-- Navigation Type Cards Scroll -->
+        <div class="nav-type-section">
+            <span class="navigation-type-label">Component Type</span>
+            @if (isLoadingNavigationTypes) {
+                <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+                <div class="nav-type-scroll">
+                    @for (navType of navigationTypes; track navType.id) {
+                        <div
+                            class="nav-type-card"
+                            [class.nav-type-disabled]="data.navigation?.id"
+                            [class.selected]="navigationForm.get('navigationTypeId')?.value === navType.id"
+                            (click)="selectNavigationType(navType)"
+                        >
+                            @if (navigationTypeImageUrlMap[navType.thumbnailImage]) {
+                                <img [src]="navigationTypeImageUrlMap[navType.thumbnailImage] | async"
+                                    (error)="onImageError($event)"
+                                />
+                            }
+                            @else {
+                                <img src="../../../../assets/images/component-default-image-1.png"/>
+                            }
+                            <h5>{{ navType.displayLabel }}</h5>
+                            <p [title]="navType.description">{{ navType.description }}</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Parent dropdown -->
+        <mat-form-field appearance="outline">
+            <mat-label>Parent</mat-label>
+            <mat-select formControlName="parentId">
+                @for (flatNavigation of flatNavigations; track flatNavigation.id) {
+                    <mat-option 
+                        [value]="flatNavigation.id" 
+                        matTooltip="{{ flatNavigation.parent?.displayLabel }} > {{ flatNavigation.displayLabel }}"
+                    >
+                        {{ flatNavigation.displayLabel }}
+                    </mat-option>
+                }
+            </mat-select>
+            @if (isLoadingFlatNavigations) {
+                <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+            }
+        </mat-form-field>
+
+        <!-- Name input -->
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="displayLabel">
+            <span class="name-length">
+                {{ navigationForm.get('displayLabel')?.value?.length ?? 0 }} / 30
+            </span>
+        </mat-form-field>
+        
+        <!-- Description input -->
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <!-- Icon dropdown and checkbox -->
+        @if (
+            navigationTypeSelected?.name === 'redirect-button' ||
+            navigationTypeSelected?.name === 'dialog-button' ||
+            navigationTypeSelected?.name === 'external-link-button' ||
+            navigationTypeSelected?.name === 'menu-button'
+        ) {
+            <div class="row align-items-baseline">
+                <mat-form-field appearance="outline" class="col">
+                    <mat-label>Icon</mat-label>
+                    <mat-select formControlName="icon">
+                        <mat-select-trigger>
+                            <i [class]="'bi bi-' + iconFormControl.value"></i>
+                        </mat-select-trigger>
+                            <mat-option>
+                                <div class="row align-items-center">
+                                    <input class="ms-1 col-9"
+                                        placeholder="Search..."
+                                        (click)="$event.stopPropagation()"
+                                        (keyup)="filterIcons($event)"
+                                    />
+                                    <i class="bi bi-info-circle-fill ms-1 col-2"
+                                        matTooltip="Find full list of icons here: https://icons.getbootstrap.com/"
+                                        matTooltipPosition="above"
+                                    ></i>
+                                </div>
+                            </mat-option>
+                        @for (icon of filteredIcons; track icon) {
+                            <mat-option [value]="icon" matTooltip=" {{ icon }}">
+                                <i [class]="'bi bi-' + icon"></i>
+                            </mat-option>
+                        }
+                    </mat-select>
+
+                    <button
+                        mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="clearIcon($event)"
+                    >
+                        <i class="bi bi-x-lg menu-cross-icon"></i>
+                    </button>
+                </mat-form-field>
+
+                <mat-checkbox 
+                    formControlName="showIconOnly"
+                    class="col"
+                    [matTooltip]="`By checking it, the name won't appear on the button.`"
+                >   
+                    Show icon only
+                </mat-checkbox>
+            </div>
+        }
+
+        <!-- URL input -->
+        @if (navigationTypeSelected?.name === 'external-link-button') {
+            <mat-form-field appearance="outline">
+                <mat-label>URL</mat-label>
+                <input matInput formControlName="url">
+            </mat-form-field>
+        }
+
+        <!-- Disable checkbox -->
+        <mat-checkbox formControlName="isDisabled">Disable</mat-checkbox>
+        
+        <div class="row form-buttons">
+            <!-- Delete navigation button -->
+            @if (data.navigation?.permissionName?.includes('delete')) {
+                <button class="col me-3 text-danger" 
+                        matButton="outlined" 
+                        type="button"
+                        (click)="deleteNavigation()">
+                        Delete
+                </button>
+            }
+
+            <!-- Sumbit form button -->
+            <button class="col me-3" 
+                    matButton="outlined" 
+                    type="submit"
+                    [disabled]="!navigationForm.valid">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+

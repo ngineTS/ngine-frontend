@@ -1,0 +1,34 @@
+@if (_canEdit && _isEditing) {
+    <h5 class="mb-4">Content Visualization Setup</h5>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Select a table to visualize</mat-label>
+        <mat-select (selectionChange)="onSelectTable($event)">
+            @for (name of tableNames; track name) {
+                <mat-option [value]="name">{{ name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <button 
+        matButton="outlined" 
+        class="save-button"
+        matTooltip="This will permanently keep this selection."
+        (click)="onSaveSelectionClick()">
+        Save Selection
+    </button>
+}
+@else {
+    @if (tableConfig) {
+        <div class="row align-items-center mb-4">      
+            <h5 class="col">Content Visualization: {{ tableConfig.tableName }}</h5>   
+        </div>
+
+        <app-generic-table 
+            [content]="content"
+            [containerStyle]="_navigation.containerStyle"
+            [tableConfig]="tableConfig">
+        </app-generic-table>
+    }
+    
+}

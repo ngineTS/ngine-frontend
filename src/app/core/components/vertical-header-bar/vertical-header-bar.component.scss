@@ -1,0 +1,204 @@
+// Main container with flex layout
+.vertical-bar-container {
+  display: flex;
+  height: 100vh;
+
+  // Left sidebar with navigation
+  .navigation-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    padding-right: 8px;
+    padding-bottom: 4px;
+    position: relative;
+    scrollbar-width: thin;
+
+    // Header section
+    .logo {
+      margin: 10px 50px 10px 50px;
+      height: auto;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .header-controls {
+      padding-bottom: 10px;
+      margin-left: auto;
+      gap: 1px;
+      display: flex;
+    }
+  }
+
+  // Content wrapper on the right
+  .content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+// Tree node styling
+.tree-node {
+  .tree-node {
+    margin-left: 20px;
+  }
+}
+
+// Node header - contains toggle and item
+.node-header {
+  display: flex;
+  align-items: baseline;
+}
+
+// Expand/collapse toggle button
+.expand-toggle {
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #636363;
+  font-size: 14px;
+  min-width: 32px;
+  height: 32px;
+
+  i {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+}
+
+.expand-placeholder {
+  width: 32px;
+}
+
+// Navigation item styling
+.navigation-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  min-height: 32px;
+  margin-top: 2px;
+}
+
+.edit-nav-container {
+  &:hover {
+    .edit-nav-buttons-div {
+      display: flex;
+    }
+  }
+}
+
+// Edit icons styling
+.edit-icon {
+  height: 26px;
+  border: 1px solid #2B2B2B;
+  border-radius: 3px;
+  background-color: #dee2e6;
+  color: #2B2B2B;
+  cursor: pointer;
+  display: block;
+  padding: 0px 5px;
+
+  &:hover {
+    background-color: #ced4da;
+  }
+}
+
+.edit-nav-buttons-div {
+  position: absolute;
+  right: 0;
+  display: none;
+  margin-right: 2px;
+}
+
+.edit-nav-icon {
+  font-size: 12px;
+  border: 1px solid #2B2B2B;
+  border-radius: 3px;
+  background-color: #dee2e6;
+  padding: 2px 6px;
+  color: #2B2B2B;
+  cursor: pointer;
+  height: fit-content;
+  margin-left: 2px;
+
+  &:hover {
+    background-color: #ced4da;
+  }
+}
+
+// Children container with animation
+.node-children {
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.3s ease;
+}
+
+// Responsive design
+@media (max-width: 1200px) {
+  .vertical-bar-container {
+    .tree-node {
+      .tree-node {
+        margin-left: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .vertical-bar-container {
+    flex-direction: column;
+
+    .navigation-sidebar {
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      max-height: 25vh;
+    }
+
+    .tree-node {
+      .tree-node {
+        margin-left: 12px;
+      }
+    }
+  }
+}
+
+.drag-box {
+  cursor: move !important;
+}
+
+.cdk-drag-preview {
+  border: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0 !important;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-zone.cdk-drop-list-dragging .drag-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

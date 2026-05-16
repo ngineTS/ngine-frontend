@@ -1,0 +1,22 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav-content {
+  width: 18vw;
+  min-width: 200px;
+  border-radius: 0px;
+}
+
+.sidenav-header {
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  font-size: 24px;
+}
+
+.sidenav-close-icon {
+  float: right;
+  margin-right: 6px;
+  cursor: pointer;
+  font-size: 18px;
+}

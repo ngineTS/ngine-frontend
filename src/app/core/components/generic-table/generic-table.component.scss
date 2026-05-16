@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+
+.edit-cell {
+  text-align: right !important;
+}
+
+.file-link {
+  color: #0980e8;
+  cursor: pointer;
+}
+
+.mat-elevation-z8 .mat-mdc-table {
+  background-color: unset;
+}

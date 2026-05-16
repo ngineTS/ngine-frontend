@@ -1,0 +1,105 @@
+<div class="navigation-container mb-md-1">
+    
+    @if (_canEdit) {
+        @if (!isResizing) {
+            <!-- Top right icons -->
+            <div class="icons-div">
+                @if (containerRef) {
+                    @if (_isEditing) {
+                        <i class="bi bi-x-circle icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
+                    }
+                    @else {
+                        <i class="bi bi-pen icon"  (click)="switchEditMode()" [matTooltip]="'Edit content'" ></i>
+                    }
+                }
+                @if (windowWidth > windowWidthLimit) {
+                    <i class="bi bi-aspect-ratio icon fit-content-icon"
+                        [style.backgroundColor]="_navigation.containerLayout.heightFitContent ? '#ced4da' : ''"
+                        (click)="onFitContentClick()" 
+                        [matTooltip]="_navigation.containerLayout.heightFitContent ? 'Unfit content' : 'Fit content'"
+                    ></i>
+                    <i class="bi bi-arrows-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
+                    <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
+                }
+                <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+            </div>
+        }
+        <!-- Accept or Reset size icons -->
+        @else {
+            <div class="size-icons-div" >
+                <i class="bi bi-check-circle save-size-icon" (click)="onSaveSizeClick()" matTooltip="Save size"></i>
+                <i class="bi bi-x-circle close-size-icon" (click)="onResetSizeClick()" matTooltip="Reset size"></i>
+            </div>
+        }
+    }
+
+    <!-- Navigation shape -->
+    <div #navigationDiv
+        class="navigation-div"
+        [style.overflow-y]="hasScrollBar ? 'auto' : 'hidden'"
+        [style.width]="windowWidth > windowWidthLimit
+            ? (_navigation.containerLayout.width ?? 25) * windowWidth / 100 + 'px' 
+            : '100%'"
+        [style.height]="_navigation.containerLayout.heightFitContent
+            ? 'fit-content'
+            : ((_navigation.containerLayout.height ?? 25) * windowHeight / 100 + 'px')"
+        [style.max-height]="windowWidth > windowWidthLimit ? 'unset' : 'fit-content'"
+        [style.min-height]="windowWidth > windowWidthLimit ? 'unset' : 'max-content'"
+        [style.resize]="_canEdit && windowWidth > windowWidthLimit ? 'both' : 'none'"
+        [style.background-color]="_navigation.containerStyle.isBackgroundTransparent ?
+            'transparent' : _navigation.containerStyle.backgroundColor"
+        [style.background-image]="backgroundImageUrl ? 'url(' + backgroundImageUrl + ')' : 'none'"
+        [style.border-width.px]="_navigation.containerStyle.borderWidth"
+        [style.border-color]="isMouseOver && !_navigation.isDisabled
+            ? _navigation.typographyStyle.activeColor
+            : _navigation.containerStyle.borderColor"
+        [style.border-top-style]="_navigation.containerStyle.isBorderTopHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-right-style]="_navigation.containerStyle.isBorderRightHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-bottom-style]="_navigation.containerStyle.isBorderBottomHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-left-style]="_navigation.containerStyle.isBorderLeftHidden ?
+            'none' : _navigation.containerStyle.borderStyle"
+        [style.border-top-left-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopLeftRadius: 6"
+        [style.border-top-right-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderTopRightRadius: 6"
+        [style.border-bottom-right-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomRightRadius: 6"
+        [style.border-bottom-left-radius.px]="windowWidth > windowWidthLimit
+            ? _navigation.containerStyle.borderBottomLeftRadius: 6"
+        [style.padding-top.px]="_navigation.containerLayout.paddingTop"
+        [style.padding-bottom.px]="_navigation.containerLayout.paddingBottom"
+        [style.padding-right.px]="_navigation.containerLayout.paddingRight"
+        [style.padding-left.px]="_navigation.containerLayout.paddingLeft"
+        [style.color]="_navigation.typographyStyle.color"
+        [style.font-family]="_navigation.typographyStyle.fontFamily"
+        [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"
+        (mouseenter)="isMouseOver = true"
+        (mouseleave)="isMouseOver = false"
+    >
+        <!-- Custom button case -->
+        @if (
+            _navigation.navigationType.name === 'redirect-button' ||
+            _navigation.navigationType.name === 'external-link-button' ||
+            _navigation.navigationType.name === 'dialog-button'
+        ) {
+            <app-custom-button 
+                [navigation]="_navigation"
+                [iconOnTop]="true"
+            ></app-custom-button>
+        }
+        <!-- Menu button case -->
+        @else if (_navigation.navigationType.name === 'menu-button') {
+            <app-menu-button 
+                [navigation]="_navigation"
+                [iconOnTop]="true"
+            ></app-menu-button>
+        }
+        <!-- Component case -->
+        @else {
+            <ng-template #container></ng-template>
+        } 
+    </div>
+</div>

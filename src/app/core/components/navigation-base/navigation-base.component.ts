@@ -1,0 +1,23 @@
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Navigation } from '../../models/navigation.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { NavigationService } from '../../services/navigation.service';
+
+@Component({
+  selector: 'app-navigation-base',
+  imports: [],
+  template: '',
+})
+export class NavigationBaseComponent {
+  @Input() _navigation!: Navigation;
+  @Input() _canEdit: boolean | undefined;
+  @Input() _canAdd: boolean | undefined;
+  @Input() _canDelete: boolean | undefined;
+  @Input({required: false}) _sizeChanged: boolean = false;
+  @Input({required: false}) _isEditing: boolean = false;
+  @Output() _stopEditing: EventEmitter<boolean> = new EventEmitter(false);
+  protected readonly _retryCount = 1;
+  protected readonly _takeCount = 1;
+  protected _matDialog = inject(MatDialog);
+  protected _navigationService = inject(NavigationService);
+}

@@ -1,0 +1,1 @@
+export type CustomButtonType = 'redirect-button' | 'menu-button' | 'dialog-button' | 'external-link-button'

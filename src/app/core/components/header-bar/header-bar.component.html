@@ -1,0 +1,206 @@
+<!-- Navigation bar container -->
+<div class="nav-bar-container" [style.width]="containerWidth">
+
+    <!-- Laptop screen -->
+    @if (windowWidth > windowWidthLimit) {
+
+        <!-- Navigation bar setting buttons -->
+        @if (!isDragging) {
+            <div class="menu-toolbar" cdkDrag cdkDragLockAxis="x">
+
+                @if (navigation.permissionName?.includes('add') && !isNavigationBarHidden) {
+                    <!-- Grab toolbar icon -->
+                    <div cdkDragHandle class="toolbar-grab">
+                        <i class="bi bi-grip-vertical"></i>
+                    </div>
+
+                    <!-- Add navigation button -->
+                    <i class="bi bi-plus menu-button" 
+                        (click)="manageNavigation()"
+                        matTooltip="Add navigation"
+                    ></i>
+                }
+            
+                <!-- Edit navigation bar style button -->
+                @if (navigation.permissionName?.includes('edit') && !isNavigationBarHidden) {
+                    <i class="bi bi-marker-tip menu-button" 
+                        (click)="editMenuStyle()"
+                        matTooltip="Edit navigation bar style"
+                    ></i>
+                }
+
+                <!-- Hide navigation bar button -->
+                @if (_headerBarService.activeVerticalBarsNumber) {
+                    @if (isNavigationBarHidden) {
+                        <i class="bi bi-chevron-down menu-button" 
+                            (click)="isNavigationBarHidden = false" 
+                            matTooltip="Show navigation bar"
+                        ></i>
+                    }
+                    @else {
+                        <i class="bi bi-chevron-up menu-button" 
+                            (click)="isNavigationBarHidden = true"
+                            matTooltip="Hide navigation bar"
+                        ></i>
+                    }
+                }
+            </div>
+        }
+
+        <!-- Navigation bar -->
+        <div [style.display]="isNavigationBarHidden ? 'none' : ''"
+            [style.opacity]="isRefiningPosition ? 0 : 1"
+            [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
+                ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
+            [style.height.px]="navigation.menu.containerLayout.height"
+            [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+                navigation.menu.containerStyle.borderStyle + ' ' +
+                navigation.menu.containerStyle.borderColor"
+            [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+                'none' : navigation.menu.containerStyle.borderStyle"
+            [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+                'none' : navigation.menu.containerStyle.borderStyle"
+            [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+                'none' : navigation.menu.containerStyle.borderStyle"
+            [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+                'none' : navigation.menu.containerStyle.borderStyle"
+            [style.border-top-left-radius.px]="navigation.menu.containerStyle.borderTopLeftRadius"
+            [style.border-top-right-radius.px]="navigation.menu.containerStyle.borderTopRightRadius"
+            [style.border-bottom-right-radius.px]="navigation.menu.containerStyle.borderBottomRightRadius"
+            [style.border-bottom-left-radius.px]="navigation.menu.containerStyle.borderBottomLeftRadius"
+            [style.margin-top.px]="navigation.menu.containerLayout.marginTop"
+            [style.margin-right.px]="navigation.menu.containerLayout.marginRight"
+            [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
+            [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
+        >
+            <!-- Logo (remove if not needed) -->
+            @if (navigation.level === 0) {
+                <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
+            }    
+
+            <!-- List of navigations -->
+            <div #dropZone class="navigation-list">
+                @for (child of navigation.children; track child.id) {
+                    
+                    <!-- Navigation -->
+                    <div class="navigation-box"
+                        cdkDrag
+                        cdkDragLockAxis="x"
+                        cdkDragBoundary=".navigation-list"
+                        [cdkDragDisabled]="!child.permissionName?.includes('edit')"
+                        [style.left.px]="getNavigationPosition(child.containerLayout)"
+                        (cdkDragStarted)="onDragStart()"
+                        (cdkDragEnded)="onDragEnded($event, child)"
+                        [class.edit-header-container]="child.permissionName?.includes('edit')"
+                        [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                    >
+                        <div
+                            [style.padding-top.px]="child.containerLayout.paddingTop"
+                            [style.padding-bottom.px]="child.containerLayout.paddingBottom"
+                            [style.padding-right.px]="child.containerLayout.paddingRight"
+                            [style.padding-left.px]="child.containerLayout.paddingLeft"
+                            [style.background-color]="child.containerStyle.isBackgroundTransparent ?
+                                'transparent' : child.containerStyle.backgroundColor"
+                            [style.border-width.px]="child.containerStyle.borderWidth && child.containerStyle.borderWidth > 0 ?
+                                child.containerStyle.borderWidth : 1"
+                            [style.border-color]="child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-style]="child.containerStyle.borderStyle"
+                            [style.border-top-color]="child.containerStyle.isBorderTopHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-right-color]="child.containerStyle.isBorderRightHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-bottom-color]="child.containerStyle.isBorderBottomHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-left-color]="child.containerStyle.isBorderLeftHidden ?
+                                'transparent' : child.containerStyle.borderColor ?? 'transparent'"
+                            [style.border-top-left-radius.px]="child.containerStyle.borderTopLeftRadius"
+                            [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
+                            [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
+                            [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
+                        >
+                            @if (child.navigationType.name === 'menu-button') {
+                                <app-menu-button
+                                    class="custom-button"
+                                    (mousedown)="$event.stopPropagation()"
+                                    [navigation]="child"
+                                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                                ></app-menu-button>
+                            }
+                            @else {
+                                <app-custom-button
+                                    class="custom-button"
+                                    [navigation]="child"
+                                    (mousedown)="$event.stopPropagation()"
+                                    [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                                ></app-custom-button>
+                            }
+
+                            <!-- Edit navigation buttons -->
+                            @if (child.permissionName?.includes('edit') && !isDragging) {
+                                <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
+                                    (click)="editNavigationStyle(child)"
+                                ></i>
+                                <i class="bi bi-gear edit-header-icon edit-header-general-icon"
+                                    (click)="manageNavigation(child)"
+                                ></i>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Phone screen -->
+    @else {
+        <div class="d-flex"
+            [style.background-color]="
+                navigation.menu.containerStyle.isBackgroundTransparent
+                ? 'transparent' 
+                : navigation.menu.containerStyle.backgroundColor"
+        >
+            <div class="d-flex w-100">
+                <!-- Logo (remove if not needed) -->
+                @if (navigation.level === 0) {
+                    <img height="60px" width="auto" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()"/>
+                }
+
+                <!-- Burger button -->
+                <i class="bi bi-list burger-button" 
+                    [style.color]="navigation.children ? navigation.children[0].typographyStyle.color : '#FFF'"
+                    [matMenuTriggerFor]="menu"
+                >
+                </i>
+            </div>
+
+            <!-- Burger menu -->
+            <mat-menu #menu="matMenu" class="burger-menu">
+                <div [style.background-color]="navigation.menu.containerStyle.backgroundColor">
+                    
+                    @for (child of navigation.children; track child.id) {  
+                        <div mat-menu-item [style.opacity]="child.isDisabled ? '0.4' : '1'">   
+                            
+                            @if (child.navigationType.name === 'menu-button') {
+                                <app-menu-button
+                                    class="w-100"
+                                    (click)="$event.stopPropagation()"
+                                    [navigation]="child"
+                                ></app-menu-button>
+                            }
+                            @else {
+                                <app-custom-button
+                                    class="w-100"
+                                    [navigation]="child"
+                                ></app-custom-button>
+                            }
+
+                        </div>
+                    }
+
+                </div>
+            </mat-menu>
+        </div>
+    }
+
+    <router-outlet />
+</div>

@@ -1,0 +1,197 @@
+<!-- Main button -->
+<div [matMenuTriggerFor]="mainMenu"
+    [class]="iconOnTop ? 'main-button' : ''"
+    [style.font-size.px]="navigation.typographyStyle.fontSize"
+    [style.font-family]="navigation.typographyStyle.fontFamily"
+    [style.font-weight]="navigation.typographyStyle.fontWeight"
+    [style.color]="isButtonHoveredRecord[navigation.id] ?
+        navigation.typographyStyle.activeColor :
+        navigation.typographyStyle.color
+    "
+    (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
+    (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
+    matTooltip="{{ navigation.description }}"
+>
+    @if (navigation.icon) {
+        <i [class]="'bi bi-' + navigation.icon"></i>
+    }
+
+    @if (!navigation.showIconOnly) {
+        <span [style.margin-left.px]="iconOnTop || !navigation.icon ? 0 : 4">{{ navigation.displayLabel }}</span>
+    }
+</div>
+
+<!-- Main menu -->
+<mat-menu #mainMenu="matMenu" [hasBackdrop]="!navigation.permissionName?.includes('edit')">
+    <div class="menu-panel"
+        [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+        [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+            navigation.menu.containerStyle.borderStyle + ' ' +
+            navigation.menu.containerStyle.borderColor"
+        [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+            'none' : navigation.menu.containerStyle.borderStyle"
+        [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+            'none' : navigation.menu.containerStyle.borderStyle"
+        [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+            'none' : navigation.menu.containerStyle.borderStyle"
+        [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+            'none' : navigation.menu.containerStyle.borderStyle"
+        cdkDropList
+        (cdkDropListDropped)="drop($event, navigation)"
+        [cdkDropListData]="navigation.children!"
+        [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
+    >
+        <!-- Main menu 'edit style' button -->
+        @if (navigation.permissionName?.includes('edit')) {
+            <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation)"></i>
+        } 
+
+        <!-- Main menu items -->
+        @for (child of navigation.children; track child.id) {
+            
+            <!-- item is a menu -->
+            @if (child.navigationType.name === 'menu-button') {
+                <ng-container *ngTemplateOutlet="deepMenu; context: { $implicit: child }"></ng-container>
+            }
+            
+            <!-- item is a custom button-->
+            @else {
+                <div mat-menu-item 
+                    cdkDrag
+                    [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
+                >
+                    <app-custom-button
+                        [style.opacity]="child.isDisabled ? '0.4' : '1'"
+                        class="col"
+                        [navigation]="child" 
+                    ></app-custom-button>
+
+                    <!-- edit item buttons -->
+                    @if (child.permissionName?.includes('edit')) {
+                        <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
+                        <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
+                    }
+                </div>
+            }
+        }
+
+        <!-- Main menu  'Add Navigation' item -->
+        @if (navigation.permissionName?.includes('add')) {
+            <button mat-menu-item 
+                (click)="addNavigation(navigation.id)"
+                [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                [style.color]="isButtonHoveredRecord['add-nav-main'] ?
+                    navigation.menu.typographyStyle.activeColor :
+                    navigation.menu.typographyStyle.color
+                "
+                (mouseenter)="isButtonHoveredRecord['add-nav-main'] = true"
+                (mouseleave)="isButtonHoveredRecord['add-nav-main'] = false"
+            >   
+                +
+            </button>
+        }
+
+
+        <!-- Deep menu template-->
+        <ng-template #deepMenu let-navigation>
+            
+            <!-- Deep menu button -->
+            <div mat-menu-item
+                cdkDrag 
+                [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
+                [matMenuTriggerFor]="subMenu"
+                [style.font-weight]="navigation.typographyStyle.fontWeight"
+                [style.color]="isButtonHoveredRecord[navigation.id] ?
+                    navigation.typographyStyle.activeColor :
+                    navigation.typographyStyle.color
+                "
+                [style.font-family]="navigation.typographyStyle.fontFamily"
+                [style.font-size.px]="navigation.typographyStyle.fontSize"
+                (mouseenter)="isButtonHoveredRecord[navigation.id] = true"
+                (mouseleave)="isButtonHoveredRecord[navigation.id] = false"
+                matTooltip="{{ navigation.description }}"
+            >
+                <div class="col" [style.opacity]="navigation.isDisabled ? '0.4' : '1'">
+                    @if (navigation.icon) {
+                        <i [class]="'bi bi-' + navigation.icon"></i>
+                    }
+
+                    @if (!navigation.showIconOnly) {
+                        <span class="ms-1">{{ navigation.displayLabel }}</span>
+                    }
+                </div>
+
+                <!-- Deep Menu button - edit buttons -->
+                @if (navigation.permissionName?.includes('edit')) {
+                    <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, navigation)"></i>
+                    <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
+                }
+            </div>
+            
+            <!-- Deep menu -->
+            <mat-menu #subMenu="matMenu">
+                <div class="menu-panel"
+                    [style.background-color]="navigation.menu.containerStyle.backgroundColor"
+                    [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+                        navigation.menu.containerStyle.borderStyle + ' ' +
+                        navigation.menu.containerStyle.borderColor"
+                    [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+                        'none' : navigation.menu.containerStyle.borderStyle"
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event, navigation)"
+                    [cdkDropListData]="navigation.children!"
+                    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
+                >
+                    <!-- Deep menu 'edit style' button -->                    
+                    @if (navigation.permissionName?.includes('edit')) {
+                        <i class="bi bi-marker-tip marker-icon" (click)="editMenuStyle($event, navigation)"></i>
+                    }
+
+                    <!-- Deep menu items -->
+                    @for (child of navigation.children; track child.id) {
+                        <!-- item is a custom button -->
+                        <div mat-menu-item 
+                            cdkDrag
+                            [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(initialWindowWidth > windowWidthLimit)"
+                            [class.drag-box]="navigation.permissionName?.includes('edit') && initialWindowWidth > windowWidthLimit"
+                        >
+                            <app-custom-button
+                                [style.opacity]="navigation.isDisabled ? '0.4' : '1'"
+                                class="col"
+                                [navigation]="child" 
+                            ></app-custom-button>
+
+                            <!-- edit item buttons -->
+                            @if (child.permissionName?.includes('edit')) {
+                                <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
+                                <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
+                            }
+                        </div>
+                    }
+
+                    <!-- Deep menu 'Add navigation' item -->
+                    @if (navigation.permissionName?.includes('add')) {
+                        <button mat-menu-item
+                            (click)="addNavigation(navigation.id)"
+                            [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                            [style.color]="isButtonHoveredRecord['add-nav-deep'] ?
+                                navigation.menu.typographyStyle.activeColor :
+                                navigation.menu.typographyStyle.color
+                            "
+                            (mouseenter)="isButtonHoveredRecord['add-nav-deep'] = true"
+                            (mouseleave)="isButtonHoveredRecord['add-nav-deep'] = false"
+                        >
+                            +
+                        </button>
+                    }
+                </div>
+            </mat-menu>
+        </ng-template>
+    </div>
+</mat-menu>

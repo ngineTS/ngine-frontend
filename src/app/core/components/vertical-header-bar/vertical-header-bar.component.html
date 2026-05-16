@@ -1,0 +1,180 @@
+<div class="vertical-bar-container">
+  
+  <!-- Left sidebar with navigation tree -->
+  <div class="navigation-sidebar drop-zone"
+    [style.background-color]="navigation.menu.containerStyle.isBackgroundTransparent
+        ? 'transparent' : navigation.menu.containerStyle.backgroundColor"
+    [style.border]="navigation.menu.containerStyle.borderWidth + 'px ' +
+        navigation.menu.containerStyle.borderStyle + ' ' +
+        navigation.menu.containerStyle.borderColor"
+    [style.border-top-style]="navigation.menu.containerStyle.isBorderTopHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-right-style]="navigation.menu.containerStyle.isBorderRightHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-bottom-style]="navigation.menu.containerStyle.isBorderBottomHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-left-style]="navigation.menu.containerStyle.isBorderLeftHidden ?
+        'none' : navigation.menu.containerStyle.borderStyle"
+    [style.border-top-left-radius.px]="navigation.menu.containerStyle.borderTopLeftRadius"
+    [style.border-top-right-radius.px]="navigation.menu.containerStyle.borderTopRightRadius"
+    [style.border-bottom-right-radius.px]="navigation.menu.containerStyle.borderBottomRightRadius"
+    [style.border-bottom-left-radius.px]="navigation.menu.containerStyle.borderBottomLeftRadius"
+    [style.margin-top.px]="navigation.menu.containerLayout.marginTop"
+    [style.margin-right.px]="navigation.menu.containerLayout.marginRight"
+    [style.margin-bottom.px]="navigation.menu.containerLayout.marginBottom"
+    [style.margin-left.px]="navigation.menu.containerLayout.marginLeft"
+    [style.padding-top.px]="navigation.menu.containerLayout.paddingTop"
+    cdkDropList
+    (cdkDropListDropped)="drop($event, navigation)"
+    [cdkDropListData]="navigation.children!"
+    [cdkDropListDisabled]="!navigation.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)"
+  >
+    
+    <!-- Header with logo and controls -->
+    @if (navigation.level === 0) {
+      <img class="logo" src="../../../../assets/images/ngine_logo.png" (click)="navigateToRootUrl()" />
+    }
+    
+    @if (navigation.permissionName?.includes('edit')) {
+      <div class="header-controls">
+        <i class="bi bi-marker-tip edit-icon" 
+          (click)="editMenuStyle()"
+          [matTooltip]="'Edit navigation bar style'">
+        </i>
+        <i class="bi bi-plus edit-icon" 
+          (click)="manageNavigation($event)"
+          [matTooltip]="'Add navigation'">
+        </i>
+      </div>
+    }
+
+    <!-- Navigation tree -->
+    @for (child of navigation.children; track child.id) {
+      <div cdkDrag [cdkDragDisabled]="!navigation.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)">
+        <ng-container *ngTemplateOutlet="treeNode; context: {
+          $implicit: child,
+          parentPath: [], 
+          containerStyle: child.containerStyle,
+          typographyStyle: child.typographyStyle,
+          treeLevel: 0,
+        }"></ng-container>
+      </div>
+    }
+  </div>
+
+  <!-- Right content area -->
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- Recursive tree node template -->
+<ng-template #treeNode 
+  let-node 
+  let-parentPath="parentPath"
+  let-parent="parent"
+  let-containerStyle="containerStyle"
+  let-typographyStyle="typographyStyle"
+  let-treeLevel="treeLevel"
+>
+  <div class="tree-node" [attr.data-node-id]="node.id">
+    <!-- Node header with toggle and item -->
+    <div class="node-header">
+      <!-- Expand/Collapse toggle -->
+      @if (isExpandable(node)) {
+        <button class="expand-toggle"
+          [style.color]="typographyStyle.color"
+          (click)="toggleNodeExpanded(node.id)"
+          [attr.aria-expanded]="isNodeExpanded(node.id)">
+          <i class="bi"
+            [class.bi-chevron-down]="isNodeExpanded(node.id)"
+            [class.bi-chevron-right]="!isNodeExpanded(node.id)"></i>
+        </button>
+      } @else {
+        <span class="expand-placeholder"></span>
+      }
+
+      <!-- Navigation item -->
+      <div class="navigation-item"
+        [class.drag-box]="node.permissionName?.includes('edit') && (windowWidth > windowWidthLimit)"
+        [class.edit-nav-container]="node.permissionName?.includes('edit')"
+        [style.margin-top.px]="treeLevel === 0 ? node.containerLayout.marginTop : 0"
+        [style.margin-bottom.px]="treeLevel === 0 ? node.containerLayout.marginBottom : 0"
+        [style.background-color]="containerStyle.isBackgroundTransparent ? 'transparent' : containerStyle.backgroundColor"
+        [style.border-width.px]="containerStyle.borderWidth && containerStyle.borderWidth > 0 ? containerStyle.borderWidth : 1"
+        [style.border-color]="containerStyle.borderColor ?? 'transparent'"
+        [style.border-style]="containerStyle.borderStyle"
+        [style.border-top-color]="containerStyle.isBorderTopHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-right-color]="containerStyle.isBorderRightHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-bottom-color]="containerStyle.isBorderBottomHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-left-color]="containerStyle.isBorderLeftHidden ? 'transparent' : containerStyle.borderColor ?? 'transparent'"
+        [style.border-top-left-radius.px]="containerStyle.borderTopLeftRadius"
+        [style.border-top-right-radius.px]="containerStyle.borderTopRightRadius"
+        [style.border-bottom-right-radius.px]="containerStyle.borderBottomRightRadius"
+        [style.border-bottom-left-radius.px]="containerStyle.borderBottomLeftRadius"
+        [style.opacity]="node.isDisabled ? '0.4' : '1'"
+        [style.color]="((node['isMouseOver'] || isRouteActive(node.name)) && !node.isDisabled)
+          ? typographyStyle.activeColor
+          : typographyStyle.color"
+        [style.font-size.px]="typographyStyle.fontSize"
+        [style.font-weight]="typographyStyle.fontWeight"
+        [style.font-family]="typographyStyle.fontFamily"
+        (click)="actionClick(node, parentPath)"
+        (mouseenter)="node['isMouseOver'] = true"
+        (mouseleave)="node['isMouseOver'] = false"
+      >  
+        @if (node.icon) {
+          <i [class]="'bi bi-' + node.icon"></i>
+        }
+
+        @if (!node.showIconOnly) {
+          <span> {{ node.displayLabel }} </span>
+        }
+
+        <!-- Edit buttons -->
+        @if (node.permissionName?.includes('edit')) {
+          <div class="edit-nav-buttons-div">
+            @if (treeLevel === 0) {
+              <i class="bi bi-marker-tip edit-nav-icon"
+                (click)="editNavigationStyle($event, node)"
+                [matTooltip]="'Edit style'">
+              </i>
+            }
+            <i class="bi bi-gear edit-nav-icon"
+              (click)="manageNavigation($event, node)"
+              [matTooltip]="'Manage navigation'">
+            </i>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Children - displayed when expanded -->
+    @if (isNodeExpanded(node.id)) {            
+      <div class="node-children drop-zone"
+        cdkDropList
+        (cdkDropListDropped)="drop($event, node)"
+        [cdkDropListData]="node.children"
+        [cdkDropListDisabled]="!node.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)"
+      >
+        @for (child of node.children; track child.id) {
+          @if (
+            child.navigationType.name === 'redirect-button' ||
+            child.navigationType.name === 'external-link-button' ||
+            child.navigationType.name === 'dialog-button'
+          ) {
+            <div cdkDrag [cdkDragDisabled]="!node.permissionName?.includes('edit') || !(windowWidth > windowWidthLimit)">
+              <ng-container [ngTemplateOutlet]="treeNode" [ngTemplateOutletContext]="{
+                $implicit: child,
+                parentPath: parentPath.concat(node.name),
+                containerStyle: containerStyle,
+                typographyStyle: typographyStyle,
+                treeLevel: 1
+              }"></ng-container>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+</ng-template>

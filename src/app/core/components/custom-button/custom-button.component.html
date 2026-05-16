@@ -1,0 +1,21 @@
+<div (click)="actionClick(navigation)"
+    (mouseenter)="isMouseOver = true"
+    (mouseleave)="isMouseOver = false"
+    matTooltip="{{ navigation.description }}"
+    [class]="iconOnTop ? 'button-container' : ''"
+    [style.hyphens]="'auto'"
+    [style.color]="!navigation.isDisabled && (isMouseOver || isRouteActive(navigation.name))
+        ? navigation.typographyStyle.activeColor
+        : navigation.typographyStyle.color"
+    [style.font-size.px]="navigation.typographyStyle.fontSize"
+    [style.font-weight]="navigation.typographyStyle.fontWeight"
+    [style.font-family]="navigation.typographyStyle.fontFamily"
+>
+    @if (navigation.icon) {
+        <i [class]="'bi bi-' + navigation.icon"></i>
+    }
+
+    @if (!navigation.showIconOnly) {
+        <span> {{ navigation.displayLabel }} </span>
+    }
+</div>

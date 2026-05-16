@@ -1,0 +1,73 @@
+<div>
+    <full-calendar #myFullCalendar [options]="calendarOptions"></full-calendar>
+</div>
+
+<ng-template #tooltipTemplate 
+    let-mediaUrl$="mediaUrl$"
+    let-mediaType="mediaType"
+    let-title="title"
+    let-description="description"
+    let-startDate="startDate"
+    let-endDate="endDate"
+    let-allDay="allDay"
+>
+    <div class="m-1">
+        <h5 class="mb-3">{{ title }}</h5>
+      
+        @if (mediaType) {
+            @if (mediaType.includes('image')) {
+                <div class="mb-2">
+                    <img 
+                        height="auto" 
+                        width="99%" 
+                        style="border: none; border-radius: 5px; margin: 1px 0px 8px 1px;"
+                        [src]="mediaUrl$ | async"
+                    />
+                </div>
+            }
+            @if (mediaType.includes('video')) {
+                <div class="mb-2">
+                    <video 
+                        height="auto" 
+                        width="99%" 
+                        style="border: none; border-radius: 5px; margin: 1px 0px 8px 1px;"
+                        controls
+                        [src]="mediaUrl$ | async"
+                    >
+                    </video>
+                </div>
+            }
+            @if (mediaType.includes('audio')) {
+                <div class="mb-2">
+                    <audio 
+                        height="auto" 
+                        width="99%" 
+                        style="border: none; border-radius: 5px; margin: 1px 0px 8px 1px;"
+                        controls
+                        [src]="mediaUrl$ | async"
+                    >
+                    </audio>
+                </div>
+            }
+        }
+
+        <div class="mb-3">{{ description }}</div>
+        
+        <div class="tooltip-date-div mb-2">
+            @if (allDay) {
+                <div>{{ startDate |  date: 'mediumDate' }}</div>         
+                @if (endDate) {
+                    <span class="mx-2"> - </span>
+                    <div>{{ endDate |  date: 'mediumDate' }}</div>
+                }
+            }
+            @else {
+                <div>{{ startDate |  date: 'short' }}</div>
+                @if (endDate) {
+                    <span class="mx-2"> - </span>
+                    <div>{{ endDate |  date: 'short' }}</div>
+                }
+            }
+        </div>
+    </div>
+</ng-template>

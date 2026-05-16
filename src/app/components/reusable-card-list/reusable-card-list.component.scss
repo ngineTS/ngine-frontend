@@ -1,0 +1,43 @@
+.title {
+    margin: 32px;
+    text-align: center;
+}
+
+.text-purple {
+  color: #985ab5 !important;
+}
+
+.card-add {
+  background-color: #985ab5 !important;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+}
+
+.card-item {
+  background-color: #FFFFFF;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 260px;
+  padding: 1.5rem;
+  gap: 0.5rem;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.btn-edit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  background-color: #985ab5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

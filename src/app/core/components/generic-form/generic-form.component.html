@@ -1,0 +1,332 @@
+<!-- Main level form template-->
+<div class="main-container">
+    @if (isSaving()) {
+        <mat-spinner class="loading-spinner" [diameter]="75"></mat-spinner>
+    }
+
+    @if (formConfiguration.formTitle) {
+        <p class="fw-bold">{{ formConfiguration.formTitle }}</p>
+    }
+
+    <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
+       
+        @for (input of formConfiguration.formConfig | keyvalue: compareByOrder; track input.key) {
+            @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
+                <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(formContent, input.key) }"></ng-container>
+            }
+            @else {
+                <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, group: getFormGroup(formContent, input.key) }"></ng-container>
+            }        
+        }
+
+        <div class="row">
+            @if (formConfiguration.hasDeleteButton && formConfiguration.payloadId) {
+                <button 
+                    class="form-button text-danger col ms-auto"
+                    matButton="outlined"
+                    type="button" 
+                    (click)="deleteObject()"
+                >
+                    Delete
+                </button>
+            }
+            <button 
+                [style.margin-left]="formConfiguration.hasDeleteButton ? '0px' : 'auto'"
+                class="form-button col"
+                matButton="outlined" 
+                type="submit" 
+                [disabled]="!formContent.valid || isSaving()"
+            >
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Recursive form template -->
+<ng-template #deepForm let-data let-group="group">
+    <div class="form-group-box">
+        <div class="form-group-name" [title]="data.key">{{ data.key }}</div>
+        <div [formGroup]="group" class="row">
+            @for (input of data.value | keyvalue: compareByOrder; track input) {
+                @if (isStandardInput(input.value) || isDropdownInput(input.value)) {
+                    <ng-container *ngTemplateOutlet="formControls; context: { $implicit: input, control: getFormControl(group, input.key) }"></ng-container>
+                }
+                @else {
+                    <ng-container *ngTemplateOutlet="deepForm; context: { $implicit: input, group: getFormGroup(group, input.key) }"></ng-container>
+                }        
+            }
+        </div>
+    </div>
+</ng-template>
+
+<!-- Form controls template -->
+<ng-template #formControls let-input let-control="control">
+    <div class="col" [title]="input.value.alias ?? input.key">
+
+        @switch (input.value.type) {
+        
+            @case ('text') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input type="text" 
+                        [formControl]="control" 
+                        matInput
+                    />
+                </mat-form-field>
+            }
+
+            @case ('number') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input type="number" 
+                        [formControl]="control" 
+                        matInput
+                    />
+                </mat-form-field>
+            }
+
+            @case ('email') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input type="email" 
+                        [formControl]="control" 
+                        matInput
+                        placeholder="Ex. pat@example.com"
+                    />
+                </mat-form-field>
+            }
+
+            @case ('password') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input matInput [type]="hidePassword() ? 'password' : 'text'" [formControl]="control" />
+                    <button
+                        type="button"
+                        matIconButton
+                        matSuffix
+                        (click)="passwordEyeclickEvent($event)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hidePassword()"
+                    >
+                    <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
+                    </button>
+                </mat-form-field>
+            }
+
+            @case ('url') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input 
+                       type="url" 
+                       [formControl]="control" 
+                       matInput
+                    />
+                </mat-form-field>
+            }
+
+            @case ('textarea') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <textarea matInput [formControl]="control"></textarea>
+                </mat-form-field>
+            }
+
+            @case ('checkbox') {
+                <div class="d-flex align-items-center gap-2">
+                    <mat-checkbox [formControl]="control" class="mb-3">{{ input.value.alias ?? input.key }}</mat-checkbox>
+                    @if (input.value.info) {
+                        <span [matTooltip]="input.value.info" class="d-flex align-items-center">
+                            <i class="bi bi-info-circle-fill"></i>
+                        </span>
+                    }
+                </div>
+            }
+
+            @case ('color') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input matInput type="color" [formControl]="control">
+                </mat-form-field>
+            }
+
+            @case ('date') {
+                <mat-form-field appearance="outline" class="w-100 pb-3">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input matInput [matDatepicker]="datePicker" [formControl]="control" >
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+            }
+
+            @case ('date-and-time') {
+                <mat-form-field appearance="outline" class="w-100 pb-1">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+                    <input 
+                        matInput 
+                        [matDatepicker]="datePicker" 
+                        [(ngModel)]="dateAndTimeRecord[input.key]" 
+                        (valueChange)="onDateAndTimeChange(control, input.key)"
+                    >
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100">
+                    <input 
+                        matInput 
+                        [matTimepicker]="timePicker"
+                        [(ngModel)]="dateAndTimeRecord[input.key]" 
+                        (valueChange)="onDateAndTimeChange(control, input.key)"
+                    >
+                    <mat-timepicker-toggle matIconSuffix [for]="timePicker"/>
+                    <mat-timepicker #timePicker/>
+                </mat-form-field>
+            }
+            
+            @case ('dropdown') {
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>
+                        {{ input.value.alias ?? input.key }}
+                        @if (input.value.info) {
+                            <span [matTooltip]="input.value.info" class="ms-1">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </span>
+                        }
+                    </mat-label>
+
+                    <!-- Multiple select dropdown-->
+                    @if (input.value.value && typeof input.value.value === 'object') {
+                        <mat-select [formControl]="control" multiple>
+                        @for (item of input.value.dropdownConfig.items; track item) {
+                            @if (!input.value.dropdownConfig.bindLabel) {
+                                <mat-option [value]="item">{{ item }}</mat-option>
+                            }
+                            @else {
+                                <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                    {{ item[input.value.dropdownConfig.bindLabel] }}
+                                </mat-option>
+                            }
+                        }
+                        </mat-select>
+                    }
+                    
+                    <!-- Single select dropdown -->
+                    @else {
+                        <mat-select [formControl]="control">
+                            @for (item of input.value.dropdownConfig.items; track item) {
+                                @if (!input.value.dropdownConfig.bindLabel) {
+                                    <mat-option [value]="item" [style.font-family]="input.key === 'fontFamily' ? item : ''">
+                                        {{ item }}
+                                    </mat-option>
+                                }
+                                @else {
+                                    <mat-option [value]="item[input.value.dropdownConfig.bindValue]">
+                                        {{ item[input.value.dropdownConfig.bindLabel] }}
+                                    </mat-option>
+                                }
+                            }
+                        </mat-select>
+                    }
+
+                </mat-form-field>
+            }
+
+            @case ('file') {
+                <div class="row file-div gap-2">
+                    <button matButton="outlined" type="button" class="file-button col" (click)="fileDropRef.click()">
+                        <div class="row align-items-center gap-1">
+                            <span> - {{ input.value.alias ?? input.key }}
+                                @if (input.value.info) {
+                                    <span [matTooltip]="input.value.info" class="d-inline-flex align-items-center ms-1">
+                                        <i class="bi bi-info-circle-fill"></i>
+                                    </span>
+                                }
+                            - </span>
+                            <span>Upload File</span>
+                        </div>
+                        <input 
+                            style="display: none"
+                            #fileDropRef
+                            type="file" 
+                            (change)="onFileSelection($event, input.key)"
+                        />
+                    </button>
+                    <div class="col file-name">
+                        {{ getFileName(input.key) }}
+                        <i class="bi bi-trash-fill file-rmv-icon" (click)="onFileRemove(input.key, control)"></i>
+                    </div>
+                </div>
+            }
+
+        }
+    
+    </div>
+</ng-template>
+
+
