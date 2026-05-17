@@ -12,6 +12,7 @@
     border-right: 1px solid #e0e0e0;
     overflow-y: auto;
     padding-right: 8px;
+    padding-top: 20px;
     padding-bottom: 4px;
     position: relative;
     scrollbar-width: thin;
@@ -32,6 +33,10 @@
       margin-left: auto;
       gap: 1px;
       display: flex;
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      z-index: 9000;
     }
   }
 
