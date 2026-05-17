@@ -37,10 +37,12 @@
     
     @if (navigation.permissionName?.includes('edit')) {
       <div class="header-controls">
-        <i class="bi bi-marker-tip edit-icon" 
-          (click)="editMenuStyle()"
-          [matTooltip]="'Edit navigation bar style'">
-        </i>
+        @if (windowWidth > windowWidthLimit) {  
+          <i class="bi bi-marker-tip edit-icon" 
+            (click)="editMenuStyle()"
+            [matTooltip]="'Edit navigation bar style'">
+          </i>
+        }
         <i class="bi bi-plus edit-icon" 
           (click)="manageNavigation($event)"
           [matTooltip]="'Add navigation'">
@@ -134,7 +136,7 @@
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {
           <div class="edit-nav-buttons-div">
-            @if (treeLevel === 0) {
+            @if (treeLevel === 0 && windowWidth > windowWidthLimit) {
               <i class="bi bi-marker-tip edit-nav-icon"
                 (click)="editNavigationStyle($event, node)"
                 [matTooltip]="'Edit style'">
