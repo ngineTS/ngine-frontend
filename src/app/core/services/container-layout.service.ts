@@ -50,7 +50,7 @@ export class ContainerLayoutService {
         alias: 'Height',
         order: 2,
         type: 'number',
-        validators: [Validators.required]
+        validators: []
       },
       xPos: {
         value: containerLayout.xPos ?? null,
