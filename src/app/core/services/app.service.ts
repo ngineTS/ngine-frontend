@@ -177,7 +177,7 @@ export class AppService {
    *
    * @description
    * 1. Exclude routes which don't have navigation as parent (menu buttons items).
-   * 2. Sort the rest by xPos.
+   * 2. Sort the rest by order if vertical bar, otherwise sort by xPos.
    * 3. Return redirectButton name.
    * @param navigation The navigation associated to routing module.
    * @param redirectButtonNavigations The redirect buttons navigations corresponding to routing module routes.
@@ -190,8 +190,14 @@ export class AppService {
     const redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
       .filter(obj => obj.parentId === navigation.id);
     
-    redirectButtonNavigationsWithoutOnesInsideMenu
-      .sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+    if (navigation.menu.isVertical) {
+      redirectButtonNavigationsWithoutOnesInsideMenu
+        .sort((a, b) => a.order - b.order)
+    }
+    else {
+      redirectButtonNavigationsWithoutOnesInsideMenu
+        .sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+    }
 
     return redirectButtonNavigationsWithoutOnesInsideMenu[0].name;
   }
