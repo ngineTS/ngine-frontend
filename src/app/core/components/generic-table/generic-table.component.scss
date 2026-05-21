@@ -20,6 +20,11 @@ td, th {
   cursor: pointer;
 }
 
+.mat-elevation-z8 {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
 .mat-elevation-z8 .mat-mdc-table {
   background-color: unset;
 }

@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { QuillModule } from 'ngx-quill'
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { retry, take } from 'rxjs';
+import { take } from 'rxjs';
 import { QuillEditorContent } from '../../core/models/quill-editor.interface';
 import { MatButton } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';

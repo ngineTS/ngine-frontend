@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { GenericFormComponent } from '../generic-form/generic-form.component';
 import { DeepFormConfig, DropdownInputConfig, StandardInputConfig } from '../../models/form-input.interface';
 import { CustomFormInput, TableViz } from '../../models/content-management.interface';
 import { ValidatorFn, Validators } from '@angular/forms';
@@ -46,8 +45,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
   
   @Output() contentChanged: EventEmitter<null> = new EventEmitter(); //event emitter to inform parent about table change
 
-  constructor(private _matDialog: MatDialog,
-              private _mediaService: MediaService) { }
+  constructor(
+    private _matDialog: MatDialog,
+    private _mediaService: MediaService
+  ) { }
 
   /**
    * On init store required and email validators fn which are the only handled for now.
@@ -58,7 +59,7 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    if (simpleChanges["content"]) {
+    if (simpleChanges["content"] && this.tableConfig.customFormInputs) {
       this.displayedColumns = [];
       for (const inputConfig of this.tableConfig.customFormInputs) {
         this.displayedColumns.push(inputConfig.columnName);
@@ -73,8 +74,10 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, 50);
   }
 
   /**
@@ -228,4 +231,3 @@ export class GenericTableComponent<T extends Record<string, any>> {
   }
 
 }
-
