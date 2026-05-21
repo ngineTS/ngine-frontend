@@ -15,6 +15,7 @@ import { catchError, firstValueFrom, retry, take, throwError } from 'rxjs';
 import { RoleNavigationPermissionPayload } from '../../../core/models/role-navigation-permission.interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-role-management-form',
@@ -25,7 +26,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './role-management-form.component.html',
   styleUrl: './role-management-form.component.scss',
@@ -47,6 +49,8 @@ export class RoleManagementFormComponent implements OnInit{
   permissions! : Array<Permission>;
   isSaving = false;
   title: string = 'Add Role';
+  isLoadingFlatNavigations = true;
+  isLoadingPermissions = true;
 
   /**
    * Lifecycle hook called after component has been initialized.
@@ -61,13 +65,19 @@ export class RoleManagementFormComponent implements OnInit{
     this._permissionService.getPermissions().pipe(
       retry(2),
       take(1)
-    ).subscribe(resp => this.permissions = resp);
+    ).subscribe(resp => {
+      this.permissions = resp;
+      this.isLoadingPermissions = false;
+    });
 
     this._navigationService.getFlatNavigations().pipe(
       retry(2),
       take(1)
-    ).subscribe(resp => this.navigations = resp);
-    
+    ).subscribe(resp => {
+      this.navigations = resp;
+      this.isLoadingFlatNavigations = false;
+    });
+
     this.roleForm = this._formBuilder.group({
       displayLabel: new FormControl(this._data.role.displayLabel ?? '', Validators.required),
       description: new FormControl(this._data.role.description ?? '', Validators.required),

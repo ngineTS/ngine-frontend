@@ -29,11 +29,15 @@
                                     [value]="navigation.id" 
                                     [disabled]="isNavigationSelected(navigation.id!)"
                                     matTooltip="{{ navigation.parent?.displayLabel }} > {{ navigation.displayLabel }}"
+                                    matTooltipPosition="above"
                                 >
                                     {{ navigation.displayLabel }}
                                 </mat-option>
                             }
                         </mat-select>
+                        @if (isLoadingFlatNavigations) {
+                            <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+                        }
                     </mat-form-field>
                     
                     <mat-form-field appearance="outline" class="me-2">
@@ -43,6 +47,9 @@
                                 <mat-option [value]="permission.id">{{ permission.name }}</mat-option>
                             }
                         </mat-select>
+                        @if (isLoadingPermissions) {
+                            <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
+                        }
                     </mat-form-field>
 
                     @if (roleNavigationPermissions.length > 1) {
