@@ -176,7 +176,7 @@ export class HeaderBarComponent implements OnInit {
     const navigationStylePayload: DeepFormConfig<Partial<StylePayload>> = {
       containerLayout: this._containerLayoutService.setUpContainerLayoutForm(
         navigation.containerLayout,
-        ['xPos', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']
+        ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']
       ),
       containerStyle: this._containerStyleService.setUpContainerStyleForm(
         navigation.containerStyle,
