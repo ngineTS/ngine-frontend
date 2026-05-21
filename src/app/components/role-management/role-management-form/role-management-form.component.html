@@ -17,8 +17,18 @@
         </mat-form-field>
 
         <div formArrayName="roleNavigationPermissions" class="form-array">
-            <div class="nav-info">Associate navigations and permissions to this role.</div>
-            
+            <div class="d-flex flex-row">
+                <div class="nav-info">Associate navigations and permissions to this role.</div>
+                @if (isLoadingFlatNavigations || isLoadingPermissions) {
+                    <mat-spinner 
+                        matTooltip="Loading navigations and permissions..."
+                        class="ms-3 mt-1" 
+                        diameter="20" 
+                        matSuffix>
+                    </mat-spinner>
+                }
+            </div>
+
             @for (roleNavPermGroup of roleNavigationPermissions.controls; let i = $index; track roleNavPermGroup) {   
                 <div [formGroupName]="i">
                     <mat-form-field appearance="outline" class="me-2">
@@ -35,9 +45,6 @@
                                 </mat-option>
                             }
                         </mat-select>
-                        @if (isLoadingFlatNavigations) {
-                            <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
-                        }
                     </mat-form-field>
                     
                     <mat-form-field appearance="outline" class="me-2">
@@ -47,9 +54,6 @@
                                 <mat-option [value]="permission.id">{{ permission.name }}</mat-option>
                             }
                         </mat-select>
-                        @if (isLoadingPermissions) {
-                            <mat-spinner class="me-2" diameter="20" matSuffix></mat-spinner>
-                        }
                     </mat-form-field>
 
                     @if (roleNavigationPermissions.length > 1) {
