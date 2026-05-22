@@ -71,7 +71,7 @@ export class ContainerLayoutService {
         alias: 'Z Index',
         order: 5,
         type: 'number',
-        validators: []
+        validators: [Validators.min(0)]
       },
       marginTop: {
         value: containerLayout.marginTop ?? null,

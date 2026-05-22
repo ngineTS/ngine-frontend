@@ -187,19 +187,22 @@ export class AppService {
     navigation: Navigation,
     redirectButtonNavigations: Array<Navigation>
   ) {
-    const redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
+    let redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
       .filter(obj => obj.parentId === navigation.id);
     
     if (navigation.menu.isVertical) {
-      redirectButtonNavigationsWithoutOnesInsideMenu
-        .sort((a, b) => a.order - b.order)
+      return redirectButtonNavigationsWithoutOnesInsideMenu
+        .sort((a, b) => a.order - b.order)[0].name;
     }
     else {
-      redirectButtonNavigationsWithoutOnesInsideMenu
-        .sort((a, b) => a.containerLayout.xPos! - b.containerLayout.xPos!);
+      const copyForSorting = structuredClone(redirectButtonNavigationsWithoutOnesInsideMenu);
+      copyForSorting.forEach(a => {
+        if(Number(a.containerLayout.xPos) < -1) {
+          a.containerLayout.xPos = 1000 - Number(a.containerLayout.xPos)
+        }
+      });
+      return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0].name;
     }
-
-    return redirectButtonNavigationsWithoutOnesInsideMenu[0].name;
   }
 
 }

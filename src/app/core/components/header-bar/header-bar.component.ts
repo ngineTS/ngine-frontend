@@ -104,7 +104,7 @@ export class HeaderBarComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
-        this.isRefiningPosition = false;
+      this.isRefiningPosition = false;
     }, 50);
   }
 
@@ -219,12 +219,16 @@ export class HeaderBarComponent implements OnInit {
   onDragEnded(event: CdkDragEnd, navigation: Navigation) {
     this.isDragging = false;
 
-    const positon = event.source.getFreeDragPosition();
-    let newPos = Number(navigation.containerLayout.xPos) + positon.x;
-    if (this.dropZoneWidth && (newPos > (0.7 * this.dropZoneWidth))) {
-      newPos = newPos - this.dropZoneWidth;
+    const position = event.source.getFreeDragPosition();
+
+    // For right part items (ex: icons), save position based on navigation bar width
+    // in order to keep it on the right whatever the screen size.
+    let newXPos = position.x;
+    if (this.dropZoneWidth && (position.x > (0.7 * this.dropZoneWidth))) {
+      newXPos = position.x - this.dropZoneWidth;
     }
-    const navigationPosition = { xPos: newPos }
+
+    const navigationPosition = { xPos: newXPos }
 
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
@@ -249,7 +253,7 @@ export class HeaderBarComponent implements OnInit {
   getNavigationPosition(containerLayout: ContainerLayout) {
     const xPos = Number(containerLayout.xPos);
 
-    if (xPos >= 0) {
+    if (xPos > -1) {
       return xPos;
     }
     else {

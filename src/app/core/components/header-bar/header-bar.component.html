@@ -88,7 +88,10 @@
                         cdkDragLockAxis="x"
                         cdkDragBoundary=".navigation-list"
                         [cdkDragDisabled]="!child.permissionName?.includes('edit')"
-                        [style.left.px]="getNavigationPosition(child.containerLayout)"
+                        [cdkDragFreeDragPosition]="{
+                            x: getNavigationPosition(child.containerLayout),
+                            y: 0,
+                        }"
                         (cdkDragStarted)="onDragStart()"
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [class.edit-header-container]="child.permissionName?.includes('edit')"
