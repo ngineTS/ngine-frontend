@@ -1,0 +1,20 @@
+{
+  "name": "@cedricbelin/test-schematics-11",
+  "version": "1.0.0",
+  "description": "Angular schematics for the SE Intel Web Portal",
+  "keywords": ["schematics", "angular", "se-intel"],
+  "schematics": "./collection.json",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && npm run copy:files",
+    "build:watch": "tsc -p tsconfig.json --watch",
+    "copy:files": "xcopy /E /I /Y src\\base-component\\files dist\\base-component\\files"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^17.0.0",
+    "@angular-devkit/schematics": "^17.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
