@@ -35,10 +35,7 @@ export class NavigationTypeService {
           type: 'text',
           value: '',
           alias: 'Name',
-          info: `The name has to respect these 2 conditions:
-            1. Be the same as the key of the component store.
-            2. Be the kebab case of the component name it represents
-            (for example, if component name is MyComponent, it has to be my-component).`,
+          info: `IMPORTANT: Name has to match the key of the component store.`,
           order: 1,
           validators: [Validators.required],
         },

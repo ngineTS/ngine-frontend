@@ -27,16 +27,15 @@ export class ComponentService {
   };
 
   /**
-   * Transform a kebab case string to a pascale case string.
+   * Classify a string (ex: my-string --> MyString).
    * 
    * @param input The string to transform.
    * @returns A string in pascale case.
    */
-  kebabCasetoPascaleCase(input: string): string {
-    return input
-      .split('-')
-      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-      .join('');
+  classify(str: string): string {
+    return str
+      .replace(/[-_ ]+(.)/g, (_, c) => c.toUpperCase())
+      .replace(/^(.)/, (c) => c.toUpperCase());
   }
 
 }

@@ -89,7 +89,7 @@ export class EmptyDialogComponent {
     }
 
     const component = await componentImportRef().then(m => 
-      m[this._componentService.kebabCasetoPascaleCase(navigationTypeName) + 'Component']
+      m[this._componentService.classify(navigationTypeName) + 'Component']
     );
 
     this.containerRef = this.container.createComponent(component, {
