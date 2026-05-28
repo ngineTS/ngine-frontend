@@ -10,7 +10,7 @@ export class ComponentService {
    * 
    * Map navigation type name with function reference to component import.
    * 
-   * The key has to match navigation type name and has to be kebab case of component class name.
+   * The key has to match navigation type name.
    */
   readonly componentStore: Record<string, () => Promise<any>> = {
     "my-quill-editor": () => import('./my-quill-editor/my-quill-editor.component'),
@@ -29,7 +29,7 @@ export class ComponentService {
   /**
    * Classify a string (ex: my-string --> MyString).
    * 
-   * @param input The string to transform.
+   * @param str The string to transform.
    * @returns A string in pascale case.
    */
   classify(str: string): string {
