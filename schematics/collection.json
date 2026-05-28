@@ -2,13 +2,18 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "ng-add": {
-      "description": "Registers @cedricbelin/test-schematics-11 in angular.json so you can run `ng generate base-component <name>` and `ng generate management-base-component <name>`.",
+      "description": "Registers @cedricbelin/test-schematics-14 in angular.json so you can run `ng generate base-component <name>` and `ng generate management-base-component <name>`.",
       "factory": "./dist/ng-add/index#ngAdd"
     },
     "base-component": {
       "description": "A base component to build any features.",
       "factory": "./dist/base-component/index#baseComponent",
       "schema": "./src/base-component/schema.json"
+    },
+    "management-base-component": {
+      "description": "A base component with management options already integrated (form, add, edit, delete...)",
+      "factory": "./dist/management-base-component/index#managementBaseComponent",
+      "schema": "./src/management-base-component/schema.json"
     }
   }
 }

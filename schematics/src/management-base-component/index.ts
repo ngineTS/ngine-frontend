@@ -12,18 +12,18 @@ import {
   Tree,
   url,
 } from '@angular-devkit/schematics';
-import { BaseComponentSchema } from './schema';
+import { ManagementBaseComponentSchema } from './schema';
 
-export function baseComponent(options: BaseComponentSchema): Rule {
+export function managementBaseComponent(options: ManagementBaseComponentSchema): Rule {
   return chain([
     _createComponent(options),
     _addToComponentStore(options),
   ]);
 }
 
-function _createComponent(options: BaseComponentSchema): Rule {
+function _createComponent(options: ManagementBaseComponentSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    context.logger.info(`Generating base component: ${strings.classify(options.name)}Component`);
+    context.logger.info(`Generating management base component: ${strings.classify(options.name)}Component`);
 
     const templateSource = apply(url('./files'), [
       template({
@@ -40,7 +40,7 @@ function _createComponent(options: BaseComponentSchema): Rule {
   };
 }
 
-function _addToComponentStore(options: BaseComponentSchema): Rule {
+function _addToComponentStore(options: ManagementBaseComponentSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.info(`Adding component: ${strings.classify(options.name)}Component to the component store`);
 

@@ -1,5 +1,5 @@
 {
-  "name": "@cedricbelin/test-schematics-11",
+  "name": "@cedricbelin/test-schematics-14",
   "version": "1.0.0",
   "description": "Angular schematics for the SE Intel Web Portal",
   "keywords": ["schematics", "angular", "se-intel"],
@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && npm run copy:files",
     "build:watch": "tsc -p tsconfig.json --watch",
-    "copy:files": "xcopy /E /I /Y src\\base-component\\files dist\\base-component\\files"
+    "copy:files": "xcopy /E /I /Y src\\base-component\\files dist\\base-component\\files && xcopy /E /I /Y src\\management-base-component\\files dist\\management-base-component\\files"
   },
   "dependencies": {
     "@angular-devkit/core": "^17.0.0",
