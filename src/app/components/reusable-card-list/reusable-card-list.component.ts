@@ -12,10 +12,10 @@ import { Validators } from '@angular/forms';
 export class ReusableCardListComponent extends ManagementBaseComponent<ReusableCard> {
 
   ngOnInit(): void {
-    this.tableName = 'reusable_card';
-    this.sortConfiguration = { orderBy: 'order', order: 'ASC' };
-    this.loadItems();
-    this.formInputsConfiguration = {
+    this._tableName = 'reusable_card';
+    this._sortConfiguration = { orderBy: 'order', order: 'ASC' };
+    this._loadItems();
+    this._formInputsConfiguration = {
       name: {
         type: 'text',
         alias: 'Name',
@@ -41,7 +41,7 @@ export class ReusableCardListComponent extends ManagementBaseComponent<ReusableC
       order: {
         type: 'number',
         alias: 'Order',
-        value: this.items.length + 1,
+        value: this._items.length + 1,
         validators: [Validators.required],
         order: 3
       }

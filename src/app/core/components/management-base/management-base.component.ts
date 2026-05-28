@@ -33,15 +33,15 @@ export class ManagementBaseComponent<
   /** The http client. */
   protected _http = inject(HttpClient);
   /** The backend url. */
-  protected readonly baseUrl = environment.APIURL;
+  protected readonly _baseUrl = environment.APIURL;
   /** The items to be managed. */
-  protected items: Array<T> = [];
+  protected _items: Array<T> = [];
   /** The name of the database table. */
-  protected tableName: string = '';
+  protected _tableName: string = '';
   /** The form inputs configuration. */
-  protected formInputsConfiguration: DeepFormConfig<Omit<T, 'id' | 'navigationId'>> | undefined;
+  protected _formInputsConfiguration: DeepFormConfig<Omit<T, 'id' | 'navigationId'>> | undefined;
   /** The sorting configuration. */
-  protected sortConfiguration : { orderBy: keyof T, order: 'ASC' | 'DESC' } | null = null;
+  protected _sortConfiguration : { orderBy: keyof T, order: 'ASC' | 'DESC' } | null = null;
 
   /** 
    * Load items by navigation id.
@@ -49,20 +49,20 @@ export class ManagementBaseComponent<
    * If sortConfiguration is set, the items will be sorted accordingly.
    * `tableName` must be set before calling this method.
    */
-  loadItems() {
-    if(this.sortConfiguration) {
+  _loadItems() {
+    if(this._sortConfiguration) {
       const params = new HttpParams()
-        .set('orderBy', this.sortConfiguration.orderBy as string)
-        .set('order', this.sortConfiguration.order);
+        .set('orderBy', this._sortConfiguration.orderBy as string)
+        .set('order', this._sortConfiguration.order);
 
-      this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`, { params })
+      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.id}`, { params })
       .pipe(retry(this._retryCount), take(this._takeCount))
-      .subscribe(resp => this.items = resp);
+      .subscribe(resp => this._items = resp);
     }
     else {
-      this._http.get<Array<T>>(`${this.baseUrl}custom-table/${this.tableName}/${this._navigation.id}`)
+      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.id}`)
       .pipe(retry(this._retryCount), take(this._takeCount))
-      .subscribe(resp => this.items = resp);
+      .subscribe(resp => this._items = resp);
     }
   }
 
@@ -72,14 +72,14 @@ export class ManagementBaseComponent<
    * `formInputsConfiguration` and `tableName` must be set before calling this method,
    *  otherwise the form will not be able to create the new item.
    */
-  addItem() {
-    if (this.formInputsConfiguration && this._canAdd) {
+  _addItem() {
+    if (this._formInputsConfiguration && this._canAdd) {
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Add item',
-        formConfig: this.formInputsConfiguration,
+        formConfig: this._formInputsConfiguration,
         payloadId: null,
         navigationId: this._navigation.id,
-        controllerName: `custom-table/${this.tableName}`,
+        controllerName: `custom-table/${this._tableName}`,
         hasDeleteButton: false
       }
 
@@ -90,7 +90,7 @@ export class ManagementBaseComponent<
 
       matDialogRef.afterClosed().subscribe(resp => {
         if (resp === 'added') {
-          this.loadItems();
+          this._loadItems();
         }
       });
     }
@@ -104,10 +104,10 @@ export class ManagementBaseComponent<
    * 
    * @param item The item to be edited.
    */
-  editItem(item: T) {
-    if (this.formInputsConfiguration && this._canEdit) {
+  _editItem(item: T) {
+    if (this._formInputsConfiguration && this._canEdit) {
       const formInputsConfigurationForEdit = Object.fromEntries(
-        Object.entries(this.formInputsConfiguration).map(([key, field]) => [
+        Object.entries(this._formInputsConfiguration).map(([key, field]) => [
           key,
           { ...field, value: item[key] ?? field.value }
         ])
@@ -118,7 +118,7 @@ export class ManagementBaseComponent<
         formConfig: formInputsConfigurationForEdit,
         payloadId: item.id,
         navigationId: this._navigation.id,
-        controllerName: `custom-table/${this.tableName}`,
+        controllerName: `custom-table/${this._tableName}`,
         hasDeleteButton: this._canDelete
       }
 
@@ -129,7 +129,7 @@ export class ManagementBaseComponent<
 
       matDialogRef.afterClosed().subscribe(resp => {
         if (resp === 'edited' || resp === 'deleted') {
-          this.loadItems();
+          this._loadItems();
         }
       });
     }
