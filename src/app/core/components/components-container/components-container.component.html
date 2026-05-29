@@ -46,7 +46,7 @@
 
 
 <!-- Management buttons toolbar (visible if user has at least 'add' permission on navigation) -->
-@if (navigation.permissionName?.includes('add')) {
+@if (navigation.permissionName?.includes('add') && windowWidth > windowWidthLimit) {
     <div cdkDrag class="toolbar">
         <!-- Grab toolbar icon -->
         <div cdkDragHandle class="toolbar-grab">
