@@ -23,7 +23,6 @@ export class MediaService {
       .pipe(take(1),  map((x: Blob) => URL.createObjectURL(x)));
   }
 
-  
   /**
    * Get all media metadata.
    * 

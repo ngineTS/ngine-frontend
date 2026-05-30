@@ -23,7 +23,7 @@ export class ComponentService {
     "sign-container": () => import('./sign-container/sign-container.component'),
     "simple-shape": () => import('./simple-shape/simple-shape.component'),
     "media": () => import('./media/media.component'),
-    "reusable-card-list": () => import('./reusable-card-list/reusable-card-list.component')
+    "reusable-card-list": () => import('./reusable-card-list/reusable-card-list.component'),
   };
 
   /**
