@@ -7,7 +7,7 @@ The frontend repository of the application. Built with Angular. For more informa
 
 2. Install the dependencies: `npm install`.
 
-3. Add Ngine schematics: `ng add @ngine/component` to later generate component with:
+3. Add Ngine schematics: `ng add @ngine/component` to later generate components with:
     - `ng generate base-component <name>`
     - `ng generate management-base-component <name>`.
 
