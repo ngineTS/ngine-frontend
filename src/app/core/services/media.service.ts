@@ -22,6 +22,7 @@ export class MediaService {
     return this._http.get<any>(`${this.baseURL}file-management/${fileName}`, { responseType: 'blob' as 'json' })
       .pipe(take(1),  map((x: Blob) => URL.createObjectURL(x)));
   }
+  
 
   /**
    * Get all media metadata.
