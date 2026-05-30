@@ -10,3 +10,5 @@ The frontend repository of the application. Built with Angular. For more informa
 3. Add Ngine schematics: `ng add @ngine/component` to later generate component with:
     - `ng generate base-component <name>`
     - `ng generate management-base-component <name>`.
+
+4. Run the project: `ng serve`.
