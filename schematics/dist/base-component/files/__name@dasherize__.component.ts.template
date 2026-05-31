@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
+
+@Component({
+  selector: '<%= prefix %>-<%= dasherize(name) %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',
+  styleUrls: ['./<%= dasherize(name) %>.component.scss'],
+})
+export class <%= classify(name) %>Component extends NavigationBaseComponent {
+
+  constructor() { super(); }
+
+}

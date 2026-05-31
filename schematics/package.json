@@ -1,5 +1,5 @@
 {
-  "name": "@cedricbelin/test-schematics-14",
+  "name": "ngine-component",
   "version": "1.0.0",
   "description": "Angular schematics for the SE Intel Web Portal",
   "keywords": ["schematics", "angular", "se-intel"],

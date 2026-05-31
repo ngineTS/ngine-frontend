@@ -1,6 +1,6 @@
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 
-const PACKAGE_NAME = '@cedricbelin/test-schematics-14';
+const PACKAGE_NAME = 'ngine-component';
 
 export function ngAdd(): Rule {
   return (tree: Tree, context: SchematicContext) => {

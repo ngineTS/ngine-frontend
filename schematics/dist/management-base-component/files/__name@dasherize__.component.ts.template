@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+import { ManagementBaseComponent } from '../../core/components/management-base/management-base.component';
+
+@Component({
+  selector: '<%= prefix %>-<%= dasherize(name) %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',
+  styleUrls: ['./<%= dasherize(name) %>.component.scss'],
+})
+export class <%= classify(name) %>Component extends ManagementBaseComponent<any /* Replace with your type */> {
+
+  constructor() { super(); }
+
+}
