@@ -105,7 +105,7 @@ export class HeaderBarComponent implements OnInit {
     setTimeout(() => {
       this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
       this.isRefiningPosition = false;
-    }, 50);
+    }, 200);
   }
 
   /**
