@@ -54,12 +54,8 @@ export class HeaderBarComponent implements OnInit {
   windowWidth!: number;
   /** Responsive threasold. */
   windowWidthLimit = 1000;
-  /** Navigation bar width in pixel */
-  dropZoneWidth: number | undefined;
   /** Boolean to inform if one of the items of navigation bar is being dragged. */
   isDragging = false;
-  /** Boolean to hide navigation bar during position refining. */
-  isRefiningPosition = true;
   /** Boolean to hide navigation bar when user click on 'Hide menu'.*/
   isNavigationBarHidden = false;
   /** HTML drop zone */
@@ -72,7 +68,6 @@ export class HeaderBarComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.windowWidth = window.innerWidth;
-    this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
   }
 
   /**
@@ -94,18 +89,6 @@ export class HeaderBarComponent implements OnInit {
       if (!aPos && bPos) return 1; // negative after positive
       return Number(a.containerLayout.xPos) - Number(b.containerLayout.xPos);  
     });
-  }
-
-  /**
-   * Lifecycle hook called after the component view has been initialized.
-   * 
-   * Get drop zone width used to compute navigation positions.
-   */
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.dropZoneWidth = this.dropZone?.nativeElement.offsetWidth;
-      this.isRefiningPosition = false;
-    }, 200);
   }
 
   /**
@@ -224,8 +207,8 @@ export class HeaderBarComponent implements OnInit {
     // For right part items (ex: icons), save position based on navigation bar width
     // in order to keep it on the right whatever the screen size.
     let newXPos = position.x;
-    if (this.dropZoneWidth && (position.x > (0.7 * this.dropZoneWidth))) {
-      newXPos = position.x - this.dropZoneWidth;
+    if (position.x > (0.7 * this.dropZone?.nativeElement.offsetWidth!)) {
+      newXPos = position.x - this.dropZone?.nativeElement.offsetWidth!;
     }
 
     const navigationPosition = { xPos: newXPos }
@@ -251,14 +234,12 @@ export class HeaderBarComponent implements OnInit {
    * @returns The x position.
    */
   getNavigationPosition(containerLayout: ContainerLayout) {
-    const xPos = Number(containerLayout.xPos);
+    let xPos = Number(containerLayout.xPos);
 
-    if (xPos > -1) {
-      return xPos;
+    if (xPos < -1) {
+      xPos = this.dropZone?.nativeElement.offsetWidth! + xPos;
     }
-    else {
-      return this.dropZoneWidth! + xPos;
-    }
+
+    return xPos;
   }
-
 }
