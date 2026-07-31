@@ -79,7 +79,7 @@ export class NavigationService {
     /**
      * Delete navigation and children.
      * 
-     * @param navigationId The navigation to delete.
+     * @param navigation The navigation to delete.
      * @returns An observable of UpdateReturnType object.
      */
     deleteNavigationAndChildren(navigation: Navigation) {
