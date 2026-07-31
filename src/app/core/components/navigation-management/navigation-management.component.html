@@ -35,7 +35,7 @@
         <!-- Parent dropdown -->
         <mat-form-field appearance="outline">
             <mat-label>Parent</mat-label>
-            <mat-select formControlName="parentGrouId">
+            <mat-select formControlName="parentGroupId">
                 @for (flatNavigation of flatNavigations; track flatNavigation.id) {
                     <mat-option 
                         [value]="flatNavigation.groupId" 

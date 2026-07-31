@@ -66,6 +66,7 @@ export class AppService {
       next: result => {
         localStorage.setItem('access_token', result.access_token);
         this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
+        console.log('navigation', result.navigation);
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
           result.navigation
