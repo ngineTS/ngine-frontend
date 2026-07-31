@@ -216,12 +216,12 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Recursively retrieve parent name until the last parent.
    * 
-   * @param navigationId The navigation id of the wished navigation name.
+   * @param navigationGroupId The navigation group id of the wished navigation name.
    * @returns The navigation parent name with "/" prefix.
    */
-  getParentName(navigationId: string): string {
+  getParentName(navigationGroupId: string): string {
     let name = '/';
-    const parent = this.flatNavigations.find(obj => obj.id === navigationId);
+    const parent = this.flatNavigations.find(obj => obj.groupId === navigationGroupId);
     if (parent && parent.name !== 'global') {
       if (parent.navigationType.name === 'redirect-button') {
         name = parent.name;
