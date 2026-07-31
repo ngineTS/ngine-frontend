@@ -78,7 +78,7 @@
         <!-- Main menu  'Add Navigation' item -->
         @if (navigation.permissionName?.includes('add')) {
             <button mat-menu-item 
-                (click)="addNavigation(navigation.id)"
+                (click)="addNavigation(navigation.groupId)"
                 [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord['add-nav-main'] ?
                     navigation.menu.typographyStyle.activeColor :
@@ -178,7 +178,7 @@
                     <!-- Deep menu 'Add navigation' item -->
                     @if (navigation.permissionName?.includes('add')) {
                         <button mat-menu-item
-                            (click)="addNavigation(navigation.id)"
+                            (click)="addNavigation(navigation.groupId)"
                             [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
                             [style.color]="isButtonHoveredRecord['add-nav-deep'] ?
                                 navigation.menu.typographyStyle.activeColor :

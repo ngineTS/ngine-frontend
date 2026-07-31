@@ -60,10 +60,10 @@ export class MenuButtonComponent {
    * Methods called on 'add navigation' button click.
    * Open form to add navigation.
    * 
-   * @param parentId The parent id where to add a navigation.
+   * @param parentGroupId The parent group id where to add a navigation.
    */
-  addNavigation(parentId: string) {
-    this._navigationService.manageNavigation(parentId);
+  addNavigation(parentGroupId: string) {
+    this._navigationService.manageNavigation(parentGroupId);
   }
 
   /**
@@ -75,7 +75,7 @@ export class MenuButtonComponent {
    */
   editNavigation(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
-    this._navigationService.manageNavigation(navigation.parentId, navigation);
+    this._navigationService.manageNavigation(navigation.parentGroupId, navigation);
   }
 
   /**
