@@ -43,7 +43,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
   }
   
   ngOnInit() {
-    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
+    this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.groupId}`)
       .pipe(take(this._takeCount))
       .subscribe(resp => {
         this.myQuillEditor = resp;
@@ -56,7 +56,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
     //edit
     if (this.myQuillEditor?.id) {
       this._http.patch(`${environment.APIURL}quill-editor/${this.myQuillEditor.id}`, {
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         content: this.content
       }).pipe(take(this._takeCount))
         .subscribe(() => {
@@ -67,7 +67,7 @@ export class MyQuillEditorComponent extends NavigationBaseComponent {
     //add
     else {
       this._http.post(`${environment.APIURL}quill-editor`, {
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         content: this.content
       }).pipe(take(this._takeCount))
         .subscribe(() => {
