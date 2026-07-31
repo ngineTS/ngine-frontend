@@ -139,7 +139,7 @@ export class VerticalHeaderBarComponent implements OnInit {
    */
   manageNavigation(event: MouseEvent, navigation?: Navigation): void {
     event.stopPropagation();
-    this._navigationService.manageNavigation(this.navigation.id, navigation);
+    this._navigationService.manageNavigation(this.navigation.groupId, navigation);
   }
 
   /**

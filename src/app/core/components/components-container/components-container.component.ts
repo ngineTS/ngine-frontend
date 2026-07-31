@@ -103,7 +103,7 @@ export class ComponentsContainer implements OnInit {
    */
   openFormToAddNavigationBarOrNavigation(type: 'horizontal' | 'vertical' | 'navigation'): void {
     if (type === 'navigation') {
-      this._navigationService.manageNavigation(this.navigation.id);
+      this._navigationService.manageNavigation(this.navigation.groupId);
     }
     else {
       this._menuService.createNavigationBar(this.navigation.id, type)

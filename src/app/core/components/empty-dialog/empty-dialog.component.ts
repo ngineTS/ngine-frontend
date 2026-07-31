@@ -114,7 +114,7 @@ export class EmptyDialogComponent {
    * @param navigation The navigation to edit.
    */
   manageNavigation(navigation?: Navigation) {
-    this._navigationService.manageNavigation(this.data.navigation.id, navigation);
+    this._navigationService.manageNavigation(this.data.navigation.groupId, navigation);
     this._dialogRef.close();
   }
 
