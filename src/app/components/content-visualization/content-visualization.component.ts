@@ -43,7 +43,7 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
    * (needed for generic table component), else do nothing.
    */
   getContentInformation() {
-    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this._navigation.id}`)
+    this._http.get<TableViz>(`${environment.APIURL}table-viz/navigation/${this._navigation.groupId}`)
       .pipe(
         retry(2),
         take(1),
@@ -78,7 +78,7 @@ export class ContentVisualizationComponent extends NavigationBaseComponent {
    */
   onSelectTable(event: MatSelectChange) {
     this.tableVizPayload = {
-      navigationId: this._navigation.id,
+      navigationId: this._navigation.groupId,
       tableName: event.value,
       tableLabel: event.value,
       isEditable: false
