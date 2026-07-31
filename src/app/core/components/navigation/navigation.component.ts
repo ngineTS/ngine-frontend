@@ -213,7 +213,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation properties.
    */
   editNavigation(): void {
-    this._navigationService.manageNavigation(this._navigation.parentId, this._navigation);
+    this._navigationService.manageNavigation(this._navigation.parentGroupId, this._navigation);
   }
 
   /**
