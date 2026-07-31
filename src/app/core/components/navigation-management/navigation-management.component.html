@@ -35,10 +35,10 @@
         <!-- Parent dropdown -->
         <mat-form-field appearance="outline">
             <mat-label>Parent</mat-label>
-            <mat-select formControlName="parentId">
+            <mat-select formControlName="parentGrouId">
                 @for (flatNavigation of flatNavigations; track flatNavigation.id) {
                     <mat-option 
-                        [value]="flatNavigation.id" 
+                        [value]="flatNavigation.groupId" 
                         matTooltip="{{ flatNavigation.parent?.displayLabel }} > {{ flatNavigation.displayLabel }}"
                     >
                         {{ flatNavigation.displayLabel }}

@@ -188,7 +188,7 @@ export class AppService {
     redirectButtonNavigations: Array<Navigation>
   ) {
     let redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
-      .filter(obj => obj.parentId === navigation.id);
+      .filter(obj => obj.parentGroupId === navigation.groupId);
     
     if (navigation.menu.isVertical) {
       return redirectButtonNavigationsWithoutOnesInsideMenu

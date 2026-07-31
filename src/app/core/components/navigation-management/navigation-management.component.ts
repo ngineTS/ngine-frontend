@@ -43,7 +43,7 @@ export class NavigationManagementComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) 
     public data: { 
       navigation: Navigation | undefined,
-      parentId: string,
+      parentGroupId: string,
     },
     private _formBuilder: FormBuilder,
     private _navigationService: NavigationService,
@@ -120,7 +120,7 @@ export class NavigationManagementComponent implements OnInit {
    */
   createForm() {
     this.navigationForm = this._formBuilder.group({
-      parentId: [this.data.navigation?.parentId ?? this.data.parentId, Validators.required],
+      parentGroupId: [this.data.navigation?.parentGroupId ?? this.data.parentGroupId, Validators.required],
       navigationTypeId: [this.data.navigation?.navigationTypeId ?? null, Validators.required],
       url: [this.data.navigation?.url ?? null],
       icon: [this.data.navigation?.icon ?? null],
@@ -143,11 +143,11 @@ export class NavigationManagementComponent implements OnInit {
         this._navigationService.deleteNavigationAndChildren(this.data.navigation)
           .pipe(
             take(1),
-            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order))
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentGroupId, this.data.navigation!.order))
           )
           .subscribe(() => {
             this._snackbarService.showSuccessSnackBar('Component deleted successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value);
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentGroupId')?.value);
           });
       }
     }
@@ -156,21 +156,21 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Save or update navigation and refresh routing.
    * 
-   * In case of update, if parentId has changed then update old big sisters order.
+   * In case of update, if parentGroupId has changed then update old big sisters order.
    */
   submitForm() {
     //EDIT
     if (this.data.navigation?.id) {
       //Parent has changed
-      if (this.data.navigation.parentId !== this.navigationForm.get('parentId')?.value) {
+      if (this.data.navigation.parentGroupId !== this.navigationForm.get('parentGroupId')?.value) {
         this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
-          obj.parentId === this.navigationForm.get('parentId')?.value
+          obj.parentGroupId === this.navigationForm.get('parentGroupId')?.value
         ).length;
 
         this._navigationService.updateNavigation(this.data.navigation.id, this.navigationForm.value)
           .pipe(
             take(1),
-            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentId, this.data.navigation!.order)),
+            switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentGroupId, this.data.navigation!.order)),
             switchMap(() => this._containerLayoutService.updateContainerLayout(
               this.data.navigation!.containerLayout.id,
               { xPos: 0, yPos: 0 }
@@ -179,7 +179,7 @@ export class NavigationManagementComponent implements OnInit {
           .subscribe({
             next: () => {
               this._snackbarService.showSuccessSnackBar('Element edited successfully.');
-              this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value)
+              this.refreshRoutingAndRedirect(this.navigationForm.get('parentGroupId')?.value)
             }
           });
       }
@@ -200,14 +200,14 @@ export class NavigationManagementComponent implements OnInit {
     //ADD
     else {
       this.navigationForm.value["order"] = this.flatNavigations.filter(obj => 
-        obj.parentId === this.navigationForm.get('parentId')?.value).length;
+        obj.parentGroupId === this.navigationForm.get('parentGroupId')?.value).length;
       this._navigationService
         .saveNavigation(this.navigationForm.value)
         .pipe(take(1))
         .subscribe({
           next: () => {
             this._snackbarService.showSuccessSnackBar('Element added successfully.');
-            this.refreshRoutingAndRedirect(this.navigationForm.get('parentId')?.value);
+            this.refreshRoutingAndRedirect(this.navigationForm.get('parentGroupId')?.value);
           }
         });
     }
@@ -226,8 +226,8 @@ export class NavigationManagementComponent implements OnInit {
       if (parent.navigationType.name === 'redirect-button') {
         name = parent.name;
       }
-      if (parent?.parentId) {
-        name = this.getParentName(parent.parentId) + '/' + name;
+      if (parent?.parentGroupId) {
+        name = this.getParentName(parent.parentGroupId) + '/' + name;
       }
     }
     return name;
@@ -236,17 +236,17 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Update navigation big sisters order by decreasing it by 1.
    * 
-   * @param parentId The navigation parentId used to find sisters.
+   * @param parentGroupId The navigation parent group id used to find sisters.
    * @param order The navigation order used to compare with sisters one.
    * @returns An array of navigation ids and orders setup.
    */
   updateNavigationBigSistersOrder(
-    parentId: string, 
+    parentGroupId: string, 
     order: Navigation["order"]
   ): Observable<Partial<Navigation>[]> {
     const navigationOrdersToUpdate: Partial<Navigation>[] = [];
     let bigSisterNavigations = this.flatNavigations.filter(obj => 
-      obj.parentId === parentId && obj.order > order
+      obj.parentGroupId === parentGroupId && obj.order > order
     );
     bigSisterNavigations.forEach(sister => navigationOrdersToUpdate.push({
       id: sister.id,
@@ -258,10 +258,10 @@ export class NavigationManagementComponent implements OnInit {
   /**
    * Close popup, refresh routing and redirect to parent navigation.
    * 
-   * @param parentId The navigation parent id we want to redirect on.
+   * @param parentGroupId The navigation parent id we want to redirect on.
    */
-  refreshRoutingAndRedirect(parentId: string) {
-    const redirectName = this.getParentName(parentId);
+  refreshRoutingAndRedirect(parentGroupId: string) {
+    const redirectName = this.getParentName(parentGroupId);
     this._appService.createAppRouting(redirectName);
     this._dialogRef.close();
   }

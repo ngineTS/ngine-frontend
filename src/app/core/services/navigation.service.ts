@@ -90,14 +90,14 @@ export class NavigationService {
      * Open navigation managenement form to add or edit navigation.
      * If navigation is passed then edit navigation else add navigation.
      * 
-     * @param parentId The parent reference.
+     * @param parentGroupId The parent reference.
      * @param navigation The navigation to edit.
      */
-    manageNavigation(parentId: string, navigation?: Navigation) {
+    manageNavigation(parentGroupId: string, navigation?: Navigation) {
         const dialogRef = this._matDialog.open(NavigationManagementComponent, {
             data: {
                 navigation: navigation ?? undefined,
-                parentId: parentId
+                parentGroupId: parentGroupId
             }
         });
 
