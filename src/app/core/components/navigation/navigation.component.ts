@@ -217,6 +217,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   }
 
   /**
+   * Publish navigation.
+   */
+  publishNavigation() {
+    console.log('PUBLISH', this._navigation.groupId);
+    //this._navigationService.publishNavigation(this._navigation.groupId);
+  }
+
+  /**
    * Methods called on top right 'marker' button click.
    * 
    * Open sidenav with navigation style properties and listen to changes.

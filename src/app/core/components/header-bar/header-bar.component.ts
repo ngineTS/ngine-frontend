@@ -118,7 +118,7 @@ export class HeaderBarComponent implements OnInit {
    * @param navigationGroupId The navigation group id to publish.
    */
   publishNavigation(navigationGroupId: string) {
-    console.log('PUBLISH');
+    console.log('PUBLISH', navigationGroupId);
     //this._navigationService.publishNavigation(navigationGroupId);
   }
 
