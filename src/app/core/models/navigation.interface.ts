@@ -20,6 +20,7 @@ export interface Navigation extends Record<string, any> {
     showIconOnly: boolean;
     url: string;
     isDraft: boolean;
+    unpublishedChanges: Array<string>;
     menu: Menu;
     containerLayout: ContainerLayout;
     containerStyle: ContainerStyle;

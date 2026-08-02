@@ -143,6 +143,18 @@ export class VerticalHeaderBarComponent implements OnInit {
   }
 
   /**
+   * Publish navigation.
+   * 
+   * @param event The click event.
+   * @param navigationGroupId The navigation group id to publish.
+   */
+  publishNavigation(event: MouseEvent, navigationGroupId: string) {
+    event.stopPropagation();
+    console.log('PUBLISH', navigationGroupId);
+    //this._navigationService.publishNavigation(navigationGroupId);
+  }
+
+  /**
    * Methods called on 'edit menu style' button click.
    * 
    * Open sidenav with menu style properties and listen to changes.

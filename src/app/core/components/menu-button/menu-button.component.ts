@@ -79,6 +79,18 @@ export class MenuButtonComponent {
   }
 
   /**
+   * Publish navigation.
+   * 
+   * @param event The click event.
+   * @param navigationGroupId The navigation group id to publish.
+   */
+  publishNavigation(event: MouseEvent, navigationGroupId: string) {
+    event.stopPropagation();
+    console.log('PUBLISH', navigationGroupId);
+    //this._navigationService.publishNavigation(navigationGroupId);
+  }
+
+  /**
    * Methods called on navigation 'marker' button click.
    * 
    * Open sidenav with navigation style properties and listen to changes.

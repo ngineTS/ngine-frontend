@@ -146,6 +146,11 @@
               (click)="manageNavigation($event, node)"
               [matTooltip]="'Manage navigation'">
             </i>
+            @if (node.unpublishedChanges.length > 0) {
+              <i class="bi bi-upload publish-nav-icon"
+                  (click)="publishNavigation($event, node.groupId)"
+              ></i>
+            }
           </div>
         }
       </div>

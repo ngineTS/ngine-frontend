@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
-import { retry, take } from "rxjs";
+import { Observable, retry, take } from "rxjs";
 import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
 import { MatDialog } from "@angular/material/dialog";
 
@@ -119,6 +119,17 @@ export class NavigationService {
         navigation.children?.forEach(child => 
             child.children?.sort((a, b) => a.order - b.order)
         );
+    }
+
+    /**
+     * Publish navigation.
+     * 
+     * @param navigationGroupId The navigation group id to publish.
+     * @returns An observable of the success message.
+     */
+    publishNavigation(navigationGroupId: string): Observable<{ message: string }> {
+        return this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigationGroupId}`)
+            .pipe(take(1));
     }
 
 }

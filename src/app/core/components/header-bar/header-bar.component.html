@@ -93,7 +93,7 @@
                         }"
                         (cdkDragStarted)="onDragStart()"
                         (cdkDragEnded)="onDragEnded($event, child)"
-                        [class.edit-header-container]="child.permissionName?.includes('edit')"
+                        [class.navigation-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                     >
                         <div
@@ -139,12 +139,19 @@
 
                             <!-- Edit navigation buttons -->
                             @if (child.permissionName?.includes('edit') && !isDragging) {
-                                <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
-                                    (click)="editNavigationStyle(child)"
-                                ></i>
-                                <i class="bi bi-gear edit-header-icon edit-header-general-icon"
-                                    (click)="manageNavigation(child)"
-                                ></i>
+                                <div class="edit-header-buttons-div">
+                                    <i class="bi bi-marker-tip edit-header-icon"
+                                        (click)="editNavigationStyle(child)"
+                                    ></i>
+                                    <i class="bi bi-gear edit-header-icon"
+                                        (click)="manageNavigation(child)"
+                                    ></i>
+                                    @if (navigation.unpublishedChanges.length > 0) {
+                                        <i class="bi bi-upload publish-header-icon"
+                                            (click)="publishNavigation(child.groupId)"
+                                        ></i>
+                                    }
+                                </div>
                             }
                         </div>
                     </div>

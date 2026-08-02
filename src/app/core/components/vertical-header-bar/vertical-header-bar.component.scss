@@ -100,8 +100,8 @@
 
 .edit-nav-container {
   &:hover {
-    .edit-nav-buttons-div {
-      display: flex;
+    .edit-nav-icon {
+      display: block;
     }
   }
 }
@@ -125,11 +125,12 @@
 .edit-nav-buttons-div {
   position: absolute;
   right: 0;
-  display: none;
   margin-right: 2px;
+  display: flex;
 }
 
 .edit-nav-icon {
+  display: none;
   font-size: 12px;
   border: 1px solid #2B2B2B;
   border-radius: 3px;
@@ -143,6 +144,18 @@
   &:hover {
     background-color: #ced4da;
   }
+}
+
+.publish-nav-icon {
+  font-size: 12px;
+  border: 1px solid #2B2B2B;
+  border-radius: 3px;
+  background-color: #eed202;
+  padding: 2px 6px;
+  color: #2B2B2B;
+  cursor: pointer;
+  height: fit-content;
+  margin-left: 2px;
 }
 
 // Children container with animation

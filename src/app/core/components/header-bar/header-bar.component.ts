@@ -113,6 +113,16 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
+   * Publish navigation.
+   * 
+   * @param navigationGroupId The navigation group id to publish.
+   */
+  publishNavigation(navigationGroupId: string) {
+    console.log('PUBLISH');
+    //this._navigationService.publishNavigation(navigationGroupId);
+  }
+
+  /**
    * Methods called on 'edit menu style' button click.
    * 
    * Open sidenav with menu style properties and listen to changes.
