@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
 
   /**
    * Setup listener to open sidenav when user edit a navigations style.
-   */
+   */ 
   setSideNavListener() {
     this._sideNavService.formConfiguration.subscribe(resp => {
       if (resp) {
@@ -138,6 +138,9 @@ export class AppComponent implements OnInit {
    * @param event The submit action.
    */
   onSideNavAction(event: 'added' | 'edited' | 'deleted') {
+    this._sideNavService.navigationRef?.unpublishedChanges.push(
+      ...['containerLayout', 'containerStyle', 'typographyStyle']
+    );
     this._sideNavService.initalFormContent = null;
     this._sideNavService.formConfiguration.next(null);
     this._sideNavService.stopSubscriptions.next();

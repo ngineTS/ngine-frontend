@@ -177,6 +177,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
       .pipe(take(this._takeCount))
       .subscribe(() => {
+        this._navigation.unpublishedChanges.push('containerLayout');
         this._navigation.containerLayout.width = navigationSize.width;
         this._navigation.containerLayout.height = navigationSize.height;
         this._navigation.containerLayout.heightFitContent = navigationSize.heightFitContent;
@@ -256,7 +257,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._navigation.displayLabel
     );
 
-    this._sideNavService.setSideNavFormListener(this._navigation);
+    this._sideNavService.setSideNavFormListener(this._navigation, 'navigation');
   }
 
 
@@ -298,6 +299,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       xPos: xPos
     }).pipe(take(this._takeCount))
       .subscribe(() => {
+        this._navigation.unpublishedChanges.push('containerLayout');
         if (this.containerRef) {
           this._sizeChanged = !this._sizeChanged;
           this.containerRef.setInput('_sizeChanged', this._sizeChanged);
@@ -312,6 +314,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       heightFitContent: this._navigation.containerLayout.heightFitContent,
     }).pipe(take(this._takeCount))
       .subscribe(() => {
+        this._navigation.unpublishedChanges.push('containerLayout');
         if (this.containerRef) {
           this._sizeChanged = !this._sizeChanged;
           this.containerRef.setInput('_sizeChanged', this._sizeChanged);

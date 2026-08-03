@@ -149,7 +149,7 @@ export class EmptyDialogComponent {
       hasBackdrop: false
     });
 
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**

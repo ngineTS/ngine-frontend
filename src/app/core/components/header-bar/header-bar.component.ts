@@ -160,7 +160,7 @@ export class HeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this._sideNavService.setSideNavFormListener(this.navigation.menu);
+    this._sideNavService.setSideNavFormListener(this.navigation, 'menu');
   }
 
   /**
@@ -198,7 +198,7 @@ export class HeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**
@@ -233,7 +233,7 @@ export class HeaderBarComponent implements OnInit {
 
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe(() => navigation.unpublishedChanges.push('containerLayout'));
   }
 
   /** 

@@ -144,6 +144,7 @@ export class ComponentsContainer implements OnInit {
     this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {
+        navigation.unpublishedChanges.push('containerLayout');
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });

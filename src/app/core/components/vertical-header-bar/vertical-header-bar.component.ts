@@ -191,7 +191,7 @@ export class VerticalHeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this._sideNavService.setSideNavFormListener(this.navigation.menu);
+    this._sideNavService.setSideNavFormListener(this.navigation, 'menu');
   }
 
   /**
@@ -230,7 +230,7 @@ export class VerticalHeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /** 

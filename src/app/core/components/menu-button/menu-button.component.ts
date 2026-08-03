@@ -118,7 +118,7 @@ export class MenuButtonComponent {
       navigation.displayLabel
     );
 
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**
@@ -150,7 +150,7 @@ export class MenuButtonComponent {
       `${navigation.displayLabel} - Menu`
     );
     
-    this._sideNavService.setSideNavFormListener(navigation.menu);
+    this._sideNavService.setSideNavFormListener(navigation, 'menu');
   }
 
   /**
