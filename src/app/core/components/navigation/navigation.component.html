@@ -24,8 +24,17 @@
                 <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
                 @if (_navigation.unpublishedChanges.length > 0) {
                     <i class="bi bi-upload publish-icon"
-                        (click)="publishNavigation()"
+                        [matMenuTriggerFor]="publishMenu"
                     ></i>
+
+                    <mat-menu #publishMenu="matMenu">
+                        <button mat-menu-item (click)="publishNavigation()" style="color: green;">
+                            Publish changes
+                        </button>
+                        <button mat-menu-item (click)="cancelChanges()" style="color: black;">
+                            Cancel changes
+                        </button>
+                    </mat-menu>
                 }
             </div>
         }

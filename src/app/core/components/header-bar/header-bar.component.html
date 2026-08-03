@@ -148,8 +148,17 @@
                                     ></i>
                                     @if (navigation.unpublishedChanges.length > 0) {
                                         <i class="bi bi-upload publish-header-icon"
-                                            (click)="publishNavigation(child.groupId)"
+                                            [matMenuTriggerFor]="publishMenu"
                                         ></i>
+
+                                        <mat-menu #publishMenu="matMenu">
+                                            <button mat-menu-item (click)="publishNavigation(child.groupId)" style="color: green;">
+                                                Publish changes
+                                            </button>
+                                            <button mat-menu-item (click)="cancelChanges(child.groupId)" style="color: black;">
+                                                Cancel changes
+                                            </button>
+                                        </mat-menu>
                                     }
                                 </div>
                             }

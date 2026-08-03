@@ -123,6 +123,16 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigationGroupId The navigation group id to cancel changes for.
+   */
+  cancelChanges(navigationGroupId: string) {
+    console.log('CANCEL', navigationGroupId);
+    //this._navigationService.cancelChanges(navigationGroupId);
+  }
+
+  /**
    * Methods called on 'edit menu style' button click.
    * 
    * Open sidenav with menu style properties and listen to changes.

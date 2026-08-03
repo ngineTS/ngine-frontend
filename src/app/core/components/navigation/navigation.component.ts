@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, injec
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { take } from 'rxjs';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
@@ -22,6 +23,7 @@ import { ComponentsContainerService } from '../../services/components-container.
     MatProgressSpinnerModule,
     CommonModule,
     MatTooltipModule,
+    MatMenuModule,
     MenuButtonComponent,
     CustomButtonComponent
   ],
@@ -222,6 +224,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   publishNavigation() {
     console.log('PUBLISH', this._navigation.groupId);
     //this._navigationService.publishNavigation(this._navigation.groupId);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   */
+  cancelChanges() {
+    console.log('CANCEL', this._navigation.groupId);
+    //this._navigationService.cancelChanges(this._navigation.groupId);
   }
 
   /**

@@ -72,8 +72,18 @@
                         <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                         @if (child.unpublishedChanges.length > 0) {
                             <i class="bi bi-upload ms-1 publish-nav-icon"
-                                (click)="publishNavigation($event, child.groupId)"
+                                [matMenuTriggerFor]="publishMenuChild"
+                                (click)="$event.stopPropagation()"
                             ></i>
+
+                            <mat-menu #publishMenuChild="matMenu">
+                                <button mat-menu-item (click)="publishNavigation(child.groupId)" style="color: green;">
+                                    Publish changes
+                                </button>
+                                <button mat-menu-item (click)="cancelChanges(child.groupId)" style="color: black;">
+                                    Cancel changes
+                                </button>
+                            </mat-menu>
                         }
                     }
                 </div>
@@ -132,8 +142,18 @@
                     <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
                     @if (navigation.unpublishedChanges.length > 0) {
                         <i class="bi bi-upload ms-1 publish-nav-icon"
-                            (click)="publishNavigation($event, navigation.groupId)"
+                            [matMenuTriggerFor]="publishMenuParent"
+                            (click)="$event.stopPropagation()"
                         ></i>
+
+                        <mat-menu #publishMenuParent="matMenu">
+                            <button mat-menu-item (click)="publishNavigation(navigation.groupId)" style="color: green;">
+                                Publish changes
+                            </button>
+                            <button mat-menu-item (click)="cancelChanges(navigation.groupId)" style="color: black;">
+                                Cancel changes
+                            </button>
+                        </mat-menu>
                     }
                 }
             </div>
@@ -183,8 +203,18 @@
                                 <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
                                 @if (child.unpublishedChanges.length > 0) {
                                     <i class="bi bi-upload ms-1 publish-nav-icon"
-                                        (click)="publishNavigation($event, child.groupId)"
+                                        [matMenuTriggerFor]="publishMenuItem"
+                                        (click)="$event.stopPropagation()"
                                     ></i>
+
+                                    <mat-menu #publishMenuItem="matMenu">
+                                        <button mat-menu-item (click)="publishNavigation(child.groupId)" style="color: green;">
+                                            Publish changes
+                                        </button>
+                                        <button mat-menu-item (click)="cancelChanges(child.groupId)" style="color: black;">
+                                            Cancel changes
+                                        </button>
+                                    </mat-menu>
                                 }
                             }
                         </div>

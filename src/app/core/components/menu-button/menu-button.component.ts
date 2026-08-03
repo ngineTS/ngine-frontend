@@ -81,13 +81,21 @@ export class MenuButtonComponent {
   /**
    * Publish navigation.
    * 
-   * @param event The click event.
    * @param navigationGroupId The navigation group id to publish.
    */
-  publishNavigation(event: MouseEvent, navigationGroupId: string) {
-    event.stopPropagation();
+  publishNavigation(navigationGroupId: string) {
     console.log('PUBLISH', navigationGroupId);
     //this._navigationService.publishNavigation(navigationGroupId);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigationGroupId The navigation group id to cancel changes for.
+   */
+  cancelChanges(navigationGroupId: string) {
+    console.log('CANCEL', navigationGroupId);
+    //this._navigationService.cancelChanges(navigationGroupId);
   }
 
   /**

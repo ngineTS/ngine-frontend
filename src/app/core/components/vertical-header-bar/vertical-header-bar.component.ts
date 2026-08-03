@@ -8,7 +8,7 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { takeUntil } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { HeaderBarService } from '../../services/header-bar.service';
     RouterModule,
     RouterOutlet,
     MatTooltipModule,
+    MatMenuModule,
     CdkDrag,
     CdkDropList,
   ],
@@ -145,13 +146,21 @@ export class VerticalHeaderBarComponent implements OnInit {
   /**
    * Publish navigation.
    * 
-   * @param event The click event.
    * @param navigationGroupId The navigation group id to publish.
    */
-  publishNavigation(event: MouseEvent, navigationGroupId: string) {
-    event.stopPropagation();
+  publishNavigation(navigationGroupId: string) {
     console.log('PUBLISH', navigationGroupId);
     //this._navigationService.publishNavigation(navigationGroupId);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigationGroupId The navigation group id to cancel changes for.
+   */
+  cancelChanges(navigationGroupId: string) {
+    console.log('CANCEL', navigationGroupId);
+    //this._navigationService.cancelChanges(navigationGroupId);
   }
 
   /**
