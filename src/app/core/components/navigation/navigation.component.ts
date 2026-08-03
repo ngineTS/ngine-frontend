@@ -222,8 +222,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Publish navigation.
    */
   publishNavigation() {
-    console.log('PUBLISH', this._navigation.groupId);
-    //this._navigationService.publishNavigation(this._navigation.groupId);
+    this._navigationService.publishNavigation(this._navigation);
   }
 
   /**
@@ -231,7 +230,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   cancelChanges() {
     console.log('CANCEL', this._navigation.groupId);
-    //this._navigationService.cancelChanges(this._navigation.groupId);
   }
 
   /**

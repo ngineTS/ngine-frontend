@@ -42,7 +42,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
     private _matDialog: MatDialog,
-    private _headerBarService: HeaderBarService
+    private _headerBarService: HeaderBarService,
   ) { }
 
   /** The navigations container. */
@@ -146,21 +146,19 @@ export class VerticalHeaderBarComponent implements OnInit {
   /**
    * Publish navigation.
    * 
-   * @param navigationGroupId The navigation group id to publish.
+   * @param navigation The navigation to publish.
    */
-  publishNavigation(navigationGroupId: string) {
-    console.log('PUBLISH', navigationGroupId);
-    //this._navigationService.publishNavigation(navigationGroupId);
+  publishNavigation(navigation: Navigation) {
+     this._navigationService.publishNavigation(navigation);
   }
 
   /**
    * Cancel pending navigation changes.
    *
-   * @param navigationGroupId The navigation group id to cancel changes for.
+   * @param navigation The navigation to cancel changes for.
    */
-  cancelChanges(navigationGroupId: string) {
-    console.log('CANCEL', navigationGroupId);
-    //this._navigationService.cancelChanges(navigationGroupId);
+  cancelChanges(navigation: Navigation) {
+    console.log('CANCEL', navigation.groupId);
   }
 
   /**

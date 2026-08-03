@@ -5,6 +5,7 @@ import { environment } from "../../../environments/environment";
 import { Observable, retry, take } from "rxjs";
 import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
 import { MatDialog } from "@angular/material/dialog";
+import { SnackBarService } from "./snackbar.service";
 
 export type UpdateReturnType = {
     affected: number;
@@ -19,7 +20,8 @@ export class NavigationService {
 
     constructor(
         private _http: HttpClient,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private _snackbarService: SnackBarService,
     ) { }
 
     /**
@@ -124,12 +126,17 @@ export class NavigationService {
     /**
      * Publish navigation.
      * 
-     * @param navigationGroupId The navigation group id to publish.
+     * @param navigation The navigation to publish.
      * @returns An observable of the success message.
      */
-    publishNavigation(navigationGroupId: string): Observable<{ message: string }> {
-        return this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigationGroupId}`)
-            .pipe(take(1));
+    publishNavigation(navigation: Navigation) {
+        this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`)
+            .pipe(take(1))
+            .subscribe(() => {
+                navigation.unpublishedChanges = [];
+                this._snackbarService.showSuccessSnackBar('Element published successfully.');
+            });
+            
     }
 
 }

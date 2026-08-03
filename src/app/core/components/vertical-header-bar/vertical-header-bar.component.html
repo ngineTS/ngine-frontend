@@ -53,10 +53,10 @@
             ></i>
 
             <mat-menu #publishMenu="matMenu">
-                <button mat-menu-item (click)="publishNavigation(navigation.groupId)" style="color: green;">
+                <button mat-menu-item (click)="publishNavigation(navigation)" style="color: green;">
                     Publish changes
                 </button>
-                <button mat-menu-item (click)="cancelChanges(navigation.groupId)" style="color: black;">
+                <button mat-menu-item (click)="cancelChanges(navigation)" style="color: black;">
                     Cancel changes
                 </button>
             </mat-menu>
@@ -167,10 +167,10 @@
               ></i>
 
               <mat-menu #publishMenu="matMenu">
-                <button mat-menu-item (click)="publishNavigation(node.groupId)" style="color: green;">
+                <button mat-menu-item (click)="publishNavigation(node)" style="color: green;">
                   Publish changes
                 </button>
-                <button mat-menu-item (click)="cancelChanges(node.groupId)" style="color: black;">
+                <button mat-menu-item (click)="cancelChanges(node)" style="color: black;">
                   Cancel changes
                 </button>
               </mat-menu>

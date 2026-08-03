@@ -77,10 +77,10 @@
                             ></i>
 
                             <mat-menu #publishMenuChild="matMenu">
-                                <button mat-menu-item (click)="publishNavigation(child.groupId)" style="color: green;">
+                                <button mat-menu-item (click)="publishNavigation(child)" style="color: green;">
                                     Publish changes
                                 </button>
-                                <button mat-menu-item (click)="cancelChanges(child.groupId)" style="color: black;">
+                                <button mat-menu-item (click)="cancelChanges(child)" style="color: black;">
                                     Cancel changes
                                 </button>
                             </mat-menu>
@@ -147,10 +147,10 @@
                         ></i>
 
                         <mat-menu #publishMenuParent="matMenu">
-                            <button mat-menu-item (click)="publishNavigation(navigation.groupId)" style="color: green;">
+                            <button mat-menu-item (click)="publishNavigation(navigation)" style="color: green;">
                                 Publish changes
                             </button>
-                            <button mat-menu-item (click)="cancelChanges(navigation.groupId)" style="color: black;">
+                            <button mat-menu-item (click)="cancelChanges(navigation)" style="color: black;">
                                 Cancel changes
                             </button>
                         </mat-menu>
@@ -208,10 +208,10 @@
                                     ></i>
 
                                     <mat-menu #publishMenuItem="matMenu">
-                                        <button mat-menu-item (click)="publishNavigation(child.groupId)" style="color: green;">
+                                        <button mat-menu-item (click)="publishNavigation(child)" style="color: green;">
                                             Publish changes
                                         </button>
-                                        <button mat-menu-item (click)="cancelChanges(child.groupId)" style="color: black;">
+                                        <button mat-menu-item (click)="cancelChanges(child)" style="color: black;">
                                             Cancel changes
                                         </button>
                                     </mat-menu>
