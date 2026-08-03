@@ -122,6 +122,13 @@
   }
 }
 
+.publish-menu-icon {
+  background-color: #eed202;
+  &hover {
+    background-color: #e6c200;
+  }
+}
+
 .edit-nav-buttons-div {
   position: absolute;
   right: 0;

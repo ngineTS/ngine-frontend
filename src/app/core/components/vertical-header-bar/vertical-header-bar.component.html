@@ -47,6 +47,20 @@
           (click)="manageNavigation($event)"
           [matTooltip]="'Add navigation'">
         </i>
+        <!-- If global navigation then we show the publish button on the header bar -->
+        @if (!navigation.parentGroupId && navigation.unpublishedChanges.length > 0) {
+            <i class="bi bi-upload edit-icon publish-menu-icon" [matMenuTriggerFor]="publishMenu"
+            ></i>
+
+            <mat-menu #publishMenu="matMenu">
+                <button mat-menu-item (click)="publishNavigation(navigation.groupId)" style="color: green;">
+                    Publish changes
+                </button>
+                <button mat-menu-item (click)="cancelChanges(navigation.groupId)" style="color: black;">
+                    Cancel changes
+                </button>
+            </mat-menu>
+        }
       </div>
     }
 

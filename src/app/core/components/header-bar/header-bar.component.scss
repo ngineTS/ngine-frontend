@@ -124,6 +124,14 @@
   }
 }
 
+.publish-menu-button {
+  background-color: #eed202;
+
+  &:hover {
+    background-color: #e6c200;
+  }
+}
+
 .burger-button {
   margin-left: auto;
   margin-right: 16px;
