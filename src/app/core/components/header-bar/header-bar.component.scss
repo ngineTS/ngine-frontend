@@ -87,6 +87,10 @@
   color: #2B2B2B;
   cursor: pointer;
   height: fit-content;
+
+  &:hover {
+    background-color: #e6c200;
+  }
 }
 
 .menu-toolbar {

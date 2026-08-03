@@ -156,6 +156,10 @@
   cursor: pointer;
   height: fit-content;
   margin-left: 2px;
+
+  &:hover {
+    background-color: #e6c200;
+  }
 }
 
 // Children container with animation

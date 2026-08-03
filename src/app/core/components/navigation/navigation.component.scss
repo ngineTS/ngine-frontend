@@ -43,6 +43,10 @@
     color: #2B2B2B;
     cursor: pointer;
     z-index: 999;
+
+    &:hover {
+        background-color: #e6c200;
+    }
 }
 
 .fit-content-icon {

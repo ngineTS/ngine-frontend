@@ -44,6 +44,10 @@
   cursor: pointer;
   height: fit-content;
   width: fit-content;
+
+  &:hover {
+    background-color: #ced4da;
+  }
 }
 
 .publish-nav-icon {
@@ -56,6 +60,10 @@
   cursor: pointer;
   height: fit-content;
   width: fit-content;
+
+  &:hover {
+    background-color: #e6c200;
+  }
 }
 
 
