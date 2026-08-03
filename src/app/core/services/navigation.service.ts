@@ -106,6 +106,7 @@ export class NavigationService {
         // assign new value (only in case of edit and no parent change)
         dialogRef.afterClosed().subscribe((navigationValue: Partial<Navigation>) => {
             if (navigation && navigationValue) {
+                navigation.unpublishedChanges.push('navigation');
                 for (const [key, value] of Object.entries(navigationValue)) {
                     navigation[key] = value;
                 }
