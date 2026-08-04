@@ -19,6 +19,7 @@ import { FormFile } from '../../models/form-file.interface';
 import { catchError, debounceTime, firstValueFrom, take, throwError } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SnackBarService } from '../../services/snackbar.service';
+import { FormatLabelPipe } from '../../pipes/format-label.pipe';
 
 @Component({
   selector: 'app-generic-form',
@@ -36,7 +37,8 @@ import { SnackBarService } from '../../services/snackbar.service';
     KeyValuePipe,
     NgTemplateOutlet,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormatLabelPipe
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './generic-form.component.html',

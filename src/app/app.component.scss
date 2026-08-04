@@ -9,14 +9,25 @@
 }
 
 .sidenav-header {
-  padding-top: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
   padding-left: 0.5em;
   font-size: 24px;
+  align-items: center;
+  display: flex;
+
+  span {
+    font-weight: bold;
+    color: #2B2B2B;
+    font-size: 20px;
+  }
 }
 
 .sidenav-close-icon {
+  margin-left: auto;
   float: right;
   margin-right: 6px;
   cursor: pointer;
   font-size: 18px;
+  color: #2B2B2B;
 }
