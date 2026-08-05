@@ -170,9 +170,11 @@
                 <button mat-menu-item (click)="publishNavigation(node)" style="color: green;">
                   Publish changes
                 </button>
-                <button mat-menu-item (click)="cancelChanges(node)" style="color: black;">
-                  Cancel changes
-                </button>
+                @if (node.unpublishedChanges[0] !== 'all') {
+                  <button mat-menu-item (click)="cancelChanges(node)" style="color: black;">
+                    Cancel changes
+                  </button>
+                }
               </mat-menu>
             }
           </div>
