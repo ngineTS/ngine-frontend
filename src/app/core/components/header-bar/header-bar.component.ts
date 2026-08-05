@@ -114,7 +114,7 @@ export class HeaderBarComponent implements OnInit {
 
   /**
    * Publish navigation.
-   * 
+   *
    * @param navigation The navigation to publish.
    */
   publishNavigation(navigation: Navigation) {
@@ -127,7 +127,7 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to cancel changes for.
    */
   cancelChanges(navigation: Navigation) {
-    console.log('CANCEL', navigation.groupId);
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**

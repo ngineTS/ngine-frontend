@@ -93,7 +93,7 @@ export class MenuButtonComponent {
    * @param navigation The navigation to cancel changes for.
    */
   cancelChanges(navigation: Navigation) {
-    console.log('CANCEL', navigation.groupId);
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**

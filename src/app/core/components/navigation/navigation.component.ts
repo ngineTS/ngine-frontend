@@ -230,7 +230,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Cancel pending navigation changes.
    */
   cancelChanges() {
-    console.log('CANCEL', this._navigation.groupId);
+    this._navigationService.cancelNavigationChanges(this._navigation);
   }
 
   /**

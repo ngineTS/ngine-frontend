@@ -140,4 +140,20 @@ export class NavigationService {
             
     }
 
+    /**
+     * Cancel navigation changes.
+     * 
+     * @param navigation The navigation to cancel changes.
+     * @returns An observable of the navigation updated.
+     */
+    cancelNavigationChanges(navigation: Navigation) {
+        this._http.get<Navigation>(`${environment.APIURL}navigation/cancel/${navigation.groupId}`)
+            .pipe(take(1))
+            .subscribe(resp => {
+                Object.assign(navigation, resp);
+                navigation.unpublishedChanges = [];
+                this._snackbarService.showSuccessSnackBar('Changes cancelled successfully.');
+            });
+    }
+
 }
