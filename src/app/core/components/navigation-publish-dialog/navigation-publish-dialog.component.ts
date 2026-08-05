@@ -26,9 +26,19 @@ export class NavigationPublishDialogComponent {
     console.log('Publish navigation', navigation.displayLabel);
   }
 
+  onCancel(navigation: Navigation): void {
+    // Placeholder for future API implementation.
+    console.log('Cancel navigation', navigation.displayLabel);
+  }
+
   onPublishAll(): void {
     // Placeholder for future API implementation.
     this.navigations.forEach((navigation) => console.log('Publish all', navigation.displayLabel));
+  }
+
+  onCancelAll(): void {
+    // Placeholder for future API implementation.
+    this.navigations.forEach((navigation) => console.log('Cancel all', navigation.displayLabel));
   }
 
   close(): void {

@@ -246,7 +246,7 @@ export class AppComponent implements OnInit {
     const navigations = Array.from(this._navigationService.navigationsWithChangesList.values());
 
     this._matDialog.open(NavigationPublishDialogComponent, {
-      width: '420px',
+      width: '500px',
       maxWidth: '90vw',
       autoFocus: false,
       data: { navigations }
