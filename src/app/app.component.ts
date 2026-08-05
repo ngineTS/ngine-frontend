@@ -13,6 +13,16 @@ import { FormValueEvent, GenericFormDialogData } from './core/models/form-input.
 import { GenericFormComponent } from './core/components/generic-form/generic-form.component';
 import { AppSettingsService } from './core/services/app-settings.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { ComponentsContainerService } from './core/services/components-container.service';
+import { NavigationService } from './core/services/navigation.service';
+import { MenuService } from './core/services/menu.service';
+import { SnackBarService } from './core/services/snackbar.service';
+import { NavigationTypeService } from './core/services/navigation-type.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FormContainerComponent } from './core/components/form-container/form-container.component';
+import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+
 
 
 @Component({
@@ -24,6 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatMenuModule,
     GenericFormComponent,
     AsyncPipe,
+    CdkDrag
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -37,7 +48,13 @@ export class AppComponent implements OnInit {
     private _authService: AuthService,
     private _userEventService: UserEventService,
     private _location: Location,
+    private _navigationService: NavigationService,
+    private _menuService: MenuService,
+    private _snackbarService: SnackBarService,
+    private _navigationTypeService: NavigationTypeService,
+    private _matDialog: MatDialog,
     public _sideNavService: SideNavService,
+    public _componentsContainerService: ComponentsContainerService,
   ) { }
 
   title = 'my-app-frontend';
@@ -176,6 +193,49 @@ export class AppComponent implements OnInit {
           this._appSettingsService.setAppBackgroundColor('#FFFFFF');
         }
       });
+  }
+
+  /**
+   * Methods called on '+' button click.
+   * Open navigation form to create navigation or navigation bar.
+   * 
+   * @param type The type ('horizontal bar', 'vertical bar' or 'navigation').
+   */
+  openFormToAddNavigationBarOrNavigation(type: 'horizontal' | 'vertical' | 'navigation'): void {
+    if (type === 'navigation') {
+      this._navigationService.manageNavigation(this._componentsContainerService.activeNavigation.groupId);
+    }
+    else {
+      this._menuService.createNavigationBar(this._componentsContainerService.activeNavigation.id, type)
+        .subscribe(resp => {
+          this._snackbarService.showSuccessSnackBar(resp);
+          this._appService.createAppRouting(this._router.url);
+        });
+    }
+  }
+
+  /**
+   * Methods called on 'New component type' button click.
+   * 
+   * Open form to add a new navigation type.
+   */
+  addNavigationType() {
+    const formConfiguration = this._navigationTypeService.setupNavigationTypeForm();
+    this._matDialog.open(FormContainerComponent, { data: formConfiguration });
+  }
+
+    /**
+   * Method called on 'Manage application style' button click.
+   * 
+   * Open form to manage app default style.
+   */
+  manageAppDefaultStyle() {
+    this._matDialog.open(DefaultStyleFormComponent, {
+      width: '60%',
+      height: '500px',
+      disableClose: true,
+      backdropClass: 'no-backdrop'
+    });
   }
 
 }

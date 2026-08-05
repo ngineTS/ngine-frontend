@@ -31,3 +31,42 @@
   font-size: 18px;
   color: #2B2B2B;
 }
+
+
+.toolbar {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  z-index: 10000000;
+  align-items: center;
+  padding: 6px;
+  border: 1.5px solid #E8E8E8;
+  border-radius: 6px;
+  background-color: #2B2B2B;
+}
+
+.toolbar-grab {
+  color: #E8E8E8;
+  cursor: grab;
+}
+
+.global-button {
+    margin-left: 6px;
+    padding: 6px 10px;
+    width: fit-content;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    color: white;
+    background-color: #985ab5;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      opacity: 0.8;
+    }
+}
+
+.global-icon {
+  font-size: 16px;
+}

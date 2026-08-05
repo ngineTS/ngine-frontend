@@ -1,20 +1,71 @@
-<mat-drawer-container class="sidenav-container" [style.backgroundColor]="appBackgroundColor$ | async">
-  <mat-drawer #drawer class="sidenav-content" mode="side">
-    <div class="sidenav-header">
-      <span>MANAGE STYLE</span>
-      <i class="bi bi-chevron-left sidenav-close-icon" (click)="onCloseSideNav()"></i>
-    </div>
+@if (_componentsContainerService.activeNavigation) {
+  <mat-drawer-container class="sidenav-container" [style.backgroundColor]="appBackgroundColor$ | async">
+    <mat-drawer #drawer class="sidenav-content" mode="side">
+      <div class="sidenav-header">
+        <span>MANAGE STYLE</span>
+        <i class="bi bi-chevron-left sidenav-close-icon" (click)="onCloseSideNav()"></i>
+      </div>
 
-    @if (sideNavFormConfiguration) {
-      <app-generic-form
-        [formConfiguration]="sideNavFormConfiguration"
-        (onFormValueChange)="onSideNavFormValueChange($event)"
-        (action)="onSideNavAction($event)"
-      >
-      </app-generic-form>
+      @if (sideNavFormConfiguration) {
+        <app-generic-form
+          [formConfiguration]="sideNavFormConfiguration"
+          (onFormValueChange)="onSideNavFormValueChange($event)"
+          (action)="onSideNavAction($event)"
+        >
+        </app-generic-form>
+      }
+    </mat-drawer>
+
+    <router-outlet />
+
+    @if (_componentsContainerService.activeNavigation.permissionName?.includes('add') ) {
+      <!-- Global draggable toolbar -->
+      <div cdkDrag class="d-none d-md-flex toolbar">
+        <!-- Grab toolbar icon -->
+        <div cdkDragHandle class="toolbar-grab">
+          <i class="bi bi-grip-vertical"></i>
+        </div>
+
+        <!-- App global setting button -->
+        @if (_componentsContainerService.userGlobalNavigationPermission?.includes('edit')) {
+          <button class="global-button" [matMenuTriggerFor]="menu">
+            <i class="bi bi-house-gear global-icon"></i>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="manageAppDefaultStyle()">
+              Manage application style
+            </button>
+
+            <button mat-menu-item (click)="addNavigationType()">
+              New component type
+            </button>
+          </mat-menu>
+        }
+
+        <!-- Add navigation button -->
+        @if (_componentsContainerService.activeNavigation.level < 12) {
+          <button class="global-button" [matMenuTriggerFor]="menu">
+            <i class="bi bi-plus global-icon"></i>
+          </button>
+          
+          <mat-menu #menu="matMenu">
+            @if (_componentsContainerService.activeNavigation.children?.length === 0) {
+              <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('horizontal')">
+                Add horizontal navigation bar
+              </button>
+              <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('vertical')">
+                Add vertical navigation bar
+              </button>
+            }
+            <button mat-menu-item (click)="openFormToAddNavigationBarOrNavigation('navigation')">
+              Add component
+            </button>
+          </mat-menu>
+        }
+
+      </div>
     }
-  </mat-drawer>
 
-  <router-outlet />
-
-</mat-drawer-container>
+  </mat-drawer-container>
+}
