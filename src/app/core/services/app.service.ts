@@ -67,6 +67,9 @@ export class AppService {
         localStorage.setItem('access_token', result.access_token);
         this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
         this._componentsContainerService.activeNavigation = result.navigation;
+        if (result.navigation.unpublishedChanges.length > 0) {
+          this.addNavigationToNavigationsWithChangesList(result.navigation);
+        }
         console.log('navigation', result.navigation);
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
@@ -164,6 +167,9 @@ export class AppService {
         ...navigation.children.filter(child => child.navigationType.name === 'redirect-button')
       );
       for (const child of navigation.children) {
+        if (child.unpublishedChanges.length > 0) {
+          this.addNavigationToNavigationsWithChangesList(navigation);
+        }
         if (child.navigationType.name === 'menu-button') {
           redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
         }
@@ -205,6 +211,17 @@ export class AppService {
       });
       return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0].name;
     }
+  }
+
+  /**
+   * Add navigation to the 'Navigations with changes' list.
+   * 
+   * It is used to get information globally about which navigations have changes pending to be published.
+   * 
+   * @param navigation The navigation.
+   */
+  addNavigationToNavigationsWithChangesList(navigation: Navigation) {
+    this._navigationService.navigationsWithChangesList.set(navigation.id, navigation);
   }
 
 }

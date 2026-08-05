@@ -18,7 +18,7 @@
 
     <router-outlet />
 
-    @if (_componentsContainerService.activeNavigation.permissionName?.includes('add') ) {
+    @if (_componentsContainerService.activeNavigation.permissionName?.includes('edit') ) {
       <!-- Global draggable toolbar -->
       <div cdkDrag class="d-none d-md-flex toolbar">
         <!-- Grab toolbar icon -->
@@ -27,21 +27,20 @@
         </div>
 
         <!-- App global setting button -->
-        @if (_componentsContainerService.userGlobalNavigationPermission?.includes('edit')) {
-          <button class="global-button" [matMenuTriggerFor]="menu">
-            <i class="bi bi-house-gear global-icon"></i>
+        <button class="global-button" [matMenuTriggerFor]="menu">
+          <i class="bi bi-house-gear global-icon"></i>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="manageAppDefaultStyle()">
+            Manage application style
           </button>
 
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="manageAppDefaultStyle()">
-              Manage application style
-            </button>
-
-            <button mat-menu-item (click)="addNavigationType()">
-              New component type
-            </button>
-          </mat-menu>
-        }
+          <button mat-menu-item (click)="addNavigationType()">
+            New component type
+          </button>
+        </mat-menu>
+        
 
         <!-- Add navigation button -->
         @if (_componentsContainerService.activeNavigation.level < 12) {
@@ -64,6 +63,14 @@
           </mat-menu>
         }
 
+        <button class="global-button" (click)="openPublishDialog()">
+          <span class="upload-button-wrapper">
+            <i class="bi bi-upload global-icon"></i>
+            @if (navigationChangesCount > 0) {
+              <span class="notification-badge">{{ navigationChangesCount }}</span>
+            }
+          </span>
+        </button>
       </div>
     }
 

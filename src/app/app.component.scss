@@ -70,3 +70,23 @@
 .global-icon {
   font-size: 16px;
 }
+
+.upload-button-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -10px;
+  right: -14px;
+  width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: #eed202;
+  color: #2b2b2b;
+  font-size: 12px;
+}

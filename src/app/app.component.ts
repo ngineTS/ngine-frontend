@@ -22,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormContainerComponent } from './core/components/form-container/form-container.component';
 import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
 import { CdkDrag } from '@angular/cdk/drag-drop';
+import { NavigationPublishDialogComponent } from './core/components/navigation-publish-dialog/navigation-publish-dialog.component';
 
 
 
@@ -65,6 +66,9 @@ export class AppComponent implements OnInit {
   sideNavFormConfiguration: GenericFormDialogData<Record<string, any>> | null = null;
   appBackgroundColor$: Observable<string> | undefined;
 
+  get navigationChangesCount(): number {
+    return this._navigationService.navigationsWithChangesList.size;
+  }
 
   /**
    * Lifecycle hook called after component has been initialized.
@@ -235,6 +239,17 @@ export class AppComponent implements OnInit {
       height: '500px',
       disableClose: true,
       backdropClass: 'no-backdrop'
+    });
+  }
+
+  openPublishDialog(): void {
+    const navigations = Array.from(this._navigationService.navigationsWithChangesList.values());
+
+    this._matDialog.open(NavigationPublishDialogComponent, {
+      width: '420px',
+      maxWidth: '90vw',
+      autoFocus: false,
+      data: { navigations }
     });
   }
 

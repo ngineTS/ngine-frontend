@@ -24,6 +24,8 @@ export class NavigationService {
         private _snackbarService: SnackBarService,
     ) { }
 
+    navigationsWithChangesList = new Map<string, Navigation>();
+
     /**
      * Get navigations and their children.
      * 
