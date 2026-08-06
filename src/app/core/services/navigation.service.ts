@@ -109,6 +109,7 @@ export class NavigationService {
         dialogRef.afterClosed().subscribe((navigationValue: Partial<Navigation>) => {
             if (navigation && navigationValue) {
                 navigation.unpublishedChanges.push('navigation');
+                this.navigationsWithChangesList.set(navigation.id, navigation);
                 for (const [key, value] of Object.entries(navigationValue)) {
                     navigation[key] = value;
                 }

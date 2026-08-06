@@ -22,6 +22,8 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button class="publish-all-button" (click)="onPublishAll()">Publish all</button>
-</mat-dialog-actions>
+@if (!isSaving) {
+  <mat-dialog-actions align="end">
+    <button class="publish-all-button" (click)="onPublishAll()">Publish all</button>
+  </mat-dialog-actions>
+}
