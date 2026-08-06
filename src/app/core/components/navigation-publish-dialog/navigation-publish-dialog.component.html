@@ -9,7 +9,12 @@
       <div class="list-item">
         <span class="navigation-label">{{ navigation.displayLabel }}</span>
         <div class="action-buttons">
-          <button class="cancel-button" (click)="onCancel(navigation)">Cancel</button>
+          @if (navigation.unpublishedChanges[0] === 'all') {
+            <button class="cancel-button" (click)="onDelete(navigation)">Delete</button>
+          }
+          @else {
+            <button class="cancel-button" (click)="onCancel(navigation)">Cancel</button>
+          }
           <button class="publish-button" (click)="onPublish(navigation)">Publish</button>
         </div>
       </div>

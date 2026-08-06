@@ -138,7 +138,7 @@ export class NavigationManagementComponent implements OnInit {
    * Delete navigation, update old big sisters order and refresh routing.
    */
   deleteNavigation() {
-    if (confirm("Are you sure to delete this component?")) {
+    if (confirm("Are you sure to delete this item? It will also delete sub items if there are.")) {
       if (this.data.navigation?.id) {
         this._navigationService.deleteNavigationAndChildren(this.data.navigation)
           .pipe(

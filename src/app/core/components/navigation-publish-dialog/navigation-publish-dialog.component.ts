@@ -22,18 +22,18 @@ export class NavigationPublishDialogComponent {
   }
 
   onPublish(navigation: Navigation): void {
-    // Placeholder for future API implementation.
-    console.log('Publish navigation', navigation.displayLabel);
   }
 
   onCancel(navigation: Navigation): void {
-    // Placeholder for future API implementation.
-    console.log('Cancel navigation', navigation.displayLabel);
+  }
+
+  onDelete(navigation: Navigation): void {
+    if (confirm('Are you sure to delete this item? It will also delete sub items if there are.')) {
+      
+    }
   }
 
   onPublishAll(): void {
-    // Placeholder for future API implementation.
-    this.navigations.forEach((navigation) => console.log('Publish all', navigation.displayLabel));
   }
 
   close(): void {
