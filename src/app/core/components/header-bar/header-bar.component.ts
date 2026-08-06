@@ -231,9 +231,9 @@ export class HeaderBarComponent implements OnInit {
 
     const navigationPosition = { xPos: newXPos }
 
-    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+    this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => navigation.unpublishedChanges.push('containerLayout'));
+      .subscribe(() => {});
   }
 
   /** 

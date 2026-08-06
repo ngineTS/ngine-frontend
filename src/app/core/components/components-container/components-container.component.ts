@@ -31,7 +31,7 @@ export class ComponentsContainer implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _containerLayoutService: ContainerLayoutService,
-    public _componentsContainerService: ComponentsContainerService,
+    private _componentsContainerService: ComponentsContainerService,
   ) { }
 
   /** The components container. */
@@ -109,10 +109,9 @@ export class ComponentsContainer implements OnInit {
       navigationPosition.xPos = 0;
     }
 
-    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+    this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {
-        navigation.unpublishedChanges.push('containerLayout');
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });

@@ -174,10 +174,9 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       heightFitContent: false
     };
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
+    this._containerLayoutService.updateContainerLayout(this._navigation, navigationSize)
       .pipe(take(this._takeCount))
       .subscribe(() => {
-        this._navigation.unpublishedChanges.push('containerLayout');
         this._navigation.containerLayout.width = navigationSize.width;
         this._navigation.containerLayout.height = navigationSize.height;
         this._navigation.containerLayout.heightFitContent = navigationSize.heightFitContent;
@@ -292,14 +291,13 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._navigation.containerLayout.xPos = xPos;
     this._navigation.containerLayout.heightFitContent = false;
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+    this._containerLayoutService.updateContainerLayout(this._navigation, {
       width: width,
       height: height,
       heightFitContent: false,
       xPos: xPos
     }).pipe(take(this._takeCount))
       .subscribe(() => {
-        this._navigation.unpublishedChanges.push('containerLayout');
         if (this.containerRef) {
           this._sizeChanged = !this._sizeChanged;
           this.containerRef.setInput('_sizeChanged', this._sizeChanged);
@@ -310,11 +308,10 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   onFitContentClick() {
     this._navigation.containerLayout.heightFitContent = !this._navigation.containerLayout.heightFitContent;
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+    this._containerLayoutService.updateContainerLayout(this._navigation, {
       heightFitContent: this._navigation.containerLayout.heightFitContent,
     }).pipe(take(this._takeCount))
       .subscribe(() => {
-        this._navigation.unpublishedChanges.push('containerLayout');
         if (this.containerRef) {
           this._sizeChanged = !this._sizeChanged;
           this.containerRef.setInput('_sizeChanged', this._sizeChanged);

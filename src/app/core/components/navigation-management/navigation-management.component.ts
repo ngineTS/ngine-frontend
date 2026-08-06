@@ -172,7 +172,7 @@ export class NavigationManagementComponent implements OnInit {
             take(1),
             switchMap(() => this.updateNavigationBigSistersOrder(this.data.navigation!.parentGroupId, this.data.navigation!.order)),
             switchMap(() => this._containerLayoutService.updateContainerLayout(
-              this.data.navigation!.containerLayout.id,
+              this.data.navigation!,
               { xPos: 0, yPos: 0 }
             ))
           )

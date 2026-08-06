@@ -159,9 +159,15 @@ export class AppComponent implements OnInit {
    * @param event The submit action.
    */
   onSideNavAction(event: 'added' | 'edited' | 'deleted') {
-    this._sideNavService.navigationRef?.unpublishedChanges.push(
-      ...['containerLayout', 'containerStyle', 'typographyStyle']
-    );
+    if (this._sideNavService.navigationRef) {
+      this._sideNavService.navigationRef.unpublishedChanges.push(
+        ...['containerLayout', 'containerStyle', 'typographyStyle']
+      );
+      this._navigationService.navigationsWithChangesList.set(
+        this._sideNavService.navigationRef.id,
+        this._sideNavService.navigationRef
+      );
+    }
     this._sideNavService.initalFormContent = null;
     this._sideNavService.formConfiguration.next(null);
     this._sideNavService.stopSubscriptions.next();
