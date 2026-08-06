@@ -55,8 +55,7 @@
   cursor: pointer;
 }
 
-.cancel-button,
-.cancel-all-button {
+.cancel-button {
   margin-left: 6px;
   padding: 8px 12px;
   border: none;
@@ -69,13 +68,11 @@
 
 .publish-button:hover,
 .publish-all-button:hover,
-.cancel-button:hover,
-.cancel-all-button:hover {
+.cancel-button:hover {
   opacity: 0.8;
 }
 
-.publish-all-button,
-.cancel-all-button {
+.publish-all-button {
   margin: 0 8px 16px 0;
 }
 
