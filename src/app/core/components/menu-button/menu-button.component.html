@@ -96,10 +96,10 @@
         @if (navigation.permissionName?.includes('add')) {
             <button mat-menu-item 
                 (click)="addNavigation(navigation.groupId)"
-                [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                [style.font-weight]="navigation.typographyStyle.fontWeight"
                 [style.color]="isButtonHoveredRecord['add-nav-main'] ?
-                    navigation.menu.typographyStyle.activeColor :
-                    navigation.menu.typographyStyle.color
+                    navigation.typographyStyle.activeColor :
+                    navigation.typographyStyle.color
                 "
                 (mouseenter)="isButtonHoveredRecord['add-nav-main'] = true"
                 (mouseleave)="isButtonHoveredRecord['add-nav-main'] = false"
@@ -230,10 +230,10 @@
                     @if (navigation.permissionName?.includes('add')) {
                         <button mat-menu-item
                             (click)="addNavigation(navigation.groupId)"
-                            [style.font-weight]="navigation.menu.typographyStyle.fontWeight"
+                            [style.font-weight]="navigation.typographyStyle.fontWeight"
                             [style.color]="isButtonHoveredRecord['add-nav-deep'] ?
-                                navigation.menu.typographyStyle.activeColor :
-                                navigation.menu.typographyStyle.color
+                                navigation.typographyStyle.activeColor :
+                                navigation.typographyStyle.color
                             "
                             (mouseenter)="isButtonHoveredRecord['add-nav-deep'] = true"
                             (mouseleave)="isButtonHoveredRecord['add-nav-deep'] = false"

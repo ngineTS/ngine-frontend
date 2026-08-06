@@ -141,7 +141,6 @@ export class MenuButtonComponent {
          'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent',
         ]
       ),
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
 
     this._sideNavService.openStyleForm(
