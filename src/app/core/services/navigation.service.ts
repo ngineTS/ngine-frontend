@@ -132,11 +132,12 @@ export class NavigationService {
      * @param navigation The navigation to publish.
      * @returns An observable of the success message.
      */
-    publishNavigation(navigation: Navigation) {
+    publishNavigationChanges(navigation: Navigation) {
         this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`)
             .pipe(take(1))
             .subscribe(() => {
                 navigation.unpublishedChanges = [];
+                this.navigationsWithChangesList.delete(navigation.id);
                 this._snackbarService.showSuccessSnackBar('Element published successfully.');
             });
             
@@ -154,6 +155,7 @@ export class NavigationService {
             .subscribe(resp => {
                 Object.assign(navigation, resp);
                 navigation.unpublishedChanges = [];
+                this.navigationsWithChangesList.delete(navigation.id);
                 this._snackbarService.showSuccessSnackBar('Changes cancelled successfully.');
             });
     }

@@ -221,14 +221,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
   /**
    * Publish navigation.
    */
-  publishNavigation() {
-    this._navigationService.publishNavigation(this._navigation);
+  publishNavigationChanges() {
+    this._navigationService.publishNavigationChanges(this._navigation);
   }
 
   /**
    * Cancel pending navigation changes.
    */
-  cancelChanges() {
+  cancelNavigationChanges() {
     this._navigationService.cancelNavigationChanges(this._navigation);
   }
 

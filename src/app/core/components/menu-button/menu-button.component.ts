@@ -83,8 +83,8 @@ export class MenuButtonComponent {
    * 
    * @param navigation The navigation to publish.
    */
-  publishNavigation(navigation: Navigation) {
-    this._navigationService.publishNavigation(navigation);
+  publishNavigationChanges(navigation: Navigation) {
+    this._navigationService.publishNavigationChanges(navigation);
   }
 
   /**
@@ -92,7 +92,7 @@ export class MenuButtonComponent {
    *
    * @param navigation The navigation to cancel changes for.
    */
-  cancelChanges(navigation: Navigation) {
+  cancelNavigationChanges(navigation: Navigation) {
     this._navigationService.cancelNavigationChanges(navigation);
   }
 

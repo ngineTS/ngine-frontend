@@ -77,11 +77,11 @@
                             ></i>
 
                             <mat-menu #publishMenuChild="matMenu">
-                                <button mat-menu-item (click)="publishNavigation(child)" style="color: green;">
+                                <button mat-menu-item (click)="publishNavigationChanges(child)" style="color: green;">
                                     Publish changes
                                 </button>
                                 @if (child.unpublishedChanges[0] !== 'all') {
-                                    <button mat-menu-item (click)="cancelChanges(child)" style="color: black;">
+                                    <button mat-menu-item (click)="cancelNavigationChanges(child)" style="color: black;">
                                         Cancel changes
                                     </button>
                                 }
@@ -149,11 +149,11 @@
                         ></i>
 
                         <mat-menu #publishMenuParent="matMenu">
-                            <button mat-menu-item (click)="publishNavigation(navigation)" style="color: green;">
+                            <button mat-menu-item (click)="publishNavigationChanges(navigation)" style="color: green;">
                                 Publish changes
                             </button>
                             @if (navigation.unpublishedChanges[0] !== 'all') {
-                                <button mat-menu-item (click)="cancelChanges(navigation)" style="color: black;">
+                                <button mat-menu-item (click)="cancelNavigationChanges(navigation)" style="color: black;">
                                     Cancel changes
                                 </button>
                             }
@@ -212,11 +212,11 @@
                                     ></i>
 
                                     <mat-menu #publishMenuItem="matMenu">
-                                        <button mat-menu-item (click)="publishNavigation(child)" style="color: green;">
+                                        <button mat-menu-item (click)="publishNavigationChanges(child)" style="color: green;">
                                             Publish changes
                                         </button>
                                         @if (navigation.unpublishedChanges[0] !== 'all') {
-                                            <button mat-menu-item (click)="cancelChanges(child)" style="color: black;">
+                                            <button mat-menu-item (click)="cancelNavigationChanges(child)" style="color: black;">
                                                 Cancel changes
                                             </button>
                                         }

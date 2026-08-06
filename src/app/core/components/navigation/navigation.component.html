@@ -28,11 +28,11 @@
                     ></i>
 
                     <mat-menu #publishMenu="matMenu">
-                        <button mat-menu-item (click)="publishNavigation()" style="color: green;">
+                        <button mat-menu-item (click)="publishNavigationChanges()" style="color: green;">
                             Publish changes
                         </button>
                         @if (_navigation.unpublishedChanges[0] !== 'all') {
-                            <button mat-menu-item (click)="cancelChanges()" style="color: black;">
+                            <button mat-menu-item (click)="cancelNavigationChanges()" style="color: black;">
                                 Cancel changes
                             </button>
                         }
