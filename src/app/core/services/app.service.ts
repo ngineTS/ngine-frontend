@@ -67,9 +67,6 @@ export class AppService {
         localStorage.setItem('access_token', result.access_token);
         this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
         this._componentsContainerService.activeNavigation = result.navigation;
-        if (result.navigation.unpublishedChanges.length > 0) {
-          this.addNavigationToNavigationsWithChangesList(result.navigation);
-        }
         console.log('navigation', result.navigation);
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
@@ -162,14 +159,14 @@ export class AppService {
     navigation: Navigation,
     redirectButtonsNavigations: Array<Navigation> = []
   ): Array<Navigation> {
+    if (navigation.unpublishedChanges.length > 0) {
+      this.addNavigationToNavigationsWithChangesList(navigation);
+    }
     if (navigation.children) {
       redirectButtonsNavigations.push(
         ...navigation.children.filter(child => child.navigationType.name === 'redirect-button')
       );
       for (const child of navigation.children) {
-        if (child.unpublishedChanges.length > 0) {
-          this.addNavigationToNavigationsWithChangesList(navigation);
-        }
         if (child.navigationType.name === 'menu-button') {
           redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
         }
