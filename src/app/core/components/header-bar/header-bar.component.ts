@@ -233,7 +233,7 @@ export class HeaderBarComponent implements OnInit {
 
     this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe(() => navigation.containerLayout.xPos = navigationPosition.xPos);
   }
 
   /** 
