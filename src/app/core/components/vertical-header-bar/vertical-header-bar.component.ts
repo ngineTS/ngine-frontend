@@ -308,7 +308,10 @@ export class VerticalHeaderBarComponent implements OnInit {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
     navigation.children!.forEach((nav, index) => { 
-      navigationOrders.push({ id: nav.id, order: index });
+      navigationOrders.push({
+        order: index,
+        groupId: nav.groupId,
+      });
       nav.order = index;
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});

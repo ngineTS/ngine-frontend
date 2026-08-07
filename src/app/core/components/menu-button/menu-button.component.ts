@@ -161,7 +161,10 @@ export class MenuButtonComponent {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
     navigation.children!.forEach((nav, index) => { 
-      navigationOrders.push({ id: nav.id, order: index });
+      navigationOrders.push({ 
+        groupId: nav.groupId,
+        order: index 
+      });
       nav.order = index;
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});

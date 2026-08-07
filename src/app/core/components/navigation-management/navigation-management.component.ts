@@ -249,7 +249,7 @@ export class NavigationManagementComponent implements OnInit {
       obj.parentGroupId === parentGroupId && obj.order > order
     );
     bigSisterNavigations.forEach(sister => navigationOrdersToUpdate.push({
-      id: sister.id,
+      groupId: sister.groupId,
       order: sister.order - 1
     }));
     return this._navigationService.bulkUpdateNavigations(navigationOrdersToUpdate);
