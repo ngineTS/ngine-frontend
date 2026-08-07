@@ -4,10 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Navigation } from '../../models/navigation.interface';
 import { NavigationService } from '../../services/navigation.service';
-import { environment } from '../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-navigation-publish-dialog',
@@ -22,7 +18,6 @@ export class NavigationPublishDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { navigations: Array<Navigation> },
     private _dialogRef: MatDialogRef<NavigationPublishDialogComponent>,
     private _navigationService: NavigationService,
-    private _http: HttpClient,
   ) {}
 
   isSaving = false;
@@ -47,16 +42,19 @@ export class NavigationPublishDialogComponent {
     }
   }
 
-  async onPublishAll() {
+  onPublishAll() {
+    const navigationGroupIds: Array<string> = [];
     this.isSaving = true;
     if (confirm('This will publish all items. Are you sure to continue?')) {
       for (const navigation of this.navigations) {
-        await firstValueFrom(this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`));
-        navigation.unpublishedChanges = [];
-        this._navigationService.navigationsWithChangesList.delete(navigation.id);
+        navigationGroupIds.push(navigation.groupId);
       }
-      this.isSaving = false;
-      this._dialogRef.close();
+      this._navigationService.publishAllNavigations(navigationGroupIds)
+        .subscribe(() => {
+          this.navigations.forEach(nav => nav.unpublishedChanges = []);
+          this.isSaving = false;
+          this._dialogRef.close();
+        });
     }
   }
 

@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
-import { Observable, retry, take } from "rxjs";
+import { retry, take, tap } from "rxjs";
 import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SnackBarService } from "./snackbar.service";
@@ -134,7 +134,8 @@ export class NavigationService {
      * @returns An observable of the success message.
      */
     publishNavigationChanges(navigation: Navigation) {
-        this._http.get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`)
+        this._http
+            .get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`)
             .pipe(take(1))
             .subscribe(() => {
                 navigation.unpublishedChanges = [];
@@ -151,7 +152,8 @@ export class NavigationService {
      * @returns An observable of the navigation updated.
      */
     cancelNavigationChanges(navigation: Navigation) {
-        this._http.get<Navigation>(`${environment.APIURL}navigation/cancel/${navigation.groupId}`)
+        this._http
+            .get<Navigation>(`${environment.APIURL}navigation/cancel/${navigation.groupId}`)
             .pipe(take(1))
             .subscribe(resp => {
                 Object.assign(navigation, resp);
@@ -159,6 +161,24 @@ export class NavigationService {
                 this.navigationsWithChangesList.delete(navigation.id);
                 this._snackbarService.showSuccessSnackBar('Changes cancelled successfully.');
             });
+    }
+
+    /**
+     * Publish all navigations.
+     * 
+     * @param navigationGroupIds The list of navigation group id.
+     * @returns An observable of success message.
+     */
+    publishAllNavigations(navigationGroupIds: Array<string>) {
+        return this._http
+            .post<{ message: string }>(`${environment.APIURL}navigation/publish-all`, navigationGroupIds)
+            .pipe(
+                take(1),
+                tap({ next: () => {
+                    this.navigationsWithChangesList.clear();
+                    this._snackbarService.showSuccessSnackBar('Elements published successfully.')
+                }})
+            );
     }
 
 }
