@@ -45,6 +45,23 @@
                 <button class="gear-button" matButton="outlined" (click)="manageNavigation(navigationToLoad)">
                     <i class="bi bi-gear" [matTooltip]="'Edit navigation'"></i>
                 </button>
+                
+                @if (navigationToLoad.unpublishedChanges.length > 0) {
+                    <button class="gear-button" matButton="outlined" [matMenuTriggerFor]="publishMenu">
+                        <i class="bi bi-upload"></i>
+                    </button>
+
+                    <mat-menu #publishMenu="matMenu">
+                        <button mat-menu-item (click)="publishNavigationChanges(navigationToLoad)" style="color: green;">
+                            Publish changes
+                        </button>
+                        @if (navigationToLoad.unpublishedChanges[0] !== 'all') {
+                            <button mat-menu-item (click)="cancelNavigationChanges(navigationToLoad)" style="color: black;">
+                                Cancel changes
+                            </button>
+                        }
+                    </mat-menu>
+                }
                 <button class="gear-button" matButton="outlined" mat-dialog-close>
                     <i class="bi bi-x-circle"></i>
                 </button>

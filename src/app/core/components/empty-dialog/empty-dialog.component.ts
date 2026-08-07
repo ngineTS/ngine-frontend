@@ -12,13 +12,15 @@ import { TypographyStyleService } from '../../services/typography-style.service'
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { SideNavService } from '../../services/side-nav.service';
 import { ComponentService } from '../../../components/component.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-empty-dialog',
   imports: [
     MatButtonModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatMenuModule
   ],
   templateUrl: './empty-dialog.component.html',
   styleUrl: './empty-dialog.component.scss'
@@ -116,6 +118,24 @@ export class EmptyDialogComponent {
   manageNavigation(navigation?: Navigation) {
     this._navigationService.manageNavigation(this.data.navigation.groupId, navigation);
     this._dialogRef.close();
+  }
+
+    /**
+   * Publish navigation.
+   * 
+   * @param navigation The navigation.
+   */
+  publishNavigationChanges(navigation: Navigation) {
+    this._navigationService.publishNavigationChanges(navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   * 
+   * @param navigation The navigation.
+   */
+  cancelNavigationChanges(navigation: Navigation) {
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**
