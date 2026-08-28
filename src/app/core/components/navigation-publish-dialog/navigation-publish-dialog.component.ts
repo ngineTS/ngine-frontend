@@ -33,13 +33,7 @@ export class NavigationPublishDialogComponent {
 
   onCancel(navigation: Navigation): void {
     this._navigationService.cancelNavigationChanges(navigation);
-    this.data.navigations = this.data.navigations.filter(obj => obj.id !== navigation.id)
-  }
-
-  onDelete(navigation: Navigation): void {
-    if (confirm('Are you sure to delete this item? It will also delete sub items if there are.')) {
-      
-    }
+    this.data.navigations = this.data.navigations.filter(obj => obj.id !== navigation.id);
   }
 
   onPublishAll() {
