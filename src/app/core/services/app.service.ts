@@ -162,14 +162,14 @@ export class AppService {
     if (navigation.unpublishedChanges.length > 0) {
       this.addNavigationToNavigationsWithChangesList(navigation);
     }
+
     if (navigation.children) {
       redirectButtonsNavigations.push(
         ...navigation.children.filter(child => child.navigationType.name === 'redirect-button')
       );
+
       for (const child of navigation.children) {
-        if (child.navigationType.name === 'menu-button') {
-          redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
-        }
+        redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
       }
     }
 
