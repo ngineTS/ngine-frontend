@@ -148,8 +148,10 @@ export class AppService {
   }
 
   /**
-   * Recursively retrieve redirect button children inside menu button.
+   * Recursively retrieve redirect button children.
    * This method is used to create the navigation routes because only redirect-button can be routes.
+   * 
+   * It also marks navigations with changes pending to be published.
    * 
    * @param navigation The navigation which we want to filter the children on redirect-button type only.
    * @param redirectButtonsArray The current array of redirect button children.
