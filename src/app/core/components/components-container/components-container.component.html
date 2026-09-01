@@ -22,7 +22,6 @@
                 <!-- Navigation object -->
                 <app-navigation
                     [_navigation]="child"
-                    [_canAdd]="child.permissionName?.includes('add')"
                     [_canEdit]="child.permissionName?.includes('edit')"
                     [_canDelete]="child.permissionName?.includes('delete')"
                 >
@@ -33,7 +32,6 @@
             <!-- Navigation object not draggable -->
             <app-navigation
                 [_navigation]="child"
-                [_canAdd]="child.permissionName?.includes('add')"
                 [_canEdit]="child.permissionName?.includes('edit')"
                 [_canDelete]="child.permissionName?.includes('delete')"
             >

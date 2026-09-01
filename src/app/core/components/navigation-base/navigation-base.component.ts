@@ -11,7 +11,6 @@ import { NavigationService } from '../../services/navigation.service';
 export class NavigationBaseComponent {
   @Input() _navigation!: Navigation;
   @Input() _canEdit: boolean | undefined;
-  @Input() _canAdd: boolean | undefined;
   @Input() _canDelete: boolean | undefined;
   @Input({required: false}) _sizeChanged: boolean = false;
   @Input({required: false}) _isEditing: boolean = false;

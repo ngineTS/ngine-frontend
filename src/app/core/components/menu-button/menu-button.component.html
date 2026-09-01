@@ -93,7 +93,7 @@
         }
 
         <!-- Main menu  'Add Navigation' item -->
-        @if (navigation.permissionName?.includes('add')) {
+        @if (navigation.permissionName?.includes('edit')) {
             <button mat-menu-item 
                 (click)="addNavigation(navigation.groupId)"
                 [style.font-weight]="navigation.typographyStyle.fontWeight"
@@ -227,7 +227,7 @@
                     }
 
                     <!-- Deep menu 'Add navigation' item -->
-                    @if (navigation.permissionName?.includes('add')) {
+                    @if (navigation.permissionName?.includes('edit')) {
                         <button mat-menu-item
                             (click)="addNavigation(navigation.groupId)"
                             [style.font-weight]="navigation.typographyStyle.fontWeight"

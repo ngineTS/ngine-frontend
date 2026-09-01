@@ -73,7 +73,7 @@ export class ManagementBaseComponent<
    *  otherwise the form will not be able to create the new item.
    */
   _addItem() {
-    if (this._formInputsConfiguration && this._canAdd) {
+    if (this._formInputsConfiguration && this._canEdit) {
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Add item',
         formConfig: this._formInputsConfiguration,

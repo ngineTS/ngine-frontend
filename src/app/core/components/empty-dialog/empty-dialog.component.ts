@@ -99,7 +99,6 @@ export class EmptyDialogComponent {
     });
 
     this.containerRef.setInput('_navigation', navigation);
-    this.containerRef.setInput('_canAdd', navigation.permissionName?.includes('add'));
     this.containerRef.setInput('_canEdit', navigation.permissionName?.includes('edit'));
     this.containerRef.setInput('_canDelete', navigation.permissionName?.includes('delete'));
     this.containerRef.setInput('_isEditing', this._isEditing);

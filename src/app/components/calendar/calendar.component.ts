@@ -156,7 +156,7 @@ export class CalendarComponent extends NavigationBaseComponent {
 
 
   handleDateSelection(arg: DateSelectArg) {
-    if (this._canAdd) {
+    if (this._canEdit) {
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
           value: arg.start,
