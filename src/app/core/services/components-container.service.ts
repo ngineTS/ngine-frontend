@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Navigation } from "../models/navigation.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -19,4 +20,9 @@ export class ComponentsContainerService {
      * The user global navigation permission.
      */
     userGlobalNavigationPermission: string | undefined;
+
+    /**
+     * The active navigation.
+     */
+    activeNavigation!: Navigation;
 }

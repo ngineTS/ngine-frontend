@@ -22,6 +22,22 @@
                     <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
                 }
                 <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
+                @if (_navigation.unpublishedChanges.length > 0) {
+                    <i class="bi bi-upload publish-icon"
+                        [matMenuTriggerFor]="publishMenu"
+                    ></i>
+
+                    <mat-menu #publishMenu="matMenu">
+                        <button mat-menu-item (click)="publishNavigationChanges()" style="color: green;">
+                            Publish changes
+                        </button>
+                        @if (_navigation.unpublishedChanges[0] !== 'all') {
+                            <button mat-menu-item (click)="cancelNavigationChanges()" style="color: black;">
+                                Cancel changes
+                            </button>
+                        }
+                    </mat-menu>
+                }
             </div>
         }
         <!-- Accept or Reset size icons -->

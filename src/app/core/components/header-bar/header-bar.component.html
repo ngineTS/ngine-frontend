@@ -8,7 +8,7 @@
         @if (!isDragging) {
             <div class="menu-toolbar" cdkDrag cdkDragLockAxis="x">
 
-                @if (navigation.permissionName?.includes('add') && !isNavigationBarHidden) {
+                @if (navigation.permissionName?.includes('edit') && !isNavigationBarHidden) {
                     <!-- Grab toolbar icon -->
                     <div cdkDragHandle class="toolbar-grab">
                         <i class="bi bi-grip-vertical"></i>
@@ -19,14 +19,26 @@
                         (click)="manageNavigation()"
                         matTooltip="Add navigation"
                     ></i>
-                }
-            
-                <!-- Edit navigation bar style button -->
-                @if (navigation.permissionName?.includes('edit') && !isNavigationBarHidden) {
+
                     <i class="bi bi-marker-tip menu-button" 
                         (click)="editMenuStyle()"
                         matTooltip="Edit navigation bar style"
                     ></i>
+
+                    <!-- If global navigation then we show the publish button on the header bar -->
+                    @if (!navigation.parentGroupId && navigation.unpublishedChanges.length > 0) {
+                        <i class="bi bi-upload menu-button publish-menu-button"                            [matMenuTriggerFor]="publishMenu"
+                        ></i>
+
+                        <mat-menu #publishMenu="matMenu">
+                            <button mat-menu-item (click)="publishNavigationChanges(navigation)" style="color: green;">
+                                Publish changes
+                            </button>
+                            <button mat-menu-item (click)="cancelNavigationChanges(navigation)" style="color: black;">
+                                Cancel changes
+                            </button>
+                        </mat-menu>
+                    }
                 }
 
                 <!-- Hide navigation bar button -->
@@ -93,7 +105,7 @@
                         }"
                         (cdkDragStarted)="onDragStart()"
                         (cdkDragEnded)="onDragEnded($event, child)"
-                        [class.edit-header-container]="child.permissionName?.includes('edit')"
+                        [class.navigation-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
                     >
                         <div
@@ -139,12 +151,30 @@
 
                             <!-- Edit navigation buttons -->
                             @if (child.permissionName?.includes('edit') && !isDragging) {
-                                <i class="bi bi-marker-tip edit-header-icon edit-header-style-icon"
-                                    (click)="editNavigationStyle(child)"
-                                ></i>
-                                <i class="bi bi-gear edit-header-icon edit-header-general-icon"
-                                    (click)="manageNavigation(child)"
-                                ></i>
+                                <div class="edit-header-buttons-div">
+                                    <i class="bi bi-marker-tip edit-header-icon"
+                                        (click)="editNavigationStyle(child)"
+                                    ></i>
+                                    <i class="bi bi-gear edit-header-icon"
+                                        (click)="manageNavigation(child)"
+                                    ></i>
+                                    @if (child.unpublishedChanges.length > 0) {
+                                        <i class="bi bi-upload publish-header-icon"
+                                            [matMenuTriggerFor]="publishMenu"
+                                        ></i>
+
+                                        <mat-menu #publishMenu="matMenu">
+                                            <button mat-menu-item (click)="publishNavigationChanges(child)" style="color: green;">
+                                                Publish changes
+                                            </button>
+                                            @if (child.unpublishedChanges[0] !== 'all') {
+                                                <button mat-menu-item (click)="cancelNavigationChanges(child)" style="color: black;">
+                                                    Cancel changes
+                                                </button>
+                                            }
+                                        </mat-menu>
+                                    }
+                                </div>
                             }
                         </div>
                     </div>

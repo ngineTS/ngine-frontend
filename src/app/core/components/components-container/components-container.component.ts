@@ -1,23 +1,15 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Navigation } from '../../models/navigation.interface';
 import { CommonModule } from '@angular/common';
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { NavigationService } from '../../services/navigation.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { MenuService } from '../../services/menu.service';
-import { AppService } from '../../services/app.service';
-import { SnackBarService } from '../../services/snackbar.service';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DefaultStyleFormComponent } from '../default-style-form/default-style-form.component';
-import { NavigationTypeService } from '../../services/navigation-type.service';
-import { FormContainerComponent } from '../form-container/form-container.component';
 
 
 @Component({
@@ -38,15 +30,8 @@ export class ComponentsContainer implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private _navigationService: NavigationService,
-    private _menuService: MenuService,
-    private _appService: AppService,
-    private _snackbarService: SnackBarService,
-    private _router: Router,
     private _containerLayoutService: ContainerLayoutService,
-    private _matDialog: MatDialog,
-    private _navigationTypeService: NavigationTypeService,
-    public _componentsContainerService: ComponentsContainerService,
+    private _componentsContainerService: ComponentsContainerService,
   ) { }
 
   /** The components container. */
@@ -79,6 +64,8 @@ export class ComponentsContainer implements OnInit {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
+    this._componentsContainerService.activeNavigation = this.navigation;
+    console.log(this._componentsContainerService.activeNavigation);
 
     if (this.windowWidth < this.windowWidthLimit) {
       this.navigation.children?.sort((a, b) => 
@@ -93,25 +80,6 @@ export class ComponentsContainer implements OnInit {
    */
   ngAfterViewInit() {
     this._componentsContainerService.currentWidth = this.componentsContainerRef.nativeElement.offsetWidth;
-  }
-
-  /**
-   * Methods called on '+' button click.
-   * Open navigation form to create navigation or navigation bar.
-   * 
-   * @param type The type ('horizontal bar', 'vertical bar' or 'navigation').
-   */
-  openFormToAddNavigationBarOrNavigation(type: 'horizontal' | 'vertical' | 'navigation'): void {
-    if (type === 'navigation') {
-      this._navigationService.manageNavigation(this.navigation.id);
-    }
-    else {
-      this._menuService.createNavigationBar(this.navigation.id, type)
-        .subscribe(resp => {
-          this._snackbarService.showSuccessSnackBar(resp);
-          this._appService.createAppRouting(this._router.url);
-        });
-    }
   }
 
   
@@ -141,36 +109,12 @@ export class ComponentsContainer implements OnInit {
       navigationPosition.xPos = 0;
     }
 
-    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+    this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
       .subscribe(() => {
         navigation.containerLayout.xPos = navigationPosition.xPos;
         navigation.containerLayout.yPos = navigationPosition.yPos;
       });
-  }
-
-  /**
-   * Method called on 'Manage application style' button click.
-   * 
-   * Open form to manage app default style.
-   */
-  manageAppDefaultStyle() {
-    this._matDialog.open(DefaultStyleFormComponent, {
-      width: '60%',
-      height: '500px',
-      disableClose: true,
-      backdropClass: 'no-backdrop'
-    });
-  }
-
-  /**
-   * Methods called on 'New component type' button click.
-   * 
-   * Open form to add a new navigation type.
-   */
-  addNavigationType() {
-    const formConfiguration = this._navigationTypeService.setupNavigationTypeForm();
-    this._matDialog.open(FormContainerComponent, { data: formConfiguration });
   }
 
 }

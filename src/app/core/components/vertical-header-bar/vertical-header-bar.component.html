@@ -47,6 +47,20 @@
           (click)="manageNavigation($event)"
           [matTooltip]="'Add navigation'">
         </i>
+        <!-- If global navigation then we show the publish button on the header bar -->
+        @if (!navigation.parentGroupId && navigation.unpublishedChanges.length > 0) {
+            <i class="bi bi-upload edit-icon publish-menu-icon" [matMenuTriggerFor]="publishMenu"
+            ></i>
+
+            <mat-menu #publishMenu="matMenu">
+                <button mat-menu-item (click)="publishNavigationChanges(navigation)" style="color: green;">
+                    Publish changes
+                </button>
+                <button mat-menu-item (click)="cancelNavigationChanges(navigation)" style="color: black;">
+                    Cancel changes
+                </button>
+            </mat-menu>
+        }
       </div>
     }
 
@@ -146,6 +160,23 @@
               (click)="manageNavigation($event, node)"
               [matTooltip]="'Manage navigation'">
             </i>
+            @if (node.unpublishedChanges.length > 0) {
+              <i class="bi bi-upload publish-nav-icon"
+                  [matMenuTriggerFor]="publishMenu"
+                  (click)="$event.stopPropagation()"
+              ></i>
+
+              <mat-menu #publishMenu="matMenu">
+                <button mat-menu-item (click)="publishNavigationChanges(node)" style="color: green;">
+                  Publish changes
+                </button>
+                @if (node.unpublishedChanges[0] !== 'all') {
+                  <button mat-menu-item (click)="cancelNavigationChanges(node)" style="color: black;">
+                    Cancel changes
+                  </button>
+                }
+              </mat-menu>
+            }
           </div>
         }
       </div>

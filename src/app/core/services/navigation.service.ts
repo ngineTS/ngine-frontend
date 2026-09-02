@@ -2,9 +2,10 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Navigation } from "../models/navigation.interface";
 import { environment } from "../../../environments/environment";
-import { retry, take } from "rxjs";
+import { retry, take, tap } from "rxjs";
 import { NavigationManagementComponent } from "../components/navigation-management/navigation-management.component";
 import { MatDialog } from "@angular/material/dialog";
+import { SnackBarService } from "./snackbar.service";
 
 export type UpdateReturnType = {
     affected: number;
@@ -19,8 +20,11 @@ export class NavigationService {
 
     constructor(
         private _http: HttpClient,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private _snackbarService: SnackBarService,
     ) { }
+
+    navigationsWithChangesList = new Map<string, Navigation>();
 
     /**
      * Get navigations and their children.
@@ -79,7 +83,7 @@ export class NavigationService {
     /**
      * Delete navigation and children.
      * 
-     * @param navigationId The navigation to delete.
+     * @param navigation The navigation to delete.
      * @returns An observable of UpdateReturnType object.
      */
     deleteNavigationAndChildren(navigation: Navigation) {
@@ -90,20 +94,22 @@ export class NavigationService {
      * Open navigation managenement form to add or edit navigation.
      * If navigation is passed then edit navigation else add navigation.
      * 
-     * @param parentId The parent reference.
+     * @param parentGroupId The parent reference.
      * @param navigation The navigation to edit.
      */
-    manageNavigation(parentId: string, navigation?: Navigation) {
+    manageNavigation(parentGroupId: string, navigation?: Navigation) {
         const dialogRef = this._matDialog.open(NavigationManagementComponent, {
             data: {
                 navigation: navigation ?? undefined,
-                parentId: parentId
+                parentGroupId: parentGroupId
             }
         });
 
         // assign new value (only in case of edit and no parent change)
         dialogRef.afterClosed().subscribe((navigationValue: Partial<Navigation>) => {
             if (navigation && navigationValue) {
+                navigation.unpublishedChanges.push('navigation');
+                this.navigationsWithChangesList.set(navigation.id, navigation);
                 for (const [key, value] of Object.entries(navigationValue)) {
                     navigation[key] = value;
                 }
@@ -119,6 +125,60 @@ export class NavigationService {
         navigation.children?.forEach(child => 
             child.children?.sort((a, b) => a.order - b.order)
         );
+    }
+
+    /**
+     * Publish navigation.
+     * 
+     * @param navigation The navigation to publish.
+     * @returns An observable of the success message.
+     */
+    publishNavigationChanges(navigation: Navigation) {
+        this._http
+            .get<{ message: string }>(`${environment.APIURL}navigation/publish/${navigation.groupId}`)
+            .pipe(take(1))
+            .subscribe(() => {
+                navigation.unpublishedChanges = [];
+                this.navigationsWithChangesList.delete(navigation.id);
+                this._snackbarService.showSuccessSnackBar('Element published successfully.');
+            });
+            
+    }
+
+    /**
+     * Cancel navigation changes.
+     * 
+     * @param navigation The navigation to cancel changes.
+     * @returns An observable of the navigation updated.
+     */
+    cancelNavigationChanges(navigation: Navigation) {
+        this._http
+            .get<Navigation>(`${environment.APIURL}navigation/cancel/${navigation.groupId}`)
+            .pipe(take(1))
+            .subscribe(resp => {
+                Object.assign(navigation, resp);
+                navigation.unpublishedChanges = [];
+                this.navigationsWithChangesList.delete(navigation.id);
+                this._snackbarService.showSuccessSnackBar('Changes cancelled successfully.');
+            });
+    }
+
+    /**
+     * Publish all navigations.
+     * 
+     * @param navigationGroupIds The list of navigation group id.
+     * @returns An observable of success message.
+     */
+    publishAllNavigations(navigationGroupIds: Array<string>) {
+        return this._http
+            .post<{ message: string }>(`${environment.APIURL}navigation/publish-all`, navigationGroupIds)
+            .pipe(
+                take(1),
+                tap({ next: () => {
+                    this.navigationsWithChangesList.clear();
+                    this._snackbarService.showSuccessSnackBar('Elements published successfully.')
+                }})
+            );
     }
 
 }

@@ -75,20 +75,7 @@ export class DefaultStyleFormComponent {
    * Save app background color and switch page.
    */
   onNextClick(): void {
-    this.saveAppBackgroundColor();
     this.step = 2;
-  }
-  
-  /**
-   * Save app background color.
-   */
-  saveAppBackgroundColor(): void {
-    this._appSettingsService.saveAppSetting({
-      settingName: 'backgroundColor',
-      settingValue: this.appBackgroundColor
-    }).subscribe(() => 
-      this.initialAppBackgoundColor = JSON.parse(JSON.stringify((this.appBackgroundColor)))
-    );
   }
 
   /**
@@ -122,7 +109,7 @@ export class DefaultStyleFormComponent {
       hasDeleteButton: false,
       formConfig: stylePayload,
       payloadId: this.defaultContainerStyle!.refId,
-      controllerName: 'menu',
+      controllerName: 'menu/default',
     };
   }
 
@@ -133,7 +120,14 @@ export class DefaultStyleFormComponent {
    * @param event The action made by the user.
    */
   action(event: 'added' | 'edited' | 'deleted') {
-    this._matDialogRef.close(event);
+    this._appSettingsService.saveAppSetting({
+      settingName: 'backgroundColor',
+      settingValue: this.appBackgroundColor
+    }).subscribe(() => {
+        this.initialAppBackgoundColor = JSON.parse(JSON.stringify((this.appBackgroundColor)));
+        this._matDialogRef.close(event);
+      }
+    );
   }
 
   /**

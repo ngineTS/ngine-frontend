@@ -33,6 +33,22 @@
     }
 }
 
+.publish-icon {
+    font-size: 16px;
+    border: 1px solid #eed202;
+    border-right: none;
+    border-top: none;
+    background-color: #eed202;
+    padding: 2px 6px;
+    color: #2B2B2B;
+    cursor: pointer;
+    z-index: 999;
+
+    &:hover {
+        background-color: #e6c200;
+    }
+}
+
 .fit-content-icon {
     transform: rotate(90deg);
 }

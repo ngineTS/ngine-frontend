@@ -5,7 +5,7 @@
     }
 
     @if (formConfiguration.formTitle) {
-        <p class="fw-bold">{{ formConfiguration.formTitle }}</p>
+        <div class="form-title">{{ formConfiguration.formTitle }}</div>
     }
 
     <form [formGroup]="formContent" class="row" (ngSubmit)="submitForm()">
@@ -46,7 +46,7 @@
 <!-- Recursive form template -->
 <ng-template #deepForm let-data let-group="group">
     <div class="form-group-box">
-        <div class="form-group-name" [title]="data.key">{{ data.key }}</div>
+        <div class="form-group-name" [title]="data.key">{{ data.key | formatLabel }}</div>
         <div [formGroup]="group" class="row">
             @for (input of data.value | keyvalue: compareByOrder; track input) {
                 @if (isStandardInput(input.value) || isDropdownInput(input.value)) {

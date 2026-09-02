@@ -91,7 +91,7 @@ export class RoleManagementFormComponent implements OnInit{
       for (let roleNavigationPermission of this._data.role.roleNavigationPermissions) {
         this.roleNavigationPermissions.push(
           this._formBuilder.group({
-            navigationId: new FormControl(roleNavigationPermission.navigationId, Validators.required),
+            navigationGroupId: new FormControl(roleNavigationPermission.navigationGroupId, Validators.required),
             permissionId: new FormControl(roleNavigationPermission.permissionId, Validators.required),
           })
         );
@@ -100,7 +100,7 @@ export class RoleManagementFormComponent implements OnInit{
     else {
       this.roleNavigationPermissions.push(
         this._formBuilder.group({
-          navigationId: new FormControl('', Validators.required),
+          navigationGroupId: new FormControl('', Validators.required),
           permissionId: new FormControl('', Validators.required),
         })
       );
@@ -121,7 +121,7 @@ export class RoleManagementFormComponent implements OnInit{
   addNavigationPermission() {
     this.roleNavigationPermissions.push(
       this._formBuilder.group({
-        navigationId: new FormControl('', Validators.required),
+        navigationGroupId: new FormControl('', Validators.required),
         permissionId: new FormControl('', Validators.required),
       })
     )
@@ -199,13 +199,13 @@ export class RoleManagementFormComponent implements OnInit{
    * TODO: Find another way to detect selected navigation. This way has to bad performances.
    * Check if given navigation is already selected.
    * 
-   * @param navigationId The dropdown option to check.
+   * @param navigationGroupId The dropdown option to check.
    * @returns True if it is selected, false if not.
    * 
    */
-  isNavigationSelected(navigationId: string): boolean {
+  isNavigationSelected(navigationGroupId: string): boolean {
     const isSelected = this.roleNavigationPermissions.controls.find(obj => 
-      obj.value['navigationId'] === navigationId
+      obj.value['navigationGroupId'] === navigationGroupId
     );
     return isSelected ? true : false;
   }

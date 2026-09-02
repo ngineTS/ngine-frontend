@@ -109,7 +109,25 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit (optional).
    */
   manageNavigation(navigation?: Navigation): void {
-    this._navigationService.manageNavigation(this.navigation.id, navigation);
+    this._navigationService.manageNavigation(this.navigation.groupId, navigation);
+  }
+
+  /**
+   * Publish navigation.
+   *
+   * @param navigation The navigation to publish.
+   */
+  publishNavigationChanges(navigation: Navigation) {
+    this._navigationService.publishNavigationChanges(navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigation The navigation to cancel changes for.
+   */
+  cancelNavigationChanges(navigation: Navigation) {
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**
@@ -142,7 +160,7 @@ export class HeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this._sideNavService.setSideNavFormListener(this.navigation.menu);
+    this._sideNavService.setSideNavFormListener(this.navigation, 'menu');
   }
 
   /**
@@ -180,7 +198,7 @@ export class HeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**
@@ -213,9 +231,9 @@ export class HeaderBarComponent implements OnInit {
 
     const navigationPosition = { xPos: newXPos }
 
-    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+    this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe(() => navigation.containerLayout.xPos = navigationPosition.xPos);
   }
 
   /** 

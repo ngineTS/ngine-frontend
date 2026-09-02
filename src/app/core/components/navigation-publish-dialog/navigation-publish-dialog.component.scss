@@ -1,0 +1,81 @@
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px 0;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 20px;
+  color: #985ab5;
+}
+
+.close-button {
+  color: #2b2b2b;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 320px;
+  padding: 8px 0 4px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.navigation-label {
+  font-weight: 500;
+  color: #2b2b2b;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.publish-button,
+.publish-all-button {
+  margin-left: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  color: white;
+  background-color: #985ab5;
+  cursor: pointer;
+}
+
+.cancel-button {
+  margin-left: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2b2b2b;
+  background-color: #e8e8e8;
+  cursor: pointer;
+}
+
+.publish-button:hover,
+.publish-all-button:hover,
+.cancel-button:hover {
+  opacity: 0.8;
+}
+
+.publish-all-button {
+  margin: 0 8px 16px 0;
+}
+
+.publish-all-button {
+  margin-right: 24px;
+}

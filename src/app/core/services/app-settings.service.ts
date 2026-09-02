@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AppSetting } from "../models/app-setting.interface";
 import { environment } from "../../../environments/environment";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, take } from "rxjs";
 
 
 @Injectable({
@@ -25,11 +25,13 @@ export class AppSettingsService {
   }
 
   getAppSettings() {
-    return this._http.get<Array<AppSetting>>(`${this.baseURL}app-setting`);
+    return this._http.get<Array<AppSetting>>(`${this.baseURL}app-setting`)
+    .pipe(take(1));
   }
 
   saveAppSetting(appSettingPayload: Omit<AppSetting, 'id'>) {
-    return this._http.post<AppSetting>(`${this.baseURL}app-setting`, appSettingPayload);
+    return this._http.post<AppSetting>(`${this.baseURL}app-setting`, appSettingPayload)
+      .pipe(take(1)); 
   }
 
 

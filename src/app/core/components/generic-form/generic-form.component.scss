@@ -12,19 +12,28 @@
     top: 30vh;
 }
 
+.form-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px !important;
+    color: #985ab5;
+}
+
 .form-group-box {
     width: -webkit-fill-available;
-    margin: 12px;
+    margin-bottom: 24px;
+    margin-left: 12px;
+    margin-right: 12px;
     padding: 24px;
-    border: 1px solid #636363;
+    border: 1px solid #2B2B2B;
     border-radius: 4px;
 }
 
 .form-group-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: #636363;
+    color: #2B2B2B;
     overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

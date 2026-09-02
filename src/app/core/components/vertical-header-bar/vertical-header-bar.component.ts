@@ -8,7 +8,7 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { takeUntil } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
 import { DeepFormConfig } from '../../models/form-input.interface';
 import { StylePayload } from '../../models/menu.interface';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { HeaderBarService } from '../../services/header-bar.service';
     RouterModule,
     RouterOutlet,
     MatTooltipModule,
+    MatMenuModule,
     CdkDrag,
     CdkDropList,
   ],
@@ -41,7 +42,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
     private _matDialog: MatDialog,
-    private _headerBarService: HeaderBarService
+    private _headerBarService: HeaderBarService,
   ) { }
 
   /** The navigations container. */
@@ -139,7 +140,25 @@ export class VerticalHeaderBarComponent implements OnInit {
    */
   manageNavigation(event: MouseEvent, navigation?: Navigation): void {
     event.stopPropagation();
-    this._navigationService.manageNavigation(this.navigation.id, navigation);
+    this._navigationService.manageNavigation(this.navigation.groupId, navigation);
+  }
+
+  /**
+   * Publish navigation.
+   * 
+   * @param navigation The navigation to publish.
+   */
+  publishNavigationChanges(navigation: Navigation) {
+     this._navigationService.publishNavigationChanges(navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigation The navigation to cancel changes for.
+   */
+  cancelNavigationChanges(navigation: Navigation) {
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**
@@ -172,7 +191,7 @@ export class VerticalHeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this._sideNavService.setSideNavFormListener(this.navigation.menu);
+    this._sideNavService.setSideNavFormListener(this.navigation, 'menu');
   }
 
   /**
@@ -211,7 +230,7 @@ export class VerticalHeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /** 
@@ -289,7 +308,10 @@ export class VerticalHeaderBarComponent implements OnInit {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
     navigation.children!.forEach((nav, index) => { 
-      navigationOrders.push({ id: nav.id, order: index });
+      navigationOrders.push({
+        order: index,
+        groupId: nav.groupId,
+      });
       nav.order = index;
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});

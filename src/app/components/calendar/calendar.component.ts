@@ -77,7 +77,7 @@ export class CalendarComponent extends NavigationBaseComponent {
   }
 
   getCalendarEvent() {
-    this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this._navigation.id}`)
+    this._http.get<Calendar[]>(`${environment.APIURL}calendar/navigation/${this._navigation.groupId}`)
       .pipe(
         retry(this._retryCount),
         take(this._takeCount),
@@ -156,7 +156,7 @@ export class CalendarComponent extends NavigationBaseComponent {
 
 
   handleDateSelection(arg: DateSelectArg) {
-    if (this._canAdd) {
+    if (this._canEdit) {
       const calendarForm: DeepFormConfig<CalendarPayload> = {
         startDate: {
           value: arg.start,
@@ -220,7 +220,7 @@ export class CalendarComponent extends NavigationBaseComponent {
         formTitle: 'Add event',
         formConfig: calendarForm,
         payloadId: null,
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         controllerName: 'calendar',
       }
       const matDialogRef = this._matDialog.open(
@@ -305,7 +305,7 @@ export class CalendarComponent extends NavigationBaseComponent {
         formTitle: 'Edit event',
         formConfig: calendarForm,
         payloadId: arg.event.id,
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         controllerName: 'calendar',
         hasDeleteButton: true 
       }

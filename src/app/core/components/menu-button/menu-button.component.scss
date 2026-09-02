@@ -36,14 +36,34 @@
 
 .edit-icon {
   font-size: 12px;
-  border: 1px solid #636363;
+  border: 1px solid #2B2B2B;
   border-radius: 3px;
   background-color: #dee2e6;
   padding: 4px 6px;
-  color: #636363;
+  color: #2B2B2B;
   cursor: pointer;
   height: fit-content;
   width: fit-content;
+
+  &:hover {
+    background-color: #ced4da;
+  }
+}
+
+.publish-nav-icon {
+  font-size: 12px;
+  border: 1px solid #2B2B2B;
+  border-radius: 3px;
+  background-color: #eed202;
+  padding: 4px 6px;
+  color: #2B2B2B;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
+
+  &:hover {
+    background-color: #e6c200;
+  }
 }
 
 

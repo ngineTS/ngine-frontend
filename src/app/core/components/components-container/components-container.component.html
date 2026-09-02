@@ -22,7 +22,6 @@
                 <!-- Navigation object -->
                 <app-navigation
                     [_navigation]="child"
-                    [_canAdd]="child.permissionName?.includes('add')"
                     [_canEdit]="child.permissionName?.includes('edit')"
                     [_canDelete]="child.permissionName?.includes('delete')"
                 >
@@ -33,7 +32,6 @@
             <!-- Navigation object not draggable -->
             <app-navigation
                 [_navigation]="child"
-                [_canAdd]="child.permissionName?.includes('add')"
                 [_canEdit]="child.permissionName?.includes('edit')"
                 [_canDelete]="child.permissionName?.includes('delete')"
             >
@@ -42,68 +40,3 @@
 
     }
 </div>
-
-
-
-<!-- Management buttons toolbar (visible if user has at least 'add' permission on navigation) -->
-@if (navigation.permissionName?.includes('add') && windowWidth > windowWidthLimit) {
-    <div cdkDrag class="toolbar">
-        <!-- Grab toolbar icon -->
-        <div cdkDragHandle class="toolbar-grab">
-            <i class="bi bi-grip-vertical"></i>
-        </div>
-
-        <!-- App global setting button -->
-        @if (_componentsContainerService.userGlobalNavigationPermission?.includes('edit')) {
-            <button 
-                class="global-button"
-                [matMenuTriggerFor]="menu" 
-            >
-            <i class="bi bi-house-gear global-icon"></i>
-            </button>
-
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="manageAppDefaultStyle()">
-                    Manage application style
-                </button>
-
-                <button mat-menu-item (click)="addNavigationType()">
-                    New component type
-                </button>
-            </mat-menu>
-        }
-
-        <!-- Add navigation button -->
-        @if (navigation.level < 12) {
-            <button
-                matButton 
-                [matMenuTriggerFor]="menu" 
-                class="global-button">
-                <i class="bi bi-plus global-icon"></i>
-            </button>
-            
-            <mat-menu #menu="matMenu">
-                @if (navigation.children?.length === 0) {
-                    <button
-                        mat-menu-item
-                        (click)="openFormToAddNavigationBarOrNavigation('horizontal')"
-                    >
-                        Add horizontal navigation bar
-                    </button>
-                    <button
-                        mat-menu-item
-                        (click)="openFormToAddNavigationBarOrNavigation('vertical')"
-                    >
-                        Add vertical navigation bar
-                    </button>
-                }
-                <button
-                    mat-menu-item
-                    (click)="openFormToAddNavigationBarOrNavigation('navigation')"
-                >
-                    Add component
-                </button>
-            </mat-menu>
-        }
-    </div>
-}

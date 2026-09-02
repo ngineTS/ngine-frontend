@@ -5,7 +5,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
 
-    @if (_canAdd) {
+    @if (_canEdit) {
         <button class="col-3 add-role-button" matButton="outlined" (click)="addRole()">Add Role</button>
     }
 
