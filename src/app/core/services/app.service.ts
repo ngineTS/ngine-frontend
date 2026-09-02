@@ -208,7 +208,7 @@ export class AppService {
           a.containerLayout.xPos = 1000 - Number(a.containerLayout.xPos)
         }
       });
-      return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0].name;
+      return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0]?.name ?? '';
     }
   }
 
