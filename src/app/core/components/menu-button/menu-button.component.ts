@@ -122,6 +122,24 @@ export class MenuButtonComponent {
   }
 
   /**
+   * Copy a navigation's style properties to the clipboard.
+   *
+   * @param event The click event.
+   * @param navigation The navigation whose style should be copied.
+   */
+  copyStyle(event: MouseEvent, navigation: Navigation): void {
+    event.stopPropagation();
+
+    const style = {
+      containerLayout: navigation.containerLayout,
+      containerStyle: navigation.containerStyle,
+      typographyStyle: navigation.typographyStyle,
+    };
+
+    void navigator.clipboard.writeText(JSON.stringify(style));
+  }
+
+  /**
    * Methods called on menu 'marker' button click.
    * 
    * Open sidenav with navigation style properties and listen to changes.

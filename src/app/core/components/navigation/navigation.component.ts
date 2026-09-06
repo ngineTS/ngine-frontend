@@ -258,6 +258,19 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._sideNavService.setSideNavFormListener(this._navigation, 'navigation');
   }
 
+  /**
+   * Copy the navigation's style properties to the clipboard.
+   */
+  copyStyle(): void {
+    const style = {
+      containerLayout: this._navigation.containerLayout,
+      containerStyle: this._navigation.containerStyle,
+      typographyStyle: this._navigation.typographyStyle,
+    };
+
+    void navigator.clipboard.writeText(JSON.stringify(style));
+  }
+
 
   doesNavigationHasScrollBar(): boolean {
     const navigationTypeWithoutScrollBar = [

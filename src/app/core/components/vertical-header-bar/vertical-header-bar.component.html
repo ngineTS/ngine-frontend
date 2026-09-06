@@ -150,16 +150,27 @@
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {
           <div class="edit-nav-buttons-div">
-            @if (treeLevel === 0 && windowWidth > windowWidthLimit) {
-              <i class="bi bi-marker-tip edit-nav-icon"
-                (click)="editNavigationStyle($event, node)"
-                [matTooltip]="'Edit style'">
+            @if (windowWidth > windowWidthLimit) {
+              <i class="bi bi-three-dots-vertical edit-nav-icon"
+                [matMenuTriggerFor]="navigationOptionsMenu"
+                (click)="$event.stopPropagation()">
               </i>
+
+              <mat-menu #navigationOptionsMenu="matMenu">
+                <button mat-menu-item (click)="copyStyle($event, node)">
+                  <i class="bi bi-brush me-2"></i>
+                  Copy style
+                </button>
+                <button mat-menu-item (click)="editNavigationStyle($event, node)">
+                  <i class="bi bi-marker-tip me-2"></i>
+                  Edit style
+                </button>
+                <button mat-menu-item (click)="manageNavigation($event, node)">
+                  <i class="bi bi-gear me-2"></i>
+                  Settings
+                </button>
+              </mat-menu>
             }
-            <i class="bi bi-gear edit-nav-icon"
-              (click)="manageNavigation($event, node)"
-              [matTooltip]="'Manage navigation'">
-            </i>
             @if (node.unpublishedChanges.length > 0) {
               <i class="bi bi-upload publish-nav-icon"
                   [matMenuTriggerFor]="publishMenu"

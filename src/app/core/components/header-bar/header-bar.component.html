@@ -152,12 +152,25 @@
                             <!-- Edit navigation buttons -->
                             @if (child.permissionName?.includes('edit') && !isDragging) {
                                 <div class="edit-header-buttons-div">
-                                    <i class="bi bi-marker-tip edit-header-icon"
-                                        (click)="editNavigationStyle(child)"
+                                    <i class="bi bi-three-dots-vertical edit-header-icon"
+                                        [matMenuTriggerFor]="navigationStyleMenu"
                                     ></i>
-                                    <i class="bi bi-gear edit-header-icon"
-                                        (click)="manageNavigation(child)"
-                                    ></i>
+
+                                    <mat-menu #navigationStyleMenu="matMenu">
+                                        <button mat-menu-item (click)="copyStyle(child)">
+                                            <i class="bi bi-brush me-2"></i>
+                                            Copy style
+                                        </button>
+                                        <button mat-menu-item (click)="editNavigationStyle(child)">
+                                            <i class="bi bi-marker-tip me-2"></i>
+                                            Edit style
+                                        </button>
+                                        <button mat-menu-item (click)="manageNavigation(child)">
+                                            <i class="bi bi-gear me-2"></i>
+                                            Settings
+                                        </button>
+                                    </mat-menu>
+
                                     @if (child.unpublishedChanges.length > 0) {
                                         <i class="bi bi-upload publish-header-icon"
                                             [matMenuTriggerFor]="publishMenu"

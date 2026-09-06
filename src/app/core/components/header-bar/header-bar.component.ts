@@ -202,6 +202,21 @@ export class HeaderBarComponent implements OnInit {
   }
 
   /**
+   * Copy a navigation's style properties to the clipboard.
+   *
+   * @param navigation The navigation whose style should be copied.
+   */
+  copyStyle(navigation: Navigation): void {
+    const style = {
+      containerLayout: navigation.containerLayout,
+      containerStyle: navigation.containerStyle,
+      typographyStyle: navigation.typographyStyle,
+    };
+
+    void navigator.clipboard.writeText(JSON.stringify(style));
+  }
+
+  /**
    * Methods called when an item is being dragged.
    * Set `isDragging` to true.
    */
