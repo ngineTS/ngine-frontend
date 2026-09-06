@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { StyleService } from '../../services/style.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     private _sideNavService: SideNavService,
     private _matDialog: MatDialog,
     private _headerBarService: HeaderBarService,
+    private _styleService: StyleService,
   ) { }
 
   /** The navigations container. */
@@ -241,14 +243,7 @@ export class VerticalHeaderBarComponent implements OnInit {
    */
   copyStyle(event: MouseEvent, navigation: Navigation): void {
     event.stopPropagation();
-
-    const style = {
-      containerLayout: navigation.containerLayout,
-      containerStyle: navigation.containerStyle,
-      typographyStyle: navigation.typographyStyle,
-    };
-
-    void navigator.clipboard.writeText(JSON.stringify(style));
+    this._styleService.copyStyle(navigation);
   }
 
   /** 

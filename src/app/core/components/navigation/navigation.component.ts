@@ -16,6 +16,7 @@ import { SideNavService } from '../../services/side-nav.service';
 import { MediaService } from '../../services/media.service';
 import { ComponentService } from '../../../components/component.service';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { StyleService } from '../../services/style.service';
 
 @Component({
   selector: 'app-navigation',
@@ -64,7 +65,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
     private _mediaService: MediaService,
-    private _componentsContainerService: ComponentsContainerService
+    private _componentsContainerService: ComponentsContainerService,
+    private _styleService: StyleService
   ) { 
     super(); 
   }
@@ -262,13 +264,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Copy the navigation's style properties to the clipboard.
    */
   copyStyle(): void {
-    const style = {
-      containerLayout: this._navigation.containerLayout,
-      containerStyle: this._navigation.containerStyle,
-      typographyStyle: this._navigation.typographyStyle,
-    };
-
-    void navigator.clipboard.writeText(JSON.stringify(style));
+    this._styleService.copyStyle(this._navigation);
   }
 
 
