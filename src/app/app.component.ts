@@ -67,6 +67,14 @@ export class AppComponent implements OnInit {
       this._styleService.styleToCopy = null;
   }
 
+    @HostListener('document:keydown.escape', ['$event'])
+    onDocumentEscape(event: KeyboardEvent): void {
+      event.preventDefault();
+      document.body.classList.remove('copy-style-mode');
+      this._styleService.isCopyingStyle = false;
+      this._styleService.styleToCopy = null;
+    }
+
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds
   refreshTokenIntervalId: NodeJS.Timeout | undefined;
