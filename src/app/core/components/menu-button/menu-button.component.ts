@@ -12,6 +12,7 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
+import { StyleService } from '../../services/style.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class MenuButtonComponent {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
+    private _styleService: StyleService,
   ) { }
 
   /** The main menu button. */

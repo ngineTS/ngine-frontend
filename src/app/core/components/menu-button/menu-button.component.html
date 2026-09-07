@@ -68,8 +68,21 @@
 
                     <!-- edit item buttons -->
                     @if (child.permissionName?.includes('edit')) {
-                        <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
-                        <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
+                        <i class="col-1 ms-1 bi bi-three-dots-vertical edit-icon"
+                            [matMenuTriggerFor]="navigationOptionsMenu"
+                            (click)="$event.stopPropagation()"
+                        ></i>
+
+                        <mat-menu #navigationOptionsMenu="matMenu">
+                            <button mat-menu-item (click)="editNavigationStyle($event, child)">
+                                <i class="bi bi-marker-tip me-2"></i>
+                                Edit style
+                            </button>
+                            <button mat-menu-item (click)="editNavigation($event, child)">
+                                <i class="bi bi-gear me-2"></i>
+                                Settings
+                            </button>
+                        </mat-menu>
                         @if (child.unpublishedChanges.length > 0) {
                             <i class="bi bi-upload ms-1 publish-nav-icon"
                                 [matMenuTriggerFor]="publishMenuChild"
@@ -140,8 +153,21 @@
 
                 <!-- Deep Menu button - edit buttons -->
                 @if (navigation.permissionName?.includes('edit')) {
-                    <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, navigation)"></i>
-                    <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, navigation)"></i>
+                    <i class="col-1 ms-1 bi bi-three-dots-vertical edit-icon"
+                        [matMenuTriggerFor]="navigationOptionsMenu"
+                        (click)="$event.stopPropagation()"
+                    ></i>
+
+                    <mat-menu #navigationOptionsMenu="matMenu">
+                        <button mat-menu-item (click)="editNavigationStyle($event, navigation)">
+                            <i class="bi bi-marker-tip me-2"></i>
+                            Edit style
+                        </button>
+                        <button mat-menu-item (click)="editNavigation($event, navigation)">
+                            <i class="bi bi-gear me-2"></i>
+                            Settings
+                        </button>
+                    </mat-menu>
                     @if (navigation.unpublishedChanges.length > 0) {
                         <i class="bi bi-upload ms-1 publish-nav-icon"
                             [matMenuTriggerFor]="publishMenuParent"
@@ -203,8 +229,21 @@
 
                             <!-- edit item buttons -->
                             @if (child.permissionName?.includes('edit')) {
-                                <i class="col-1 ms-1 bi bi-marker-tip edit-icon" (click)="editNavigationStyle($event, child)"></i>
-                                <i class="col-1 ms-1 bi bi-gear edit-icon" (click)="editNavigation($event, child)"></i>
+                                <i class="col-1 ms-1 bi bi-three-dots-vertical edit-icon"
+                                    [matMenuTriggerFor]="navigationOptionsMenu"
+                                    (click)="$event.stopPropagation()"
+                                ></i>
+
+                                <mat-menu #navigationOptionsMenu="matMenu">
+                                    <button mat-menu-item (click)="editNavigationStyle($event, child)">
+                                        <i class="bi bi-marker-tip me-2"></i>
+                                        Edit style
+                                    </button>
+                                    <button mat-menu-item (click)="editNavigation($event, child)">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Settings
+                                    </button>
+                                </mat-menu>
                                 @if (child.unpublishedChanges.length > 0) {
                                     <i class="bi bi-upload ms-1 publish-nav-icon"
                                         [matMenuTriggerFor]="publishMenuItem"

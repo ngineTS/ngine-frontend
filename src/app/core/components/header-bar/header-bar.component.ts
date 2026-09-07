@@ -17,6 +17,7 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { ContainerLayout } from '../../models/container-layout.interface';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { StyleService } from '../../services/style.service';
 
 
 @Component({
@@ -45,7 +46,8 @@ export class HeaderBarComponent implements OnInit {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
-    public _headerBarService: HeaderBarService
+    public _styleService: StyleService,
+    public _headerBarService: HeaderBarService,
   ) { }
 
   /** The navigations container. */

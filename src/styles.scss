@@ -10,6 +10,11 @@ html, body {
   max-height: 100vh;
 }
 
+body.copy-style-mode,
+body.copy-style-mode * {
+  cursor: url('/assets/icons/paintbrush_3.svg') 0 24, auto !important;
+}
+
 html {
   color-scheme: light dark;
   @include mat.theme((

@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { StyleService } from '../../services/style.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class VerticalHeaderBarComponent implements OnInit {
     private _sideNavService: SideNavService,
     private _matDialog: MatDialog,
     private _headerBarService: HeaderBarService,
+    private _styleService: StyleService,
   ) { }
 
   /** The navigations container. */
@@ -233,6 +235,17 @@ export class VerticalHeaderBarComponent implements OnInit {
     this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
+  /**
+   * Copy a navigation's style properties to the clipboard.
+   *
+   * @param event The click event.
+   * @param navigation The navigation whose style should be copied.
+   */
+  copyStyle(event: MouseEvent, navigation: Navigation): void {
+    event.stopPropagation();
+    this._styleService.copyStyle(navigation);
+  }
+
   /** 
    * Method called on logo click.
    * 
@@ -258,7 +271,12 @@ export class VerticalHeaderBarComponent implements OnInit {
    * 
    * @param navigation The navigation.
    */
-  actionClick(navigation: Navigation, parentPath?: Array<string>) {
+  actionClick(event: MouseEvent, navigation: Navigation, parentPath?: Array<string>) {
+    if (this._styleService.isCopyingStyle && this._styleService.styleToCopy) {
+      this._styleService.pasteStyle(event, navigation);
+      return;
+    }
+    
     switch (navigation.navigationType.name) {
       /* redirect to navigation url */
       case 'redirect-button':

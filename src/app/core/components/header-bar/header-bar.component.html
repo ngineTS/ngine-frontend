@@ -107,6 +107,7 @@
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [class.navigation-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                        (click)="_styleService.pasteStyle($event, child)"
                     >
                         <div
                             [style.padding-top.px]="child.containerLayout.paddingTop"
@@ -131,6 +132,7 @@
                             [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
                             [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
                             [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
+                            [style.pointer-events]="_styleService.isCopyingStyle ? 'none' : 'auto'"
                         >
                             @if (child.navigationType.name === 'menu-button') {
                                 <app-menu-button
@@ -152,12 +154,25 @@
                             <!-- Edit navigation buttons -->
                             @if (child.permissionName?.includes('edit') && !isDragging) {
                                 <div class="edit-header-buttons-div">
-                                    <i class="bi bi-marker-tip edit-header-icon"
-                                        (click)="editNavigationStyle(child)"
+                                    <i class="bi bi-three-dots-vertical edit-header-icon"
+                                        [matMenuTriggerFor]="navigationStyleMenu"
                                     ></i>
-                                    <i class="bi bi-gear edit-header-icon"
-                                        (click)="manageNavigation(child)"
-                                    ></i>
+
+                                    <mat-menu #navigationStyleMenu="matMenu">
+                                        <button mat-menu-item (click)="_styleService.copyStyle(child)">
+                                            <i class="bi bi-brush me-2"></i>
+                                            Copy style
+                                        </button>
+                                        <button mat-menu-item (click)="editNavigationStyle(child)">
+                                            <i class="bi bi-marker-tip me-2"></i>
+                                            Edit style
+                                        </button>
+                                        <button mat-menu-item (click)="manageNavigation(child)">
+                                            <i class="bi bi-gear me-2"></i>
+                                            Settings
+                                        </button>
+                                    </mat-menu>
+
                                     @if (child.unpublishedChanges.length > 0) {
                                         <i class="bi bi-upload publish-header-icon"
                                             [matMenuTriggerFor]="publishMenu"

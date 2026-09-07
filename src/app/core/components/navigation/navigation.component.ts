@@ -16,6 +16,7 @@ import { SideNavService } from '../../services/side-nav.service';
 import { MediaService } from '../../services/media.service';
 import { ComponentService } from '../../../components/component.service';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { StyleService } from '../../services/style.service';
 
 @Component({
   selector: 'app-navigation',
@@ -64,7 +65,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
     private _mediaService: MediaService,
-    private _componentsContainerService: ComponentsContainerService
+    private _componentsContainerService: ComponentsContainerService,
+    public _styleService: StyleService
   ) { 
     super(); 
   }
@@ -114,7 +116,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
-    this.containerRef?.destroy();
   }
 
   /**
@@ -258,6 +259,13 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._sideNavService.setSideNavFormListener(this._navigation, 'navigation');
   }
 
+  /**
+   * Copy the navigation's style properties to the clipboard.
+   */
+  copyStyle(): void {
+    this._styleService.copyStyle(this._navigation);
+  }
+
 
   doesNavigationHasScrollBar(): boolean {
     const navigationTypeWithoutScrollBar = [
@@ -304,6 +312,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       });
   }
 
+  /**
+   * Method called on fit content button click.
+   * 
+   * Modify navigation height to fit content property and update container layout.
+   */
   onFitContentClick() {
     this._navigation.containerLayout.heightFitContent = !this._navigation.containerLayout.heightFitContent;
 

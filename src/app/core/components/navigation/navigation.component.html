@@ -1,9 +1,9 @@
-<div class="navigation-container mb-md-1">
+<div class="navigation-container mb-md-1" (click)="_styleService.pasteStyle($event, _navigation)">
     
     @if (_canEdit) {
         @if (!isResizing) {
             <!-- Top right icons -->
-            <div class="icons-div">
+            <div class="icons-div" [style.pointer-events]="_styleService.isCopyingStyle ? 'none' : 'auto'">
                 @if (containerRef) {
                     @if (_isEditing) {
                         <i class="bi bi-x-circle icon" (click)="switchEditMode()" [matTooltip]="'Stop editing'" ></i>
@@ -19,6 +19,7 @@
                         [matTooltip]="_navigation.containerLayout.heightFitContent ? 'Unfit content' : 'Fit content'"
                     ></i>
                     <i class="bi bi-arrows-fullscreen icon" (click)="onFullScreenClick()" [matTooltip]="'Full screen'"></i>
+                    <i class="bi bi-brush icon" (click)="copyStyle()" [matTooltip]="'Copy style'"></i>
                     <i class="bi bi-marker-tip icon" (click)="editNavigationStyle()" [matTooltip]="'Edit style'"></i>
                 }
                 <i class="bi bi-gear icon" (click)="editNavigation()" [matTooltip]="'Settings'"></i>
@@ -96,6 +97,7 @@
         [style.opacity]="_navigation.isDisabled ? '0.4' : '1'"
         (mouseenter)="isMouseOver = true"
         (mouseleave)="isMouseOver = false"
+        [style.pointer-events]="_styleService.isCopyingStyle ? 'none' : 'auto'"
     >
         <!-- Custom button case -->
         @if (
