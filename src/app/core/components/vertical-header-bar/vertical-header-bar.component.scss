@@ -98,14 +98,6 @@
   margin-top: 2px;
 }
 
-.edit-nav-container {
-  &:hover {
-    .edit-nav-icon {
-      display: block;
-    }
-  }
-}
-
 // Edit icons styling
 .edit-icon {
   height: 26px;
@@ -137,7 +129,6 @@
 }
 
 .edit-nav-icon {
-  display: none;
   font-size: 12px;
   border: 1px solid #2B2B2B;
   border-radius: 3px;
@@ -212,7 +203,7 @@
 }
 
 .drag-box {
-  cursor: move !important;
+  cursor: move;
 }
 
 .cdk-drag-preview {

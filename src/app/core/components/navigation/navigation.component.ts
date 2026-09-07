@@ -66,7 +66,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _sideNavService: SideNavService,
     private _mediaService: MediaService,
     private _componentsContainerService: ComponentsContainerService,
-    private _styleService: StyleService
+    public _styleService: StyleService
   ) { 
     super(); 
   }
@@ -116,7 +116,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
-    this.containerRef?.destroy();
   }
 
   /**
@@ -313,6 +312,11 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       });
   }
 
+  /**
+   * Method called on fit content button click.
+   * 
+   * Modify navigation height to fit content property and update container layout.
+   */
   onFitContentClick() {
     this._navigation.containerLayout.heightFitContent = !this._navigation.containerLayout.heightFitContent;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AppService } from './core/services/app.service';
 import { jwtDecode } from "jwt-decode";
@@ -23,6 +23,7 @@ import { FormContainerComponent } from './core/components/form-container/form-co
 import { DefaultStyleFormComponent } from './core/components/default-style-form/default-style-form.component';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { NavigationPublishDialogComponent } from './core/components/navigation-publish-dialog/navigation-publish-dialog.component';
+import { StyleService } from './core/services/style.service';
 
 
 
@@ -56,7 +57,15 @@ export class AppComponent implements OnInit {
     private _matDialog: MatDialog,
     public _sideNavService: SideNavService,
     public _componentsContainerService: ComponentsContainerService,
+    private _styleService: StyleService
   ) { }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+      document.body.classList.remove('copy-style-mode');
+      this._styleService.isCopyingStyle = false;
+      this._styleService.styleToCopy = null;
+  }
 
   title = 'my-app-frontend';
   refreshTokenIntervalOffset = 60; //seconds

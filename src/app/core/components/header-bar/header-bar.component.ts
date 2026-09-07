@@ -46,8 +46,8 @@ export class HeaderBarComponent implements OnInit {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
-    private _styleService: StyleService,
-    public _headerBarService: HeaderBarService
+    public _styleService: StyleService,
+    public _headerBarService: HeaderBarService,
   ) { }
 
   /** The navigations container. */
@@ -201,15 +201,6 @@ export class HeaderBarComponent implements OnInit {
     );
     
     this._sideNavService.setSideNavFormListener(navigation, 'navigation');
-  }
-
-  /**
-   * Copy a navigation's style properties.
-   *
-   * @param navigation The navigation whose style should be copied.
-   */
-  copyStyle(navigation: Navigation): void {
-    this._styleService.copyStyle(navigation);
   }
 
   /**

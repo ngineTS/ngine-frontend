@@ -271,7 +271,12 @@ export class VerticalHeaderBarComponent implements OnInit {
    * 
    * @param navigation The navigation.
    */
-  actionClick(navigation: Navigation, parentPath?: Array<string>) {
+  actionClick(event: MouseEvent, navigation: Navigation, parentPath?: Array<string>) {
+    if (this._styleService.isCopyingStyle && this._styleService.styleToCopy) {
+      this._styleService.pasteStyle(event, navigation);
+      return;
+    }
+    
     switch (navigation.navigationType.name) {
       /* redirect to navigation url */
       case 'redirect-button':

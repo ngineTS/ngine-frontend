@@ -107,6 +107,7 @@
                         (cdkDragEnded)="onDragEnded($event, child)"
                         [class.navigation-container]="child.permissionName?.includes('edit')"
                         [style.cursor]="navigation.permissionName?.includes('edit') ? 'move' : 'pointer'"
+                        (click)="_styleService.pasteStyle($event, child)"
                     >
                         <div
                             [style.padding-top.px]="child.containerLayout.paddingTop"
@@ -131,6 +132,7 @@
                             [style.border-top-right-radius.px]="child.containerStyle.borderTopRightRadius"
                             [style.border-bottom-right-radius.px]="child.containerStyle.borderBottomRightRadius"
                             [style.border-bottom-left-radius.px]="child.containerStyle.borderBottomLeftRadius"
+                            [style.pointer-events]="_styleService.isCopyingStyle ? 'none' : 'auto'"
                         >
                             @if (child.navigationType.name === 'menu-button') {
                                 <app-menu-button
@@ -157,7 +159,7 @@
                                     ></i>
 
                                     <mat-menu #navigationStyleMenu="matMenu">
-                                        <button mat-menu-item (click)="copyStyle(child)">
+                                        <button mat-menu-item (click)="_styleService.copyStyle(child)">
                                             <i class="bi bi-brush me-2"></i>
                                             Copy style
                                         </button>
