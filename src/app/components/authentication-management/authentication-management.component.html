@@ -1,0 +1,34 @@
+<div class="row p-4">
+	@for (item of _items; track item.id) {
+		<div class="col-lg-3 col-md-6 mb-4">
+			<div class="card card-item">
+				@if (_canEdit) {
+					<button class="btn-edit" type="button" (click)="_editItem(item)">
+						<i class="bi bi-pencil" aria-hidden="true"></i>
+					</button>
+				}
+
+				<h5 class="fw-bold mb-2">{{ item.name }}</h5>
+				<p class="small text-secondary flex-grow-1">{{ item.description }}</p>
+
+				<strong class="pack-price">
+					@if (item.isFree) {
+						Free
+					} @else {
+						{{ item.price }} {{ item.currency }}
+					}
+				</strong>
+			</div>
+		</div>
+	}
+
+	@if (_canEdit) {
+		<div class="col-lg-3 col-md-6">
+			<button class="card card-item card-add" type="button" (click)="_addItem()">
+				<span class="fs-1">+</span>
+				<h5 class="fw-bold">Add New</h5>
+				<p class="small flex-grow-1">Create a new authentication pack</p>
+			</button>
+		</div>
+	}
+</div>
