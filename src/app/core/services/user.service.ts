@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, take } from "rxjs";
 import { User } from "../models/user.interface";
 import { environment } from "../../../environments/environment";
 import { UserRolePayload } from "../models/user-role.interface";
@@ -27,4 +27,9 @@ export class UserService {
   deleteUser(id: string) {
     return this._http.delete(`${environment.APIURL}user/${id}`);
   }
+
+  getCurrentUserInformation(): Observable<Omit<User, 'password'>> {
+    return this._http.get<Omit<User, 'password'>>(`${environment.APIURL}user/me`)
+      .pipe(take(1));
+  } 
 }

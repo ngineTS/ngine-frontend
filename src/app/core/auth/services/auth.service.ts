@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { take } from "rxjs";
+import { Observable, take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { AuthPack } from "../../../components/authentication-management/auth-pack.interface";
 
 @Injectable({
     providedIn: 'root',
@@ -68,6 +69,10 @@ export class AuthService {
         }
 
         return true;
+    }
+
+    getAuthPacks(): Observable<AuthPack[]> {
+        return this._http.get<AuthPack[]>(`${environment.APIURL}auth/auth-packs`).pipe(take(1));
     }
 
  }

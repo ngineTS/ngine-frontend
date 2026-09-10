@@ -8,6 +8,8 @@ import { SnackBarService } from '../../core/services/snackbar.service';
 import { firstValueFrom } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/user.interface';
 
 @Component({
   selector: 'app-sign-container',
@@ -22,13 +24,15 @@ export class SignContainerComponent extends NavigationBaseComponent {
     private _snackbarService: SnackBarService,
     private _appService: AppService,
     private _router: Router,
+    private _userService: UserService
   ) { super(); }
 
   isSignUpTab: boolean = false;
-  userEmail: string | null = null;
+  user: Omit<User, 'password'> | null = null;
 
   ngOnInit() {
-    this.userEmail = this._authService.getCurrentUser()?.['userEmail'];
+    this._userService.getCurrentUserInformation()
+      .subscribe(userInfo => this.user = userInfo);
   }
 
   async onLogOutClick() {
