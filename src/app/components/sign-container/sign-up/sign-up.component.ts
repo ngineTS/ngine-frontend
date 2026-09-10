@@ -65,6 +65,8 @@ export class SignUpComponent {
       || this.userForm.password !== this.repeatPassword
       || !this.userForm.emailAddress.includes('@')
       || this.passwordTooShort
+      || !this.userForm.name
+      || !this.userForm.lastName
     ) {
       return true;
     }
