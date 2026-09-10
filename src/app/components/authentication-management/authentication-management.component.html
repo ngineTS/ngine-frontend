@@ -1,3 +1,19 @@
+<header class="px-4 pt-4"
+		[style.color]="_navigation.typographyStyle.color"
+		[style.fontFamily]="_navigation.typographyStyle.fontFamily"
+		>
+	<h1 class="h3 fw-bold mb-4">Authentication management</h1>
+	<p class="mb-1">
+		Define the authentication packs shown during sign-up, including each pack's name, description,
+		pricing, billing interval, and the role assigned to users who select it. After selecting a pack and clicking on sign up, user will be redirected to Stripe for payment processing.
+	</p>
+	<p class="mb-4">If no pack is created, it will be a classic sign-up process (only email and password required) and Guest role will be assigned to user.</p>
+	<p class="mb-4">
+		<strong>Prerequisite:</strong> Stripe must be configured before creating authentication packs,
+		and a Stripe Price ID is required for each pack. More information on configuring Stripe can be found here: <a href="https://stripe.com/" target="_blank">Stripe Documentation</a>.
+	</p>
+</header>
+
 <div class="row p-4">
 	@for (item of _items; track item.id) {
 		<div class="col-lg-3 col-md-6 mb-4">

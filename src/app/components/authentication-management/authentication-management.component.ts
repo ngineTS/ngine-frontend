@@ -19,7 +19,7 @@ export class AuthenticationManagementComponent extends ManagementBaseComponent<A
     this._sortConfiguration = { orderBy: 'order', order: 'ASC' };
     this._loadItems();
     this._formInputsConfiguration = {
-      name: { 
+      name: {
         type: 'text',
         alias: 'Name',
         value: '',
