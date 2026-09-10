@@ -1,4 +1,5 @@
 <div class="row">
+    <div class="row">
     <mat-form-field appearance="outline" class="col">
         <mat-label>Name</mat-label>
         <input matInput
@@ -17,7 +18,7 @@
         />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="col">
         <mat-label>Email address</mat-label>
         <input matInput 
             type="email" 
@@ -25,7 +26,9 @@
             [(ngModel)]="userForm.emailAddress"
         />
     </mat-form-field>
+    </div>
 
+    <div class="row">
     <mat-form-field appearance="outline" class="col">
         <mat-label>Password</mat-label>
         <input matInput
@@ -45,9 +48,34 @@
            [(ngModel)]="repeatPassword"
         />
     </mat-form-field>
+    </div>
+
+    @if (authPacks && authPacks.length > 0) {
+        <div class="row">
+            <span class="mb-3">Select the pack you want to subscribe to.</span>
+            <div class="pack-viewport">
+                <div class="pack-list">
+                    @for (pack of authPacks; track pack.id) {
+                        <div class="pack-card" [class.selected]="selectedPack?.id === pack.id" (click)="onPackSelection(pack.id)">
+                            <h5 class="fw-bold mb-2 pack-name">{{ pack.name }}</h5>
+                            <span class="pack-description">{{ pack.description }}</span>
+
+                            <strong class="pack-price">
+                                @if (pack.isFree) {
+                                    Free
+                                } @else {
+                                    {{ pack.price }} {{ pack.currency }}
+                                }
+                            </strong>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
     
-    <div>
-        <button class="w-100 my-3" 
+    <div class="text-center">
+        <button class="w-75 mt-4" 
             matButton="outlined"
             (click)="onSignUpClick()" 
             [disabled]="isSignUpDisabled()"

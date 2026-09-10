@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../../../core/services/app.service';
 import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthPack } from '../../authentication-management/auth-pack.interface';
 
 
 @Component({
@@ -25,13 +26,20 @@ export class SignUpComponent {
   userForm!: UserSignUpPayload;
   repeatPassword: string | null = null;
   passwordTooShort = false;
+  authPacks: Array<AuthPack> = [];
+  selectedPack: AuthPack | undefined;
 
-  constructor(public _authService: AuthService, 
-              private _appService: AppService,
-              private _snackbarService: SnackBarService
-              ) { }
+  constructor(
+    public _authService: AuthService, 
+    private _appService: AppService,
+    private _snackbarService: SnackBarService
+  ) { }
 
   ngOnInit(): void {
+    this._authService.getAuthPacks().subscribe(resp => {
+      console.log(resp);
+      this.authPacks = resp;
+    });
     this.userForm = {
       name: '',
       lastName: '',
@@ -71,5 +79,9 @@ export class SignUpComponent {
       return true;
     }
     return false;
+  }
+
+  onPackSelection(packId: string) {
+    this.selectedPack = this.authPacks.find(pack => pack.id === packId);
   }
 }
