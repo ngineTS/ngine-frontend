@@ -75,6 +75,7 @@ export class SignUpComponent {
       || this.passwordTooShort
       || !this.userForm.name
       || !this.userForm.lastName
+      || (this.authPacks.length > 0 && !this.selectedPack)
     ) {
       return true;
     }
