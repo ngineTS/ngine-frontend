@@ -9,8 +9,8 @@
                         @for (userRole of user.userRoles; track userRole.id) {
                             @if (userRole.role) {
                                 <span 
-                                    [style.backgroundColor]="_navigation.typographyStyle.color"
-                                    [style.color]="_navigation.typographyStyle.activeColor"
+                                    [style.backgroundColor]="_navigation?.typographyStyle?.color ?? ''"
+                                    [style.color]="_navigation?.typographyStyle?.activeColor ?? ''"
                                     class="p-2 rounded-5"
                                 >
                                     <i class="bi bi-check-circle-fill" aria-hidden="true"></i>

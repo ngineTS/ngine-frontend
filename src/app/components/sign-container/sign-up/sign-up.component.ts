@@ -43,6 +43,7 @@ export class SignUpComponent {
     this.userForm = {
       name: '',
       lastName: '',
+      roleId: null,
       emailAddress: '',
       password: '',
     }
@@ -84,5 +85,6 @@ export class SignUpComponent {
 
   onPackSelection(packId: string) {
     this.selectedPack = this.authPacks.find(pack => pack.id === packId);
+    this.userForm.roleId = this.selectedPack!.roleId;
   }
 }
