@@ -82,8 +82,15 @@ export class AppService {
           path: '**',
           redirectTo: ''
         }
+
+        const stripeSuccessPayment = {
+          path: 'success',
+          loadComponent: () => import('../../core/components/stripe-success/stripe-success.component').then(m => m.StripeSuccessComponent)
+        }
+
+        route.children?.push(stripeSuccessPayment, unauthorisedRoute, notFoundRoute);
         
-        this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
+        this._router.resetConfig([route]);
         
         if (redirectRouteName) {
           this._router.navigateByUrl(redirectRouteName);

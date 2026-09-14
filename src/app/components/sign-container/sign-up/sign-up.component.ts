@@ -8,6 +8,7 @@ import { AppService } from '../../../core/services/app.service';
 import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthPack } from '../../authentication-management/auth-pack.interface';
+import { StripeService } from '../../../core/services/stripe.service';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class SignUpComponent {
   constructor(
     public _authService: AuthService, 
     private _appService: AppService,
-    private _snackbarService: SnackBarService
+    private _snackbarService: SnackBarService,
+    private _stripeService: StripeService
   ) { }
 
   ngOnInit(): void {
@@ -86,5 +88,6 @@ export class SignUpComponent {
   onPackSelection(packId: string) {
     this.selectedPack = this.authPacks.find(pack => pack.id === packId);
     this.userForm.roleId = this.selectedPack!.roleId;
+    this._stripeService.redirectToCheckout('price_1UFbETDIdQiJDqfHnr4yOs5x');
   }
 }
