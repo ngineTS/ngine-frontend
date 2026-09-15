@@ -8,8 +8,6 @@ import { AppService } from '../../../core/services/app.service';
 import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthPack } from '../../authentication-management/auth-pack.interface';
-import { StripeService } from '../../../core/services/stripe.service';
-import { catchError, of, switchMap } from 'rxjs';
 
 
 @Component({
@@ -35,7 +33,6 @@ export class SignUpComponent {
     public _authService: AuthService, 
     private _appService: AppService,
     private _snackbarService: SnackBarService,
-    private _stripeService: StripeService
   ) { }
 
   ngOnInit(): void {
@@ -60,44 +57,20 @@ export class SignUpComponent {
   /**
    * Methods triggered on sign up button click.
    * 
-   * Process:
-   * 
-   * Case 1: authentication doesn't require payment: create user and redurect to home page.
-   * 
-   * Case 2: authentication requires payment:
-   *  - proceed to normal sign up to create user and get correct userId in the request
-   *  - open stripe payment page to let user proceed with payment
-   *  - after success payment: redirect to success page
+   * If payment is required for sign up then redirect to checkout url,
+   * else store access_token and redirect to home page.
    */
   onSignUpClick() {
     this._authService
       .userSignUp(this.userForm)
-      .pipe(
-        catchError(() => {
-          this.userForm.emailAddress = '';
-          return of(null);
-        }),
-        switchMap((result: any) => {
-          if (result) {
-            localStorage.setItem('access_token', result['access_token']);
-
-            /* Case 1  */
-            if (!this.selectedPack || this.selectedPack.isFree || this.selectedPack.price === 0) {
-              this._snackbarService.showSuccessSnackBar("Welcome!");
-              this._appService.createAppRouting('/');
-              return of(null);
-            } 
-            /* Case 2  */
-            else {
-              return this._stripeService.redirectToCheckout(this.selectedPack.stripePriceId);
-            }
-          } else {
-            return of(null);
-          }
-        })
-      )
-      .subscribe((resp: { url: string } | null) => {
-        if (resp?.url) {
+      .subscribe((resp: any) => {
+        if (resp['access_token']) {
+          localStorage.setItem('access_token', resp['access_token']);
+          this._snackbarService.showSuccessSnackBar("Welcome!");
+          this._appService.createAppRouting('/');
+        }
+        
+        if (resp['url']) {
           window.location.href = resp.url;
         }
       });
@@ -119,9 +92,15 @@ export class SignUpComponent {
     return false;
   }
 
+  /**
+   * Method called on pack selection.
+   * 
+   * Assign pack role id to form payload only if it is a free pack (because payment signup is threated differently).
+   * 
+   * @param packId The id of the pack selected.
+   */
   onPackSelection(packId: string) {
     this.selectedPack = this.authPacks.find(pack => pack.id === packId);
     this.userForm.roleId = this.selectedPack!.roleId;
-    this._stripeService.redirectToCheckout('price_1UFbETDIdQiJDqfHnr4yOs5x');
   }
 }

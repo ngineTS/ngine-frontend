@@ -15,7 +15,7 @@ export class AuthService {
 
     forgotPwdPage: boolean = false;
 
-    userSignUp(signUpDto: UserSignUpPayload): any {
+    userSignUp(signUpDto: UserSignUpPayload) {
         return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto).pipe(take(1));
     }
 
