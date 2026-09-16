@@ -1,3 +1,6 @@
+<div class="text-center fw-bold fs-4 mb-4">
+    <span>Create an account</span>
+</div>
 <div class="row">
     <div class="row">
     <mat-form-field appearance="outline" class="col">
@@ -28,7 +31,7 @@
     </mat-form-field>
     </div>
 
-    <div class="row">
+    <div class="row mb-2">
     <mat-form-field appearance="outline" class="col">
         <mat-label>Password</mat-label>
         <input matInput
@@ -52,7 +55,7 @@
 
     @if (authPacks.length > 0) {
         <div class="row">
-            <span class="mb-3">Select the pack you want to subscribe to.</span>
+            <span class="mb-3 fw-bold">Select the pack you want to subscribe to:</span>
             <div class="pack-viewport">
                 <div class="pack-list">
                     @for (pack of authPacks; track pack.id) {

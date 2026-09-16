@@ -1,4 +1,4 @@
-<div class="m-4">
+<div class="my-3 mx-4">
     @if (user && user.name !== 'guest') {
         <div class="row justify-content-center text-center">
             <span class="mb-3">Hello <strong>{{ user.name }}</strong>.</span>
@@ -28,7 +28,7 @@
         @if (isSignUpTab) {
             <div class="row">
                 <app-sign-up></app-sign-up>
-                <div class="text-center mt-4">
+                <div class="text-center mt-2">
                     <span class="align-middle">Already have an account?</span>
                     <button matButton class="ms-2" (click)="isSignUpTab = false">Sign in</button>
                 </div>
@@ -37,7 +37,7 @@
         @else {
             <div class="row">
                 <app-sign-in></app-sign-in>
-                <div class="text-center mt-4">
+                <div class="text-center mt-2">
                     <span class="align-middle">Don't have an account yet?</span>
                     <button matButton class="ms-2" (click)="isSignUpTab = true">Sign up</button>
                 </div>
