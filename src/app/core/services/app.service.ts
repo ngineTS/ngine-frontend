@@ -84,7 +84,7 @@ export class AppService {
         }
 
         const stripeSuccessPayment = {
-          path: 'success',
+          path: 'stripe-success',
           loadComponent: () => import('../../core/components/stripe-success/stripe-success.component').then(m => m.StripeSuccessComponent)
         }
 
