@@ -1,0 +1,346 @@
+.stripe-guide {
+	--guide-ink: #2b2b2b;
+	--guide-muted: #687078;
+	--guide-line: #e5e7e5;
+	--guide-purple: #985ab5;
+	--guide-purple-dark: #714184;
+	--guide-green: #3d966d;
+	border-radius: 8px;
+	color: var(--guide-ink);
+    max-height: 90vh;
+	overflow: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-right: 5px;
+
+}
+
+.stripe-guide-title {
+    color: #2b2b2b;
+}
+
+.stripe-guide__hero {
+	align-items: flex-start;
+	display: flex;
+	gap: 24px;
+	padding: 28px 48px 28px;
+}
+
+.stripe-guide__eyebrow,
+.stripe-guide__footer-label {
+	color: #c896d9;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	margin: 0 0 12px;
+	text-transform: uppercase;
+}
+
+.stripe-guide h1,
+.stripe-guide h2,
+.stripe-guide p {
+	margin-top: 0;
+}
+
+.stripe-guide h1 {
+	font-family: 'Merriweather', Georgia, serif;
+	font-size: clamp(1.7rem, 4vw, 2.55rem);
+	letter-spacing: 0;
+	line-height: 1.2;
+	margin-bottom: 12px;
+}
+
+.stripe-guide__intro {
+	color: #2b2b2b;
+	font-family: 'Lato', sans-serif;
+	font-size: 1rem;
+	line-height: 1.65;
+	margin-bottom: 0;
+	max-width: 650px;
+}
+
+.stripe-guide__notice p {
+	color: #614a69;
+	font-family: 'Lato', sans-serif;
+	font-size: 0.86rem;
+	line-height: 1.55;
+	margin-bottom: 0;
+}
+
+.stripe-guide__steps {
+	list-style: none;
+	margin: 0;
+	padding: 38px 48px 20px;
+}
+
+.stripe-guide__step {
+	display: grid;
+	gap: 22px;
+	grid-template-columns: 42px minmax(0, 1fr);
+	position: relative;
+}
+
+.stripe-guide__step:not(:last-child) {
+	padding-bottom: 42px;
+}
+
+.stripe-guide__step:not(:last-child)::after {
+	background: var(--guide-line);
+	bottom: 0;
+	content: '';
+	left: 20px;
+	position: absolute;
+	top: 42px;
+	width: 1px;
+}
+
+.stripe-guide__step-number {
+	align-items: center;
+	background: #f1e8f4;
+	border: 1px solid #dfcce6;
+	border-radius: 50%;
+	color: var(--guide-purple-dark);
+	display: flex;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	height: 42px;
+	justify-content: center;
+	position: relative;
+	width: 42px;
+	z-index: 1;
+}
+
+.stripe-guide__step-content {
+	min-width: 0;
+}
+
+.stripe-guide__step h2 {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.08rem;
+	letter-spacing: 0;
+	line-height: 1.35;
+	margin-bottom: 8px;
+}
+
+.stripe-guide__step-content > p,
+.stripe-guide__substeps {
+	color: var(--guide-muted);
+	font-family: 'Lato', sans-serif;
+	font-size: 0.96rem;
+	line-height: 1.7;
+}
+
+.stripe-guide__step-content > p {
+	margin-bottom: 14px;
+}
+
+.stripe-guide a {
+	color: var(--guide-purple-dark);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.stripe-guide a:hover {
+	text-decoration: underline;
+}
+
+.stripe-guide__link {
+	display: inline-flex;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.78rem;
+	gap: 6px;
+	letter-spacing: 0.02em;
+}
+
+.stripe-guide code,
+.stripe-guide__code {
+	background: #f3f4f3;
+	border: 1px solid #e3e6e3;
+	border-radius: 4px;
+	color: #4f3760;
+	font-family: 'Courier New', monospace;
+	font-size: 0.83rem;
+}
+
+.stripe-guide code {
+	padding: 2px 5px;
+}
+
+.stripe-guide__code {
+	display: block;
+	letter-spacing: 0.02em;
+	padding: 11px 13px;
+	width: fit-content;
+}
+
+.stripe-guide__code--wrap {
+	line-height: 1.5;
+	margin: 10px 0;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
+.stripe-guide__step-heading {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+}
+
+.stripe-guide__tag {
+	background: #edf6f0;
+	border-radius: 999px;
+	color: #377a58;
+	display: inline-block;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.64rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	padding: 6px 10px;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.stripe-guide__substeps {
+	margin: 18px 0 18px;
+	padding-left: 22px;
+}
+
+.stripe-guide__substeps li {
+	padding-left: 5px;
+}
+
+.stripe-guide__substeps li::marker {
+	color: var(--guide-purple);
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.78rem;
+	font-weight: 700;
+}
+
+.stripe-guide__reference-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 18px;
+}
+
+.stripe-guide__step--complete .stripe-guide__step-number {
+	background: #e8f5ed;
+	border-color: #b8ddc6;
+	color: var(--guide-green);
+	font-size: 1rem;
+}
+
+.stripe-guide__step--complete h2 {
+	color: var(--guide-green);
+}
+
+.stripe-guide__footer {
+	align-items: center;
+	background: #f5f5f3;
+	border-top: 1px solid var(--guide-line);
+	display: flex;
+	gap: 24px;
+	justify-content: space-between;
+	padding: 25px 48px;
+}
+
+.stripe-guide__footer-label {
+	color: var(--guide-purple-dark);
+	margin-bottom: 5px;
+}
+
+.stripe-guide__footer-text {
+	color: var(--guide-muted);
+	font-family: 'Lato', sans-serif;
+	font-size: 0.88rem;
+	margin-bottom: 0;
+}
+
+.stripe-guide__video-link {
+	align-items: center;
+	background: var(--guide-purple);
+	border-radius: 5px;
+	color: #fff !important;
+	display: inline-flex;
+	flex: 0 0 auto;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 0.76rem;
+	gap: 9px;
+	padding: 12px 16px;
+}
+
+.stripe-guide__video-link:hover {
+	background: var(--guide-purple-dark);
+	text-decoration: none !important;
+}
+
+.stripe-guide__play-icon {
+	font-size: 0.66rem;
+}
+
+@media (max-width: 700px) {
+	.stripe-guide__hero,
+	.stripe-guide__notice,
+	.stripe-guide__steps,
+	.stripe-guide__footer {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	.stripe-guide__hero {
+		gap: 16px;
+	}
+
+	.stripe-guide__brand-mark {
+		display: none;
+	}
+
+	.stripe-guide__footer {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 480px) {
+	.stripe-guide__hero {
+		padding-bottom: 32px;
+		padding-top: 32px;
+	}
+
+	.stripe-guide__steps {
+		padding-bottom: 12px;
+		padding-top: 30px;
+	}
+
+	.stripe-guide__step {
+		gap: 14px;
+		grid-template-columns: 34px minmax(0, 1fr);
+	}
+
+	.stripe-guide__step-number {
+		font-size: 0.62rem;
+		height: 34px;
+		width: 34px;
+	}
+
+	.stripe-guide__step:not(:last-child)::after {
+		left: 16px;
+		top: 34px;
+	}
+
+	.stripe-guide__step:not(:last-child) {
+		padding-bottom: 34px;
+	}
+
+	.stripe-guide__step-heading {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.stripe-guide__substeps {
+		padding-left: 20px;
+	}
+}

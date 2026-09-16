@@ -4,6 +4,7 @@ import { AuthPack } from './auth-pack.interface';
 import { Validators } from '@angular/forms';
 import { RoleService } from '../../core/services/role.service';
 import { firstValueFrom } from 'rxjs';
+import { StripeSetupGuideComponent } from './stripe-setup-guide/stripe-setup-guide.component';
 
 @Component({
   selector: 'app-authentication-management',
@@ -98,5 +99,9 @@ export class AuthenticationManagementComponent extends ManagementBaseComponent<A
         order: 9
       }
     }
+  }
+
+  openStripeGuide() {
+    this._matDialog.open(StripeSetupGuideComponent);
   }
 }
