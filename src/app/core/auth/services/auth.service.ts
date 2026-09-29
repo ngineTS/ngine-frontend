@@ -75,4 +75,19 @@ export class AuthService {
         return this._http.get<AuthPack[]>(`${environment.APIURL}auth/auth-packs`).pipe(take(1));
     }
 
+    newSubscription(checkoutSessionPayload: {
+        priceId: string,
+        roleId: string,
+        isRecurringPayment: boolean
+    }): Observable<{ url: string }> {
+        return this._http.post<{ url: string }>(
+            `${environment.APIURL}stripe-payment/new-subscription`,
+            checkoutSessionPayload
+        ).pipe(take(1));
+    }
+
+    cancelSubscription(roleId: string) {
+        return this._http.delete(`${environment.APIURL}stripe-payment/cancel/${roleId}`);
+    }
+
  }

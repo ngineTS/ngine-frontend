@@ -37,9 +37,9 @@ export class SignUpComponent {
 
   ngOnInit(): void {
     this._authService.getAuthPacks().subscribe(resp => {
-      console.log(resp);
       this.authPacks = resp;
     });
+    
     this.userForm = {
       name: '',
       lastName: '',

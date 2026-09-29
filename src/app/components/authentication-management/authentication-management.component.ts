@@ -84,7 +84,7 @@ export class AuthenticationManagementComponent extends ManagementBaseComponent<A
       interval: {
         type: 'dropdown',
         dropdownConfig: {
-          items: ['Week', 'Month', 'Year']
+          items: ['Week', 'Month', '3 months', '6 months', 'Year']
         },
         alias: 'Interval',
         value: '',
