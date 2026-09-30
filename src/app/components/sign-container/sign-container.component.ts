@@ -96,11 +96,7 @@ export class SignContainerComponent extends NavigationBaseComponent {
   }
 
   onSubscriptionSelection(pack: AuthPack) {
-    this._authService.newSubscription({ 
-      priceId: pack.stripePriceId,
-      roleId: pack.roleId,
-      isRecurringPayment: pack.isRecurringPayment
-    }).subscribe({
+    this._authService.changeSubscription(pack.id).subscribe({
       next: response => {
         if (response.url) {
           window.location.href = response.url;
