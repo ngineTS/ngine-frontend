@@ -4,6 +4,7 @@ export interface UserRole {
     id: string;
     roleId: string;
     userId: string;
+    isCancelled: boolean;
     createdDate: Date;
     createdBy: string;
     updatedDate: Date;

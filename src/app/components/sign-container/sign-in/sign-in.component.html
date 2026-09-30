@@ -1,44 +1,50 @@
 <div class="row">
     @if (!_authService.forgotPwdPage) {
-        
-        <mat-form-field appearance="outline">
-            <mat-label>Email address</mat-label>
-            <input matInput 
-                type="email" 
-                placeholder="Email address" 
-                [(ngModel)]="userEmail"
-            />
-            @if (errorEmail) {
-                <span class="err-email">{{ errorEmail }}</span>
-            }
-        </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input matInput 
-                [type]="hidePassword() ? 'password' : 'text'" 
-                placeholder="Password" 
-                [(ngModel)]="userPassword"
-            />
-            <button
-                type="button"
-                matIconButton
-                matSuffix
-                (click)="passwordEyeclickEvent($event)"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hidePassword()"
-            >
-                <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
-            </button>
-            @if (errorPassword) {
-                <span class="err-email">{{ errorPassword }}</span>
-            }
-        </mat-form-field>
-
-        <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
+        <div class="text-center fw-bold fs-4 mb-4">
+            <span>Sign in to continue</span>
+        </div>
         
-        <div>
-            <button class="w-100 my-4" 
+        <div class="align-items-center d-flex flex-column">
+            <mat-form-field appearance="outline" class="w-75">
+                <mat-label>Email address</mat-label>
+                <input matInput 
+                    type="email" 
+                    placeholder="Email address" 
+                    [(ngModel)]="userEmail"
+                />
+                @if (errorEmail) {
+                    <span class="err-email">{{ errorEmail }}</span>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-75">
+                <mat-label>Password</mat-label>
+                <input matInput 
+                    [type]="hidePassword() ? 'password' : 'text'" 
+                    placeholder="Password" 
+                    [(ngModel)]="userPassword"
+                />
+                <button
+                    type="button"
+                    matIconButton
+                    matSuffix
+                    (click)="passwordEyeclickEvent($event)"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hidePassword()"
+                >
+                    <i [class]="hidePassword() ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
+                </button>
+                @if (errorPassword) {
+                    <span class="err-email">{{ errorPassword }}</span>
+                }
+            </mat-form-field>
+
+            <span class="forgot-pwd" (click)="onForgotPasswordClick()">Forgot your password?</span>
+        </div>
+        
+        <div class="text-center">
+            <button class="w-75 mt-4" 
                 matButton="outlined"
                 (click)="onSignInClick()" 
                 [disabled]="isSignInDisabled()"
@@ -49,27 +55,29 @@
     }
 
     @else {
-        <i class="bi bi-arrow-left-square back-icon" (click)="onGoBackClick()"></i>
-        <span class="recover-header">Recover Password</span>
-        <span class="recover-description">
-            Don't worry we got you covered, write in your E-mail
-            and we'll send you a recovery link.
-        </span>
+        <div class="p-4 d-flex flex-column">
+            <i class="bi bi-arrow-left-square back-icon" (click)="onGoBackClick()"></i>
+            <span class="recover-header">Recover Password</span>
+            <span class="recover-description">
+                Don't worry we got you covered, write in your E-mail
+                and we'll send you a recovery link.
+            </span>
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput 
+                    type="email" 
+                    placeholder="Email address" 
+                    [(ngModel)]="recoveryEmail"
+                />
+                @if (errorEmail) {
+                    <span class="err-email">{{ errorEmail }}</span>
+                }   
+            </mat-form-field>
+        </div>
         
-        <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput 
-                type="email" 
-                placeholder="Email address" 
-                [(ngModel)]="recoveryEmail"
-            />
-            @if (errorEmail) {
-                <span class="err-email">{{ errorEmail }}</span>
-            }   
-        </mat-form-field>
-        
-        <div>
-            <button class="w-100 my-4" 
+        <div class="text-center">
+            <button class="w-75 mt-4" 
                 matButton="outlined"
                 (click)="onContinueClick()"
                 [disabled]="continueButtonIsDisabled || !recoveryEmail"

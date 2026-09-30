@@ -25,7 +25,9 @@ export class UnauthorisedComponent implements OnInit{
       });
     }
     else {
-      this._matDialog.open(SignContainerComponent);
+      this._matDialog.open(SignContainerComponent, {
+        minWidth: '500px',
+      });
     }
   }
 

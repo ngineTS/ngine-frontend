@@ -1,0 +1,109 @@
+<section class="stripe-guide" aria-labelledby="stripe-guide-title">
+	<header class="stripe-guide__hero">
+		<div>
+			<h2 id="stripe-guide-title">Set up Stripe payments</h2>
+			<p class="stripe-guide__intro">
+				Connect Stripe once, then use your Stripe products and prices to create paid authentication packs.
+			</p>
+		</div>
+	</header>
+
+	<ol class="stripe-guide__steps">
+		<li class="stripe-guide__step">
+			<div class="stripe-guide__step-number">01</div>
+			<div class="stripe-guide__step-content">
+				<h2>Create your Stripe account</h2>
+				<p>Start by creating or signing in to your Stripe account.</p>
+				<a class="stripe-guide__link" href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+					Open Stripe <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</li>
+
+		<li class="stripe-guide__step">
+			<div class="stripe-guide__step-number">02</div>
+			<div class="stripe-guide__step-content">
+				<h2>Add your secret key</h2>
+				<p>
+					Retrieve the secret key associated with your account. It starts with <code>sk_</code>.
+					Add it to your backend environment as:
+				</p>
+				<div class="stripe-guide__code">STRIPE_SECRET_KEY</div>
+			</div>
+		</li>
+
+		<li class="stripe-guide__step">
+			<div class="stripe-guide__step-number">03</div>
+			<div class="stripe-guide__step-content">
+				<h2>Create a product and price</h2>
+				<p>
+					Create a product in Stripe for each pack you plan to offer. For example, a product named
+					<strong>Silver</strong> can correspond to a Silver pack here. Stripe will generate a price for the
+					product; enter that price ID in the pack form's <strong>Stripe Price ID</strong> field.
+				</p>
+			</div>
+		</li>
+
+		<li class="stripe-guide__step">
+			<div class="stripe-guide__step-number">04</div>
+			<div class="stripe-guide__step-content">
+				<div class="stripe-guide__step-heading">
+					<div>
+						<h2>Configure the webhook</h2>
+						<span class="stripe-guide__tag">Production only</span>
+					</div>
+				</div>
+				<p>
+					The webhook ensures a role is assigned only after Stripe confirms a successful payment. In Stripe's
+					Workbench:
+				</p>
+				<ol class="stripe-guide__substeps">
+					<li>Open the <a href="https://dashboard.stripe.com/webhooks" target="_blank" rel="noopener noreferrer">Webhooks</a> tab.</li>
+					<li>Click <strong>Create an event destination</strong>.</li>
+					<li>Select <strong>Your account</strong> to listen for events from your own account.</li>
+					<li>Choose the API version for the events you want to consume.</li>
+					<li>Select <strong>checkout.session.completed</strong> as the event to send.</li>
+					<li>Continue and choose <strong>Webhook endpoint</strong> as the destination type.</li>
+					<li>
+						Continue again and enter this endpoint URL, replacing the placeholder with your backend domain:
+						<div class="stripe-guide__code stripe-guide__code--wrap">
+							https://&lt;your-backend-domain-name&gt;/api/stripe-payment/webhook
+						</div>
+					</li>
+					<li>
+						On the webhook configuration page, click <strong>Reveal secret</strong>. Copy the value that starts
+						with <code>whsec_</code> and add it to your backend environment as:
+						<div class="stripe-guide__code">STRIPE_WEBHOOK_SECRET_KEY</div>
+					</li>
+				</ol>
+				<div class="stripe-guide__reference-links">
+					<a class="stripe-guide__link" href="https://docs.stripe.com/api/events" target="_blank" rel="noopener noreferrer">
+						Event API reference <span aria-hidden="true">↗</span>
+					</a>
+					<a class="stripe-guide__link" href="https://docs.stripe.com/api/events/types" target="_blank" rel="noopener noreferrer">
+						Event types <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="stripe-guide__step stripe-guide__step--complete">
+			<div class="stripe-guide__step-number" aria-hidden="true">✓</div>
+			<div class="stripe-guide__step-content">
+				<h2>You're ready to create packs</h2>
+				<p>Stripe is configured. You can now create authentication packs and connect each paid pack to its Stripe price.</p>
+			</div>
+		</li>
+	</ol>
+
+	<footer class="stripe-guide__footer">
+		<div>
+			<p class="stripe-guide__footer-label">Prefer a walkthrough?</p>
+			<p class="stripe-guide__footer-text">Watch the video tutorial for creating a product in Stripe.</p>
+		</div>
+		<a class="stripe-guide__video-link" href="https://www.youtube.com/watch?v=A2jMOAbfoEg" target="_blank" rel="noopener noreferrer">
+			<span class="stripe-guide__play-icon" aria-hidden="true">▶</span>
+			Watch tutorial
+		</a>
+	</footer>
+</section>

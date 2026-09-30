@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { take } from "rxjs";
+import { Observable, take } from "rxjs";
 import { UserSignInPayload, UserSignUpPayload } from "../../models/user.interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { AuthPack } from "../../../components/authentication-management/auth-pack.interface";
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,7 @@ export class AuthService {
 
     forgotPwdPage: boolean = false;
 
-    userSignUp(signUpDto: UserSignUpPayload): any {
+    userSignUp(signUpDto: UserSignUpPayload) {
         return this._http.post(`${environment.APIURL}user/sign-up`, signUpDto).pipe(take(1));
     }
 
@@ -68,6 +69,20 @@ export class AuthService {
         }
 
         return true;
+    }
+
+    getAuthPacks(): Observable<AuthPack[]> {
+        return this._http.get<AuthPack[]>(`${environment.APIURL}auth/auth-packs`).pipe(take(1));
+    }
+
+    changeSubscription(packId: string): Observable<{ url: string }> {
+        return this._http.get<{ url: string }>(
+            `${environment.APIURL}stripe-payment/change-subscription/${packId}`,
+        ).pipe(take(1));
+    }
+
+    cancelSubscription(roleId: string) {
+        return this._http.delete(`${environment.APIURL}stripe-payment/cancel/${roleId}`);
     }
 
  }
