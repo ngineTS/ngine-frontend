@@ -4,10 +4,10 @@
 }
 
 .subscription-pack-viewport {
-	width: 100%;
 	overflow-x: auto;
 	scrollbar-width: thin;
 	padding-bottom: 6px;
+	margin-bottom: 6px;
 }
 
 .subscription-pack-list {
@@ -21,7 +21,7 @@
 	flex: 0 0 calc((100% - 2rem) / 3);
 	flex-direction: column;
 	box-sizing: border-box;
-	padding: 1rem;
+	padding: 0.8rem;
 	overflow: hidden;
 	border: 1px solid #eeeaf0;
 	border-radius: 0.5rem;
@@ -41,16 +41,11 @@
 	outline-offset: 2px;
 }
 
-.subscription-pack-name {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
 .subscription-pack-description {
 	display: -webkit-box;
 	overflow: hidden;
 	margin-top: 0.5rem;
+	margin-bottom: 5px;
 	color: gray;
 	font-size: 0.75rem;
 	line-height: 1.4;
@@ -60,9 +55,9 @@
 }
 
 .subscription-pack-price {
-	width: 80%;
 	margin-top: auto;
 	padding-top: 0.5rem;
+	font-size: 14px;
 	border-top: 1px solid #eeeaf0;
 }
 

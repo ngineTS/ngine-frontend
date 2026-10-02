@@ -34,13 +34,17 @@
                         <div class="subscription-pack-list">
                             @for (pack of availableAuthPacks; track pack.id) {
                                 <button class="subscription-pack-card text-start" type="button" (click)="onSubscriptionSelection(pack)">
-                                    <strong [title]="pack.name" class="subscription-pack-name">{{ pack.name }}</strong>
+                                    <strong [title]="pack.name">{{ pack.name }}</strong>
                                     <span class="subscription-pack-description">{{ pack.description }}</span>
                                     <strong class="subscription-pack-price">
                                         @if (pack.isFree) {
                                             Free
                                         } @else {
-                                            {{ pack.price }} {{ pack.currency }}
+                                            {{ pack.price }}{{ pack.currency }}
+                                        }
+
+                                        @if (pack.isRecurringPayment) {
+                                            / {{ pack.interval }}
                                         }
                                     </strong>
                                 </button>

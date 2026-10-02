@@ -181,4 +181,12 @@ export class NavigationService {
             );
     }
 
+    getAllRedirectButtons() {
+        return this._http.get<Array<Navigation>>(`${environment.APIURL}navigation/redirect-buttons`)
+            .pipe(
+                take(1),
+                retry(1)
+            );
+    }
+
 }

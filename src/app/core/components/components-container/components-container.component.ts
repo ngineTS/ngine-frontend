@@ -10,6 +10,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
 import { take } from 'rxjs';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { BannerComponent } from '../banner/banner.component';
 
 
 @Component({
@@ -21,7 +22,8 @@ import { ComponentsContainerService } from '../../services/components-container.
     CdkDragHandle,
     MatProgressSpinnerModule,
     MatMenuModule,
-    NavigationComponent
+    NavigationComponent,
+    BannerComponent
   ],
   templateUrl: './components-container.component.html',
   styleUrl: './components-container.component.scss'
@@ -65,7 +67,6 @@ export class ComponentsContainer implements OnInit {
     this.windowHeight = window.innerHeight;
     this.navigation = this._route.snapshot.data["navigation"];
     this._componentsContainerService.activeNavigation = this.navigation;
-    console.log(this._componentsContainerService.activeNavigation);
 
     if (this.windowWidth < this.windowWidthLimit) {
       this.navigation.children?.sort((a, b) => 
