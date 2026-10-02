@@ -1,6 +1,9 @@
 <!-- Navigation bar container -->
 <div class="nav-bar-container" [style.width]="containerWidth">
 
+    <!-- Banner -->
+    <app-banner [navigationId]="navigation.id"></app-banner>
+    
     <!-- Laptop screen -->
     @if (windowWidth > windowWidthLimit) {
 

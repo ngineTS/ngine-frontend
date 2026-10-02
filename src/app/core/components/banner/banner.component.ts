@@ -25,7 +25,6 @@ export class BannerComponent {
   ngOnInit() {
     this._bannerService.getBannerByNavigationId(this.navigationId)
       .subscribe(banner => {
-        console.log(banner);
         this.banner = banner;
       });
   }

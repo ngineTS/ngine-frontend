@@ -1,10 +1,10 @@
 @if (banner) {
-<div class="py-2 px-3" [style.background-color]="banner.backgroundColor" [style.color]="banner.textColor">
+<div class="py-2 px-3 text-center" [style.background-color]="banner.backgroundColor" [style.color]="banner.textColor">
     <span class="fs-5">{{ banner.description }}</span>
     
     @if (banner.url) {
         <a [href]="banner.url" target="_blank" 
-            class="ms-3 py-1 px-2 rounded-1 text-decoration-none" 
+            class="view-more" 
             [style.color]="banner.textColor"
             [style.border]="'1px solid ' + banner.textColor"
             >

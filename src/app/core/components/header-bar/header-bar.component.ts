@@ -18,6 +18,7 @@ import { SideNavService } from '../../services/side-nav.service';
 import { ContainerLayout } from '../../models/container-layout.interface';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { StyleService } from '../../services/style.service';
+import { BannerComponent } from '../banner/banner.component';
 
 
 @Component({
@@ -32,6 +33,7 @@ import { StyleService } from '../../services/style.service';
     MenuButtonComponent,
     CustomButtonComponent,
     MatMenuModule,
+    BannerComponent
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
