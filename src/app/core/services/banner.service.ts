@@ -13,17 +13,11 @@ export class BannerService {
 
     getAllBanners() {
         return this._http.get<Array<Banner>>(`${environment.APIURL}banner`)
-            .pipe(
-                take(1),
-                retry(1)
-            )
+            .pipe(take(1), retry(1))
     }
 
     getBannerByNavigationId(navigationId: string) {
-        return this._http.get<Banner>(`${environment.APIURL}banner/navigation/${navigationId}`)
-            .pipe(
-                take(1),
-                retry(1)
-            )
+        return this._http.get<Banner | null>(`${environment.APIURL}banner/navigation/${navigationId}`)
+            .pipe(take(1), retry(1))
     }
 }

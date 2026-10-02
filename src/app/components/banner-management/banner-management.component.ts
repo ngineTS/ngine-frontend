@@ -32,7 +32,19 @@ export class BannerManagementComponent extends NavigationBaseComponent {
   banners: Array<Banner> = [];
   bannerFormConfig!: DeepFormConfig<Omit<Banner, 'id'>>;
 
+  /**
+   * Lifecyle hook called after the component has been initialized.
+   * 
+   * - Get all banners.
+   * - Get all redirect buttons and filter out those that already have a banner associated with them.
+   * - Set up the form configuration for adding/editing banners.
+   */
   async ngOnInit() {
+    this.banners = await firstValueFrom(this._bannerService.getAllBanners());
+
+    const redirectButtons = await firstValueFrom(this._navigationService.getAllRedirectButtons());
+    const redirectButtonsFiltered = redirectButtons.filter(redirectButton => !this.banners.some(banner => banner.navigationId === redirectButton.id));
+
     this.bannerFormConfig = {
       startDate: {
         value: new Date(),
@@ -62,7 +74,7 @@ export class BannerManagementComponent extends NavigationBaseComponent {
         validators: [Validators.required],
         type: 'dropdown',
         dropdownConfig: {
-          items: await firstValueFrom(this._navigationService.getAllRedirectButtons()),
+          items: redirectButtonsFiltered,
           bindValue: 'id',
           bindLabel: 'displayLabel'
         }
@@ -75,22 +87,20 @@ export class BannerManagementComponent extends NavigationBaseComponent {
         type: 'text'
       },
       backgroundColor: {
-        value: '',
+        value: '#EED202',
         alias: 'Background Color',
         order: 4,
         validators: [],
         type: 'color'
       },
       textColor: {
-        value: '',
+        value: '#2B2B2B',
         alias: 'Text Color',
         order: 5,
         validators: [],
         type: 'color'
       },
     }
-
-    this._bannerService.getAllBanners().subscribe(resp => this.banners = resp);
   }
 
   async addBanner() {
@@ -98,8 +108,8 @@ export class BannerManagementComponent extends NavigationBaseComponent {
     this.bannerFormConfig.navigationId.value = '';
     this.bannerFormConfig.startDate.value = new Date();
     this.bannerFormConfig.endDate.value = new Date();
-    this.bannerFormConfig.backgroundColor.value = '';
-    this.bannerFormConfig.textColor.value = '';
+    this.bannerFormConfig.backgroundColor.value = '#EED202';
+    this.bannerFormConfig.textColor.value = '#2B2B2B';
     this.bannerFormConfig.url.value = '';
 
     const dialogData: GenericFormDialogData<Omit<Banner, 'id'>> = {
