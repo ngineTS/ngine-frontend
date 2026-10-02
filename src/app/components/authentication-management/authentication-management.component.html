@@ -30,7 +30,11 @@
 					@if (item.isFree) {
 						Free
 					} @else {
-						{{ item.price }} {{ item.currency }}
+						{{ item.price }}{{ item.currency }} 
+					}
+
+					@if (item.isRecurringPayment) {
+						/ {{ item.interval }}
 					}
 				</strong>
 			</div>

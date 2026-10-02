@@ -1,23 +1,23 @@
 <div class="banner-management">
-  <div class="d-flex justify-content-between align-items-center mb-5">
-    <div class="d-flex align-items-center gap-2">
+  <div class="row justify-content-between align-items-center mb-4">
+    <div class="d-flex col-md-6 col-12 align-items-center">
       <h4 class="fw-bold mb-0">Banner Management</h4>
       <i
-        class="bi bi-info-circle fs-5 ms-1 mt-1"
+        class="d-none d-md-flex bi bi-info-circle fs-5 ms-2 mt-1"
         matTooltip="Promote key messages and featured links by placing banners in different app sections based on the selected navigation target."
         matTooltipPosition="above"
         aria-label="Banner management information"
         style="cursor: pointer; font-size: 1rem;"
       ></i>
     </div>
-    <button type="button" matButton="outlined" (click)="addBanner()">Add Banner</button>
+    <button class="col-md-2 col-8 my-m-0 m-3" type="button" matButton="outlined" (click)="addBanner()">Add Banner</button>
   </div>
 
   @if (banners.length === 0) {
     <div class="text-muted">No banners available.</div>
   } @else {
     <div class="banner-list">
-      <div class="banner-list-header row align-items-center fw-bold small">
+      <div class="banner-list-header row align-items-center fw-bold small d-none d-md-flex">
         <div class="col-md-4">Description</div>
         <div class="col-md-2">Navigation</div>
         <div class="col-md-2">Start Date</div>
@@ -26,7 +26,7 @@
       </div>
 
       @for (banner of banners; track banner.id) {
-        <div class="banner-row row align-items-center my-3">
+        <div class="banner-row row align-items-center my-3 gap-1 gap-md-0">
           <div class="col-md-4">
             <span class="ellipsis d-block p-2"
               [title]="banner.description"
@@ -47,7 +47,7 @@
           <div class="col-md-2">
             {{ banner.endDate | date: 'MMM d, y,  hh:mm a' }}
           </div>
-          <div class="col-md-2 text-end">
+          <div class="col-md-2 text-start text-md-end">
             <button type="button" matButton="outlined" (click)="editBanner(banner)">
               Edit
             </button>
