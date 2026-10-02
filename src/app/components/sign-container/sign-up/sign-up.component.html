@@ -60,7 +60,7 @@
                 <div class="pack-list">
                     @for (pack of authPacks; track pack.id) {
                         <div class="pack-card" [class.selected]="selectedPack?.id === pack.id" (click)="onPackSelection(pack.id)">
-                            <h5 [title]="pack.name" class="fw-bold mb-2 pack-name">{{ pack.name }}</h5>
+                            <strong [title]="pack.name">{{ pack.name }}</strong>
                             <span class="pack-description">{{ pack.description }}</span>
 
                             <strong class="pack-price">
