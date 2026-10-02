@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { NavigationBaseComponent } from '../../core/components/navigation-base/navigation-base.component';
-import { DeepFormConfig, GenericFormDialogData } from '../../core/models/form-input.interface';
+import { DeepFormConfig, DropdownInputConfig, GenericFormDialogData } from '../../core/models/form-input.interface';
 import { Banner } from '../../core/models/banner.interface';
 import { Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { GenericFormComponent } from '../../core/components/generic-form/generic-form.component';
 import { BannerService } from '../../core/services/banner.service';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FormContainerComponent } from '../../core/components/form-container/form-container.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Navigation } from '../../core/models/navigation.interface';
 
 @Component({
   selector: 'app-banner-management',
@@ -103,6 +103,9 @@ export class BannerManagementComponent extends NavigationBaseComponent {
     }
   }
 
+  /**
+   * Reset the form values to default and open a dialog to add a new banner.
+   */
   async addBanner() {
     this.bannerFormConfig.description.value = '';
     this.bannerFormConfig.navigationId.value = '';
@@ -128,9 +131,16 @@ export class BannerManagementComponent extends NavigationBaseComponent {
     })
   }
 
+  /**
+   * Open a dialog to edit an existing banner.
+   * 
+   * @param banner The banner to edit.
+   */
   editBanner(banner: Banner) {
     this.bannerFormConfig.description.value = banner.description;
     this.bannerFormConfig.navigationId.value = banner.navigationId;
+    (this.bannerFormConfig.navigationId as DropdownInputConfig<string, Navigation>)
+      .dropdownConfig.items.unshift(banner.navigation!);
     this.bannerFormConfig.startDate.value = banner.startDate;
     this.bannerFormConfig.endDate.value = banner.endDate;
     this.bannerFormConfig.backgroundColor.value = banner.backgroundColor;

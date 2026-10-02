@@ -16,6 +16,7 @@ import { EmptyDialogComponent } from '../empty-dialog/empty-dialog.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HeaderBarService } from '../../services/header-bar.service';
 import { StyleService } from '../../services/style.service';
+import { BannerComponent } from '../banner/banner.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ import { StyleService } from '../../services/style.service';
     MatMenuModule,
     CdkDrag,
     CdkDropList,
+    BannerComponent,
   ],
   templateUrl: './vertical-header-bar.component.html',
   styleUrl: './vertical-header-bar.component.scss',
