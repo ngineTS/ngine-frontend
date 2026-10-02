@@ -67,7 +67,10 @@
                                 @if (pack.isFree) {
                                     Free
                                 } @else {
-                                    {{ pack.price }} {{ pack.currency }}
+                                    {{ pack.price }}{{ pack.currency }}
+                                }
+                                @if (pack.isRecurringPayment) {
+                                    / {{ pack.interval }}
                                 }
                             </strong>
                         </div>
