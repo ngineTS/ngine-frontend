@@ -28,7 +28,13 @@
       @for (banner of banners; track banner.id) {
         <div class="banner-row row align-items-center my-3">
           <div class="col-md-4">
-            <span class="ellipsis d-block" [title]="banner.description">{{ banner.description }}</span>
+            <span class="ellipsis d-block p-2"
+              [title]="banner.description"
+              [style.backgroundColor]="banner.backgroundColor"
+              [style.color]="banner.textColor"
+              >
+              {{ banner.description }}
+            </span>
           </div>
           <div class="col-md-2">
             <span class="ellipsis d-block" [title]="banner.navigation?.displayLabel ?? ''">
@@ -36,10 +42,10 @@
             </span>
           </div>
           <div class="col-md-2">
-            {{ banner.startDate | date: 'mediumDate' }}
+            {{ banner.startDate | date: 'MMM d, y,  hh:mm a' }}
           </div>
           <div class="col-md-2">
-            {{ banner.endDate | date: 'mediumDate' }}
+            {{ banner.endDate | date: 'MMM d, y,  hh:mm a' }}
           </div>
           <div class="col-md-2 text-end">
             <button type="button" matButton="outlined" (click)="editBanner(banner)">

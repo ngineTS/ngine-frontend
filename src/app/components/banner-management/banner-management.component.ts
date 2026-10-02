@@ -69,7 +69,7 @@ export class BannerManagementComponent extends NavigationBaseComponent {
       },
       url: {
         value: '',
-        alias: 'URL (View more option)',
+        alias: 'URL (View more button)',
         order: 6,
         validators: [],
         type: 'text'

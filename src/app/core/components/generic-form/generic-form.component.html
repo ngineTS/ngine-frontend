@@ -210,7 +210,7 @@
                         }
                     </mat-label>
                     <input matInput [matDatepicker]="datePicker" [formControl]="control" >
-                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-hint class="date-hint">MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
                 </mat-form-field>
@@ -233,7 +233,7 @@
                             [(ngModel)]="dateAndTimeRecord[input.key]" 
                             (valueChange)="onDateAndTimeChange(control, input.key)"
                         >
-                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-hint class="date-hint">MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
                         <mat-datepicker #datePicker></mat-datepicker>
                     </mat-form-field>
