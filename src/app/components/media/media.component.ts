@@ -45,7 +45,7 @@ export class MediaComponent extends NavigationBaseComponent {
   async ngOnInit() {
     this.isLoading = true;
     this.content = await firstValueFrom(
-      this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.id}`)
+      this._http.get<QuillEditorContent>(`${environment.APIURL}quill-editor/navigation/${this._navigation.groupId}`)
     );
 
     if (this.content?.fileName) {
@@ -95,7 +95,7 @@ export class MediaComponent extends NavigationBaseComponent {
     //edit
     if (this.content?.id) {
       this._http.patch(`${environment.APIURL}quill-editor/${this.content.id}`, {
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         fileName: fileName
       }).pipe(take(this._takeCount))
         .subscribe(() => {
@@ -107,7 +107,7 @@ export class MediaComponent extends NavigationBaseComponent {
     //add
     else {
       this._http.post<QuillEditorContent>(`${environment.APIURL}quill-editor`, {
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         fileName: fileName
       }).pipe(take(this._takeCount))
         .subscribe(resp => {

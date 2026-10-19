@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../../../core/services/app.service';
 import { SnackBarService } from '../../../core/services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthPack } from '../../authentication-management/auth-pack.interface';
 
 
 @Component({
@@ -25,16 +26,24 @@ export class SignUpComponent {
   userForm!: UserSignUpPayload;
   repeatPassword: string | null = null;
   passwordTooShort = false;
+  authPacks: Array<AuthPack> = [];
+  selectedPack: AuthPack | undefined;
 
-  constructor(public _authService: AuthService, 
-              private _appService: AppService,
-              private _snackbarService: SnackBarService
-              ) { }
+  constructor(
+    public _authService: AuthService, 
+    private _appService: AppService,
+    private _snackbarService: SnackBarService,
+  ) { }
 
   ngOnInit(): void {
+    this._authService.getAuthPacks().subscribe(resp => {
+      this.authPacks = resp;
+    });
+    
     this.userForm = {
       name: '',
       lastName: '',
+      roleId: null,
       emailAddress: '',
       password: '',
     }
@@ -45,17 +54,26 @@ export class SignUpComponent {
     this.passwordTooShort = this.userForm.password!.length < 8 ? true : false;
   }
 
+  /**
+   * Methods triggered on sign up button click.
+   * 
+   * If payment is required for sign up then redirect to checkout url,
+   * else store access_token and redirect to home page.
+   */
   onSignUpClick() {
-    this._authService.userSignUp(this.userForm).subscribe({
-      next: (result: any) => {
-        if (result) {
-          localStorage.setItem('access_token', result['access_token']);
+    this._authService
+      .userSignUp(this.userForm)
+      .subscribe((resp: any) => {
+        if (resp['access_token']) {
+          localStorage.setItem('access_token', resp['access_token']);
           this._snackbarService.showSuccessSnackBar("Welcome!");
           this._appService.createAppRouting('/');
         }
-      },
-      error: () => { this.userForm.emailAddress = ''; }
-    });
+        
+        if (resp['url']) {
+          window.location.href = resp.url;
+        }
+      });
   }
 
   isSignUpDisabled() {
@@ -65,9 +83,24 @@ export class SignUpComponent {
       || this.userForm.password !== this.repeatPassword
       || !this.userForm.emailAddress.includes('@')
       || this.passwordTooShort
+      || !this.userForm.name
+      || !this.userForm.lastName
+      || (this.authPacks.length > 0 && !this.selectedPack)
     ) {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Method called on pack selection.
+   * 
+   * Assign pack role id to form payload only if it is a free pack (because payment signup is threated differently).
+   * 
+   * @param packId The id of the pack selected.
+   */
+  onPackSelection(packId: string) {
+    this.selectedPack = this.authPacks.find(pack => pack.id === packId);
+    this.userForm.roleId = this.selectedPack!.roleId;
   }
 }

@@ -28,7 +28,7 @@ export class ReusableCardListComponent extends ManagementBaseComponent<ReusableC
         alias: 'Icon',
         value: '',
         validators: [],
-        info: 'Find available icons here: https://icons.getbootstrap.com/',
+        info: 'Find available icons here: https://icons.getbootstrap.com',
         order: 1
       },
       description: {

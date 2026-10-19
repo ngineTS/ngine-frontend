@@ -50,11 +50,17 @@ export type DropdownConfig<T, U> = U extends string | number
 export type InputType = 'email' | 'url' | 'text' | 'password' | 'number' | 'date' | 'date-and-time' | 'dropdown' | 'checkbox' | 'file' | 'textarea' | 'color';
 
 export type GenericFormDialogData<T> = {
+  /* The id used to update the entity in backend. Null in case of insertion. */
   payloadId: string | null;
+  /* The form inputs configuration */
   formConfig: DeepFormConfig<T>;
+  /* The API name.*/
   controllerName: string;
+  /* The navigation id or navigationGroup id. */
   navigationId?: string;
+  /* The title of the form. */
   formTitle?: string;
+  /* Boolean to display delete button or not on the form. */
   hasDeleteButton?: boolean;
 }
 

@@ -9,14 +9,86 @@
 }
 
 .sidenav-header {
-  padding-top: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
   padding-left: 0.5em;
   font-size: 24px;
+  align-items: center;
+  display: flex;
+
+  span {
+    font-weight: bold;
+    color: #2B2B2B;
+    font-size: 20px;
+  }
 }
 
 .sidenav-close-icon {
+  margin-left: auto;
   float: right;
   margin-right: 6px;
   cursor: pointer;
   font-size: 18px;
+  color: #2B2B2B;
+}
+
+
+.toolbar {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  z-index: 10000000;
+  align-items: center;
+  padding: 6px;
+  border: 1.5px solid #E8E8E8;
+  border-radius: 6px;
+  background-color: #2B2B2B;
+}
+
+.toolbar-grab {
+  color: #E8E8E8;
+  cursor: grab;
+}
+
+.global-button {
+    margin-left: 6px;
+    padding: 6px 10px;
+    width: fit-content;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    color: white;
+    background-color: #985ab5;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      opacity: 0.8;
+    }
+}
+
+.global-icon {
+  font-size: 16px;
+}
+
+.upload-button-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -10px;
+  right: -14px;
+  width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: #eed202;
+  color: #2b2b2b;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
 }

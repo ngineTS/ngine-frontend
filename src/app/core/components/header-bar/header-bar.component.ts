@@ -17,6 +17,8 @@ import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
 import { ContainerLayout } from '../../models/container-layout.interface';
 import { HeaderBarService } from '../../services/header-bar.service';
+import { StyleService } from '../../services/style.service';
+import { BannerComponent } from '../banner/banner.component';
 
 
 @Component({
@@ -31,6 +33,7 @@ import { HeaderBarService } from '../../services/header-bar.service';
     MenuButtonComponent,
     CustomButtonComponent,
     MatMenuModule,
+    BannerComponent
   ],
   templateUrl: './header-bar.component.html',
   styleUrl: './header-bar.component.scss'
@@ -45,7 +48,8 @@ export class HeaderBarComponent implements OnInit {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
-    public _headerBarService: HeaderBarService
+    public _styleService: StyleService,
+    public _headerBarService: HeaderBarService,
   ) { }
 
   /** The navigations container. */
@@ -109,7 +113,25 @@ export class HeaderBarComponent implements OnInit {
    * @param navigation The navigation to edit (optional).
    */
   manageNavigation(navigation?: Navigation): void {
-    this._navigationService.manageNavigation(this.navigation.id, navigation);
+    this._navigationService.manageNavigation(this.navigation.groupId, navigation);
+  }
+
+  /**
+   * Publish navigation.
+   *
+   * @param navigation The navigation to publish.
+   */
+  publishNavigationChanges(navigation: Navigation) {
+    this._navigationService.publishNavigationChanges(navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigation The navigation to cancel changes for.
+   */
+  cancelNavigationChanges(navigation: Navigation) {
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**
@@ -142,7 +164,7 @@ export class HeaderBarComponent implements OnInit {
       `${this.navigation.displayLabel} - Menu`
     );
 
-    this._sideNavService.setSideNavFormListener(this.navigation.menu);
+    this._sideNavService.setSideNavFormListener(this.navigation, 'menu');
   }
 
   /**
@@ -180,7 +202,7 @@ export class HeaderBarComponent implements OnInit {
       navigation.displayLabel
     );
     
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**
@@ -213,9 +235,9 @@ export class HeaderBarComponent implements OnInit {
 
     const navigationPosition = { xPos: newXPos }
 
-    this._containerLayoutService.updateContainerLayout(navigation.containerLayout.id, navigationPosition)
+    this._containerLayoutService.updateContainerLayout(navigation, navigationPosition)
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe(() => navigation.containerLayout.xPos = navigationPosition.xPos);
   }
 
   /** 

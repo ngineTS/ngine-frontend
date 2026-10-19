@@ -16,12 +16,14 @@ export interface User {
     userRoles?: Array<UserRole>
 }
 
-export type UserSignUpPayload = Pick<User, 
-    "name" 
-    | "lastName" 
-    | "emailAddress" 
-    | "password"
->;
+export type UserSignUpPayload = {
+    name: string;
+    lastName: string;
+    emailAddress: string;
+    password: string;
+    roleId: string | null;    
+}
+
 
 export type UserSignInPayload = Pick<User,
     "emailAddress"

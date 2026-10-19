@@ -38,7 +38,6 @@ export class GenericTableComponent<T extends Record<string, any>> {
 
   @Input() content!: Array<T>; //table content as array of objects of type T
   @Input() tableConfig!: TableViz; //table and input configurations used for editing
-  @Input() canAdd: boolean | undefined; //user permission
   @Input() canEdit: boolean | undefined; //user permission
   @Input() canDelete: boolean | undefined; //user permission
   @Input() containerStyle?: ContainerStyle | undefined; //container style

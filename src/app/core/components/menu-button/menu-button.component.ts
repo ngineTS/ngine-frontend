@@ -12,6 +12,7 @@ import { DeepFormConfig } from '../../models/form-input.interface';
 import { TypographyStyleService } from '../../services/typography-style.service';
 import { ContainerStyleService } from '../../services/container-style.service';
 import { SideNavService } from '../../services/side-nav.service';
+import { StyleService } from '../../services/style.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class MenuButtonComponent {
     private _containerStyleService: ContainerStyleService,
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
+    private _styleService: StyleService,
   ) { }
 
   /** The main menu button. */
@@ -60,10 +62,10 @@ export class MenuButtonComponent {
    * Methods called on 'add navigation' button click.
    * Open form to add navigation.
    * 
-   * @param parentId The parent id where to add a navigation.
+   * @param parentGroupId The parent group id where to add a navigation.
    */
-  addNavigation(parentId: string) {
-    this._navigationService.manageNavigation(parentId);
+  addNavigation(parentGroupId: string) {
+    this._navigationService.manageNavigation(parentGroupId);
   }
 
   /**
@@ -75,7 +77,25 @@ export class MenuButtonComponent {
    */
   editNavigation(event: MouseEvent, navigation: Navigation) {
     event.stopPropagation();
-    this._navigationService.manageNavigation(navigation.parentId, navigation);
+    this._navigationService.manageNavigation(navigation.parentGroupId, navigation);
+  }
+
+  /**
+   * Publish navigation.
+   * 
+   * @param navigation The navigation to publish.
+   */
+  publishNavigationChanges(navigation: Navigation) {
+    this._navigationService.publishNavigationChanges(navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   *
+   * @param navigation The navigation to cancel changes for.
+   */
+  cancelNavigationChanges(navigation: Navigation) {
+    this._navigationService.cancelNavigationChanges(navigation);
   }
 
   /**
@@ -100,7 +120,7 @@ export class MenuButtonComponent {
       navigation.displayLabel
     );
 
-    this._sideNavService.setSideNavFormListener(navigation);
+    this._sideNavService.setSideNavFormListener(navigation, 'navigation');
   }
 
   /**
@@ -123,7 +143,6 @@ export class MenuButtonComponent {
          'isBorderRightHidden', 'isBorderTopHidden', 'backgroundColor', 'isBackgroundTransparent',
         ]
       ),
-      typographyStyle: this._typographyStyleService.setUpTypographyStyleForm(navigation.menu.typographyStyle)
     };
 
     this._sideNavService.openStyleForm(
@@ -132,7 +151,7 @@ export class MenuButtonComponent {
       `${navigation.displayLabel} - Menu`
     );
     
-    this._sideNavService.setSideNavFormListener(navigation.menu);
+    this._sideNavService.setSideNavFormListener(navigation, 'menu');
   }
 
   /**
@@ -144,7 +163,10 @@ export class MenuButtonComponent {
     const navigationOrders: Partial<Navigation>[] = [];
     moveItemInArray(navigation.children!, event.previousIndex, event.currentIndex)
     navigation.children!.forEach((nav, index) => { 
-      navigationOrders.push({ id: nav.id, order: index });
+      navigationOrders.push({ 
+        groupId: nav.groupId,
+        order: index 
+      });
       nav.order = index;
     });
     this._navigationService.bulkUpdateNavigations(navigationOrders).subscribe(() => {});

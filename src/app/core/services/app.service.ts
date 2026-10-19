@@ -66,6 +66,8 @@ export class AppService {
       next: result => {
         localStorage.setItem('access_token', result.access_token);
         this._componentsContainerService.userGlobalNavigationPermission = result.navigation.permissionName;
+        this._componentsContainerService.activeNavigation = result.navigation;
+        console.log('navigation', result.navigation);
         let route = this.createRoutingModule(
           this.retrieveRedirectButtonChildren(result.navigation) ?? [],
           result.navigation
@@ -80,8 +82,15 @@ export class AppService {
           path: '**',
           redirectTo: ''
         }
+
+        const stripeSuccessPayment = {
+          path: 'stripe-success',
+          loadComponent: () => import('../../core/components/stripe-success/stripe-success.component').then(m => m.StripeSuccessComponent)
+        }
+
+        route.children?.push(stripeSuccessPayment, unauthorisedRoute, notFoundRoute);
         
-        this._router.resetConfig([route, unauthorisedRoute, notFoundRoute]);
+        this._router.resetConfig([route]);
         
         if (redirectRouteName) {
           this._router.navigateByUrl(redirectRouteName);
@@ -146,8 +155,10 @@ export class AppService {
   }
 
   /**
-   * Recursively retrieve redirect button children inside menu button.
+   * Recursively retrieve redirect button children.
    * This method is used to create the navigation routes because only redirect-button can be routes.
+   * 
+   * It also marks navigations with changes pending to be published.
    * 
    * @param navigation The navigation which we want to filter the children on redirect-button type only.
    * @param redirectButtonsArray The current array of redirect button children.
@@ -157,14 +168,17 @@ export class AppService {
     navigation: Navigation,
     redirectButtonsNavigations: Array<Navigation> = []
   ): Array<Navigation> {
+    if (navigation.unpublishedChanges.length > 0) {
+      this.addNavigationToNavigationsWithChangesList(navigation);
+    }
+
     if (navigation.children) {
       redirectButtonsNavigations.push(
         ...navigation.children.filter(child => child.navigationType.name === 'redirect-button')
       );
+
       for (const child of navigation.children) {
-        if (child.navigationType.name === 'menu-button') {
-          redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
-        }
+        redirectButtonsNavigations.push(...this.retrieveRedirectButtonChildren(child));
       }
     }
 
@@ -188,7 +202,7 @@ export class AppService {
     redirectButtonNavigations: Array<Navigation>
   ) {
     let redirectButtonNavigationsWithoutOnesInsideMenu = redirectButtonNavigations
-      .filter(obj => obj.parentId === navigation.id);
+      .filter(obj => obj.parentGroupId === navigation.groupId);
     
     if (navigation.menu.isVertical) {
       return redirectButtonNavigationsWithoutOnesInsideMenu
@@ -201,8 +215,19 @@ export class AppService {
           a.containerLayout.xPos = 1000 - Number(a.containerLayout.xPos)
         }
       });
-      return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0].name;
+      return copyForSorting.sort((a, b) => Number(a.containerLayout.xPos!) - Number(b.containerLayout.xPos!))[0]?.name ?? '';
     }
+  }
+
+  /**
+   * Add navigation to the 'Navigations with changes' list.
+   * 
+   * It is used to get information globally about which navigations have changes pending to be published.
+   * 
+   * @param navigation The navigation.
+   */
+  addNavigationToNavigationsWithChangesList(navigation: Navigation) {
+    this._navigationService.navigationsWithChangesList.set(navigation.id, navigation);
   }
 
 }

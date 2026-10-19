@@ -11,6 +11,7 @@ export class SideNavService {
 
     constructor() { }
 
+    navigationRef: Navigation | null = null;
     stopSubscriptions = new Subject<void>();
     initalFormContent: Record<string, any> | null = null;
     formValueEvent = new Subject<FormValueEvent>();
@@ -60,8 +61,10 @@ export class SideNavService {
      * Setup listener on sidenav to update navigation style in real time.
      * If sidenav is closed without saving then assign back initial style.
      */
-    setSideNavFormListener(object: Navigation | Menu) {
-      //navigation case
+    setSideNavFormListener(navigation: Navigation, type: 'navigation' | 'menu') {
+      const object = type === 'navigation' ? navigation : navigation.menu;
+      this.navigationRef = navigation;
+
       const initialFormContent = {
         containerLayout: JSON.parse(JSON.stringify(object.containerLayout)),
         containerStyle: JSON.parse(JSON.stringify(object.containerStyle)),

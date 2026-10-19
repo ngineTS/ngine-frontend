@@ -1,0 +1,26 @@
+<div class="dialog-header">
+  <span class="header-title">Publish Navigations</span>
+  <button style="color: #985ab5;" mat-button class="close-button" [attr.autofocus]="false" (click)="close()">Close</button>
+</div>
+
+<mat-dialog-content>
+  <div class="list-container">
+    @for (navigation of navigations; track navigation.id) {
+      <div class="list-item">
+        <span class="navigation-label">{{ navigation.displayLabel }}</span>
+        <div class="action-buttons">
+          @if (navigation.unpublishedChanges[0] !== 'all') {
+            <button class="cancel-button" (click)="onCancel(navigation)">Cancel</button>
+          }
+          <button class="publish-button" (click)="onPublish(navigation)">Publish</button>
+        </div>
+      </div>
+    }
+  </div>
+</mat-dialog-content>
+
+@if (!isSaving) {
+  <mat-dialog-actions align="end">
+    <button class="publish-all-button" (click)="onPublishAll()">Publish all</button>
+  </mat-dialog-actions>
+}

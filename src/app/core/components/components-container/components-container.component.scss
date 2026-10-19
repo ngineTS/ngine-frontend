@@ -51,43 +51,6 @@
   display: block;
 }
 
-.toolbar {
-  position: absolute;
-  right: 16px;
-  z-index: 100000;
-  display: flex;
-  align-items: center;
-  padding: 6px;
-  border: 1.5px solid #E8E8E8;
-  border-radius: 6px;
-  background-color: #2B2B2B;
-}
-
-.toolbar-grab {
-  color: #E8E8E8;
-  cursor: grab;
-}
-
-.global-button {
-    margin-left: 6px;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    color: white;
-    background-color: #985ab5;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-
-    &:hover {
-      opacity: 0.8;
-    }
-}
-
-.global-icon {
-  font-size: 16px;
-}
-
 ::ng-deep .mat-mdc-tooltip{
     .mat-mdc-tooltip-surface{
         background-color: lightgray;

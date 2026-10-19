@@ -55,12 +55,12 @@ export class ManagementBaseComponent<
         .set('orderBy', this._sortConfiguration.orderBy as string)
         .set('order', this._sortConfiguration.order);
 
-      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.id}`, { params })
+      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.groupId}`, { params })
       .pipe(retry(this._retryCount), take(this._takeCount))
       .subscribe(resp => this._items = resp);
     }
     else {
-      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.id}`)
+      this._http.get<Array<T>>(`${this._baseUrl}custom-table/${this._tableName}/${this._navigation.groupId}`)
       .pipe(retry(this._retryCount), take(this._takeCount))
       .subscribe(resp => this._items = resp);
     }
@@ -73,12 +73,12 @@ export class ManagementBaseComponent<
    *  otherwise the form will not be able to create the new item.
    */
   _addItem() {
-    if (this._formInputsConfiguration && this._canAdd) {
+    if (this._formInputsConfiguration && this._canEdit) {
       const dialogData: GenericFormDialogData<Omit<T, 'id' | 'navigationId'>> = {
         formTitle: 'Add item',
         formConfig: this._formInputsConfiguration,
         payloadId: null,
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         controllerName: `custom-table/${this._tableName}`,
         hasDeleteButton: false
       }
@@ -117,7 +117,7 @@ export class ManagementBaseComponent<
         formTitle: 'Edit item',
         formConfig: formInputsConfigurationForEdit,
         payloadId: item.id,
-        navigationId: this._navigation.id,
+        navigationId: this._navigation.groupId,
         controllerName: `custom-table/${this._tableName}`,
         hasDeleteButton: this._canDelete
       }

@@ -24,7 +24,9 @@ export class ComponentService {
     "simple-shape": () => import('./simple-shape/simple-shape.component'),
     "media": () => import('./media/media.component'),
     "reusable-card-list": () => import('./reusable-card-list/reusable-card-list.component'),
-  };
+    "authentication-management": () => import('./authentication-management/authentication-management.component'),
+    "banner-management": () => import('./banner-management/banner-management.component'),
+};
 
   /**
    * Classify a string (ex: my-string --> MyString).

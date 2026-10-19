@@ -4,7 +4,7 @@ import { Permission } from "./permission.interface";
 export interface RoleNavigationPermission {
     id: string;
     roleId: string;
-    navigationId: string;
+    navigationGroupId: string;
     permissionId: string;
     createdDate: Date;
     createdBy: string;
@@ -16,4 +16,4 @@ export interface RoleNavigationPermission {
     permission?: Permission;
 }
 
-export type RoleNavigationPermissionPayload = Pick<RoleNavigationPermission, 'roleId' | 'navigationId' | 'permissionId'>;
+export type RoleNavigationPermissionPayload = Pick<RoleNavigationPermission, 'roleId' | 'navigationGroupId' | 'permissionId'>;

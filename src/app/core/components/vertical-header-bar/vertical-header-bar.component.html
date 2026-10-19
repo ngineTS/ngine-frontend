@@ -1,3 +1,6 @@
+<!-- Banner -->
+<app-banner [navigationId]="navigation.id"></app-banner>
+
 <div class="vertical-bar-container">
   
   <!-- Left sidebar with navigation tree -->
@@ -47,6 +50,20 @@
           (click)="manageNavigation($event)"
           [matTooltip]="'Add navigation'">
         </i>
+        <!-- If global navigation then we show the publish button on the header bar -->
+        @if (!navigation.parentGroupId && navigation.unpublishedChanges.length > 0) {
+            <i class="bi bi-upload edit-icon publish-menu-icon" [matMenuTriggerFor]="publishMenu"
+            ></i>
+
+            <mat-menu #publishMenu="matMenu">
+                <button mat-menu-item (click)="publishNavigationChanges(navigation)" style="color: green;">
+                    Publish changes
+                </button>
+                <button mat-menu-item (click)="cancelNavigationChanges(navigation)" style="color: black;">
+                    Cancel changes
+                </button>
+            </mat-menu>
+        }
       </div>
     }
 
@@ -121,7 +138,7 @@
         [style.font-size.px]="typographyStyle.fontSize"
         [style.font-weight]="typographyStyle.fontWeight"
         [style.font-family]="typographyStyle.fontFamily"
-        (click)="actionClick(node, parentPath)"
+        (click)="actionClick($event, node, parentPath)"
         (mouseenter)="node['isMouseOver'] = true"
         (mouseleave)="node['isMouseOver'] = false"
       >  
@@ -136,16 +153,44 @@
         <!-- Edit buttons -->
         @if (node.permissionName?.includes('edit')) {
           <div class="edit-nav-buttons-div">
-            @if (treeLevel === 0 && windowWidth > windowWidthLimit) {
-              <i class="bi bi-marker-tip edit-nav-icon"
-                (click)="editNavigationStyle($event, node)"
-                [matTooltip]="'Edit style'">
+            @if (windowWidth > windowWidthLimit) {
+              <i class="bi bi-three-dots-vertical edit-nav-icon"
+                [matMenuTriggerFor]="navigationOptionsMenu"
+                (click)="$event.stopPropagation()">
               </i>
+
+              <mat-menu #navigationOptionsMenu="matMenu">
+                <button mat-menu-item (click)="copyStyle($event, node)">
+                  <i class="bi bi-brush me-2"></i>
+                  Copy style
+                </button>
+                <button mat-menu-item (click)="editNavigationStyle($event, node)">
+                  <i class="bi bi-marker-tip me-2"></i>
+                  Edit style
+                </button>
+                <button mat-menu-item (click)="manageNavigation($event, node)">
+                  <i class="bi bi-gear me-2"></i>
+                  Settings
+                </button>
+              </mat-menu>
             }
-            <i class="bi bi-gear edit-nav-icon"
-              (click)="manageNavigation($event, node)"
-              [matTooltip]="'Manage navigation'">
-            </i>
+            @if (node.unpublishedChanges.length > 0) {
+              <i class="bi bi-upload publish-nav-icon"
+                  [matMenuTriggerFor]="publishMenu"
+                  (click)="$event.stopPropagation()"
+              ></i>
+
+              <mat-menu #publishMenu="matMenu">
+                <button mat-menu-item (click)="publishNavigationChanges(node)" style="color: green;">
+                  Publish changes
+                </button>
+                @if (node.unpublishedChanges[0] !== 'all') {
+                  <button mat-menu-item (click)="cancelNavigationChanges(node)" style="color: black;">
+                    Cancel changes
+                  </button>
+                }
+              </mat-menu>
+            }
           </div>
         }
       </div>

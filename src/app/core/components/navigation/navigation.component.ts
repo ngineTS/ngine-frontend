@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, HostListener, injec
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { take } from 'rxjs';
 import { NavigationBaseComponent } from '../navigation-base/navigation-base.component';
 import { ContainerLayoutService } from '../../services/container-layout.service';
@@ -15,6 +16,7 @@ import { SideNavService } from '../../services/side-nav.service';
 import { MediaService } from '../../services/media.service';
 import { ComponentService } from '../../../components/component.service';
 import { ComponentsContainerService } from '../../services/components-container.service';
+import { StyleService } from '../../services/style.service';
 
 @Component({
   selector: 'app-navigation',
@@ -22,6 +24,7 @@ import { ComponentsContainerService } from '../../services/components-container.
     MatProgressSpinnerModule,
     CommonModule,
     MatTooltipModule,
+    MatMenuModule,
     MenuButtonComponent,
     CustomButtonComponent
   ],
@@ -62,7 +65,8 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     private _typographyStyleService: TypographyStyleService,
     private _sideNavService: SideNavService,
     private _mediaService: MediaService,
-    private _componentsContainerService: ComponentsContainerService
+    private _componentsContainerService: ComponentsContainerService,
+    public _styleService: StyleService
   ) { 
     super(); 
   }
@@ -112,7 +116,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    */
   ngOnDestroy(): void {
     this.observer?.disconnect();
-    this.containerRef?.destroy();
   }
 
   /**
@@ -135,7 +138,6 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     });
 
     this.containerRef.setInput('_navigation', this._navigation);
-    this.containerRef.setInput('_canAdd', this._canAdd);
     this.containerRef.setInput('_canEdit', this._canEdit);
     this.containerRef.setInput('_canDelete', this._canDelete);
     this.containerRef.setInput('_isEditing', false);
@@ -172,7 +174,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       heightFitContent: false
     };
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, navigationSize)
+    this._containerLayoutService.updateContainerLayout(this._navigation, navigationSize)
       .pipe(take(this._takeCount))
       .subscribe(() => {
         this._navigation.containerLayout.width = navigationSize.width;
@@ -213,7 +215,21 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
    * Open form to edit navigation properties.
    */
   editNavigation(): void {
-    this._navigationService.manageNavigation(this._navigation.parentId, this._navigation);
+    this._navigationService.manageNavigation(this._navigation.parentGroupId, this._navigation);
+  }
+
+  /**
+   * Publish navigation.
+   */
+  publishNavigationChanges() {
+    this._navigationService.publishNavigationChanges(this._navigation);
+  }
+
+  /**
+   * Cancel pending navigation changes.
+   */
+  cancelNavigationChanges() {
+    this._navigationService.cancelNavigationChanges(this._navigation);
   }
 
   /**
@@ -240,7 +256,14 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       this._navigation.displayLabel
     );
 
-    this._sideNavService.setSideNavFormListener(this._navigation);
+    this._sideNavService.setSideNavFormListener(this._navigation, 'navigation');
+  }
+
+  /**
+   * Copy the navigation's style properties to the clipboard.
+   */
+  copyStyle(): void {
+    this._styleService.copyStyle(this._navigation);
   }
 
 
@@ -275,7 +298,7 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
     this._navigation.containerLayout.xPos = xPos;
     this._navigation.containerLayout.heightFitContent = false;
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+    this._containerLayoutService.updateContainerLayout(this._navigation, {
       width: width,
       height: height,
       heightFitContent: false,
@@ -289,10 +312,15 @@ export class NavigationComponent extends NavigationBaseComponent implements OnIn
       });
   }
 
+  /**
+   * Method called on fit content button click.
+   * 
+   * Modify navigation height to fit content property and update container layout.
+   */
   onFitContentClick() {
     this._navigation.containerLayout.heightFitContent = !this._navigation.containerLayout.heightFitContent;
 
-    this._containerLayoutService.updateContainerLayout(this._navigation.containerLayout.id, {
+    this._containerLayoutService.updateContainerLayout(this._navigation, {
       heightFitContent: this._navigation.containerLayout.heightFitContent,
     }).pipe(take(this._takeCount))
       .subscribe(() => {

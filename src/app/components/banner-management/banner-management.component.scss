@@ -1,0 +1,23 @@
+.banner-management {
+  padding: 1.5rem;
+}
+
+.banner-list {
+  width: 100%;
+}
+
+.banner-list-header {
+  padding: 0 0 0.5rem;
+}
+
+.banner-row {
+  min-width: 0;
+}
+
+.ellipsis {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -7,7 +7,8 @@ import { Menu } from "./menu.interface";
 
 export interface Navigation extends Record<string, any> {
     id: string;
-    parentId: string;
+    groupId: string;
+    parentGroupId: string;
     name: string;
     displayLabel: string;
     description: string;
@@ -18,6 +19,8 @@ export interface Navigation extends Record<string, any> {
     icon: string;
     showIconOnly: boolean;
     url: string;
+    isDraft: boolean;
+    unpublishedChanges: Array<string>;
     menu: Menu;
     containerLayout: ContainerLayout;
     containerStyle: ContainerStyle;

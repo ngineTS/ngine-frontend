@@ -5,6 +5,9 @@ import { TypeORMUpdateResponseType } from "../models/typeorm-update-response.int
 import { environment } from "../../../environments/environment";
 import { DeepFormConfig } from "../models/form-input.interface";
 import { Validators } from "@angular/forms";
+import { tap } from "rxjs";
+import { Navigation } from "../models/navigation.interface";
+import { NavigationService } from "./navigation.service";
 
 
 @Injectable({
@@ -12,17 +15,27 @@ import { Validators } from "@angular/forms";
 })
 export class ContainerLayoutService { 
 
-  constructor(private _http: HttpClient) {}
+  constructor(
+    private _http: HttpClient,
+    private _navigationService: NavigationService,
+  ) {}
 
   /**
-   * Update container layout.
+   * Update navigation container layout.
    * 
-   * @param id The container layout id.
+   * @param navigation The navigation.
    * @param containerLayoutProps The containerLayout properties to update.
    * @returns 
    */
-  updateContainerLayout(id: string, containerLayoutProps: Partial<ContainerLayout>) {
-    return this._http.patch<TypeORMUpdateResponseType>(`${environment.APIURL}container-layout/${id}`, containerLayoutProps);
+  updateContainerLayout(navigation: Navigation, containerLayoutProps: Partial<ContainerLayout>) {
+    return this._http
+      .patch<TypeORMUpdateResponseType>(`${environment.APIURL}container-layout/${navigation.containerLayout.id}`, containerLayoutProps)
+      .pipe(tap({
+        next: () => {
+          navigation.unpublishedChanges.push('containerLayout');
+          this._navigationService.navigationsWithChangesList.set(navigation.id, navigation);
+        }
+      }));
   }
 
   setUpContainerLayoutForm (
